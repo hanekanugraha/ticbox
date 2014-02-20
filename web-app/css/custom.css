@@ -1,0 +1,1203 @@
+/*
+ ###################################################################################################################
+ INDEX, GLOBAL
+ ###################################################################################################################
+ */
+
+/*override bootstrap*/
+html, body {
+    background: url("../images/skin/bg-building-clean.png") no-repeat center center fixed #F6F4F0;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+    /*background-color: #f3f3f3;*/
+    font-family: helveticaneue-light,tahoma,sans-serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 319px) {
+    body {
+        font-size: 11px;
+    }
+
+    h1 {
+        /*margin: 0.30em 0;*/
+    }
+
+    p {
+        margin: 0 0 4px;
+    }
+}
+
+@media (max-width: 639px) {
+    .btn-lg {
+        font-size:14px;
+    }
+}
+
+html, body, #page-outer {
+    height: 100%;
+}
+
+#page-outer {
+    position: relative;
+}
+
+h1, h2, h3{
+    color: #7f9b09;
+    font-weight: bold;
+    line-height: 20px;
+    font-size: 18px;
+}
+
+/*override bootstrap*/
+a {
+    color: #000000;
+}
+
+/*override bootstrap*/
+a:hover,
+a:focus {
+    text-decoration: none;
+}
+
+.wrapper {
+    padding-bottom: 0;
+    min-height: 100%;
+    position: relative;
+    padding: 65px 14px 15px;
+    /*width: 1024px;*/
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.wrapper.grey {
+    background: url("../images/skin/bg-wash-grey.png") repeat scroll 0 0 transparent;
+}
+
+.module {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    /**text-shadow: 0 1px 0 #FFFFFF;**/
+    margin-bottom: 10px;
+    position: relative;
+    background-color: #F9F9F9;
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 1px 1px 5px lightgrey;
+    color: #333333;
+    padding: 12px;
+}
+
+.module-header {
+    border-bottom: 1px solid #E8E8E8;
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    /*border-bottom-width: 0;*/
+}
+
+.title, .modal-title {
+    color: #7F9B09;
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.module-header .title {
+    padding-bottom: 5px;
+}
+
+.module-message {
+    color: #a67a3a;
+    font-style: italic;
+    font-size: 12px;
+    padding-bottom: 10px;
+}
+
+.module-content {
+    padding: 12px;
+}
+
+.message-box {
+    background-color: gainsboro;
+    border-radius: 6px 6px 6px 6px;
+    width: auto;
+}
+
+.message-box .module-message {
+    padding: 5px 10px 5px 10px;
+    width: auto;
+}
+
+.gold {
+    color: darkgoldenrod !important;
+}
+
+.trust {
+    color: #6daac9;
+}
+
+/*override bootstrap to match 'module' style*/
+.panel-group .panel{
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 1px 1px 5px lightgrey;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.col { /*.col & .line mostly used to display survey pages*/
+    float: left;
+    min-height: 1px;
+}
+
+.line {
+    clear: both;
+    display: table;
+    /*margin-bottom: 5px;*/
+    min-height: 1px;
+}
+
+.line-centered {
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+}
+
+/*override bootstrap*/
+.tooltip-inner {
+    text-align: left;
+}
+
+/*
+ ###################################################################################################################
+/*example of use: surveyor (choose survey type)*/
+input[type=radio] + img{
+    cursor:pointer;
+    border:2px solid lightgrey;
+}
+
+input[type=radio] + img:hover{
+    cursor:pointer;
+    box-shadow: 0 0 5px rgba(172, 201, 24, 1);
+    -webkit-box-shadow: 0 0 5px rgba(172, 201, 24, 1);
+    -moz-box-shadow: 0 0 5px rgba(172, 201, 24, 1);
+}
+
+input[type=radio]:checked + img{
+    border:2px solid #4A84A2;
+}
+
+.img-radio > input[type=radio]{
+    display:none;
+}
+
+.img-label {
+    font-family: "Avant Garde",Avantgarde,"Century Gothic",CenturyGothic,"AppleGothic",sans-serif;
+    font-weight: bold;
+}
+/*
+ ###################################################################################################################
+ */
+
+.modal-lg {
+    width: 90%;
+}
+
+/*
+ ###################################################################################################################
+ BUTTONS
+ ###################################################################################################################
+ */
+
+/*blue-trust*/
+.btn-blue-trust {
+    color: #ffffff;
+    background-color: #4a84a2;
+    border-color: #4a84a2;
+}
+
+.btn-blue-trust:hover,
+.btn-blue-trust:focus,
+.btn-blue-trust:active,
+.btn-blue-trust.active,
+.open .dropdown-toggle.btn-blue-trust {
+    color: #ffffff;
+    background-color: #274c5e;
+    border-color: #274c5e;
+}
+
+.btn-blue-trust:active,
+.btn-blue-trust.active,
+.open .dropdown-toggle.btn-blue-trust {
+    background-image: none;
+}
+
+.btn-blue-trust.disabled,
+.btn-blue-trust[disabled],
+fieldset[disabled] .btn-blue-trust,
+.btn-blue-trust.disabled:hover,
+.btn-blue-trust[disabled]:hover,
+fieldset[disabled] .btn-blue-trust:hover,
+.btn-blue-trust.disabled:focus,
+.btn-blue-trust[disabled]:focus,
+fieldset[disabled] .btn-blue-trust:focus,
+.btn-blue-trust.disabled:active,
+.btn-blue-trust[disabled]:active,
+fieldset[disabled] .btn-blue-trust:active,
+.btn-blue-trust.disabled.active,
+.btn-blue-trust[disabled].active,
+fieldset[disabled] .btn-blue-trust.active {
+    background-color: #6daac9;
+    border-color: #6daac9;
+}
+
+.btn-blue-trust .badge {
+    color: #428bca;
+    background-color: #fff;
+}
+
+/*light-oak*/
+.btn-light-oak {
+    color: #ffffff;
+    background-color: #84723f;
+    border-color: #84723f;
+}
+
+.btn-light-oak:hover,
+.btn-light-oak:focus,
+.btn-light-oak:active,
+.btn-light-oak.active,
+.open .dropdown-toggle.btn-light-oak {
+    color: #ffffff;
+    background-color: #755a0b;
+    border-color: #755a0b;
+}
+
+.btn-light-oak:active,
+.btn-light-oak.active,
+.open .dropdown-toggle.btn-light-oak {
+    background-image: none;
+}
+
+.btn-light-oak.disabled,
+.btn-light-oak[disabled],
+fieldset[disabled] .btn-light-oak,
+.btn-light-oak.disabled:hover,
+.btn-light-oak[disabled]:hover,
+fieldset[disabled] .btn-light-oak:hover,
+.btn-light-oak.disabled:focus,
+.btn-light-oak[disabled]:focus,
+fieldset[disabled] .btn-light-oak:focus,
+.btn-light-oak.disabled:active,
+.btn-light-oak[disabled]:active,
+fieldset[disabled] .btn-light-oak:active,
+.btn-light-oak.disabled.active,
+.btn-light-oak[disabled].active,
+fieldset[disabled] .btn-light-oak.active {
+    background-color: #a9a18a;
+    border-color: #a9a18a;
+}
+
+.btn-light-oak .badge {
+    color: #428bca;
+    background-color: #fff;
+}
+
+/*green*/
+.btn-green {
+    color: #ffffff;
+    background-color: #7b911f;
+    border-color: #7b911f;
+}
+
+.btn-green:hover,
+.btn-green:focus,
+.btn-green:active,
+.btn-green.active,
+.open .dropdown-toggle.btn-green{
+    color: #ffffff;
+    background-color: #617800;
+    border-color: #617800;
+}
+
+.btn-green:active,
+.btn-green.active,
+.open .dropdown-toggle.green {
+    background-image: none;
+}
+
+.btn-green.disabled,
+.btn-green[disabled],
+fieldset[disabled] .btn-green,
+.btn-green.disabled:hover,
+.btn-green[disabled]:hover,
+fieldset[disabled] .btn-green:hover,
+.btn-green.disabled:focus,
+.btn-green[disabled]:focus,
+fieldset[disabled] .btn-green:focus,
+.btn-green.disabled:active,
+.btn-green[disabled]:active,
+fieldset[disabled] .btn-green:active,
+.btn-green.disabled.active,
+.btn-green[disabled].active,
+fieldset[disabled] .btn-green.active {
+    background-color: #9fac5d;
+    border-color: #9fac5d;
+}
+
+.btn-green .badge {
+    color: #9bb517;
+    background-color: #fff;
+}
+
+/*
+ ###################################################################################################################
+ NAVBAR
+ ###################################################################################################################
+ */
+
+.icon-fb, .icon-tw, .icon-li, .icon-gg {
+    display:inline-block;
+    /*display:inline; *//*IE7*/
+    zoom:1; /*IE7*/
+    background: transparent url("../images/ticbox/FB_TW_LI_Gl_logo.png") no-repeat;
+    background-origin: content-box;
+    width: 23px;
+    height: 25px;
+    padding: 0;
+    margin: 0;
+    vertical-align: middle;
+}
+.icon-fb{
+    background-position: 0 0;
+}
+
+.icon-tw{
+    background-position: -24px 0;
+}
+
+.icon-li{
+    background-position: -48px 0;
+}
+
+.icon-gg{
+    background-position: -72px 0;
+}
+
+.ticbox-logo {
+    background: url("../images/ticbox/TicBoxLogo.png") no-repeat scroll 0 10px transparent;
+    background-size: auto 62%;
+    width: 210px;
+    min-height: 50px;
+}
+
+@media (max-width: 320px) {
+    .ticbox-logo {
+        background: url("../images/ticbox/TicBoxLogo.png") no-repeat scroll 15px 14px transparent;
+        background-size: auto 50%;
+        width: 180px;
+    }
+}
+
+@media (min-width: 321px) and (max-width: 767px) {
+    .ticbox-logo {
+        background: url("../images/ticbox/TicBoxLogo.png") no-repeat scroll 15px 10px transparent;
+        background-size: auto 62%;
+    }
+}
+
+/*addition to the bootstrap*/
+.navbar-ticbox-green {
+    background-color: #BAD33C;
+    background-image: -moz-linear-gradient(top, #BAD33C, #7F9B09);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#BAD33C), to(#7F9B09));
+    background-image: -webkit-linear-gradient(top, #BAD33C, #7F9B09);
+    background-image: -o-linear-gradient(top, #BAD33C, #7F9B09);
+    background-image: linear-gradient(to bottom, #BAD33C, #7F9B09);
+    border: 0;
+    -webkit-box-shadow: 0px 0px 10px #000000;
+    box-shadow: 0px 0px 10px #000000;
+    -moz-box-shadow: 0px 0px 10px #000000;
+    color: #ffffff;
+    /*height: 56px;*/
+}
+
+/*override bootstrap*/
+.navbar-inverse .nav > li > a {
+    color: #FFFFFF;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+/*override bootstrap*/
+.navbar-nav > li > a {
+    padding-bottom: 12px;
+    padding-top: 18px;
+}
+@media (max-width: 767px) {
+    .navbar-nav > li > a {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+}
+
+/*additions to bootstrap*/
+@media (max-width: 767px) {
+    .navbar-header {
+        background-image: -moz-linear-gradient(top, #BAD33C, #7F9B09);
+        background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#BAD33C), to(#7F9B09));
+        background-image: -webkit-linear-gradient(top, #BAD33C, #7F9B09);
+        background-image: -o-linear-gradient(top, #BAD33C, #7F9B09);
+        background-image: linear-gradient(to bottom, #BAD33C, #7F9B09);
+    }
+}
+
+/*addition to the bootstrap*/
+.navbar .nav > .active > a:hover,
+.navbar .nav > .active > a:focus,
+.navbar .nav > li > a:hover,
+.navbar .nav .open .dropdown-menu > li > a:hover {
+    text-shadow:
+        0 0 10px #fff,
+        0 0 20px #fff,
+        0 0 30px #fff,
+        0 0 40px white,
+        0 0 70px white,
+        0 0 80px white,
+        0 0 100px white,
+        0 0 150px white;
+    color: black;
+}
+
+/*addition to the bootstrap*/
+.navbar .tick > .active > a:hover,
+.navbar .tick > .active > a:focus,
+.navbar .tick > li > a:hover {
+    background: transparent url("../images/ticbox/Tick.png") no-repeat 50% 10%;
+    background-size: auto;
+}
+
+/*override bootstrap*/
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: transparent;
+}
+
+/*override bootstrap*/
+.dropdown-menu {
+    font-size: 12px;
+}
+
+/*override bootstrap*/
+.navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+    color: black;
+}
+
+/*override bootstrap*/
+.navbar-inverse .navbar-toggle {
+    border-color: #ffffff;
+}
+
+/*override bootstrap*/
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
+    border-color: #7F9B09;
+    background-color: transparent;
+}
+
+/*override bootstrap*/
+.navbar-inverse .navbar-toggle .icon-bar {
+    background-color: #ffffff;
+}
+
+.navbar-inverse .navbar-collapse,
+.navbar-inverse .navbar-form {
+    border-color: #7F9B09;
+}
+
+/*override bootstrap*/
+@media (max-width: 767px) {
+    .navbar-inverse .navbar-nav .open .dropdown-menu > .dropdown-header {
+        border-color: #E5E5E5;
+    }
+    .navbar-inverse .navbar-nav .open .dropdown-menu .divider {
+        background-color: #E5E5E5;
+    }
+    .dropdown-menu .divider {
+        margin-left: 25px;
+    }
+}
+
+/*override bootstrap*/
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+    background-color: #7F9B09;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.navbar-right li[role=presentation] {
+    color: black;
+    font-size: 10px;
+}
+.nav .badge {
+    background-color: darkgoldenrod;
+    vertical-align: top;
+    font-size: 10px;
+}
+
+/*
+ ###################################################################################################################
+ CAROUSEL
+ ###################################################################################################################
+ */
+
+/*additions to the bootstrap*/
+.carousel-inner > .item > img {
+    width: 100%;
+}
+
+@media (max-width: 319px) {
+    .carousel-caption > h1 {
+        font-size: 1.4em;
+        margin-top: 3px;
+        margin-bottom: 2px;
+    }
+
+    .carousel-caption > p {
+        margin-top: 1px;
+        margin-bottom: 1px;
+    }
+
+    .carousel-caption {
+        font-size: 0.8em;
+        padding-bottom: 5px;
+    }
+
+    .carousel-indicators {
+        bottom: 0px;
+    }
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+    .carousel-caption > h1 {
+        font-size: 2em;
+    }
+
+    .carousel-caption {
+        font-size: 1em;
+        padding-bottom: 10px;
+    }
+
+    .carousel-indicators {
+        bottom: 2px;
+    }
+}
+
+/*
+ ###################################################################################################################
+ ALERT, ERROR, WARNING
+ ###################################################################################################################
+ */
+
+.error {
+    color: tomato;
+}
+
+.alert {
+    padding: 8px 35px 8px 14px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    background-color: #fcf8e3;
+    border: 1px solid #fbeed5;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+/*
+ ###################################################################################################################
+ FOOTER
+ ###################################################################################################################
+ */
+
+footer {
+    font-size: 10px;
+    margin-left:auto;
+    margin-right: auto;
+    margin-top:20px;
+    margin-bottom:0;
+    width: 100%;
+}
+
+footer ul {
+    width:100%;
+    text-align:left;
+    margin: 0;
+}
+
+footer ul li {
+    display:inline-block;
+    *display:inline; /*IE7*/
+    *zoom:1; /*IE7*/
+    color:#000000;
+    padding: 0 20px;
+}
+
+@media (min-width: 992px) {
+    .bottom-nav ul li {
+        width: 100%;
+    }
+}
+
+@media (max-width: 991px) {
+    #security-logo {
+        margin-top: 10px;
+    }
+
+    #security-logo ul li {
+        width: 100%;
+    }
+}
+
+#security-logo img {
+    width: 100%;
+}
+
+footer {
+    font-size: 11px;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+}
+
+.hr-list li {
+    border-right: 1px solid olivedrab;
+    padding: 0 12px;
+}
+
+.hr-list li.hr-list-end {
+    border: none;
+}
+
+.hr-list a {
+    color: #808080;
+}
+
+
+/*
+ ###################################################################################################################
+ RESPONDENT
+ ###################################################################################################################
+ */
+
+@media (min-width: 769px) {
+    #contentPanel {
+        padding-left: 0;
+    }
+}
+
+.accountGroup {
+    /*overflow: hidden;*/
+    /*text-overflow: ellipsis;*/
+    /*white-space: nowrap;*/
+    padding: 5% 3% !important;
+}
+
+.fullName {
+    color: #333333;
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    /*margin-top: 5px;*/
+    /*white-space: nowrap;*/
+    /*overflow: hidden;*/
+    /*text-overflow: ellipsis;*/
+    overflow-wrap: hyphenate;
+    word-wrap: break-word;
+}
+
+.metadata {
+    color: #999999;
+    font-size: 10px;
+}
+
+.accountGroup .desc {
+    margin-left: 62px;
+}
+
+.line20 {
+    line-height: 20px;
+}
+
+.artwork {
+    height: 50px;
+    width: 50px;
+    overflow: hidden;
+    float: left;
+    text-align: center;
+}
+
+.accountGroup .artwork img {
+    height: 50px;
+    width: auto;
+    max-width: none !important;
+    position: relative;
+    display: inline-block;
+}
+
+.profileStats {
+    /*border-top: 1px solid #E8E8E8;*/
+    overflow: hidden;
+    padding: 0 3%;
+}
+
+.stats {
+    text-transform: uppercase;
+    padding-top: 10px;
+    padding-bottom: 22px;
+    color: grey;
+    font-size: 9px;
+}
+
+.stats strong {
+    color: #333333;
+    display: block;
+    font-size: 16px;
+}
+
+.leftBordered {
+    border-left: 1px solid #E8E8E8;
+}
+
+.topBordered {
+    border-top: 1px solid #E8E8E8;
+}
+
+.leftPanel {
+    float: left;
+    width: 220px;
+    position: fixed;
+}
+
+.rightPanel {
+    float: right;
+    width: 792px;
+    /*position: relative;*/
+}
+
+.survey-tag {
+    border-radius: 0 0 0 5px;
+    color: white;
+    font-size: 11px;
+    padding: 5px 10px 6px 13px;
+    position: absolute;
+    right: -1px;
+    top: -1px;
+}
+
+.survey-tag-gold {
+    background-color: darkgoldenrod;
+}
+
+.survey-tag-trust {
+    background-color: #6daac9;
+}
+
+.input-append, .input-prepend {
+    display: inline-block;
+    font-size: 0;
+    margin-bottom: 10px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.input-append input, .input-append select, .input-append .uneditable-input {
+    border-radius: 4px 0 0 4px;
+}
+.input-append input, .input-prepend input, .input-append select, .input-prepend select, .input-append .uneditable-input, .input-prepend .uneditable-input {
+    border-radius: 4px 0 0 4px;
+    margin-bottom: 0;
+    position: relative;
+    vertical-align: top;
+}
+.input-append input, .input-prepend input, .input-append select, .input-prepend select, .input-append .uneditable-input, .input-prepend .uneditable-input, .input-append .dropdown-menu, .input-prepend .dropdown-menu, .input-append .popover, .input-prepend .popover {
+    font-size: 14px;
+}
+
+.input-xxlarge {
+    width: 530px;
+}
+
+.input-append .add-on, .input-append .btn, .input-append .btn-group {
+    margin-left: -1px;
+}
+.input-append .add-on, .input-prepend .add-on, .input-append .btn, .input-prepend .btn, .input-append .btn-group > .dropdown-toggle, .input-prepend .btn-group > .dropdown-toggle {
+    border-radius: 0 0 0 0;
+    vertical-align: top;
+}
+
+/*
+ ###################################################################################################################
+ SURVEY -used in both surveyor & respondent menu
+ ###################################################################################################################
+ */
+
+.surveyItemsContainer input, .surveyItemsContainer textarea, .surveyItemsContainer select {
+    margin: 0;
+}
+
+/*.surveyItemsContainer input[type=text], .surveyItemsContainer textarea {*/
+/*width: 500px;*/
+/*}*/
+
+.surveyItemsContainer {
+    position: relative;
+}
+
+.surveyItemContainer {
+    margin-bottom: 20px;
+    clear: right;
+}
+
+.surveyItemContainer .seqNumberContainer {
+    /*width: 40px;*/
+    vertical-align: top;
+    text-align: right;
+    padding-right: 5px;
+    float: left;
+}
+
+.questionNumber {
+    font-size: 24px;
+    font-weight: bold;
+    color: #97b11a;
+}
+
+.surveyItemContainer table {
+    margin-bottom: 0;
+}
+
+.surveyItemContainer .table th, .surveyItemContainer .table td{
+    padding: 5px 1px;
+}
+
+#surveyPreviewModal .table th, #surveyPreviewModal .table td{
+    padding: 5px 5px;
+}
+
+.surveyItemContainer .choice-item {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.surveyItemContainer .item-check {
+    /*float: left;*/
+    height: 20px;
+    vertical-align: middle;
+    margin: 0 12px !important;
+}
+
+.surveyItemContainer .item-label {
+    /*width: 485px !important;*/
+    float: left;
+    width: 50%;
+}
+
+.surveyItemContainer .row {
+    margin-bottom: 5px;
+}
+
+#questionTypesMenuContainer {
+    /*width: 300px;*/
+    height: auto;
+    background: #97b11a;
+    color: #ffffff;
+    padding: 10px 0 30px 0 !important;
+    position: relative;
+    width: 100%;
+    border-radius: 5px;
+    height: auto;
+    box-shadow: 1px 1px 5px lightgrey;
+    margin-bottom: 10px;
+}
+
+#questionTypesItemContainer{
+    /*width: 260px;*/
+    /*height:70px;*/
+    margin: 0 auto;
+    background: #ffffff;
+
+    width: 190px;
+    height: 54px;
+    /*height: 108px;*/
+}
+
+#questionTypesItemContainer ul {
+    list-style: none;
+    /*margin: 70px 0 0 0;*/
+    margin: 55px 0 0 0;
+    /*margin: 0 !important;*/
+    padding: 0;
+    display: block;
+}
+
+#questionTypesItemContainer ul li {
+    float:left;
+    /*width:52px;*/width: 38px;
+    /*height:70px;*/height: 54px;
+    background:transparent url('../images/ticbox/question_BasicState.png');
+    background-position: 0 0;
+
+    background-size: 190px auto;
+}
+
+#questionTypesTitleContainer {  /*deprecated*/
+    background:transparent url('../images/ticbox/00_Question-Type.png') center no-repeat !important;
+    width: 100% !important;
+    height: 70px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: absolute;
+    top: 7px;
+    left: 0;
+}
+
+#questionTypesDynamicTitleContainer {  /*new*/
+    width: 190px !important;
+    height: 50px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: absolute;
+    top: 26px;
+    font-size: 1.8em;
+    background: none !important;
+    text-align: center;
+    font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+}
+
+#questionTypesItemContainer ul li:hover {
+    background:transparent url('../images/ticbox/question_ActiveState.png');
+    background-size: 190px auto;
+}
+
+#questionTypesItemContainer ul li.single-choice{
+    background-position: 2px 0;
+}
+/*#questionTypesItemContainer ul li.single-choice:hover ~ #questionTypesTitleContainer {*/
+/*background:transparent url('../images/ticbox/01_SingleChoice.png') center no-repeat !important;*/
+/*}*/
+
+#questionTypesItemContainer ul li.multiple-choice{
+    /*background-position: 208px 0;*/
+    background-position: 153px 0;
+}
+/*#questionTypesItemContainer ul li.multiple-choice:hover ~ #questionTypesTitleContainer {*/
+/*background:transparent url('../images/ticbox/02_MultipleChoice.png') center no-repeat !important;*/
+/*}*/
+
+#questionTypesItemContainer ul li.single-text{
+    /*background-position: 156px 0;*/
+    background-position: 116px 0;
+
+}
+/*#questionTypesItemContainer ul li.single-text:hover ~ #questionTypesTitleContainer {*/
+/*background:transparent url('../images/ticbox/03_FreeText.png') center no-repeat !important;*/
+/*}*/
+
+#questionTypesItemContainer ul li.scale{
+    /*background-position: 104px 0;*/
+    background-position: 78px 0;
+}
+/*#questionTypesItemContainer ul li.scale:hover ~ #questionTypesTitleContainer {*/
+/*background:transparent url('../images/ticbox/04_ScaleRating.png') center no-repeat !important;*/
+/*}*/
+
+#questionTypesItemContainer ul li.star-rating{
+    /*background-position: 52px 0;*/
+    background-position: 36px -2px;
+}
+/*#questionTypesItemContainer ul li.star-rating:hover ~ #questionTypesTitleContainer {*/
+/*background:transparent url('../images/ticbox/05_StarRating.png') center no-repeat !important;*/
+/*}*/
+
+
+#single-choice-title, #multiple-choice-title, #free-text-title, #scale-title, #star-rating-title,
+#questionTypesItemContainer ul li:hover ~ #questionTypesDynamicTitleContainer #question-type-title
+{display: none}
+
+#questionTypesDynamicTitleContainer #question-type-title,
+#questionTypesItemContainer ul li.single-choice:hover ~ #questionTypesDynamicTitleContainer #single-choice-title,
+#questionTypesItemContainer ul li.multiple-choice:hover ~ #questionTypesDynamicTitleContainer #multiple-choice-title,
+#questionTypesItemContainer ul li.single-text:hover ~ #questionTypesDynamicTitleContainer #free-text-title,
+#questionTypesItemContainer ul li.scale:hover ~ #questionTypesDynamicTitleContainer #scale-title,
+#questionTypesItemContainer ul li.star-rating:hover ~ #questionTypesDynamicTitleContainer #star-rating-title
+{display: inline}
+
+
+.answerTemplate {
+    /*padding: 0 0 0 25px;*/
+}
+
+.questionTextContainer {
+    float: left;
+    position: relative;
+}
+
+@media (max-width: 379px) {
+    .questionTextContainer textarea, .answerTemplate textarea, .answerTemplate .scale-table-container {
+        width: 140px;
+    }
+}
+
+@media (min-width: 380px) and (max-width: 439px) {
+    .questionTextContainer textarea, .answerTemplate textarea, .answerTemplate .scale-table-container {
+        width: 160px;
+    }
+}
+
+@media (min-width: 440px) and (max-width: 479px) {
+    .questionTextContainer textarea, .answerTemplate textarea, .answerTemplate .scale-table-container {
+        width: 210px;
+    }
+}
+
+@media (min-width: 480px) and (max-width: 519px) {
+    .questionTextContainer textarea, .answerTemplate textarea, .answerTemplate .scale-table-container {
+        width: 250px;
+    }
+}
+
+@media (min-width: 520px) and (max-width: 599px) {
+    .questionTextContainer textarea, .answerTemplate textarea, .answerTemplate .scale-table-container {
+        width: 290px;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 679px) {
+    .questionTextContainer textarea, .answerTemplate textarea, .answerTemplate .scale-table-container {
+        width: 360px;
+    }
+}
+
+@media (min-width: 680px) and (max-width: 767px) {
+    .questionTextContainer textarea, .answerTemplate textarea, .answerTemplate .scale-table-container {
+        width: 430px;
+    }
+}
+
+@media (min-width: 768px) {
+    .questionTextContainer textarea, .answerTemplate textarea, .answerTemplate .scale-table-container {
+        width: 360px;
+    }
+}
+
+@media (min-width: 992px) {
+    .questionTextContainer textarea, .answerTemplate textarea, .answerTemplate .scale-table-container {
+        width: 500px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .questionTextContainer textarea, .answerTemplate textarea, .answerTemplate .scale-table-container {
+        width: 640px;
+    }
+}
+
+.question-action-btn {
+    width: 20px;
+    height: 15px;
+}
+
+.upload-pic-icon {
+    background: transparent url("../images/ticbox/06_Question_UploadIcon_Picture.png") no-repeat center;
+}
+
+.upload-pic-icon:hover {
+    background: transparent url("../images/ticbox/06b_Question_UploadIcon_Picture.png") no-repeat center;
+}
+
+.upload-vid-icon {
+    background: transparent url("../images/ticbox/07_Question_UploadIcon_Video.png") no-repeat center;
+}
+
+.upload-vid-icon:hover {
+    background: transparent url("../images/ticbox/07b_Question_UploadIcon_Video.png") no-repeat center;
+}
+
+.delete-question-icon {
+    background: transparent url("../images/ticbox/07_Question_Delete.png") no-repeat center;
+}
+
+.single-choice-icon {
+    background: transparent url("../images/ticbox/01b_SingleChoice.png") no-repeat center;
+}
+
+.multiple-choice-icon {
+    background: transparent url("../images/ticbox/02b_MultipleChoice.png") no-repeat center;
+}
+
+.free-text-icon {
+    background: transparent url("../images/ticbox/03b_FreeText.png") no-repeat center;
+}
+
+.scale-rating-icon {
+    background: transparent url("../images/ticbox/04b_ScaleRating.png") no-repeat center;
+}
+.star-rating-icon {
+    background: transparent url("../images/ticbox/05b_StarRating.png") no-repeat center;
+}
+
+.star {
+    background:transparent url('../images/ticbox/question_BasicState.png');
+    background-position: 52px -10px;
+    width: 52px; height: 52px;
+}
+
+.stars:hover .star, .star.active{
+    background:transparent url('../images/ticbox/question_ActiveState.png');
+    background-position: 52px -10px;
+}
+
+.star:hover ~ .star, .star.basic{
+    background:transparent url('../images/ticbox/question_BasicState.png');
+    background-position: 52px -10px !important;
+}
+
+.scale-table {
+    border-radius: 4px;
+}
+
+.logoWrapper {
+    margin: 0 8px;
+}
+
+.survey-logo {
+    min-width: 100px;
+    min-height: 100px;
+    height: auto;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.survey-logo img {
+    max-width: 200px;
+    vertical-align: middle;
+    height: auto;
+}
+
+

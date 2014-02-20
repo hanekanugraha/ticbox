@@ -6,59 +6,65 @@
 
 <style type="text/css">
 
-.surveyItemsContainer input, .surveyItemsContainer textarea, .surveyItemsContainer select {
-    margin: 0;
-}
+    /*.surveyItemsContainer input, .surveyItemsContainer textarea, .surveyItemsContainer select {*/
+        /*margin: 0;*/
+    /*}*/
 
-.surveyItemsContainer input[type=text], .surveyItemsContainer textarea {
-    width: 500px;
-}
+    /*.surveyItemsContainer input[type=text], .surveyItemsContainer textarea {*/
+        /*width: 500px;*/
+    /*}*/
 
-.surveyItemContainer {
-    margin-bottom: 10px;
-    clear: right;
-}
+    /*.surveyItemContainer {*/
+        /*margin-bottom: 10px;*/
+        /*clear: right;*/
+    /*}*/
 
-.surveyItemContainer .seqNumberContainer {
-    width: 40px;
-    vertical-align: top;
-    text-align: right;
-    padding-right: 5px;
-}
+    /*.surveyItemContainer .seqNumberContainer {*/
+        /*width: 40px;*/
+        /*vertical-align: top;*/
+        /*text-align: right;*/
+        /*padding-right: 5px;*/
+        /*line-height: 30px;*/
+    /*}*/
 
-.questionNumber {
-    font-size: 24px;
-    font-weight: bold;
-    color: #97b11a;
-}
+    /*.questionTextContainer {*/
+        /*line-height: 30px;*/
+        /*vertical-align: bottom;*/
+    /*}*/
 
-.surveyItemContainer table {
-    margin-bottom: 0;
-}
+    /*.questionNumber {*/
+        /*font-size: 24px;*/
+        /*font-weight: bold;*/
+        /*color: #97b11a;*/
+    /*}*/
 
-.surveyItemContainer .table th, .surveyItemContainer .table td {
-    padding: 5px 1px;
-}
+    /*.surveyItemContainer table {*/
+        /*margin-bottom: 0;*/
+    /*}*/
 
-.answerTemplate {
-    margin: 0 0 0 45px;
-}
+    /*.surveyItemContainer .table th, .surveyItemContainer .table td {*/
+        /*padding: 5px 1px;*/
+    /*}*/
 
-.star {
-    background:transparent url('../images/ticbox/question_BasicState.png');
-    background-position: 52px -10px;
-    width: 52px; height: 52px;
-}
+    /*.answerTemplate {*/
+        /*margin: 0 0 0 45px;*/
+    /*}*/
 
-.stars:hover .star, .star.active{
-    background:transparent url('../images/ticbox/question_ActiveState.png');
-    background-position: 52px -10px;
-}
+    /*.star {*/
+        /*background:transparent url('../images/ticbox/question_BasicState.png');*/
+        /*background-position: 52px -10px;*/
+        /*width: 52px; height: 52px;*/
+    /*}*/
 
-.star:hover ~ .star, .star.basic{
-    background:transparent url('../images/ticbox/question_BasicState.png');
-    background-position: 52px -10px !important;
-}
+    /*.stars:hover .star, .star.active{*/
+        /*background:transparent url('../images/ticbox/question_ActiveState.png');*/
+        /*background-position: 52px -10px;*/
+    /*}*/
+
+    /*.star:hover ~ .star, .star.basic{*/
+        /*background:transparent url('../images/ticbox/question_BasicState.png');*/
+        /*background-position: 52px -10px !important;*/
+    /*}*/
 
 </style>
 
@@ -79,6 +85,7 @@
 
         });
 
+        jQuery('#surveyName').text('${survey.name}');
         jQuery('#surveyTitle').text('${survey.title}');
 
         jQuery.getJSON('${request.contextPath}/respondent/getSurvey', {surveyId: '${survey.surveyId}'}, function (questionItems) {
@@ -332,105 +339,117 @@
 </head>
 
 <body>
-
-<div class="line rowLine10">
-    <div class="col col10">
-        <div id="surveyLogo"
-             style="width: 250px; height: 150px; background: #f5f5f5 url('../images/ticbox/Logo_Placeholder.png') no-repeat center">
-            <img src="${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}"
-                 style="width: 250px; height: 150px">
-        </div>
+    <div class="module-header">
+        <div class="title">Take Survey</div>
     </div>
-
-    <div class="col" style="width: 400px; height: auto; vertical-align: bottom; display: inline-block; color: #97b11a; padding-top: 80px;">
-        <h1 id="surveyTitle" style="width: 350px; display: inline-block; resize: none;"></h1>
-    </div>
-</div>
-
-<br />
-
-<div class="surveyItemsContainer enableTooltip line10">
-
-</div>
-
-<br />
-
-<div class="line" style="padding: 0 0 3em 1em;">
-    <button id="saveResponse" class="btn btn-green-city-large btngreen">${g.message(code:'app.submit.label')}</button>
-</div>
-
-<div class="templates" style="display: none;">
-
-    <div id="questionTemplate" class="surveyItemContainer line rowLine10">
-
-        <div class="line rowLine2">
-            <div class="seqNumberContainer questionNumber col"></div>
-
-            <div class="questionTextContainer col col5">
-                <div rows="3"></div>
-            </div>
-        </div>
-
-    </div>
-
-    <div id="answerTemplate-singleText" class="answerTemplate line rowLine2" type="${Survey.QUESTION_TYPE.FREE_TEXT}">
-        <div class="col">
-            <textarea class="place-holder-text" rows="3" placeholder="${message([code: 'message.type-to-replace-place-holder', default: 'Type here to change this placeholder..'])}"></textarea>
-        </div>
-    </div>
-
-    <div id="answerTemplate-choice" class="answerTemplate line rowLine2" type="${Survey.QUESTION_TYPE.CHOICE}">
-        <div class="choice-items line">
-            <div class="choice-item line rowLine2">
-                <div class="col col5">
-                    <input class="item-check">
-                </div>
-
-                <div class="col col5 ">
-                    <div class="item-label">
+    <div class="module-content">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="padding: 15px">
+                <div class="media">
+                    <div id="surveyLogo" class="pull-left survey-logo" style="background: #4f4f4f url('../images/skin/survey-default-icon.png') no-repeat center center; background-size: 70% 70%;">
+                        %{--<img class="img-circle img-responsive" src="${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}" style="width: 175px; height: 175px; background: url('../images/ticbox/Logo_Placeholder.png') no-repeat scroll center center #F5F5F5">--}%
+                        %{--<img class="media-object img-responsive" src="${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}" alt="" style="width: 100px; height: 100px; background: #4f4f4f url('../images/skin/survey-default-icon.png') no-repeat center; background-size: 70% 70%;">--}%
+                        <img class="media-object img-responsive" src="${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}" alt="">
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            ${survey.name}
+                        </h4>
+                        <p>
+                            <g:if test="${survey.title}">
+                                ${survey.title}
+                            </g:if>
+                            <g:else>
+                                <div class="module-message" style="font-size: inherit">no description available</div>
+                            </g:else>
+                        </p>
+                        <div class="alert alert-info" style="margin-bottom: 0; font-size: 8px; width: 100%">
+                            We appreciate your contribution to this survey. By submitting your responds you signify your agreement to our Terms & Conditions.
+                            To understand how we treat your data please read the Privacy Policy.
+                            Good luck on completing the survey!
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="surveyItemsContainer enableTooltip panel-body">
+            </div>
+        </div>
+
+        <div class="" style="padding: 0 0 3em 0;">
+            <button id="saveResponse" class="btn btn-blue-trust btn-md">${g.message(code:'app.submit.label')}</button>
+            <button id="cancel" class="btn btn-light-oak btn-md" href="${request.contextPath}/respondent/">Cancel</button>
+        </div>
+
+        <div class="templates" style="display: none;">
+
+            <div id="questionTemplate" class="surveyItemContainer">
+                <div class="row">
+                    <div class="seqNumberContainer questionNumber col-xs-1"></div>
+
+                    <div class="questionTextContainer col-xs-11">
+                        <div rows="3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="answerTemplate-singleText" class="row answerTemplate" type="${Survey.QUESTION_TYPE.FREE_TEXT}">
+                <div class="col col-xs-11 col-xs-offset-1">
+                    <textarea class="place-holder-text form-control" rows="3" placeholder="${message([code: 'message.type-to-replace-place-holder', default: 'Type here to change this placeholder..'])}"></textarea>
+                </div>
+            </div>
+
+            <div id="answerTemplate-choice" class="row answerTemplate" type="${Survey.QUESTION_TYPE.CHOICE}">
+                <div class="choice-items col-xs-11 col-xs-offset-1">
+                    <div class="choice-item row">
+                        <div class="col col-xs-1" style="text-align: right">
+                            <input class="item-check">
+                        </div>
+                        <div class="col col-xs-11" style="padding-left: 0">
+                            <label class="item-label" style="font-weight: normal; margin-bottom: 0">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="answerTemplate-scale" class="row answerTemplate" type="${Survey.QUESTION_TYPE.SCALE_RATING}">
+                <div class="col col-xs-11 col-xs-offset-1" style="height:auto; overflow-x: auto; max-width: 720px;">
+                    <table class="table scale-table">
+                        <thead>
+                        <tr class="scale-head">
+                            <th style="text-align: center; width: 100px;">&nbsp;</th>
+                            <th class="rating-label" style="text-align: center">
+                                <div style="width: 100px; padding: 1px;"></div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="scale-row">
+                            <td style="max-width: 100px;">
+                                <div class="row-label" style="width: 100px; padding: 1px;"></div>
+                            </td>
+                            <td class="rating-weight" style="text-align: center">
+                                <input type="radio" name="rd-1"/>
+                            </td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="answerTemplate-starRating" class="row answerTemplate" type="${Survey.QUESTION_TYPE.STAR_RATING}">
+                <div class="line stars col-xs-11 col-xs-offset-1">
+                    <div class="col star clickable"></div>
+                    <div class="col star clickable"></div>
+                    <div class="col star clickable"></div>
+                    <div class="col star clickable"></div>
+                    <div class="col star clickable"></div>
+                </div>
+            </div>
+
         </div>
     </div>
-
-    <div id="answerTemplate-scale" class="answerTemplate line rowLine2" type="${Survey.QUESTION_TYPE.SCALE_RATING}">
-        <div class="col" style="height:auto; overflow-x: auto; max-width: 720px;">
-            <table class="table scale-table">
-                <thead>
-                <tr class="scale-head">
-                    <th style="text-align: center; width: 100px;">&nbsp;</th>
-                    <th class="rating-label" style="text-align: center">
-                        <div style="width: 100px; padding: 1px;"></div>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="scale-row">
-                    <td style="max-width: 100px;">
-                        <div class="row-label" style="width: 100px; padding: 1px;"></div>
-                    </td>
-                    <td class="rating-weight" style="text-align: center">
-                        <input type="radio" name="rd-1"/>
-                    </td>
-                    <td></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div id="answerTemplate-starRating" class="answerTemplate line rowLine2" type="${Survey.QUESTION_TYPE.STAR_RATING}">
-        <div class="line stars">
-            <div class="col star clickable"></div>
-            <div class="col star clickable"></div>
-            <div class="col star clickable"></div>
-            <div class="col star clickable"></div>
-            <div class="col star clickable"></div>
-        </div>
-    </div>
-
-</div>
 
 </body>
 </html>

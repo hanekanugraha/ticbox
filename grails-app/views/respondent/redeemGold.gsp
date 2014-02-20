@@ -16,66 +16,71 @@
             1 Gold = ${goldRate}
         </div>
     </div>
-    <div class="row-fluid" style="margin: 20px 0 30px; padding-bottom: 20px; border-bottom: 1px solid #E8E8E8;">
+    <div class="row" style="margin: 20px 0 30px; padding-bottom: 20px; border-bottom: 1px solid #E8E8E8;">
         <div style="color: #6daac9; font-weight: bold">Your balance is
             <span style="font-weight: bold; font-size: 16px; color: black;">${balance}</span>
         </div>
     </div>
 
 
-    <g:form name="redeemForm">
-        <div class="row-fluid">
-            <div class="span4">
-                <label><g:message code="app.respondent.redeemAmount.label" default="Redeem Amount"/> (min ${g.formatNumber(number: minRedemption, formatName: 'app.currency.format')}) </label>
-            </div>
+    <g:form name="redeemForm" class="form-horizontal">
+        <div class="form-group">
+            <label class="col-xs-4 control-label">
+                <g:message code="app.respondent.redeemAmount.label" default="Redeem Amount"/> (min ${g.formatNumber(number: minRedemption, formatName: 'app.currency.format')})
+            </label>
 
-            <div class="span4">
-                <g:textField id="redemptionAmount" name="redemptionAmount" placeholder="${g.formatNumber(number: minRedemption, maxFractionDigits: 0)}"/>
-            </div>
-        </div>
-
-        <div class="row-fluid">
-            <div class="span4">
-                <label><g:message code="app.respondent.bankName.label" default="Bank Name"/></label>
-            </div>
-
-            <div class="span4">
-                <g:textField id="bankName" name="bankName"/>
+            <div class="col-xs-6">
+                <g:textField id="redemptionAmount" name="redemptionAmount" placeholder="${g.formatNumber(number: minRedemption, maxFractionDigits: 0)}" class="form-control"/>
             </div>
         </div>
 
-        <div class="row-fluid">
-            <div class="span4">
-                <label><g:message code="app.respondent.bankBranchName.label" default="Bank Branch Name"/></label>
-            </div>
+        <div class="form-group">
+            <label class="col-xs-4 control-label">
+                <g:message code="app.respondent.bankName.label" default="Bank Name"/>
+            </label>
 
-            <div class="span4">
-                <g:textField id="bankBranchName" name="bankBranchName"/>
-            </div>
-        </div>
-
-        <div class="row-fluid">
-            <div class="span4">
-                <label><g:message code="app.respondent.bankAccountNumber.label" default="Bank Account Number"/></label>
-            </div>
-
-            <div class="span4">
-                <g:textField id="bankAccountNumber" name="bankAccountNumber"/>
+            <div class="col-xs-6">
+                <g:textField id="bankName" name="bankName" class="form-control"/>
             </div>
         </div>
 
-        <div class="row-fluid">
-            <div class="span4">
-                <label><g:message code="app.respondent.bankAccountName.label" default="Bank Account Name"/></label>
-            </div>
+        <div class="form-group">
+            <label class="col-xs-4 control-label">
+                <g:message code="app.respondent.bankBranchName.label" default="Bank Branch Name"/>
+            </label>
 
-            <div class="span4">
-                <g:textField id="bankAccountName" name="bankAccountName"/>
+            <div class="col-xs-6">
+                <g:textField id="bankBranchName" name="bankBranchName" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-4 control-label">
+                <g:message code="app.respondent.bankAccountNumber.label" default="Bank Account Number"/>
+            </label>
+
+            <div class="col-xs-6">
+                <g:textField id="bankAccountNumber" name="bankAccountNumber" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-4 control-label">
+                <g:message code="app.respondent.bankAccountName.label" default="Bank Account Name"/>
+            </label>
+
+            <div class="col-xs-6">
+                <g:textField id="bankAccountName" name="bankAccountName" class="form-control"/>
             </div>
         </div>
     </g:form>
 
-    <button id="submitRequest" class="btn btn-green-city-large btngreen">${g.message(code: 'app.submit.label')}</button>
+    <div id="buttonBarHeader" class="module-header"></div>
+        <div id="buttonBarContent" class="module-content">
+            <button id="submitRequest" class="btn btn-lg btn-green">${g.message(code: 'app.submit.label')}</button>
+        </div>
+    </div>
+
 </div>
 
 <g:javascript src="jquery.validate.min.js"/>

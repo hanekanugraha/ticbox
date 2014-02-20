@@ -159,9 +159,9 @@ hr.profilebar {
 
 .navbar-inverse .nav > li > a  {
     color: #ffffff;
-    height: 30px;
-    padding-top: 20px;
-    padding-bottom: 6px; /*30+20+6=56px=height dari navbar*/
+    /*height: 30px;*/
+    /*padding-top: 20px;*/
+    /*padding-bottom: 6px; *//*30+20+6=56px=height dari navbar*/
 }
 
 .navbar .nav > .active > a {
@@ -217,32 +217,7 @@ hr.profilebar {
     color: tomato;
 }
 
-.icon-fb, .icon-tw, .icon-li, .icon-gg {
-    display:inline-block;
-    *display:inline; /*IE7*/
-    *zoom:1; /*IE7*/
-    background: transparent url("../images/ticbox/FB_TW_LI_Gl_logo.png") no-repeat;
-    width: 23px;
-    height: 25px;
-    padding: 0;
-    margin: 0;
-}
 
-.icon-fb{
-    background-position: 0 0;
-}
-
-.icon-tw{
-    background-position: -24px 0;
-}
-
-.icon-li{
-    background-position: -48px 0;
-}
-
-.icon-gg{
-    background-position: -72px 0;
-}
 
 .wrapper {
     padding-bottom: 0;

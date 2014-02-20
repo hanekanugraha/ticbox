@@ -15,13 +15,14 @@
     <link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
 
     <link rel="stylesheet" href="${resource(dir: 'frameworks/jquery-ui-1.10.2/css/smoothness', file: 'jquery-ui-1.10.2.custom.css')}" type="text/css">
-    <link rel="stylesheet" href="${resource(dir: 'frameworks/bootstrap/css', file: 'bootstrap.css')}" type="text/css">
-    <link rel="stylesheet" href="${resource(dir: 'frameworks/bootstrap/css', file: 'bootstrap-responsive.css')}" type="text/css">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'app.css')}" type="text/css">
+    <link rel="stylesheet" href="${resource(dir: 'frameworks/bootstrap/css', file: 'bootstrap.min.css')}" type="text/css">
+    %{--<link rel="stylesheet" href="${resource(dir: 'frameworks/bootstrap/css', file: 'bootstrap-responsive.css')}" type="text/css">--}%
+    %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'app.css')}" type="text/css">--}%
 
     <script type="text/javascript" src="${resource(dir: 'frameworks/jquery-ui-1.10.2/js', file: 'jquery-1.9.1.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'frameworks/jquery-ui-1.10.2/js', file: 'jquery-ui-1.10.2.custom.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'frameworks/bootstrap/js', file: 'bootstrap.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'frameworks/bootstrap/js', file: 'bootstrap.min.js')}"></script>
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'custom.css')}" type="text/css">
 
     <g:layoutHead/>
     <r:layoutResources />
@@ -29,185 +30,366 @@
 </head>
 <body>
 
-<div id="doc" class="">
+%{--<div id="doc" class="">--}%
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                %{--
-                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    %{--<div class="navbar navbar-inverse navbar-fixed-top">--}%
+        %{--<div class="navbar-inner">--}%
+            %{--<div class="container-fluid">--}%
+                %{----}%
+                %{--<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">--}%
+                    %{--<span class="icon-bar"></span>--}%
+                    %{--<span class="icon-bar"></span>--}%
+                    %{--<span class="icon-bar"></span>--}%
+                %{--</button>--}%
+                %{----}%
+                %{--<a class="brand" href="${request.contextPath}/">--}%
+                    %{--<img src="${g.resource(dir: 'images/ticbox', file: 'TicBoxLogo.png')}" width="200" height="100">--}%
+                %{--</a>--}%
+                %{--<div class="nav-collapse collapse">--}%
+
+                    %{--<ul class="nav">--}%
+                        %{--<li class="index"><g:link action="index">Survey List</g:link></li>--}%
+                        %{--<li class="profileForm"><g:link action="profileForm">Profile</g:link></li>--}%
+                        %{--<li class="inviteFriends"><g:link action="inviteFriends">Invite Friends</g:link></li>--}%
+                        %{--<li class="redeemGold"><g:link action="redeemGold">Redeem GOLD Points</g:link></li>--}%
+                        %{--<li class="goldHistory"><g:link action="goldHistory">GOLD Points History</g:link></li>--}%
+                    %{--</ul>--}%
+
+                    %{--<ul class="nav nav-pills pull-right">--}%
+                        %{--TODO should be providing different state when there is notification available--}%
+                        %{--<li class="dropdown">--}%
+                            %{--<a class="dropdown-toggle logged-in" data-toggle="dropdown" href="#">Logged in as ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)}</a>--}%
+                            %{--<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">--}%
+                                %{--<li role="presentation"><g:link controller="auth" action="signOut">Logout</g:link></li>--}%
+                                %{--<li role="presentation" class="divider"></li>--}%
+                                %{--<g:each in="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false)}" var="notification">--}%
+                                    %{--<li role="presentation">--}%
+                                        %{--<g:link controller="userNotification" title="${notification.title}" params="[code: notification.code]">${notification.title}</g:link>--}%
+                                    %{--</li>--}%
+                                %{--</g:each>--}%
+                            %{--</ul>--}%
+                        %{--</li>--}%
+                    %{--</ul>--}%
+
+                %{--</div>--}%
+            %{--</div>--}%
+        %{--</div>--}%
+    %{--</div>--}%
+
+    <%--
+        NAVBAR
+    --%>
+    <div class="navbar navbar-inverse navbar-fixed-top navbar-ticbox-green">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                --}%
-                <a class="brand" href="${request.contextPath}/">
-                    <img src="${g.resource(dir: 'images/ticbox', file: 'TicBoxLogo.png')}" width="200" height="100">
-                </a>
-                <div class="nav-collapse collapse">
+                <a class="navbar-brand ticbox-logo" href="${request.contextPath}/"></a>
+            </div>
 
-                    <ul class="nav">
-                        <li class="index"><g:link action="index">Survey List</g:link></li>
-                        <li class="profileForm"><g:link action="profileForm">Profile</g:link></li>
-                        <li class="inviteFriends"><g:link action="inviteFriends">Invite Friends</g:link></li>
-                        <li class="redeemGold"><g:link action="redeemGold">Redeem GOLD Points</g:link></li>
-                        <li class="goldHistory"><g:link action="goldHistory">GOLD Points History</g:link></li>
-                    </ul>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav tick">
+                    <li>
+                        <a href="${request.contextPath}/">Home</a>
+                    </li>
+                    <li><a>How It Works</a></li>
+                    <li><a>Pricing</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#">About Us</a>
+                            </li>
+                            <li>
+                                <a href="#">Blog</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
 
-                    <ul class="nav nav-pills pull-right">
-                        %{--TODO should be providing different state when there is notification available--}%
+                <ul class="nav navbar-nav navbar-right">
+                    <shiro:notAuthenticated>
+                        <li><g:link controller="auth" action="login">Register | Login</g:link></li>
+                    </shiro:notAuthenticated>
+                    <shiro:authenticated>
+                        %{--INBOX--}%
                         <li class="dropdown">
-                            <a class="dropdown-toggle logged-in" data-toggle="dropdown" href="#">Logged in as ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)}</a>
+                            <g:link class="dropdown-toggle" data-toggle="dropdown" style="padding-right: 5px">
+                                <span id="notif" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title="Inbox">
+                                </span>
+                                <g:if test="">
+                                    <span class="badge">
+                                        %{--lookup--}%
+                                    </span>
+                                </g:if>
+                            </g:link>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                <li role="presentation"><g:link controller="auth" action="signOut">Logout</g:link></li>
-                                <li role="presentation" class="divider"></li>
-                                <g:each in="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false)}" var="notification">
+                                <li role="presentation">
+                                    <b style="padding: 0 20px">Inbox</b>
+                                </li>
+                                <li role="presentation" class="divider" style="margin: 3px 0 5px"></li>
+                                <g:if test="">
+                                    <g:each in="" var="inbox">
+                                        <li role="presentation">
+                                            <g:link controller="" title="${inbox.title}" params="[code: inbox.code]">${inbox.title}</g:link>
+                                        </li>
+                                    </g:each>
+                                </g:if>
+                                <g:else>
                                     <li role="presentation">
-                                        <g:link controller="userNotification" title="${notification.title}" params="[code: notification.code]">${notification.title}</g:link>
+                                        <a style="color:grey;">You have ... Inbox</a>
                                     </li>
-                                </g:each>
+                                </g:else>
                             </ul>
                         </li>
-                    </ul>
-
-                </div>
+                        %{--NOTIFICATION--}%
+                        <li class="dropdown">
+                            <g:link class="dropdown-toggle" data-toggle="dropdown" style="padding-right: 5px">
+                                <span id="notif" class="glyphicon glyphicon-bullhorn" data-toggle="tooltip" title="Notification"></span>
+                                <g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
+                                    <span class="badge">
+                                        ${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()}
+                                    </span>
+                                </g:if>
+                            </g:link>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <li role="presentation">
+                                    <b style="padding: 0 20px">Notifications</b>
+                                </li>
+                                <li role="presentation" class="divider" style="margin: 3px 0 5px"></li>
+                                <g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
+                                    <g:each in="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false)}" var="notification">
+                                        <li role="presentation">
+                                            <g:link controller="userNotification" title="${notification.title}" params="[code: notification.code]">${notification.title}</g:link>
+                                        </li>
+                                    </g:each>
+                                </g:if>
+                                <g:else>
+                                    <li role="presentation">
+                                        <a style="color:grey;">You have ${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()} Notifications</a>
+                                    </li>
+                                </g:else>
+                            </ul>
+                        </li>
+                        %{--ACCOUNT SPECIFIC--}%
+                        <li class="dropdown">
+                            <g:link controller="respondent" action="index" class="dropdown-toggle" data-toggle="dropdown">
+                                ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)}
+                                %{--<g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">--}%
+                                    %{--<span class="badge" style="background-color: darkgoldenrod; vertical-align: top; font-size: 10px">--}%
+                                    %{--${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()}--}%
+                                    %{--</span>--}%
+                                %{--</g:if>--}%
+                                <b class="caret"></b>
+                            </g:link>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                %{--<g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">--}%
+                                    %{--<g:each in="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false)}" var="notification">--}%
+                                        %{--<li role="presentation">--}%
+                                            %{--<g:link controller="userNotification" title="${notification.title}" params="[code: notification.code]">${notification.title}</g:link>--}%
+                                        %{--</li>--}%
+                                    %{--</g:each>--}%
+                                %{--</g:if>--}%
+                                %{--<g:else>--}%
+                                    %{--<li role="presentation">--}%
+                                        %{--<a style="color:grey; font-size: 10px">You have ${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()} Notifications</a>--}%
+                                    %{--</li>--}%
+                                %{--</g:else>--}%
+                                <li role="presentation">
+                                    <a href="${request.contextPath}/respondent"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
+                                </li>
+                                <li role="presentation" class="divider"></li>
+                                <li role="presentation">
+                                    <a>Help</a>
+                                </li>
+                                <li role="presentation">
+                                    <a>Report a Problem</a>
+                                </li>
+                            </ul>
+                        </li>
+                        %{--LOGOUT BUTTON--}%
+                        <li>
+                            <g:link controller="auth" action="signOut">
+                                <span id="log-out-btn" class="glyphicon glyphicon-log-out" data-toggle="tooltip"
+                                      title="Logout">
+                                </span>
+                            </g:link>
+                        </li>
+                    </shiro:authenticated>
+                </ul>
             </div>
         </div>
     </div>
 
-    <div id="page-outer">
-        <div id="main-container" class="wrapper grey">
-        %{--<div class="row">--}%
-            <div id="menuNavPanel" class="leftPanel">
+    <div id="page-outer" class="container">
+        <div id="wrapper-effect" class="wrapper grey">
 
-                <div id="respondentProfileAccordion" class="module" >
-                    <div class="profileSummary">
-                            <div class="accountGroup">
-                    %{--
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#respondentProfileAccordion" href="#respondentProfileContainer">
-                                Hello, ${respondent?.username}
-                            </a>
-                        </div>
-                        <div id="respondentProfileContainer" class="accordion-body collapse in">
-                            <div class="accordion-inner" style="padding: 5px 5px;">
-                                <div class="row-fluid">
-                                    <div class="span12 center">
-                                    --}%
-                                    <div class="artwork">
+            <div class="row">
+                <div id="menuNavPanel" class="col-sm-3" style="margin-bottom: 10px;">
+
+                    <div id="respondentProfileAccordion" class="panel-group" style="margin-bottom: 10px;">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="media">
+                                    <div class="col-xs-5" style="padding-left: 0">
                                         <g:if test="${respondent.pic}">
-                                            <img id="sidebarRespondentPic" class="" src="${g.createLink(action: 'viewImage', params: [respondentId: respondent.id])}"/>
+                                            <img id="sidebarPic" class="img-thumbnail img-responsive" src="${g.createLink(action: 'viewImage', params: [respondentId: respondent.id])}"/>
                                         </g:if>
                                         <g:else>
-                                            <img id="sidebarRespondentPic" class="" src="${g.resource(dir: 'images/ticbox', file: 'anonymous.png')}"/>
+                                            <img id="sidebarPic" class="img-thumbnail img-responsive" src="${g.resource(dir: 'images/ticbox', file: 'anonymous.png')}"/>
                                         </g:else>
                                     </div>
-                                    %{--
+                                    <div class="media-body col-xs-7" style="padding-left: 0;">
+                                        <a data-toggle="collapse" data-parent="#respondentProfileAccordion" href="#respondentProfileContainer">
+                                            <b class="fullName">${respondent?.username}</b>
+                                        </a>
+                                        <g:link class="metadata" action="profileForm">View profile page</g:link>
                                     </div>
                                 </div>
-
                             </div>
-                        </div>
-                    </div>
-                    --}%
-                                <div class="desc line20">
-                                    <b class="fullName">${respondent?.username}</b>
-                                    <g:link class="metadata" action="profileForm">View profile page</g:link>
+                            <div id="respondentProfileContainer" class="panel-collapse collapse in">
+                                <div class="panel-body" style="padding: 0 12px;">
+                                    <div class="row profileStats">
+                                        <div class="col-xs-3 stats">
+                                            <div><strong>${respondent?.respondentProfile?.gold}</strong></div>
+                                            <div class="gold"><b>Gold</b></div>
+                                        </div>
+                                        <div class="col-xs-3 stats leftBordered">
+                                            <div><strong>${respondent?.respondentProfile?.trust}</strong></div>
+                                            <div class="trust"><b>Trust</b></div>
+                                        </div>
+                                        <div class="col-xs-6 stats leftBordered">
+                                            <div><strong>XX</strong></div>
+                                            <div><b>Survey Joined</b></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
                     </div>
 
-                    <div class="profileStats">
-                        <div class="row-fluid">
-                            <div class="span6 stats">
-                                <div><strong>${respondent?.respondentProfile?.gold}</strong></div>
-                                <div class="gold"><b>Gold</b></div>
+                    %{--<div id="respondentProfileAccordion" class="module" style="padding-bottom: 0;">--}%
+                        %{--<div class="profileSummary row">--}%
+                            %{--<div class="accountGroup row">--}%
+                                %{--<div class="col-xs-5">--}%
+                                    %{--<g:if test="${respondent.pic}">--}%
+                                        %{--<img id="sidebarRespondentPic" class="img-thumbnail img-responsive" src="${g.createLink(action: 'viewImage', params: [respondentId: respondent.id])}"/>--}%
+                                    %{--</g:if>--}%
+                                    %{--<g:else>--}%
+                                        %{--<img id="sidebarRespondentPic" class="img-thumbnail img-responsive" src="${g.resource(dir: 'images/ticbox', file: 'anonymous.png')}"/>--}%
+                                    %{--</g:else>--}%
+                                %{--</div>--}%
+                                %{--<div class="col-xs-7" style="padding-left: 0;">--}%
+                                    %{--<b class="fullName">${respondent?.username}</b>--}%
+                                    %{--<g:link class="metadata" action="profileForm">View profile page</g:link>--}%
+                                %{--</div>--}%
+                            %{--</div>--}%
+                        %{--</div>--}%
+                        %{--<div class="profileStats">--}%
+                            %{--<div class="row profileStats">--}%
+                                %{--<div class="col-xs-3 stats">--}%
+                                    %{--<div><strong>${respondent?.respondentProfile?.gold}</strong></div>--}%
+                                    %{--<div class="gold"><b>Gold</b></div>--}%
+                                %{--</div>--}%
+                                %{--<div class="col-xs-3 stats leftBordered">--}%
+                                    %{--<div><strong>${respondent?.respondentProfile?.trust}</strong></div>--}%
+                                    %{--<div class="trust"><b>Trust</b></div>--}%
+                                %{--</div>--}%
+                                %{--<div class="col-xs-6 stats leftBordered">--}%
+                                    %{--<div><strong>XX</strong></div>--}%
+                                    %{--<div><b>Survey Joined</b></div>--}%
+                                %{--</div>--}%
+                            %{--</div>--}%
+                        %{--</div>--}%
+                        %{--<div class="profileStats">--}%
+                            %{--<div class="row profileStats">--}%
+                                %{--<div class="col-xs-12 stats">--}%
+                                    %{--<div><strong>XX</strong></div>--}%
+                                    %{--<div><b>Total Survey Joined</b></div>--}%
+                                %{--</div>--}%
+                            %{--</div>--}%
+                        %{--</div>--}%
+                    %{--</div>--}%
+
+                    <div id="respondentNavAccordion" class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#respondentNavAccordion" href="#respondentNavContainer">
+                                        DASHBOARD
+                                    </a>
+                                </div>
                             </div>
-                            <div class="span6 stats leftBordered">
-                                <div><strong>${respondent?.respondentProfile?.trust}</strong></div>
-                                <div class="trust"><b>Trust</b></div>
+                            <div id="respondentNavContainer" class="panel-collapse collapse in">
+                                <div class="panel-body" style="padding-left: 12px;">
+                                    <ul class="nav nav-pills nav-stacked">
+                                        <li class="index">
+                                            <g:link action="index">Survey List</g:link>
+                                        </li>
+                                        <li class="profileForm">
+                                            <g:link action="profileForm">Profile</g:link>
+                                        </li>
+                                        <li class="inviteFriends">
+                                            <g:link action="inviteFriends">Invite Friends</g:link>
+                                        </li>
+                                        <li class="redeemGold">
+                                            <g:link action="redeemGold">Redeem GOLD Points</g:link>
+                                        </li>
+                                        <li class="goldHistory">
+                                            <g:link action="goldHistory">GOLD Points History</g:link>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="profileStats">
-                        <div class="row-fluid">
-                            <div class="span12 stats">
-                                <div><strong>XX</strong></div>
-                                <div><b>Total Survey Joined</b></div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
 
-                <div id="respondentNavAccordion" class="accordion module" >
-                        <div class="accordion-heading module-header">
-                            <a style="padding: 0" class="accordion-toggle" data-toggle="collapse" data-parent="#respondentNavAccordion" href="#respondentNavContainer">
-                                <div class="title">Menu</div>
-                            </a>
-                        </div>
-                        <div id="respondentNavContainer" class="accordion-body collapse in">
-                            <div class="accordion-inner" style="padding-left: 12px;">
-                                <div style="display: block;">
-                                    <g:link action="index">Survey List</g:link>
-                                </div>
-                                <div style="display: block;">
-                                    <g:link action="profileForm">Profile</g:link>
-                                </div>
-                                <div style="display: block;">
-                                    <g:link action="inviteFriends">Invite Friends</g:link>
-                                </div>
-                                <div style="display: block;">
-                                    <g:link action="redeemGold">Redeem GOLD Points</g:link>
-                                </div>
-                                <div style="display: block;">
-                                    <g:link action="goldHistory">GOLD Points History</g:link>
-                                </div>
-                            </div>
-                        </div>
+                <div role="main" class="col-sm-9" id="contentPanel">
+                    <div class="module">
+                        <g:layoutBody/>
+                    </div>
 
                 </div>
-
             </div>
-            <div id="main" class="rightPanel">
-                <div class="module">
-                    <g:layoutBody/>
-                </div>
 
-            </div>
-        %{--</div>--}%
+            %{--<footer>
+                &copy; TicBOX 2013
+            </footer>--}%
 
-        %{--<footer>
-            &copy; TicBOX 2013
-        </footer>--}%
-
+        </div>
     </div>
-    </div>
-</div>
+%{--</div>--}%
 
-<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
+    <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 
-<r:layoutResources />
+    <r:layoutResources />
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    jQuery(function(){
+        jQuery(function(){
 
-        jQuery(".nav > li.${actionName}").addClass('active');
+            jQuery(".nav > li.${actionName}").addClass('active');
 
-        jQuery('#menuNavPanel').append(jQuery('#menuNavPanelContent'));
+            jQuery('#menuNavPanel').append(jQuery('#menuNavPanelContent'));
 
-        jQuery('.datePicker').datepicker({
-            showAnim : 'slideDown',
-            dateFormat : '<g:message code="app.date.format.js" default="dd/mm/yy"/>',
-            changeMonth: true,
-            changeYear: true,
-            yearRange: 'c-60:c+10'
+            jQuery('.datePicker').datepicker({
+                showAnim : 'slideDown',
+                dateFormat : '<g:message code="app.date.format.js" default="dd/mm/yy"/>',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: 'c-60:c+10'
+            });
+
         });
 
-    });
-
-</script>
+    </script>
 
 </body>
 </html>

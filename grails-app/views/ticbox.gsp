@@ -2,222 +2,137 @@
     <head>
         <meta name="layout" content="ticbox"/>
         <title>Welcome</title>
-        <link rel="stylesheet" href="${resource(dir: 'css', file: 'slider.css')}" type="text/css">
     </head>
     <body>
-
-        <div id="teaser-container" class="">
-
-            <!-- Responsive CSS3 Slider w/o JS by Brendan Zabarauskas http://csscience.com/responsiveslidercss3/-->
-            <article id=slider>
-
-                <!-- Slider Setup -->
-
-                <input checked type=radio name=slider id=slide1 style="display: none;"/>
-                <input type=radio name=slider id=slide2 style="display: none;"/>
-                <input type=radio name=slider id=slide3 style="display: none;"/>
-                <input type=radio name=slider id=slide4 style="display: none;"/>
-                <input type=radio name=slider id=slide5 style="display: none;"/>
-
-                <!-- The Slider -->
-
-                <div id=slides>
-
-                    <div id=overflow>
-
-                        <div class=inner>
-                            <article>
-                                %{--<div class=info><h3>Create Survey</h3>Cing, need help untuk content</div>--}%
-                                <img src="images/ticbox/collaterals/New_Banner_ticbox_3.png" />
-                            </article>
-
-                            <article>
-                                %{--<div class=info><h3>Join Respondent</h3>Cing, need help untuk content</div>--}%
-                                <img src="images/ticbox/collaterals/New_Banner_ticbox_1.2.png" />
-                            </article>
-
-                            <article>
-                                %{--<div class=info><h3>Solutions</h3>Cing, need help untuk content</div>--}%
-                                <img src="images/ticbox/collaterals/New_Banner_ticbox_2.2.png"/>
-                                %{--style="height: 300px; width: auto;"/>--}%
-                            </article>
-
-                            <article>
-                                <div class=info><h3>Watch Demo</h3>..demo here..</div>
-                                <img src=http://csscience.com/responsiveslidercss3/CliffsByBjzaba.png />
-                            </article>
-
-                            <article>
-                                <div class=info><h3>etc</h3>..anything here..</div>
-                                <img src=http://csscience.com/responsiveslidercss3/HillFortByBjzaba.png />
-                            </article>
-
-                        </div> <!-- .inner -->
-
-                    </div> <!-- #overflow -->
-
-                </div> <!-- #slides -->
-
-
-            <!-- Controls and Active Slide Display -->
-
-                <div id=controls>
-
-                    <label for=slide1></label>
-                    <label for=slide2></label>
-                    <label for=slide3></label>
-                    <label for=slide4></label>
-                    <label for=slide5></label>
-
-                </div> <!-- #controls -->
-
-                <div id=active>
-
-                    <label for=slide1>Create Survey</label>
-                    <label for=slide2>Solutions</label>
-                    <label for=slide3>Join Respondent</label>
-                    <label for=slide4>Watch Demo</label>
-                    <label for=slide5>etc</label>
-
-                </div> <!-- #active -->
-
-            </article> <!-- #slider -->
-
-            <div class="landing-bar col">
-                <div style="background-color: #b9d234;">
-                    <h1>It's Free</h1>
-                    <span>Sign me up</span>
-                    <ul class="sign-up-icons">
-                        <oauth:connect provider="facebook"><li class="fb"></li></oauth:connect>
-                        <oauth:connect provider="twitter"><li class="tw"> </li></oauth:connect>
-                        <oauth:connect provider="google"><li class="gg"> </li></oauth:connect>
-                    </ul>
-                </div>
-                <div class="center" style="background-color: #96b11a;">
-                    <a href="${request.contextPath}/auth/registerSurveyor" style="color: #ffffff;">
-                        <h1>Go Pro!</h1>
-                        <span>More perks</span><br>
-                        <span>Unlimited Surveys</span>
-                    </a>
-                </div>
-                <div style="background-color: #617800;">
-                    <table>
-                        <tr>
-                            <td>
-                                <a href="${request.contextPath}/auth/registerRespondent" style="color: #ffffff;">
-                                    Be a respondent<br>
-                                    Be rewarded
-                                </a>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div> <!-- #teaser-container -->
-
-    %{--
-        <div class="landing-container line">
-
-            <div class="landing-main col">
-
-                <div class="landing-menu navbar">
-                    <div class="landing-menu-btn-left col pull-left"></div>
-                    <ul class="nav">
-                        <li class="link" href="${request.contextPath}/survey/">Create Survey</li>
-                        <li class="link" href="${request.contextPath}/respondent/">Join Respondent</li>
-                        <li>Solutions</li>
-                        <li>Watch Demo</li>
-                    </ul>
-                    <div class="landing-menu-btn-right col pull-right"></div>
-                </div>
-
-            </div>
-
-
-        </div>
-        --}%
-
-        <div class="module" style="float: left;">
-            %{--<div class="span5">--}%
                 <div class="row">
-                    <div class="span6">
-                        <h4 id="aboutUs">
-                            <a href="#" rel="tooltip" title="Find everything about us!">About Us</a>
-                        </h4>
-                        <p>
-                            Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-                        </p>
-                        <p>
-                            <a class="btn" href="#">View details »</a>
-                        </p>
-                    </div>
-                    <div class="two-cols">
-                        <h4>
-                            How It Works
-                        </h4>
-                        <p>
-                            Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-                        </p>
-                        <p>
-                            <a class="btn" href="#">View details »</a>
-                        </p>
+                    <div class="col-xs-12">
+                        <!-- Carousel.start ================================================== -->
+                        <div id="carousel-ticbox" class="carousel slide" data-ride="carousel">
+                            <!-- Indicators -->
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel-ticbox" data-slide-to="0" class="active"></li>
+                                <li data-target="#carousel-ticbox" data-slide-to="1"></li>
+                                <li data-target="#carousel-ticbox" data-slide-to="2"></li>
+                            </ol>
+
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <img src="images/ticbox/collaterals/New_Banner_ticbox_3.png" alt="Ticbox Coming Soon" class="img-responsive">
+                                    <div class="carousel-caption">
+                                        <p>Note: add note here.</p>
+                                        <p><g:link controller="auth" action="login">Sign up today</g:link></p>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <img src="images/ticbox/collaterals/New_Banner_ticbox_1.2.png" alt="Surveyor" class="img-responsive">
+                                    <div class="carousel-caption">
+                                        <p>Note: add note here.</p>
+                                        <p><g:link>Read more</g:link></p>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <img src="images/ticbox/collaterals/New_Banner_ticbox_2.2.png" alt="Respondent" class="img-responsive">
+                                    <div class="carousel-caption">
+                                        <p>Note: add note here.</p>
+                                        <p><g:link>Read more</g:link></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Controls -->
+                            <a class="left carousel-control" href="#carousel-ticbox" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                            </a>
+                            <a class="right carousel-control" href="#carousel-ticbox" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                            </a>
+                        </div>
+                        <!-- Carousel.end ================================================== -->
                     </div>
                 </div>
-                <div class="row">
-                    <div class="two-cols">
-                        <h4>
-                            Resources
-                        </h4>
-                        <p>
-                            Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-                        </p>
-                        <p>
-                            <a class="btn" href="#">View details »</a>
-                        </p>
+
+                <div class="row" style="margin-top: 5px">
+                    <div class="col-md-12">
+                        <div class="module">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>
+                                            <a id="aboutUs" href="#" data-toggle="tooltip" title="Find everything about us!" style="color: black">About Us</a>
+                                        </h4>
+                                        <p>
+                                            Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+                                        </p>
+                                        <p>
+                                            <a class="btn btn-default" href="#">View details »</a>
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>
+                                            How It Works
+                                        </h4>
+                                        <p>
+                                            Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+                                        </p>
+                                        <p>
+                                            <a class="btn btn-default" href="#">View details »</a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>
+                                            Resources
+                                        </h4>
+                                        <p>
+                                            Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+                                        </p>
+                                        <p>
+                                            <a class="btn btn-default" href="#">View details »</a>
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>
+                                            Blog
+                                        </h4>
+                                        <p>
+                                            Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+                                        </p>
+                                        <p>
+                                            <a class="btn btn-default" href="#">View details »</a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h4>
+                                            Latest News
+                                        </h4>
+                                        <h5>11.05.13</h5>
+                                        <p>
+                                            Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+                                        </p>
+                                        <p>
+                                            <a class="btn btn-default" href="#">View details »</a>
+                                        </p>
+                                        <h5>10.05.13</h5>
+                                        <p>
+                                            Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+                                        </p>
+                                        <p>
+                                            <a class="btn btn-default" href="#">View details »</a>
+                                        </p>
+                                    </div>
+                                </div>
+                        </div>
                     </div>
-                    <div class="two-cols">
-                        <h4>
-                            Blog
-                        </h4>
-                        <p>
-                            Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-                        </p>
-                        <p>
-                            <a class="btn" href="#">View details »</a>
-                        </p>
-                    </div>
+
                 </div>
-            %{--</div>--}%
-            %{--<div class="span4">--}%
-            <div class="row">
-                <div class="single-col">
-                    <h4>
-                        Latest News
-                    </h4>
-                    <h5>11.05.13</h5>
-                    <p>
-                        Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-                    </p>
-                    <p>
-                        <a class="btn" href="#">View details »</a>
-                    </p>
-                    <h5>10.05.13</h5>
-                    <p>
-                        Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-                    </p>
-                    <p>
-                        <a class="btn" href="#">View details »</a>
-                    </p>
-                </div>
-            </div>
-            %{--</div>--}%
-        </div>
 
 
-    <script type="text/javascript">
-        $('#aboutUs').tooltip({
-            selector: "a[rel=tooltip]"
-        });
-    </script>
+
+                <script type="text/javascript">
+                    $('#aboutUs').tooltip({'placement': 'right','content':'html'});
+                </script>
     </body>
 </html>

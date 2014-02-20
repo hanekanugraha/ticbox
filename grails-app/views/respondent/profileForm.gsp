@@ -31,6 +31,12 @@
             display: table;
             margin: auto;
             padding-top: 10px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .qq-upload-button {
+            margin: auto;
         }
 
         .qq-upload-button, .qq-upload-button input[type="file"] {
@@ -100,22 +106,22 @@
 
         <div style="padding: 20px; background-color: #eeeeed; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;" >
 
-            <div class="control-group">
-                <label class="control-label">Username</label>
-                <div class="controls">
-                    <g:textField name="username" value="${respondent.username}" disabled="disabled"/>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="username">Username</label>
+                <div class="col-sm-8">
+                    <g:textField class="form-control" name="username" value="${respondent.username}" disabled="disabled"/>
                 </div>
             </div>
-            <div class="control-group">
-                <label class="control-label">E-Mail</label>
-                <div class="controls">
-                    <g:textField name="email" value="${respondent.email}"/>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="email">E-Mail</label>
+                <div class="col-sm-8">
+                    <g:textField class="form-control" name="email" value="${respondent.email}"/>
                 </div>
             </div>
-            <div class="control-group">
-                <label class="control-label">Password</label>
-                <div class="controls">
-                    <a href="#change-password-modal" role="button" class="btn btn-green-city-small btn-light-oak" data-toggle="modal">Change</a>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Password</label>
+                <div class="col-sm-8">
+                    <a href="#change-password-modal" role="button" class="btn btn-sm btn-light-oak" data-toggle="modal">Change</a>
                 </div>
             </div>
 
@@ -123,44 +129,44 @@
 
             <!-- dynamic fields -->
             <g:each in="${profileItems}" var="profileItem">
-                <div class="control-group">
-                    <label class="control-label">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
                         ${profileItem.label}
                         <g:if test="${profileItem.unit}">
                             (${profileItem.unit})
                         </g:if>
                     </label>
-                    <div class="controls">
+                    <div class="col-sm-8">
                         <g:if test="${profileItem.type == ticbox.ProfileItem.TYPES.STRING}">
                             <g:if test="${profileItem.row > 1}">
-                                <g:textArea name="${profileItem.code}" rows="${profileItem.row}" cols="30" maxlength="${profileItem.max}" placeholder="${profileItem.placeHolder}">${respondentDetail?.profileItems[profileItem.code]}</g:textArea>
+                                <g:textArea name="${profileItem.code}" class="form-control" rows="${profileItem.row}" cols="30" maxlength="${profileItem.max}" placeholder="${profileItem.placeHolder}">${respondentDetail?.profileItems[profileItem.code]}</g:textArea>
                             </g:if>
                             <g:else>
-                                <input name="${profileItem.code}" type="text" class="" maxlength="${profileItem.max}" placeholder="${profileItem.placeHolder}" value="${respondentDetail?.profileItems[profileItem.code]}"/>
+                                <input name="${profileItem.code}" type="text" class="form-control" maxlength="${profileItem.max}" placeholder="${profileItem.placeHolder}" value="${respondentDetail?.profileItems[profileItem.code]}"/>
                             </g:else>
                         </g:if>
                         <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.DATE}">
-                            <input name="${profileItem.code}" type="text" class="datePicker" placeholder="${message([code: 'app.date.format.input', default: 'dd/MM/yyyy'])}" value="${g.formatDate(format: g.message(code: 'app.date.format.input', default: 'dd/MM/yyyy'), date: respondentDetail?.profileItems[profileItem.code])}" />
+                            <input name="${profileItem.code}" type="text" class="datePicker form-control" style="width: auto" placeholder="${message([code: 'app.date.format.input', default: 'dd/MM/yyyy'])}" value="${g.formatDate(format: g.message(code: 'app.date.format.input', default: 'dd/MM/yyyy'), date: respondentDetail?.profileItems[profileItem.code])}" />
                         </g:elseif>
                         <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.NUMBER}">
-                            <input name="${profileItem.code}" type="text" placeholder="${profileItem.min && profileItem.max ? "${profileItem.min} - ${profileItem.max}" : ''}" value="${respondentDetail?.profileItems[profileItem.code]}" class="num" data-max="${profileItem.max}" data-min="${profileItem.min}" style="text-align:right">
+                            <input name="${profileItem.code}" type="text" placeholder="${profileItem.min && profileItem.max ? "${profileItem.min} - ${profileItem.max}" : ''}" value="${respondentDetail?.profileItems[profileItem.code]}" class="num form-control" data-max="${profileItem.max}" data-min="${profileItem.min}" style="text-align:right">
                         </g:elseif>
                         <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.LOOKUP}">
-                            <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" value="${respondentDetail?.profileItems[profileItem.code]}"/>
+                            <g:select name="${profileItem.code}" class="form-control" style="width: auto" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" value="${respondentDetail?.profileItems[profileItem.code]}"/>
                         </g:elseif>
                         <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.CHOICE}">
 
                             <g:if test="${profileItem.componentType == ticbox.ProfileItem.COMPONENT_TYPES.CHK_BOX}">
                                 <g:if test="${profileItem.items}">
                                     <g:each in="${profileItem.items}" var="item">
-                                        <label class="checkbox">
+                                        <label class="checkbox" style="font-weight: normal">
                                             <input type="checkbox" name="${profileItem.code}" value="${item}" <g:if test="${respondentDetail?.profileItems[profileItem.code]?.contains(item)}">checked</g:if> /> ${"$item"}
                                         </label>
                                     </g:each>
                                 </g:if>
                                 <g:elseif test="${profileItem.lookupFrom}">
                                     <g:each in="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" var="item">
-                                        <label class="checkbox">
+                                        <label class="checkbox" style="font-weight: normal">
                                             <input type="checkbox" name="${profileItem.code}" value="${item.key}" <g:if test="${respondentDetail?.profileItems[profileItem.code]?.contains(item.key)}">checked</g:if> /> ${"$item.value"}
                                         </label>
                                     </g:each>
@@ -170,18 +176,18 @@
                             <g:elseif test="${profileItem.componentType == ticbox.ProfileItem.COMPONENT_TYPES.SELECT}">
                                 <g:if test="${profileItem.items}">
                                     <g:if test="${profileItem.multiple}">
-                                        <g:select name="${profileItem.code}" from="${profileItem.items}"  multiple="true"  value="${respondentDetail?.profileItems[profileItem.code]?.toList()}" />
+                                        <g:select class="form-control" style="width: auto" name="${profileItem.code}" from="${profileItem.items}"  multiple="true"  value="${respondentDetail?.profileItems[profileItem.code]?.toList()}" />
                                     </g:if>
                                     <g:else> %{--this is stupid!!!!--}%
-                                        <g:select name="${profileItem.code}" from="${profileItem.items}" value="${respondentDetail?.profileItems[profileItem.code]}" />
+                                        <g:select class="form-control" style="width: auto" name="${profileItem.code}" from="${profileItem.items}" value="${respondentDetail?.profileItems[profileItem.code]}" />
                                     </g:else>
                                 </g:if>
                                 <g:elseif test="${profileItem.lookupFrom}">
                                     <g:if test="${profileItem.multiple}">
-                                        <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" multiple="true" value="${respondentDetail?.profileItems[profileItem.code]?.toList()}"/>
+                                        <g:select class="form-control" style="width: auto" name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" multiple="true" value="${respondentDetail?.profileItems[profileItem.code]?.toList()}"/>
                                     </g:if>
                                     <g:else> %{--this is stupid!!!!--}%
-                                        <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" value="${respondentDetail?.profileItems[profileItem.code]}"/>
+                                        <g:select class="form-control" style="width: auto" name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" value="${respondentDetail?.profileItems[profileItem.code]}"/>
                                     </g:else>
                                 </g:elseif>
                             </g:elseif>
@@ -189,14 +195,14 @@
                             <g:elseif test="${profileItem.componentType == ticbox.ProfileItem.COMPONENT_TYPES.RADIO}">
                                 <g:if test="${profileItem.items}">
                                     <g:each in="${profileItem.items}" var="item">
-                                        <label class="radio">
+                                        <label class="radio" style="font-weight: normal">
                                             <input type="radio" name="${profileItem.code}" value="${item}" <g:if test="${item.equals(respondentDetail?.profileItems[profileItem.code])}">checked</g:if> /> ${"$item"}
                                         </label>
                                     </g:each>
                                 </g:if>
                                 <g:elseif test="${profileItem.lookupFrom}">
                                     <g:each in="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" var="item">
-                                        <label class="radio">
+                                        <label class="radio" style="font-weight: normal">
                                             <input type="radio" name="${profileItem.code}" value="${item.key}" <g:if test="${item.key.equals(respondentDetail?.profileItems[profileItem.code])}">checked</g:if> /> ${"$item.value"}
                                         </label>
                                     </g:each>
@@ -211,51 +217,45 @@
         </div>
 
         <!-- action buttons -->
-        <div class="control-group" style="padding: 20px 0 0; ">
-            <div class="">
-                <g:submitButton name="submit" value="${g.message(code:'app.submit.label')}" class="btn btn-green-city-large btngreen btn-large"/>
-            </div>
-        </div>
+        <g:submitButton name="submit" value="${g.message(code:'app.submit.label')}" class="btn btn-lg btn-green" style="margin: 15px 0"/>
 
     </g:form>
 </div>
 
 <!-- Change password modal -->
-<div id="change-password-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Change Password</h3>
-    </div>
-    <div class="modal-body container-fluid">
-        <div class="row-fluid">
-            <div class="span5">
-                <label class="control-label">Old Password</label>
+<div id="change-password-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="myModalLabel" class="modal-title" >Change Password</span>
             </div>
-            <div class="span5">
-                <g:hiddenField name="id" value="${respondent.id}"/>
-                <g:passwordField name="oldPassword" />
+            <div class="modal-body form-horizontal">
+                <div class="form-group">
+                    <label class="col-xs-4 control-label">Old Password</label>
+                    <div class="col-xs-7">
+                        <g:hiddenField name="id" value="${respondent.id}"/>
+                        <g:passwordField class="form-control" name="oldPassword" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-4 control-label">New Password</label>
+                    <div class="col-xs-7">
+                        <g:passwordField class="form-control" name="newPassword" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-4 control-label">Confirm Password</label>
+                    <div class="col-xs-7">
+                        <g:passwordField class="form-control" name="confirmPassword" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default btn-light-oak" data-dismiss="modal" aria-hidden="true">Close</button>
+                <button id="change-password-button" class="btn btn-default btn-green">Save changes</button>
             </div>
         </div>
-        <div class="row-fluid">
-            <div class="span5">
-                <label class="control-label">New Password</label>
-            </div>
-            <div class="span5">
-                <g:passwordField name="newPassword" />
-            </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span5">
-                <label class="control-label">Confirm Password</label>
-            </div>
-            <div class="span5">
-                <g:passwordField name="confirmPassword" />
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-green-city-small btn-light-oak" data-dismiss="modal" aria-hidden="true">Close</button>
-        <button id="change-password-button" class="btn btn-green-city-small btngreen">Save changes</button>
     </div>
 </div>
 

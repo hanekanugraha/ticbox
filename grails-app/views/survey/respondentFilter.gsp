@@ -17,9 +17,9 @@
             border-color: #7F9B09;
         }
 
-        #filterForm .control-group {
-            margin-bottom: 10px;
-        }
+        /*#filterForm .control-group {*/
+            /*margin-bottom: 10px;*/
+        /*}*/
 
         #filterForm .profile-item-container {
             /*-webkit-box-shadow: 0 6px 5px -5px #a0a0a0*//*#7F9B09*//*;*/
@@ -36,9 +36,14 @@
             padding: 10px 0 5px 0;
         }
 
-        #filterForm.form-horizontal .controls {
-            margin-right: 25px;
+        /*#filterForm.form-horizontal .controls {*/
+            /*margin-right: 25px;*/
+        /*}*/
+
+        .prettycheckbox label {
+            font-weight: normal;
         }
+
     </style>
 </head>
 
@@ -53,37 +58,44 @@
         </div>
 
         <div class="module-content">
-            <div class="line ">
-                <div class="col col-centered enableTooltip" style="margin-bottom: 10px">
-                    <div id="freeSurvey" class="span2" style="text-align: center">
-                        <label class="img-radio" for="freeSurveyChk">
+            <div class="row" style="margin-top: 10px; padding: 0 20%; text-align: center">
+                <div class="col-xs-6 enableTooltip" id="freeSurvey" style="margin-bottom: 10px;">
+                    %{--<div id="freeSurvey" style="text-align: center">--}%
+                        <label class="img-radio" for="freeSurveyChk" style="max-width: 100%">
                             <input name="surveyType" data-toggle="tooltip" data-placement="bottom" type="radio"
                                    class="surveyType" id="freeSurveyChk"
                                    data-label="<g:message code="survey.type.free.label"/>" value="${Survey.SURVEY_TYPE.FREE}">
-                            <img src="../images/ticbox/free_survey_140.png" class="img-circle">
+                            <img src="../images/ticbox/free_survey_140.png" class="img-circle img-responsive">
+                            <div>
+                                <span class="img-label"><g:message code="survey.type.free.label"/></span>
+                                <i class="glyphicon glyphicon-question-sign" style="text-align: left" data-toggle="tooltip" title="
+                                    Write surveys with various question types such as single or multiple choices, star rating, scale rating and free text.
+                                    Upload images into any Q or A or link a youtube video. Once published, this survey will be accessible
+                                    by anyone from our reliable communities.
+                                    For a more focused respondents, please use Easy Survey."
+                                   id='freeSurveyInfo'></i>
+                            </div>
                         </label>
-                        <span class="img-label"><g:message code="survey.type.free.label"/></span>
-                        <i class="icon-question-sign" data-toggle="tooltip" title="
-                            Write surveys with various question types such as single or multiple choices, star rating, scale rating and free text.
-                            Upload images into any Q or A or link a youtube video. Once published, this survey will be accessible
-                            by anyone from our reliable communities.
-                            For a more focused respondents, please use Easy Survey."
-                           id='freeSurveyInfo'></i>
-                    </div>
-                    <div id="easySurvey" class="span2" style="text-align: center">
-                        <label class="img-radio" for="easySurveyChk">
+
+                    %{--</div>--}%
+                </div>
+                <div class="col-xs-6 enableTooltip" id="easySurvey" style="margin-bottom: 10px;">
+                    %{--<div id="easySurvey" style="text-align: center">--}%
+                        <label class="img-radio" for="easySurveyChk" style="max-width: 100%">
                             <input name="surveyType" data-toggle="tooltip" data-placement="bottom" type="radio"
                                class="surveyType" id="easySurveyChk"
                                data-label="<g:message code="survey.type.easy.label"/>" value="${Survey.SURVEY_TYPE.EASY}">
-                            <img src="../images/ticbox/easy_survey_140.png" class="img-circle">
-                        </label>
-                        <span class="img-label"><g:message code="survey.type.easy.label"/></span>
-                        <i class="icon-question-sign" data-toggle="tooltip" title="
+                            <img src="../images/ticbox/easy_survey_140.png" class="img-circle img-responsive">
+                            <div>
+                                <span class="img-label"><g:message code="survey.type.easy.label"/></span>
+                                <i class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="
                             Have a survey where you need a specific, targeted audience to respond?
                             You can do this just easily by using our various choices of filter.
                             Once published, your survey will be accessible only by respondents suitable with your target market."
-                           id='easySurveyInfo'></i>
-                    </div>
+                                   id='easySurveyInfo'></i>
+                            </div>
+                        </label>
+                    %{--</div>--}%
                 </div>
             </div>
         </div>
@@ -97,73 +109,64 @@
 
             </form>
 
-            <form id="filterAddForm" class="form-horizontal">
-                <div class="control-group">
-                    <label class="control-label" for="respondentFilterComponents">Add Filter</label>
+            <form id="filterAddForm" class="form-inline" style="text-align: center !important">
+                <div class="form-group" style="margin: 10px 0 15px 0">
+                    <label class="" for="respondentFilterComponents">Add Filter</label>
 
-                    <div class="controls">
-                        <select id="respondentFilterComponents">
-                            <g:each in="${profileItems}" var="profileItem">
-                                <option value="${profileItem.code}">${profileItem.label}</option>
-                            </g:each>
-                        </select>
+                    <select id="respondentFilterComponents" class="form-control" style="display: inline; width: auto">
+                        <g:each in="${profileItems}" var="profileItem">
+                            <option value="${profileItem.code}">${profileItem.label}</option>
+                        </g:each>
+                    </select>
 
-                        <button id="addFilterBtn" class="btn" type="button">
-                            <i class="icon-plus"></i>
-                        </button>
-
-                    </div>
+                    <button id="addFilterBtn" class="btn btn-default" type="button" >
+                        <i class="glyphicon glyphicon-plus"></i>
+                    </button>
                 </div>
             </form>
         </div>
 
-        <div class="line line-centered rowLine10">
-
-            %{--<button class="btn-ticbox link" href="${request.contextPath}/survey/" type="button">--}%
-            <button class="btn btn-green-city-small btn-light-oak link" href="${request.contextPath}/survey/" type="button">
+        <div id="buttonBarHeader" class="module-header"></div>
+        <div id="buttonBarContent" class="module-content">
+            <button class="btn btn-sm btn-light-oak link" href="${request.contextPath}/survey/" type="button" style="margin: 3px 0">
                 <g:message code="label.button.back" default="Back"/>
             </button>
-
-            <button id="submitFilterBtn" class="btn btn-green-city-small btngreen" type="button">
+            <button id="submitFilterBtn" class="btn btn-sm btn-green" type="button" style="margin: 3px 0">
                 <g:message code="label.button.save" default="Save"/>
             </button>
-
-            <button class="btn btn-green-city-small btn-blue-trust link"
-                    href="${request.contextPath}/survey/surveyGenerator" type="button">
+            <button class="btn btn-sm btn-blue-trust link" href="${request.contextPath}/survey/surveyGenerator" style="margin: 3px 0">
                 <g:message code="label.button.next" default="Next"/>
             </button>
-
         </div>
 
         <form id="filterTemplates" class="form-horizontal" style="display: none">
             <g:each in="${profileItems}" var="profileItem">
-                <div class="profile-item-container control-group" code="${profileItem.code}" type="${profileItem.type}"
-                     label="${profileItem.label}" style="position: relative">
-                    <i class="remove-filter icon-remove clickable" style="position: absolute; top: 5px; right: 7px;"></i>
-                    <label class="control-label" for="${profileItem.code}">${profileItem.label}</label>
+                <div class="profile-item-container form-group" code="${profileItem.code}" type="${profileItem.type}" label="${profileItem.label}" style="position: relative">
+                    <i class="remove-filter glyphicon glyphicon-remove clickable" style="position: absolute; top: 5px; right: 7px;"></i>
+                    <label class="col-sm-2 control-label" for="${profileItem.code}">${profileItem.label}</label>
 
-                    <div class="controls">
+                    <div class="col-sm-9 form-inline" style="font-weight: normal">
                         <g:if test="${profileItem.type == ticbox.ProfileItem.TYPES.STRING}">
                             <g:if test="${profileItem.row > 1}">
-                                <textArea class="filter-value" id="${profileItem.code}" name="${profileItem.code}"
+                                <textArea class="filter-value form-control" id="${profileItem.code}" name="${profileItem.code}"
                                           rows="${profileItem.row}" cols="30" maxlength="${profileItem.max}"
                                           placeholder="${profileItem.placeHolder}"
                                           style="width: 85%; resize: none"></textArea>
                             </g:if>
                             <g:else>
-                                <input class="filter-value" id="${profileItem.code}" name="${profileItem.code}" type="text"
+                                <input class="filter-value form-control" id="${profileItem.code}" name="${profileItem.code}" type="text"
                                        class="" max="${profileItem.max}" placeholder="${profileItem.placeHolder}"/>
                             </g:else>
                         </g:if>
                         <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.DATE}">
-                            <input id="${profileItem.code}" name="${profileItem.code}" type="text"
-                                   class="filter-value-from datePicker" placeholder="from"> - <input type="text"
-                                                                                                     class="filter-value-to datePicker"
+                            <input id="${profileItem.code}" name="${profileItem.code}" type="text" style="width: auto"
+                                   class="filter-value-from datePicker form-control" placeholder="from"> - <input type="text" style="width: auto"
+                                                                                                     class="filter-value-to datePicker form-control"
                                                                                                      placeholder="to">
                         </g:elseif>
                         <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.NUMBER}">
-                            <input class="filter-value-from" id="${profileItem.code}" name="${profileItem.code}" type="text"
-                                   placeholder="from"> - <input class="filter-value-to" type="text"
+                            <input class="filter-value-from form-control" id="${profileItem.code}" name="${profileItem.code}" type="text" style="width: auto"
+                                   placeholder="from"> - <input class="filter-value-to form-control" type="text" style="width: auto"
                                                                 placeholder="to"> ${profileItem.unit}
                         </g:elseif>
                         <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.LOOKUP}">
@@ -171,19 +174,18 @@
                             %{--<label class="checkbox">
                                         <input id="${profileItem.code}_${item.key}" class="check-item" type="checkbox" name="${profileItem.code}" value="${item.key}" label="${item.value}"> ${item.value}
                                     </label>--}%
-                                <input id="${profileItem.code}_${item.key}" class="check-item prettyChk" type="checkbox"
+                                <input id="${profileItem.code}_${item.key}" class="check-item prettyChk form-control" type="checkbox"
                                        data-label="${item.value}" name="${profileItem.code}" value="${item.key}"
                                        label="${item.value}">
                             </g:each>
                         </g:elseif>
                         <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.CHOICE}">
-
                             <g:if test="${profileItem.items}">
                                 <g:each in="${profileItem.items}" var="item">
                                 %{--<label class="checkbox">
                                             <input id="${profileItem.code}_${item}" class="check-item" type="checkbox" name="${profileItem.code}" value="${item}"> ${item}
                                         </label>--}%
-                                    <input id="${profileItem.code}_${item}" class="check-item prettyChk" type="checkbox"
+                                    <input id="${profileItem.code}_${item}" class="check-item prettyChk form-control" type="checkbox"
                                            data-label="${item}" name="${profileItem.code}" value="${item}">
                                 </g:each>
                             </g:if>
@@ -192,7 +194,7 @@
                                 %{--<label class="checkbox">
                                             <input id="${profileItem.code}_${item.key}" class="check-item" type="checkbox" name="${profileItem.code}" value="${item.key}" label="${item.value}"> ${item.value}
                                         </label>--}%
-                                    <input id="${profileItem.code}_${item.key}" class="check-item prettyChk" type="checkbox"
+                                    <input id="${profileItem.code}_${item.key}" class="check-item prettyChk form-control" type="checkbox"
                                            data-label="${item.value}" name="${profileItem.code}" value="${item.key}"
                                            label="${item.value}">
                                 </g:each>
@@ -207,8 +209,8 @@
     </div>
 
     <script type="text/javascript">
-        $('#freeSurveyInfo').tooltip({'placement': 'right','content':'html'});
-        $('#easySurveyInfo').tooltip({'placement': 'right','content':'html'});
+        $('#freeSurveyInfo').tooltip({'placement': 'right','content':'text', 'container':'body'});
+        $('#easySurveyInfo').tooltip({'placement': 'right','content':'text', 'container':'body'});
 
         jQuery(function () {
 
@@ -346,7 +348,7 @@
         });
 
         function populateFilterComponent(filterComponentCode, filter) {
-            var template = jQuery('#filterTemplates').find('.control-group[code="' + filterComponentCode + '"]');
+            var template = jQuery('#filterTemplates').find('.form-group[code="' + filterComponentCode + '"]');
 
             if (template.length > 0) {
                 jQuery('#filterForm').append(template);
