@@ -744,7 +744,7 @@
         </div>
     </div>
 
-    <div id="answerTemplate-starRating" class="answerTemplate line rowLine2" type="${Survey.QUESTION_TYPE.STAR_RATING}">
+    <div id="answerTemplate-starRating" class="answerTemplate row" type="${Survey.QUESTION_TYPE.STAR_RATING}">
         <div class="line stars col col-xs-11 col-xs-offset-1">
             <div class="col star clickable"></div>
             <div class="col star clickable"></div>
