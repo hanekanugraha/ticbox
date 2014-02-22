@@ -11,56 +11,53 @@
     </div>
 
     <div class="module-content">
-        <g:form name="registerForm" action="register">
+        <g:form name="registerForm" action="register" class="form-horizontal" role="form">
             <g:hiddenField name="userType" value="respondent"/>
             <g:hiddenField name="referrer" value="${ref}"/>
             <fieldset>
-                <div class="row-fluid">
-                    <div class="span3"><label><g:message code="app.username.label"/></label></div>
-                    <div class="span9"><g:textField name="username"/></div>
+                <div class="form-group">
+                    <label for="username" class="col-sm-3 control-label"><g:message code="app.username.label"/></label>
+                    <div class="col-sm-4"><g:textField name="username" class="form-control"/></div>
                 </div>
-                <div class="row-fluid">
-                    <div class="span3"><label><g:message code="app.email.label"/></label></div>
-                    <div class="span9"><g:textField name="email"/></div>
+                <div class="form-group">
+                    <label for="email" class="col-sm-3 control-label"><g:message code="app.email.label"/></label>
+                    <div class="col-sm-4"><g:textField name="email" class="form-control"/></div>
                 </div>
-                <div class="row-fluid">
-                    <div class="span3"><label><g:message code="app.password.label"/></label></div>
-                    <div class="span9"><g:passwordField name="password"/></div>
+                <div class="form-group">
+                    <label for="password" class="col-sm-3 control-label"><g:message code="app.password.label"/></label>
+                    <div class="col-sm-4"><g:passwordField name="password" class="form-control"/></div>
                 </div>
-                <div class="row-fluid">
-                    <div class="span3"><label><g:message code="app.passwordconfirm.label"/></label></div>
-                    <div class="span9"><g:passwordField name="passwordconfirm"/></div>
+                <div class="form-group">
+                    <label for="passwordconfirm" class="col-sm-3 control-label"><g:message code="app.passwordconfirm.label"/></label>
+                    <div class="col-sm-4"><g:passwordField name="passwordconfirm" class="form-control"/></div>
                 </div>
                 <g:each in="${profileItemList}" var="profileItem">
-                    <div class="row-fluid control-group">
-                        <div class="span3">
-                            <label class="control-label">
-                                ${profileItem.label}
-                                <g:if test="${profileItem.unit}">
-                                    (${profileItem.unit})
-                                </g:if>
-                            </label>
-                        </div>
-                        <div class="span9 controls">
+                    <div class="form-group">
+                        <label for="${profileItem.code}" class="col-sm-3 control-label">
+                            ${profileItem.label}
+                            <g:if test="${profileItem.unit}">
+                                (${profileItem.unit})
+                            </g:if>
+                        </label>
+                        <div class="col-sm-8">
                             <g:if test="${profileItem.type == ticbox.ProfileItem.TYPES.STRING}">
                                 <g:if test="${profileItem.row > 1}">
-                                    <g:textArea name="${profileItem.code}" rows="${profileItem.row}" cols="30" maxlength="${profileItem.max}" placeholder="${profileItem.placeHolder}"></g:textArea>
+                                    <g:textArea name="${profileItem.code}" rows="${profileItem.row}" cols="30" maxlength="${profileItem.max}" placeholder="${profileItem.placeHolder}" class="form-control"></g:textArea>
                                 </g:if>
                                 <g:else>
-                                    <input name="${profileItem.code}" type="text" class="" maxlength="${profileItem.max}" placeholder="${profileItem.placeHolder}"/>
+                                    <input name="${profileItem.code}" type="text" maxlength="${profileItem.max}" placeholder="${profileItem.placeHolder}" class="form-control" style="min-width: 40%; width: auto;"/>
                                 </g:else>
                             </g:if>
                             <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.DATE}">
-                                <input name="${profileItem.code}" type="text" class="datePicker" placeholder="${message([code: 'app.date.format.input', default: 'dd/MM/yyyy'])}">
+                                <input name="${profileItem.code}" type="text" class="datePicker form-control" placeholder="${message([code: 'app.date.format.input', default: 'dd/MM/yyyy'])}" style="min-width: 40%; width: auto;">
                             </g:elseif>
                             <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.NUMBER}">
-                                <input name="${profileItem.code}" type="text" class="num" data-max="${profileItem.max}" data-min="${profileItem.min}" placeholder="${profileItem.min && profileItem.max ? "${profileItem.min} - ${profileItem.max}" : ''}" style="text-align:right">
+                                <input name="${profileItem.code}" type="text" class="num form-control" data-max="${profileItem.max}" data-min="${profileItem.min}" placeholder="${profileItem.min && profileItem.max ? "${profileItem.min} - ${profileItem.max}" : ''}" style="text-align:right;min-width: 40%; width: auto;">
                             </g:elseif>
                             <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.LOOKUP}">
-                                <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value"/>
+                                <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;"/>
                             </g:elseif>
                             <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.CHOICE}">
-
                                 <g:if test="${profileItem.componentType == ticbox.ProfileItem.COMPONENT_TYPES.CHK_BOX}">
                                     <g:if test="${profileItem.items}">
                                         <g:each in="${profileItem.items}" var="item">
@@ -77,26 +74,24 @@
                                         </g:each>
                                     </g:elseif>
                                 </g:if>
-
                                 <g:elseif test="${profileItem.componentType == ticbox.ProfileItem.COMPONENT_TYPES.SELECT}">
                                     <g:if test="${profileItem.items}">
                                         <g:if test="${profileItem.multiple}">
-                                            <g:select name="${profileItem.code}" from="${profileItem.items}"  multiple="true"/>
+                                            <g:select name="${profileItem.code}" from="${profileItem.items}"  multiple="true" class="form-control" style="min-width: 40%; width: auto;"/>
                                         </g:if>
                                         <g:else> %{--this is stupid!!!!--}%
-                                            <g:select name="${profileItem.code}" from="${profileItem.items}"/>
+                                            <g:select name="${profileItem.code}" from="${profileItem.items}" class="form-control" style="min-width: 40%; width: auto;"/>
                                         </g:else>
                                     </g:if>
                                     <g:elseif test="${profileItem.lookupFrom}">
                                         <g:if test="${profileItem.multiple}">
-                                            <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" multiple="true"/>
+                                            <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" multiple="true" class="form-control" style="min-width: 40%; width: auto;"/>
                                         </g:if>
                                         <g:else> %{--this is stupid!!!!--}%
-                                            <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value"/>
+                                            <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;"/>
                                         </g:else>
                                     </g:elseif>
                                 </g:elseif>
-
                                 <g:elseif test="${profileItem.componentType == ticbox.ProfileItem.COMPONENT_TYPES.RADIO}">
                                     <g:if test="${profileItem.items}">
                                         <g:each in="${profileItem.items}" var="item">
@@ -119,14 +114,14 @@
                 </g:each>
                 <br/>
 
-                <div class="row-fluid">
-                    <div class="span12"><p class="muted"><g:message code="app.register.disclaimer.message" args="${[request.getContextPath()]}"/></p></div>
+                <div class="form-group">
+                    <div class="col-sm-8 col-sm-offset-3"><p class="muted"><g:message code="app.register.disclaimer.message" args="${[request.getContextPath()]}"/></p></div>
                 </div>
-                <div class="row-fluid">
-                    <div class="span12">
+                <div class="form-group">
+                    <div class="col-sm-8 col-sm-offset-3">
                         <p>
-                            <g:submitButton name="submit" value="${g.message(code:'app.register.label')}" class="btn btn-green-city-large btngreen"/>
-                            <button type="reset" name="reset" class="btn btn-green-city-large btn-light-oak">${g.message(code:'app.reset.label')}</button>
+                            <g:submitButton name="submit" value="${g.message(code:'app.register.label')}" class="btn btn-lg btn-green"/>
+                            <button type="reset" name="reset" class="btn btn-lg btn-light-oak">${g.message(code:'app.reset.label')}</button>
                         </p>
                     </div>
 

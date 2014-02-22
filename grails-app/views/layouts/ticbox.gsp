@@ -75,7 +75,7 @@
                         %{--INBOX--}%
                             <li class="dropdown">
                                 <g:link class="dropdown-toggle" data-toggle="dropdown" style="padding-right: 5px">
-                                    <span id="notif" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title="Inbox">
+                                    <span id="inbox" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title="Inbox">
                                     </span>
                                     <g:if test="">
                                         <span class="badge">
@@ -205,6 +205,8 @@
 
         <script type="text/javascript">
             $('#log-out-btn').tooltip({'placement': 'bottom','content':'html'});
+            $('#notif').tooltip({'placement': 'bottom','content':'html'});
+            $('#inbox').tooltip({'placement': 'bottom','content':'html'});
 
             jQuery(function(){
 

@@ -15,124 +15,10 @@
     <link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
 
     <link rel="stylesheet" href="${resource(dir: 'frameworks/jquery-ui-1.10.2/css/smoothness', file: 'jquery-ui-1.10.2.custom.css')}" type="text/css">
-
     <link rel="stylesheet" href="${resource(dir: 'frameworks/bootstrap/css', file: 'bootstrap.min.css')}" type="text/css">
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'custom.css')}" type="text/css">
 
     <style type="text/css">
-
-    body {
-        padding-top: 65px;
-    }
-
-    .line {
-        display: block;
-    }
-
-    .col {
-        display: inline-block;
-        min-height: 1px;
-    }
-
-    @media (max-width: 980px) {
-        /* Enable use of floated navbar text */
-        .navbar-text.pull-right {
-            float: none;
-            padding-left: 5px;
-            padding-right: 5px;
-        }
-    }
-
-    .navbar-inverse .navbar-text, .navbar-inverse .navbar-link {
-        color: #ffffff;
-        padding-top: 10px;
-    }
-
-    .navbar-inverse .navbar-inner {
-        background-color: #BAD33C;
-        background-image: -moz-linear-gradient(top, #BAD33C, #7F9B09);
-        background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#BAD33C), to(#7F9B09));
-        background-image: -webkit-linear-gradient(top, #BAD33C, #7F9B09);
-        background-image: -o-linear-gradient(top, #BAD33C, #7F9B09);
-        background-image: linear-gradient(to bottom, #BAD33C, #7F9B09);
-        border: 0;
-        -webkit-box-shadow: 0px 0px 10px #000000;
-        box-shadow: 0px 0px 10px #000000;
-        -moz-box-shadow: 0px 0px 10px #000000;
-        color: #ffffff;
-    }
-
-    .navbar-inverse .nav > li > a  {
-        color: #ffffff;
-        height: 30px;
-        padding-top: 20px;
-        padding-bottom: 0;
-    }
-
-    .navbar .nav > .active > a,
-    .navbar .nav > .active > a:hover,
-    .navbar .nav > .active > a:focus,
-    .navbar .nav > li > a:hover {
-        background: transparent;
-        -webkit-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
-        -moz-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
-        box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
-    }
-
-    #main-container {
-        width: 1024px;
-        margin: 0 auto;
-    }
-
-    #menuNavPanel {
-        width: 220px;
-        margin-left: 0;
-    }
-
-    #mainContentPanel {
-        width: 800px;
-        margin-left: 10px;
-    }
-
-    [class*="span"] {
-        float: left;
-    }
-
-    .error {
-        color: tomato;
-    }
-
-    .center {
-        text-align: center;
-        vertical-align: middle;
-    }
-
-    .icon-fb, .icon-tw, .icon-li, .icon-gg {
-        display:inline-block;
-        *display:inline; /*IE7*/
-        *zoom:1; /*IE7*/
-        background: transparent url("../images/ticbox/FB_TW_LI_Gl_logo.png") no-repeat;
-        width: 23px;
-        height: 25px;
-        padding: 0;
-        margin: 0;
-    }
-
-    .icon-fb{
-        background-position: 0 0;
-    }
-
-    .icon-tw{
-        background-position: -24px 0;
-    }
-
-    .icon-li{
-        background-position: -48px 0;
-    }
-
-    .icon-gg{
-        background-position: -72px 0;
-    }
-
 
     </style>
 
@@ -148,62 +34,179 @@
 </head>
 <body>
 
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container-fluid">
-            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="brand" href="${request.contextPath}/">
-                <img src="${g.resource(dir: 'images/ticbox', file: 'TicBoxLogo.png')}" width="200" height="100">
-            </a>
-            <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">
-                    Logged in as ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)} &nbsp; <g:link controller="auth" action="signOut">Logout</g:link>
-                </p>
-                <ul class="nav">
-                    <li class="index"><g:link action="index"><i class="icon-user icon-white"></i> Users</g:link></li>
-                    <li class="Redemptions"><g:link action="redemptions"><i class="icon-download icon-white"></i> Redemptions </g:link></li>
+    <%--
+        NAVBAR
+    --%>
+    <div class="navbar navbar-inverse navbar-fixed-top navbar-ticbox-green">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand ticbox-logo" href="${request.contextPath}/"></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav tick">
+                    <li>
+                        <a href="${request.contextPath}/">Home</a>
+                    </li>
+                    <li><a>How It Works</a></li>
+                    <li><a>Pricing</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#">About Us</a>
+                            </li>
+                            <li>
+                                <a href="#">Blog</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <shiro:notAuthenticated>
+                        <li><g:link controller="auth" action="login">Register | Login</g:link></li>
+                    </shiro:notAuthenticated>
+                    <shiro:authenticated>
+                    %{--INBOX--}%
+                        <li class="dropdown">
+                            <g:link class="dropdown-toggle" data-toggle="dropdown" style="padding-right: 5px">
+                                <span id="inbox" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title="Inbox">
+                                </span>
+                                <g:if test="">
+                                    <span class="badge">
+                                        %{--lookup--}%
+                                    </span>
+                                </g:if>
+                            </g:link>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <li role="presentation">
+                                    <b style="padding: 0 20px">Inbox</b>
+                                </li>
+                                <li role="presentation" class="divider" style="margin: 3px 0 5px"></li>
+                                <g:if test="">
+                                    <g:each in="" var="inbox">
+                                        <li role="presentation">
+                                            <g:link controller="" title="${inbox.title}" params="[code: inbox.code]">${inbox.title}</g:link>
+                                        </li>
+                                    </g:each>
+                                </g:if>
+                                <g:else>
+                                    <li role="presentation">
+                                        <a style="color:grey;">You have ... Inbox</a>
+                                    </li>
+                                </g:else>
+                            </ul>
+                        </li>
+                    %{--NOTIFICATION--}%
+                        <li class="dropdown">
+                            <g:link class="dropdown-toggle" data-toggle="dropdown" style="padding-right: 5px">
+                                <span id="notif" class="glyphicon glyphicon-bullhorn" data-toggle="tooltip" title="Notification"></span>
+                                <g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
+                                    <span class="badge">
+                                        ${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()}
+                                    </span>
+                                </g:if>
+                            </g:link>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <li role="presentation">
+                                    <b style="padding: 0 20px">Notifications</b>
+                                </li>
+                                <li role="presentation" class="divider" style="margin: 3px 0 5px"></li>
+                                <g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
+                                    <g:each in="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false)}" var="notification">
+                                        <li role="presentation">
+                                            <g:link controller="userNotification" title="${notification.title}" params="[code: notification.code]">${notification.title}</g:link>
+                                        </li>
+                                    </g:each>
+                                </g:if>
+                                <g:else>
+                                    <li role="presentation">
+                                        <a style="color:grey;">You have ${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()} Notifications</a>
+                                    </li>
+                                </g:else>
+                            </ul>
+                        </li>
+                    %{--ACCOUNT SPECIFIC--}%
+                        <li class="dropdown">
+                            <g:link controller="respondent" action="index" class="dropdown-toggle" data-toggle="dropdown">
+                                ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)}
+                                <b class="caret"></b>
+                            </g:link>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <li role="presentation">
+                                    <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
+                                </li>
+                                <li role="presentation" class="divider"></li>
+                                <li role="presentation">
+                                    <a>Help</a>
+                                </li>
+                                <li role="presentation">
+                                    <a>Report a Problem</a>
+                                </li>
+                            </ul>
+                        </li>
+                    %{--LOGOUT BUTTON--}%
+                        <li>
+                            <g:link controller="auth" action="signOut">
+                                <span id="log-out-btn" class="glyphicon glyphicon-log-out" data-toggle="tooltip"
+                                      title="Logout">
+                                </span>
+                            </g:link>
+                        </li>
+                    </shiro:authenticated>
                 </ul>
             </div>
         </div>
     </div>
-</div>
+    <%--
+        NAVBAR.END
+    --%>
 
-<div id="main-container" class="container-fluid">
+    <div class="container" id="page-outer">
+        <div id="wrapper-effect" class="wrapper grey">
 
-    <g:if test="${flash.error}">
-        <div class="alert alert-error" style="display: block">${flash.error}</div>
-    </g:if>
-    <g:if test="${flash.message}">
-        <div class="alert alert-success" style="display: block">${flash.message}</div>
-    </g:if>
+            <g:if test="${flash.error}">
+                <div class="alert alert-error" style="display: block">${flash.error}</div>
+            </g:if>
+            <g:if test="${flash.message}">
+                <div class="alert alert-success" style="display: block">${flash.message}</div>
+            </g:if>
 
-    <g:layoutBody/>
-</div>
+            <g:layoutBody/>
+        </div>
+    </div>
 
-<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
+    <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 
-<r:layoutResources />
+    <r:layoutResources />
 
-<script type="text/javascript">
+    <script type="text/javascript">
+        $('#log-out-btn').tooltip({'placement': 'bottom','content':'html'});
+        $('#notif').tooltip({'placement': 'bottom','content':'html'});
+        $('#inbox').tooltip({'placement': 'bottom','content':'html'});
 
-    jQuery(function(){
+        jQuery(function(){
 
-        jQuery(".nav > li.${actionName}").addClass('active');
+            jQuery(".nav > li.${actionName}").addClass('active');
 
-        jQuery('#menuNavPanel').append(jQuery('#menuNavPanelContent'));
+            jQuery('#menuNavPanel').append(jQuery('#menuNavPanelContent'));
 
-        jQuery('.datePicker').datepicker({
-            showAnim : 'slideDown',
-            format : '<g:message code="app.date.format.js" default="dd/mm/yy"/>'
+            jQuery('.datePicker').datepicker({
+                showAnim : 'slideDown',
+                format : '<g:message code="app.date.format.js" default="dd/mm/yy"/>'
+            });
+
         });
 
-    });
-
-</script>
+    </script>
 
 </body>
 </html>

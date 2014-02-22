@@ -34,7 +34,7 @@
                         <div class="col-md-6" id="security-logo">
                             <ul>
                                 <li>
-                                    <img src="${request.contextPath}/images/ticbox/SecurityLogoForMockUp.jpg" class="img-responsive">
+                                    %{--<img src="${request.contextPath}/images/ticbox/SecurityLogoForMockUp.jpg" class="img-responsive">--}%
                                 </li>
                             </ul>
                         </div>

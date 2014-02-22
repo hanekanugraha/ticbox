@@ -245,7 +245,7 @@
                         %{--INBOX--}%
                         <li class="dropdown">
                             <g:link class="dropdown-toggle" data-toggle="dropdown" style="padding-right: 5px">
-                                <span id="notif" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title="Inbox">
+                                <span id="inbox" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title="Inbox">
                                 </span>
                                 <g:if test="">
                                     <span class="badge">
@@ -305,26 +305,9 @@
                         <li class="dropdown">
                             <g:link controller="respondent" action="index" class="dropdown-toggle" data-toggle="dropdown">
                                 ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)}
-                            %{--<g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">--}%
-                            %{--<span class="badge" style="background-color: darkgoldenrod; vertical-align: top; font-size: 10px">--}%
-                            %{--${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()}--}%
-                            %{--</span>--}%
-                            %{--</g:if>--}%
                                 <b class="caret"></b>
                             </g:link>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                %{--<g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">--}%
-                                %{--<g:each in="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false)}" var="notification">--}%
-                                %{--<li role="presentation">--}%
-                                %{--<g:link controller="userNotification" title="${notification.title}" params="[code: notification.code]">${notification.title}</g:link>--}%
-                                %{--</li>--}%
-                                %{--</g:each>--}%
-                                %{--</g:if>--}%
-                                %{--<g:else>--}%
-                                %{--<li role="presentation">--}%
-                                %{--<a style="color:grey; font-size: 10px">You have ${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()} Notifications</a>--}%
-                                %{--</li>--}%
-                                %{--</g:else>--}%
                                 <li role="presentation">
                                     <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
                                 </li>
@@ -486,6 +469,9 @@
     var surveySummary;
 
     jQuery(function(){
+        $('#log-out-btn').tooltip({'placement': 'bottom','content':'html'});
+        $('#notif').tooltip({'placement': 'bottom','content':'html'});
+        $('#inbox').tooltip({'placement': 'bottom','content':'html'});
 
         jQuery('input.prettyChk').prettyCheckable();
 

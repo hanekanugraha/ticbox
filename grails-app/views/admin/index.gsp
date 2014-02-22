@@ -8,91 +8,115 @@
     </style>
 </head>
 <body>
-    <h3>Users</h3>
-
-    <div>
-        <a id="addNewUser" href="#add-new-user-modal" role="button" class="btn btn-success" data-toggle="modal"><i class="icon-plus icon-white"></i> New User</a>
-        <a id="delUsers" href="#delete-users-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Delete</a>
+    <div class="module">
+        <div id="adminHeader" class="module-header">
+            <div class="title">Users</div>
+        </div>
+        <div id="userList" class="module-content">
+            <div class="row" style="margin-bottom:10px">
+                <div class="col-sm-12">
+                    <a id="addNewUser" href="#add-new-user-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> New User</a>
+                    <a id="delUsers" href="#delete-users-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Delete</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table id="userTable" class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role(s)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <g:each in="${users}" var="user" status="status">
+                                <tr>
+                                    <td><input type="checkbox" name="userIds" value="${user.id}" ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)?.equals(user.username) ? 'disabled="disabled"' : ''} /></td>
+                                    <td>${user.username}</td>
+                                    <td>${user.email}</td>
+                                    <td>${user.roles*.name}</td>
+                                </tr>
+                            </g:each>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <br />
-
-    <table id="userTable" class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th></th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Role(s)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <g:each in="${users}" var="user" status="status">
-                <tr>
-                    <td><input type="checkbox" name="userIds" value="${user.id}" ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)?.equals(user.username) ? 'disabled="disabled"' : ''} /></td>
-                    <td>${user.username}</td>
-                    <td>${user.email}</td>
-                    <td>${user.roles*.name}</td>
-                </tr>
-            </g:each>
-        </tbody>
-    </table>
 
 <!-- Add new user modal -->
-<div id="add-new-user-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="addNewUserLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="addNewUserLabel">Add New User</h3>
-    </div>
-    <div class="modal-body container-fluid">
-        <g:form name="addNewUserForm" controller="admin" action="createUser">
-            <div class="row-fluid">
-                <div class="span3"><label><g:message code="app.userType.label"/></label></div>
-                <div class="span9"><g:select name="userType" from="${userTypes}"/></div>
+<div id="add-new-user-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addNewUserLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="addNewUserLabel" class="modal-title">
+                    Add New User
+                </span>
             </div>
-            <div class="row-fluid">
-                <div class="span3"><label><g:message code="app.username.label"/></label></div>
-                <div class="span9"><g:textField name="username"/></div>
+            <div class="modal-body" style="overflow: auto">
+                <g:form name="addNewUserForm" controller="admin" action="createUser" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="userType" class="col-xs-4 control-label"><g:message code="app.userType.label"/></label>
+                        <div class="col-xs-8"><g:select name="userType" from="${userTypes}" class="form-control" style="min-width: 40%; width: auto;"/></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="username" class="col-xs-4 control-label"><g:message code="app.username.label"/></label>
+                        <div class="col-xs-8"><g:textField name="username" class="form-control" style="min-width: 70%; width: auto;"/></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-xs-4 control-label"><g:message code="app.email.label"/></label>
+                        <div class="col-xs-8"><g:textField name="email" class="form-control" style="min-width: 70%; width: auto;"/></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="col-xs-4 control-label"><g:message code="app.password.label"/></label>
+                        <div class="col-xs-8"><g:passwordField name="password" class="form-control" style="min-width: 70%; width: auto;"/></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordconfirm" class="col-xs-4 control-label"><g:message code="app.passwordconfirm.label"/></label>
+                        <div class="col-xs-8"><g:passwordField name="passwordconfirm" class="form-control" style="min-width: 70%; width: auto;"/></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="company" class="col-xs-4 control-label"><g:message code="app.company.label"/></label>
+                        <div class="col-xs-8"><g:textField name="company" class="form-control" style="min-width: 70%; width: auto;"/></div>
+                    </div>
+                </g:form>
             </div>
-            <div class="row-fluid">
-                <div class="span3"><label><g:message code="app.email.label"/></label></div>
-                <div class="span9"><g:textField name="email"/></div>
+            <div class="modal-footer">
+                <button id="createNewUser" class="btn btn-green" data-loading-text="Processing..">Create New User</button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
             </div>
-            <div class="row-fluid">
-                <div class="span3"><label><g:message code="app.password.label"/></label></div>
-                <div class="span9"><g:passwordField name="password"/></div>
-            </div>
-            <div class="row-fluid">
-                <div class="span3"><label><g:message code="app.passwordconfirm.label"/></label></div>
-                <div class="span9"><g:passwordField name="passwordconfirm"/></div>
-            </div>
-            <div class="row-fluid">
-                <div class="span3"><label><g:message code="app.company.label"/></label></div>
-                <div class="span9"><g:textField name="company"/></div>
-            </div>
-        </g:form>
-    </div>
-    <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-        <button id="createNewUser" class="btn btn-primary" data-loading-text="Processing..">Create New User</button>
+        </div>
     </div>
 </div>
 
 <!-- Delete users modal -->
-<div id="delete-users-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="deleteUsersLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="deleteUsersLabel">Delete Users</h3>
-    </div>
-    <div class="modal-body">
-        <g:form name="deleteUsersForm" controller="admin" action="deleteUsers">
-            <input type="hidden" id="delUserIds" name="delUserIds" value=""/>
-            <p>Are you sure to delete these users?</p>
-        </g:form>
-    </div>
-    <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-        <button id="deleteUsers" class="btn btn-danger" data-loading-text="Processing..">Delete</button>
+<div id="delete-users-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteUsersLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="deleteUsersLabel" class="modal-title">
+                    Delete Users
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="deleteUsersForm" controller="admin" action="deleteUsers" role="form">
+                    <input type="hidden" id="delUserIds" name="delUserIds" value=""/>
+                    <div class="well">
+                        <p><b>Are you sure to delete these users?</b></p>
+                        There is no rollback for deleted users. Please make sure you know what you are doing.
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button id="deleteUsers" class="btn btn-danger" data-loading-text="Processing..">Delete</button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            </div>
+        </div>
     </div>
 </div>
 
