@@ -326,7 +326,9 @@
 
                 }
 
-                jQuery('.questionTextContainer div', container).text(item.questionStr);
+//                jQuery('.questionTextContainer div', container).text(item.questionStr);
+                jQuery('.question-text', container).html("<span style='font-size:24px;color:grey;'>"+item.questionStr.charAt(0)+"</span>" + item.questionStr.substring(1));
+
 
             });
 
@@ -385,9 +387,9 @@
             <div id="questionTemplate" class="surveyItemContainer">
                 <div class="row">
                     <div class="seqNumberContainer questionNumber col-xs-1"></div>
-
                     <div class="questionTextContainer col-xs-11">
-                        <div rows="3"></div>
+                        <span class="question-text"></span>
+                        %{--<div rows="3"></div>--}%
                     </div>
                 </div>
             </div>
@@ -413,7 +415,7 @@
             </div>
 
             <div id="answerTemplate-scale" class="row answerTemplate" type="${Survey.QUESTION_TYPE.SCALE_RATING}">
-                <div class="col col-xs-11 col-xs-offset-1" style="height:auto; overflow-x: auto; max-width: 720px;">
+                <div class="col col-xs-11 col-xs-offset-1" style="height:auto; overflow-x: auto;">
                     <table class="table scale-table">
                         <thead>
                         <tr class="scale-head">

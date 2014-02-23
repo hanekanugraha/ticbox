@@ -33,21 +33,21 @@
             /*color: #97b11a;*/
         /*}*/
 
-        .chart-container {
-            margin-left: 50px;
-        }
+        /*.chart-container {*/
+            /*margin-left: 50px;*/
+        /*}*/
 
-        #displaySurveyResultModal {
+        /*#displaySurveyResultModal {*/
             /*top: 5%;*/
-        }
+        /*}*/
 
-        #displaySurveyResultModal .modal-body {
+        /*#displaySurveyResultModal .modal-body {*/
             /*max-height: 450px;*/
-        }
+        /*}*/
 
-        #displaySurveyResultModal .modal-footer {
+        /*#displaySurveyResultModal .modal-footer {*/
             /*padding: 5px 15px 5px;*/
-        }
+        /*}*/
 
         #menuNavPanelContent {
             width: 100%;
@@ -252,15 +252,18 @@
 </div>
 
 <div class="templates">
+
     <div id="questionItemTemplate" class="surveyItemContainer">
         <div class="row">
-            <div class="seqNumberContainer questionNumber"> </div>
-            <div class="questionTextContainer" style="max-width: 90%">
+            <div class="seqNumberContainer questionNumber col-xs-1"> </div>
+            <div class="questionTextContainer col-xs-11" style="max-width: 90%">
                 <span class="question-text"></span>
             </div>
         </div>
         <div class="chart-container row" style="padding-top: 10px;">
-            <div class="chart" style="height:300px;width:500px;"></div>
+            <div class="col col-xs-11 col-xs-offset-1">
+                <div class="chart" style="height:300px;width:500px;"></div>
+            </div>
         </div>
 
     </div>
@@ -308,7 +311,7 @@
 //        jQuery('.questionTextContainer > span.question-text', cont).html(questionStr);
         jQuery('.questionTextContainer > span.question-text', cont).html("<span style='font-size:24px;color:grey;'>"+questionStr.charAt(0)+"</span>" + questionStr.substring(1));
 
-        jQuery('.chart-container .chart', cont).attr('id', 'chart_'+seq);
+        jQuery('.chart-container .col .chart', cont).attr('id', 'chart_'+seq);
 
         return cont;
     }
@@ -329,7 +332,7 @@
 
                 questionItemsContainer.append(container);
 
-                var target = jQuery('.chart-container .chart:first', container);
+                var target = jQuery('.chart-container .col .chart:first', container);
 
                 switch(answerDetails.type){
 
@@ -367,7 +370,7 @@
 
                             var targetCopy = target.clone();
 
-                            jQuery('.chart-container', container).append(targetCopy);
+                            jQuery('.chart-container .col', container).append(targetCopy);
 
                             constructPieChart(targetCopy, data, 'Scale Rating (' + rowLabel + ')');
                         });
