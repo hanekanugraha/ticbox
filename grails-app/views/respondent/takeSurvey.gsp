@@ -403,10 +403,11 @@
             <div id="answerTemplate-choice" class="row answerTemplate" type="${Survey.QUESTION_TYPE.CHOICE}">
                 <div class="choice-items col-xs-11 col-xs-offset-1">
                     <div class="choice-item row">
-                        <div class="col col-xs-1" style="text-align: right">
+                        %{--<div class="col col-xs-1" style="text-align: right">--}%
+                        <div class="col col-xs-12">
                             <input class="item-check">
-                        </div>
-                        <div class="col col-xs-11" style="padding-left: 0">
+                        %{--</div>--}%
+                        %{--<div class="col col-xs-11" style="padding-left: 0">--}%
                             <label class="item-label" style="font-weight: normal; margin-bottom: 0">
                             </label>
                         </div>
@@ -415,25 +416,25 @@
             </div>
 
             <div id="answerTemplate-scale" class="row answerTemplate" type="${Survey.QUESTION_TYPE.SCALE_RATING}">
-                <div class="col col-xs-11 col-xs-offset-1" style="height:auto; overflow-x: auto;">
-                    <table class="table scale-table">
+                <div class="col col-xs-11 col-xs-offset-1" style="width:auto; overflow-x: auto;">
+                    <table class="table scale-table table-bordered table-responsive">
                         <thead>
-                        <tr class="scale-head">
-                            <th style="text-align: center; width: 100px;">&nbsp;</th>
-                            <th class="rating-label" style="text-align: center">
-                                <div style="width: 100px; padding: 1px;"></div>
-                            </th>
-                        </tr>
+                            <tr class="scale-head">
+                                <th style="text-align: center;"></th>
+                                <th class="rating-label" style="text-align: center">
+                                    <div></div>
+                                </th>
+                            </tr>
                         </thead>
                         <tbody>
                         <tr class="scale-row">
-                            <td style="max-width: 100px;">
-                                <div class="row-label" style="width: 100px; padding: 1px;"></div>
+                            <td>
+                                <div class="row-label"></div>
                             </td>
                             <td class="rating-weight" style="text-align: center">
                                 <input type="radio" name="rd-1"/>
                             </td>
-                            <td></td>
+                            %{--<td></td>--}%
                         </tr>
                         </tbody>
                     </table>

@@ -19,22 +19,17 @@
         %{--<link rel="stylesheet" href="${resource(dir: 'frameworks/bootstrap/css', file: 'bootstrap-responsive.css')}" type="text/css">--}%
 
         %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'app.css')}" type="text/css">--}%
-        %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'ticbox.css')}" type="text/css">--}%
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'custom.css')}" type="text/css">
 
         <g:layoutHead/>
-        <style type="text/css">
-            .first-p {
-                margin-top: 22px;
-            }
-        </style>
     </head>
 
     <body>
         <%--
             NAVBAR
         --%>
-        <div class="navbar navbar-inverse navbar-fixed-top navbar-ticbox-green">
+        %{--navbar-fixed-top navbar-inverse navbar-ticbox-green--}%
+        <div class="navbar navbar-default">
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -48,7 +43,7 @@
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav tick">
+                    <ul class="nav navbar-nav">
                         <li>
                             <a href="${request.contextPath}/">Home</a>
                         </li>
@@ -69,12 +64,13 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <shiro:notAuthenticated>
+                            %{--<li><g:link controller="auth" action="login" style="padding-right: 0">Register | Login</g:link></li>--}%
                             <li><g:link controller="auth" action="login">Register | Login</g:link></li>
                         </shiro:notAuthenticated>
                         <shiro:authenticated>
                         %{--INBOX--}%
                             <li class="dropdown">
-                                <g:link class="dropdown-toggle" data-toggle="dropdown" style="padding-right: 5px">
+                                <g:link class="dropdown-toggle" data-toggle="dropdown">
                                     <span id="inbox" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title="Inbox">
                                     </span>
                                     <g:if test="">
@@ -104,7 +100,7 @@
                             </li>
                         %{--NOTIFICATION--}%
                             <li class="dropdown">
-                                <g:link class="dropdown-toggle" data-toggle="dropdown" style="padding-right: 5px">
+                                <g:link class="dropdown-toggle" data-toggle="dropdown">
                                     <span id="notif" class="glyphicon glyphicon-bullhorn" data-toggle="tooltip" title="Notification"></span>
                                     <g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
                                         <span class="badge">
@@ -134,13 +130,15 @@
                         %{--ACCOUNT SPECIFIC--}%
                             <li class="dropdown">
                                 <g:link controller="respondent" action="index" class="dropdown-toggle" data-toggle="dropdown">
-                                    ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)}
-                                %{--<g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">--}%
-                                %{--<span class="badge" style="background-color: darkgoldenrod; vertical-align: top; font-size: 10px">--}%
-                                %{--${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()}--}%
-                                %{--</span>--}%
-                                %{--</g:if>--}%
-                                    <b class="caret"></b>
+                                    <span>
+                                        ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)}
+                                        %{--<g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">--}%
+                                        %{--<span class="badge" style="background-color: darkgoldenrod; vertical-align: top; font-size: 10px">--}%
+                                        %{--${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()}--}%
+                                        %{--</span>--}%
+                                        %{--</g:if>--}%
+                                        <b class="caret"></b>
+                                    </span>
                                 </g:link>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                     %{--<g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">--}%
@@ -179,13 +177,16 @@
                     </ul>
                 </div>
             </div>
+            <div class="container">
+                <div style="border-bottom: solid 1px #E7E7E7;"></div>
+            </div>
         </div>
         <%--
             NAVBAR.END
         --%>
 
         <div class="container" id="page-outer">
-            <div id="wrapper-effect" class="wrapper grey">
+            <div id="wrapper-effect" class="" style="padding-top: 0">
                 <script type="text/javascript" src="${resource(dir: 'frameworks/jquery-ui-1.10.2/js', file: 'jquery-1.9.1.js')}"></script>
                 <script type="text/javascript" src="${resource(dir: 'frameworks/jquery-ui-1.10.2/js', file: 'jquery-ui-1.10.2.custom.js')}"></script>
                 <script type="text/javascript" src="${resource(dir: 'frameworks/bootstrap/js', file: 'bootstrap.min.js')}"></script>

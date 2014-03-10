@@ -29,57 +29,10 @@
 
 </head>
 <body>
-
-%{--<div id="doc" class="">--}%
-
-    %{--<div class="navbar navbar-inverse navbar-fixed-top">--}%
-        %{--<div class="navbar-inner">--}%
-            %{--<div class="container-fluid">--}%
-                %{----}%
-                %{--<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">--}%
-                    %{--<span class="icon-bar"></span>--}%
-                    %{--<span class="icon-bar"></span>--}%
-                    %{--<span class="icon-bar"></span>--}%
-                %{--</button>--}%
-                %{----}%
-                %{--<a class="brand" href="${request.contextPath}/">--}%
-                    %{--<img src="${g.resource(dir: 'images/ticbox', file: 'TicBoxLogo.png')}" width="200" height="100">--}%
-                %{--</a>--}%
-                %{--<div class="nav-collapse collapse">--}%
-
-                    %{--<ul class="nav">--}%
-                        %{--<li class="index"><g:link action="index">Survey List</g:link></li>--}%
-                        %{--<li class="profileForm"><g:link action="profileForm">Profile</g:link></li>--}%
-                        %{--<li class="inviteFriends"><g:link action="inviteFriends">Invite Friends</g:link></li>--}%
-                        %{--<li class="redeemGold"><g:link action="redeemGold">Redeem GOLD Points</g:link></li>--}%
-                        %{--<li class="goldHistory"><g:link action="goldHistory">GOLD Points History</g:link></li>--}%
-                    %{--</ul>--}%
-
-                    %{--<ul class="nav nav-pills pull-right">--}%
-                        %{--TODO should be providing different state when there is notification available--}%
-                        %{--<li class="dropdown">--}%
-                            %{--<a class="dropdown-toggle logged-in" data-toggle="dropdown" href="#">Logged in as ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)}</a>--}%
-                            %{--<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">--}%
-                                %{--<li role="presentation"><g:link controller="auth" action="signOut">Logout</g:link></li>--}%
-                                %{--<li role="presentation" class="divider"></li>--}%
-                                %{--<g:each in="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false)}" var="notification">--}%
-                                    %{--<li role="presentation">--}%
-                                        %{--<g:link controller="userNotification" title="${notification.title}" params="[code: notification.code]">${notification.title}</g:link>--}%
-                                    %{--</li>--}%
-                                %{--</g:each>--}%
-                            %{--</ul>--}%
-                        %{--</li>--}%
-                    %{--</ul>--}%
-
-                %{--</div>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-    %{--</div>--}%
-
     <%--
         NAVBAR
     --%>
-    <div class="navbar navbar-inverse navbar-fixed-top navbar-ticbox-green">
+    <div class="navbar navbar-default">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -93,7 +46,7 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav tick">
+                <ul class="nav navbar-nav">
                     <li>
                         <a href="${request.contextPath}/">Home</a>
                     </li>
@@ -119,7 +72,7 @@
                     <shiro:authenticated>
                         %{--INBOX--}%
                         <li class="dropdown">
-                            <g:link class="dropdown-toggle" data-toggle="dropdown" style="padding-right: 5px">
+                            <g:link class="dropdown-toggle" data-toggle="dropdown">
                                 <span id="inbox" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title="Inbox">
                                 </span>
                                 <g:if test="">
@@ -149,7 +102,7 @@
                         </li>
                         %{--NOTIFICATION--}%
                         <li class="dropdown">
-                            <g:link class="dropdown-toggle" data-toggle="dropdown" style="padding-right: 5px">
+                            <g:link class="dropdown-toggle" data-toggle="dropdown">
                                 <span id="notif" class="glyphicon glyphicon-bullhorn" data-toggle="tooltip" title="Notification"></span>
                                 <g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
                                     <span class="badge">
@@ -179,13 +132,15 @@
                         %{--ACCOUNT SPECIFIC--}%
                         <li class="dropdown">
                             <g:link controller="respondent" action="index" class="dropdown-toggle" data-toggle="dropdown">
-                                ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)}
-                                %{--<g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">--}%
-                                    %{--<span class="badge" style="background-color: darkgoldenrod; vertical-align: top; font-size: 10px">--}%
-                                    %{--${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()}--}%
-                                    %{--</span>--}%
-                                %{--</g:if>--}%
+                                <span>
+                                    ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)}
+                                    %{--<g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">--}%
+                                        %{--<span class="badge" style="background-color: darkgoldenrod; vertical-align: top; font-size: 10px">--}%
+                                        %{--${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()}--}%
+                                        %{--</span>--}%
+                                    %{--</g:if>--}%
                                 <b class="caret"></b>
+                                </span>
                             </g:link>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                 %{--<g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">--}%
@@ -224,10 +179,13 @@
                 </ul>
             </div>
         </div>
+        <div class="container">
+            <div style="border-bottom: solid 1px #E7E7E7;"></div>
+        </div>
     </div>
 
     <div id="page-outer" class="container">
-        <div id="wrapper-effect" class="wrapper grey">
+        <div id="wrapper-effect" class="">
 
             <div class="row">
                 <div id="menuNavPanel" class="col-sm-3" style="margin-bottom: 10px;">
@@ -273,49 +231,6 @@
                         </div>
                     </div>
 
-                    %{--<div id="respondentProfileAccordion" class="module" style="padding-bottom: 0;">--}%
-                        %{--<div class="profileSummary row">--}%
-                            %{--<div class="accountGroup row">--}%
-                                %{--<div class="col-xs-5">--}%
-                                    %{--<g:if test="${respondent.pic}">--}%
-                                        %{--<img id="sidebarRespondentPic" class="img-thumbnail img-responsive" src="${g.createLink(action: 'viewImage', params: [respondentId: respondent.id])}"/>--}%
-                                    %{--</g:if>--}%
-                                    %{--<g:else>--}%
-                                        %{--<img id="sidebarRespondentPic" class="img-thumbnail img-responsive" src="${g.resource(dir: 'images/ticbox', file: 'anonymous.png')}"/>--}%
-                                    %{--</g:else>--}%
-                                %{--</div>--}%
-                                %{--<div class="col-xs-7" style="padding-left: 0;">--}%
-                                    %{--<b class="fullName">${respondent?.username}</b>--}%
-                                    %{--<g:link class="metadata" action="profileForm">View profile page</g:link>--}%
-                                %{--</div>--}%
-                            %{--</div>--}%
-                        %{--</div>--}%
-                        %{--<div class="profileStats">--}%
-                            %{--<div class="row profileStats">--}%
-                                %{--<div class="col-xs-3 stats">--}%
-                                    %{--<div><strong>${respondent?.respondentProfile?.gold}</strong></div>--}%
-                                    %{--<div class="gold"><b>Gold</b></div>--}%
-                                %{--</div>--}%
-                                %{--<div class="col-xs-3 stats leftBordered">--}%
-                                    %{--<div><strong>${respondent?.respondentProfile?.trust}</strong></div>--}%
-                                    %{--<div class="trust"><b>Trust</b></div>--}%
-                                %{--</div>--}%
-                                %{--<div class="col-xs-6 stats leftBordered">--}%
-                                    %{--<div><strong>XX</strong></div>--}%
-                                    %{--<div><b>Survey Joined</b></div>--}%
-                                %{--</div>--}%
-                            %{--</div>--}%
-                        %{--</div>--}%
-                        %{--<div class="profileStats">--}%
-                            %{--<div class="row profileStats">--}%
-                                %{--<div class="col-xs-12 stats">--}%
-                                    %{--<div><strong>XX</strong></div>--}%
-                                    %{--<div><b>Total Survey Joined</b></div>--}%
-                                %{--</div>--}%
-                            %{--</div>--}%
-                        %{--</div>--}%
-                    %{--</div>--}%
-
                     <div id="respondentNavAccordion" class="panel-group">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -355,14 +270,13 @@
                     <div class="module">
                         <g:layoutBody/>
                     </div>
-
                 </div>
             </div>
 
             %{--<footer>
                 &copy; TicBOX 2013
             </footer>--}%
-
+            <g:render template="/layouts/footer"></g:render>
         </div>
     </div>
 %{--</div>--}%

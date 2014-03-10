@@ -171,7 +171,9 @@
                             <td><a href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}">${survey.name}</a></td>
                             <td></td>
                             <td></td>
-                            <td><a class="displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display Result</a></td>
+                            <td class="content-width">
+                                <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display Result</a>
+                            </td>
                         </tr>
                     </g:each>
                 </tbody>

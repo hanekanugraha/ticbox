@@ -548,8 +548,10 @@
         <div class="panel panel-default">
             <div class="panel-heading" style="padding: 20px 15px">
                 <div class="media">
-                    <div id="surveyLogo" class="pull-left clickable survey-logo" data-toggle="modal" href="#chooseLogoModal" style="background: #f5f5f5 url('../images/ticbox/Logo_Placeholder.png') no-repeat center center">
-                        <img class="media-object img-responsive" src="${request.contextPath}/survey/viewLogo?resourceId=${survey[Survey.COMPONENTS.LOGO]}" style="vertical-align: middle">
+                    <div id="surveyLogo" class="pull-left clickable survey-logo" data-toggle="modal" href="#chooseLogoModal">
+                        <img class="media-object img-responsive"
+                             style="background: #f5f5f5 url('../images/ticbox/Logo_Placeholder.png') no-repeat center center; min-height: 148px; min-width: 148px;"
+                             src="${request.contextPath}/survey/viewLogo?resourceId=${survey[Survey.COMPONENTS.LOGO]}" >
                     </div>
                     <div class="media-body">
                         <span style="font-size: 18px;">
@@ -648,7 +650,7 @@
             <div class="seqNumberContainer questionNumber col-xs-1"></div>
             <div class="col-xs-11">
                 <div class="questionTextContainer">
-                    <textarea class="form-control" style="padding: 6px 25px 6px 12px" rows="3" placeholder="${message([code: 'message.type-to-set-question', default: 'Type your question here..'])}" ></textarea>
+                    <textarea class="form-control" style="padding: 6px 12px; word-wrap: break-word" rows="3" placeholder="${message([code: 'message.type-to-set-question', default: 'Type your question here..'])}" ></textarea>
                     <div class="question-action-btn change-question-type-btn" style="position: absolute;right: 10px;top: 8px;"></div>
                 </div>
                 <div class="surveyItemActions" style="float: left; padding: 1px 0 0 5px">
@@ -683,7 +685,7 @@
 
         <div class="choice-items col col-xs-11 col-xs-offset-1">
             <div class="choice-item row" style="margin-bottom: 3px">
-                    <input class="item-check" type="checkbox" checked style="float: left">
+                    <input class="item-check" type="checkbox" checked style="height: 34px">
                     <input class="item-label form-control" type="text" placeholder="${message([code: 'message.type-to-set-label', default: 'Type here to set label..'])}">
                     <div class="col" style="float: left; padding: 1px 0 0 5px">
                         %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
@@ -710,7 +712,7 @@
         <div class="col col-xs-11 col-xs-offset-1">
             <div class="scale-table-container" style="overflow-x: auto;">
                 %{--<div class="seqNumberContainer">&nbsp;</div>--}%
-                <table class="table scale-table table-responsive" style="width: auto">
+                <table class="survey-generator-table table scale-table table-responsive" style="width: auto">
                     <thead>
                         <tr class="scale-head">
                             <th style="text-align: left; width: 100px;">
@@ -731,7 +733,7 @@
                     <tbody>
                         <tr class="scale-row">
                             <td style="max-width: 100px;">
-                                <input type="text" class="row-label input-small form-control" placeholder="Row label.." style="width: 100px;">
+                                <input type="text" class="row-label input-small form-control" placeholder="Row label.." style="width: 100%;">
                             </td>
                             <td class="rating-weight" style="text-align: center">
                                 <input type="radio" name="rd-1">
@@ -787,10 +789,11 @@
         <div class="choice-items col-xs-11 col-xs-offset-1">
             <div class="choice-item row">
                 %{--<label class="checkbox">--}%
-                <div class="col col-xs-1" style="text-align: right">
+                %{--<div class="col col-xs-1" style="text-align: right">--}%
+                <div class="col col-xs-12">
                     <input class="item-check" type="checkbox">
-                </div>
-                <div class="col col-xs-11" style="padding-left: 0">
+                %{--</div>--}%
+                %{--<div class="col col-xs-11" style="padding-left: 0">--}%
                     <span class="item-label" style="font-weight: normal; margin-bottom: 0"></span>
                 </div>
                 %{--</label>--}%
@@ -809,10 +812,11 @@
     <div id="answerPreviewTemplate-singleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">
         <div class="choice-items col-xs-11 col-xs-offset-1">
             <div class="choice-item row">
-                <div class="col col-xs-1" style="text-align: right">
+                %{--<div class="col col-xs-1" style="text-align: right">--}%
+                <div class="col col-xs-12">
                     <input class="item-check" type="radio">
-                </div>
-                <div class="col col-xs-11" style="padding-left: 0">
+                %{--</div>--}%
+                %{--<div class="col col-xs-11" style="padding-left: 0">--}%
                     <span class="item-label" style="font-weight: normal; margin-bottom: 0"></span>
                 </div>
             </div>
@@ -823,14 +827,14 @@
         <div class="col col-xs-11 col-xs-offset-1" style="overflow-x: auto;width: auto">
             <table class="table scale-table table-bordered table-responsive">
                 <thead>
-                <tr class="scale-head">
-                    <th style="text-align: center;"></th>
-                    %{--<th class="rating-label" style="text-align: center"></th>--}%
-                </tr>
+                    <tr class="scale-head">
+                        <th style="text-align: center;"></th>
+                        %{--<th class="rating-label" style="text-align: center"></th>--}%
+                    </tr>
                 </thead>
                 <tbody>
                 <tr class="scale-row">
-                    <td class="row-label" style="max-width: 100px;"> </td>
+                    <td class="row-label"> </td>
                     <td class="rating-weight" style="text-align: center">
                         <input type="radio" name="rd-1">
                     </td>

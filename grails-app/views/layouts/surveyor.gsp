@@ -21,17 +21,6 @@
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'custom.css')}" type="text/css">
 
     <style type="text/css">
-
-        /*
-        body {
-            padding-top: 65px;
-            font-family: helveticaneue-light,tahoma,sans-serif;
-            letter-spacing: 0.1em;
-            color: #5a5a5a;
-            background-color: #f3f3f3;
-
-        }*/
-
         textarea, input[type=text] {
             background-color: #f5f5f5;
         }
@@ -48,66 +37,12 @@
                 padding-right: 5px;
             }
         }
-        /*
-        .navbar-inverse .navbar-text, .navbar-inverse .navbar-link {
-            color: #ffffff;
-            padding-top: 10px;
-        }
-
-        .navbar-inverse .navbar-inner {
-            background-color: #BAD33C;
-            background-image: -moz-linear-gradient(top, #BAD33C, #7F9B09);
-            background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#BAD33C), to(#7F9B09));
-            background-image: -webkit-linear-gradient(top, #BAD33C, #7F9B09);
-            background-image: -o-linear-gradient(top, #BAD33C, #7F9B09);
-            background-image: linear-gradient(to bottom, #BAD33C, #7F9B09);
-            border: 0;
-            -webkit-box-shadow: 0px 0px 10px #000000;
-            box-shadow: 0px 0px 10px #000000;
-            -moz-box-shadow: 0px 0px 10px #000000;
-            color: #ffffff;
-        }
-
-        .navbar-inverse .nav > li > a  {
-            color: #ffffff;
-            height: 30px;
-            padding-top: 20px;
-            padding-bottom: 0;
-        }
-
-        .navbar .nav > .active > a,
-        .navbar .nav > .active > a:hover,
-        .navbar .nav > .active > a:focus,
-        .navbar .nav > li > a:hover {
-            background: transparent;
-            -webkit-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
-            -moz-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
-            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
-        }
-
-        #main-container {
-            width: 1024px !important;
-            min-width: 1024px !important;
-            margin: 0 auto!important;
-            padding: 0 10px !important;
-            background-color: #ffffff;
-        }*/
-
-        #menuNavPanel {
-            /*width: 300px;
-            margin-left: 0;
-            border-right: 1px solid #7F9B09;*/
-        }
 
         #menuNavPanel .module .side-panel {
             width: 100%;
             margin: 15px 0 10px 0;
         }
-        /*
-        #menuNavPanel .module .side-panel .line {
-            padding-left: 5px;
-        }
-        */
+
         #menuNavPanel .module .side-panel .header {
             color: #7F9B09; /*#bad33c;*/
             font-size: x-large;
@@ -115,33 +50,12 @@
         }
 
         #menuNavPanel .module hr{
-        /*
-            height: 5px;
-            border: 0;
-            margin: 0;
-            -webkit-box-shadow: inset 0 6px 5px -5px #a0a0a0;
-            -moz-box-shadow: inset 0 6px 5px -5px #a0a0a0;
-            box-shadow: inset 0 6px 5px -5px #a0a0a0;
-        */
             margin: 0;
         }
-        /*
-        #mainContentPanel {
-            width: 700px;
-            margin: 15px 0 0 10px;
-        }
-        */
 
         .preview-item-even {
             background-color: #ececec;
         }
-
-        table.table th {
-            color: #5a5a5a;
-            /*font-family: calibri, helveticaneue-light,sans-serif;*/
-            font-weight: normal;
-        }
-
     </style>
 
     %{--<link rel="stylesheet" href="${resource(dir: 'frameworks/bootstrap/css', file: 'bootstrap-responsive.css')}" type="text/css">--}%
@@ -156,55 +70,10 @@
 
 </head>
 <body>
-
-%{--<div id="doc">--}%
-
-    %{--<div class="navbar navbar-inverse navbar-fixed-top">--}%
-        %{--<div class="navbar-inner">--}%
-            %{--<div class="container-fluid">--}%
-                %{----}%
-                    %{--<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">--}%
-                        %{--<span class="icon-bar"></span>--}%
-                        %{--<span class="icon-bar"></span>--}%
-                        %{--<span class="icon-bar"></span>--}%
-                    %{--</button>--}%
-                %{----}%
-                %{--<a class="brand" href="${request.contextPath}/">--}%
-                    %{--<img src="${g.resource(dir: 'images/ticbox', file: 'TicBoxLogo.png')}" width="200" height="100">--}%
-                %{--</a>--}%
-                %{--<div class="nav-collapse collapse">--}%
-
-                    %{--<ul class="nav">--}%
-                        %{--<li class="surveyor"><a href="javascript:void(0);">Profile</a></li>--}%
-                        %{--<li class="survey"><a href="${request.contextPath}/survey/index">Survey</a></li>--}%
-                        %{--<li class="details"><a href="javascript:void(0);">Pricing Details</a></li>--}%
-                    %{--</ul>--}%
-
-                    %{--<ul class="nav nav-pills pull-right">--}%
-                        %{--TODO should be providing different state when there is notification available--}%
-                        %{--<li class="dropdown">--}%
-                            %{--<a class="dropdown-toggle" data-toggle="dropdown" href="#">Logged in as ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)}</a>--}%
-                            %{--<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">--}%
-                                %{--<li role="presentation"><g:link controller="auth" action="signOut">Logout</g:link></li>--}%
-                                %{--<li role="presentation" class="divider"></li>--}%
-                                %{--<g:each in="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false)}" var="notification">--}%
-                                    %{--<li role="presentation">--}%
-                                        %{--<g:link controller="userNotification" title="${notification.title}" params="[code: notification.code]">${notification.title}</g:link>--}%
-                                    %{--</li>--}%
-                                %{--</g:each>--}%
-                            %{--</ul>--}%
-                        %{--</li>--}%
-                    %{--</ul>--}%
-
-                %{--</div>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-    %{--</div>--}%
-
     <%--
         NAVBAR
     --%>
-    <div class="navbar navbar-inverse navbar-fixed-top navbar-ticbox-green">
+    <div class="navbar navbar-default">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -218,7 +87,7 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav tick">
+                <ul class="nav navbar-nav">
                     <li>
                         <a href="${request.contextPath}/">Home</a>
                     </li>
@@ -244,7 +113,7 @@
                     <shiro:authenticated>
                         %{--INBOX--}%
                         <li class="dropdown">
-                            <g:link class="dropdown-toggle" data-toggle="dropdown" style="padding-right: 5px">
+                            <g:link class="dropdown-toggle" data-toggle="dropdown">
                                 <span id="inbox" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title="Inbox">
                                 </span>
                                 <g:if test="">
@@ -274,7 +143,7 @@
                         </li>
                         %{--NOTIFICATION--}%
                         <li class="dropdown">
-                            <g:link class="dropdown-toggle" data-toggle="dropdown" style="padding-right: 5px">
+                            <g:link class="dropdown-toggle" data-toggle="dropdown">
                                 <span id="notif" class="glyphicon glyphicon-bullhorn" data-toggle="tooltip" title="Notification"></span>
                                 <g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
                                     <span class="badge">
@@ -304,8 +173,10 @@
                         %{--ACCOUNT SPECIFIC--}%
                         <li class="dropdown">
                             <g:link controller="respondent" action="index" class="dropdown-toggle" data-toggle="dropdown">
-                                ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)}
-                                <b class="caret"></b>
+                                <span>
+                                    ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)}
+                                    <b class="caret"></b>
+                                </span>
                             </g:link>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                 <li role="presentation">
@@ -332,20 +203,23 @@
                 </ul>
             </div>
         </div>
+        <div class="container">
+            <div style="border-bottom: solid 1px #E7E7E7;"></div>
+        </div>
     </div>
 
     <div id="page-outer" class="container">
-        <div id="wrapper-effect" class="wrapper grey">
+        <div id="wrapper-effect" class="">
             <div class="row">
                 <div id="menuNavPanel" class="col-sm-3" style="margin-bottom: 10px;">
 
                     <div id="surveyorProfileAccordion" class="panel-group" style="margin-bottom: 10px;">
                         <div class="panel panel-default">
-                            <div class="panel-heading">
+                            <div class="panel-heading" style="padding-bottom: 7px">
                                 <div class="media">
                                     <div class="col-xs-5" style="padding-left: 0">
-                                        <g:if test="${false}">
-                                            <img id="sidebarPic" class="img-thumbnail img-responsive" src=""/>
+                                        <g:if test="${true}">
+                                            <img id="sidebarPic" class="img-thumbnail img-responsive" src="${g.resource(dir: 'images/ticbox', file: 'pd128x128.jpg')}" style=""/>
                                         </g:if>
                                         <g:else>
                                             <img id="sidebarPic" class="img-thumbnail img-responsive" src="${g.resource(dir: 'images/ticbox', file: 'anonymous.png')}"/>
@@ -364,21 +238,23 @@
                                 <div class="panel-body" style="padding: 0 12px;">
                                     <div class="row profileStats">
                                         <div class="col-xs-3 stats">
-                                            <div><strong>XX</strong></div>
+                                            <div><strong>1</strong></div>
                                             <div>Drafts</div>
                                         </div>
                                         <div class="col-xs-5 stats leftBordered">
-                                            <div><strong>XX</strong></div>
+                                            <div><strong>0</strong></div>
                                             <div style="color: #7F9B09">In Progress</div>
                                         </div>
                                         <div class="col-xs-4 stats leftBordered">
-                                            <div><strong>XX</strong></div>
+                                            <div><strong>15</strong></div>
                                             <div class="trust">Completed</div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="panel-body" style="padding: 0 12px;">
                                     <div class="row profileStats">
-                                        <div class="col-xs-12 stats topBordered">
-                                            <strong style="display: inline">XX</strong>
+                                        <div class="col-xs-12 stats">
+                                            <strong style="display: inline">3,500,000</strong>
                                             <span class="gold" style="margin-left: 5px">Credits Available</span>
                                         </div>
                                     </div>
@@ -393,42 +269,45 @@
                             <div class="panel-heading">
                                 <div class="panel-title">
                                     <a data-toggle="collapse" data-parent="#surveyInfoAccordion" href="#surveyInfoContainer">
-                                        Survey Info
+                                        Survey Info <b class="caret"></b>
                                     </a>
                                 </div>
                             </div>
                             <div id="surveyInfoContainer" class="panel-collapse collapse in">
-                                <div class="panel-body" style="padding-left: 12px;">
-                                    <div class="row">
+                                <div class="panel-body" style="padding-left: 15px;padding-right: 15px;">
+                                    <div class="row" style="line-height: 20px;">
                                         <div class="col-xs-12">
-                                            Name :
-                                            <b style="font-size: 14px; color: black;">${survey?.name}</b>
+                                            <div style="border-bottom: 1px dotted lightgrey; border-top: 1px dotted lightgrey">
+                                                Name : ${survey?.name}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" style="line-height: 20px;">
                                         <div class="col-xs-12">
-                                            Num of Respondents :
-                                            <b style="font-size: 14px; color: black;">XX</b>
+                                            <div style="border-bottom: 1px dotted lightgrey">
+                                                Num of Respondents : 100
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" style="line-height: 20px">
                                         <div class="col-xs-12">
                                             Itinerary Details :
-                                            <ul style="font-size: 12px">
-                                                <li><b style="font-size: 12px; color: black;">XX x $n = $y</b></li>
-                                                <li><b style="font-size: 12px; color: black;">XX x $n = $y</b></li>
-                                            </ul>
+                                            <div style="border-bottom: 1px dotted lightgrey; border-top: 1px dotted lightgrey">
+                                                    <ul style="font-size: 12px; margin-bottom: 0">
+                                                    <li>100 x $0 = $0</li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="panel-body" style="padding-left: 12px;">
-                                    <div class="row">
+                                    <div class="row" style="line-height: 20px">
                                         <div class="col-xs-12">
                                             <form class="form-horizontal" role="form">
                                                 <div class="form-group" style="margin-bottom: 0">
                                                     <label for="total" class="col-sm-2 control-label">Total</label>
                                                     <div class="col-sm-10">
-                                                        <input id="total" class="form-control" type="text" value="$ z" size="15" readonly="true" style="width: auto; background-color: #d4dcb4; margin: 0; border-radius: 20px; font-weight: bold; color: darkgoldenrod">
+                                                        <input id="total" class="form-control" type="text" value="$ 0" readonly="true" style="width: auto; background-color: #d4dcb4; margin: 0; border-radius: 20px; font-weight: bold; color: darkgoldenrod">
                                                     </div>
                                                 </div>
                                             </form>
@@ -448,8 +327,7 @@
                 </div>
             </div>
 
-
-
+            <g:render template="/layouts/footer"></g:render>
                 %{--<div id="mainContentPanel" class="rightPanel">--}%
                     %{--<g:layoutBody/>--}%
                 %{--</div>--}%
