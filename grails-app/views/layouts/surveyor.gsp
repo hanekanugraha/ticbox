@@ -327,7 +327,6 @@
                 </div>
             </div>
 
-            <g:render template="/layouts/footer"></g:render>
                 %{--<div id="mainContentPanel" class="rightPanel">--}%
                     %{--<g:layoutBody/>--}%
                 %{--</div>--}%
@@ -338,6 +337,7 @@
             </footer>--}%
         </div>
     </div>
+    <g:render template="/layouts/footer"></g:render>
 %{--</div>--}%
 
 <r:layoutResources />

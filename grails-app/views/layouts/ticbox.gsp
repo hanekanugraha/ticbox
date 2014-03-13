@@ -199,12 +199,12 @@
                 </g:if>
 
                 <g:layoutBody/>
-
-                <g:render template="/layouts/footer"></g:render>
             </div>
         </div>
+        <g:render template="/layouts/footer"></g:render>
 
-        <script type="text/javascript">
+
+    <script type="text/javascript">
             $('#log-out-btn').tooltip({'placement': 'bottom','content':'html'});
             $('#notif').tooltip({'placement': 'bottom','content':'html'});
             $('#inbox').tooltip({'placement': 'bottom','content':'html'});

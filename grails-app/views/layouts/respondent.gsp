@@ -276,9 +276,9 @@
             %{--<footer>
                 &copy; TicBOX 2013
             </footer>--}%
-            <g:render template="/layouts/footer"></g:render>
         </div>
     </div>
+    <g:render template="/layouts/footer"></g:render>
 %{--</div>--}%
 
     <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
