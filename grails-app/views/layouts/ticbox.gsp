@@ -50,10 +50,13 @@
                         <li><a>How It Works</a></li>
                         <li><a>Pricing</a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Get To Know Us <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="#">About Us</a>
+                                    <a href="#">Our Team</a>
+                                </li>
+                                <li>
+                                    <a href="#">Our Communities</a>
                                 </li>
                                 <li>
                                     <a href="#">Blog</a>
@@ -186,7 +189,7 @@
         --%>
 
         <div class="container" id="page-outer">
-            <div id="wrapper-effect" class="" style="padding-top: 0">
+            %{--<div id="wrapper-effect" class="" style="padding-top: 0">--}%
                 <script type="text/javascript" src="${resource(dir: 'frameworks/jquery-ui-1.10.2/js', file: 'jquery-1.9.1.js')}"></script>
                 <script type="text/javascript" src="${resource(dir: 'frameworks/jquery-ui-1.10.2/js', file: 'jquery-ui-1.10.2.custom.js')}"></script>
                 <script type="text/javascript" src="${resource(dir: 'frameworks/bootstrap/js', file: 'bootstrap.min.js')}"></script>
@@ -199,7 +202,7 @@
                 </g:if>
 
                 <g:layoutBody/>
-            </div>
+            %{--</div>--}%
         </div>
         <g:render template="/layouts/footer"></g:render>
 

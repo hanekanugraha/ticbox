@@ -94,10 +94,13 @@
                     <li><a>How It Works</a></li>
                     <li><a>Pricing</a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Get To Know Us <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="#">About Us</a>
+                                <a href="#">Our Team</a>
+                            </li>
+                            <li>
+                                <a href="#">Our Communities</a>
                             </li>
                             <li>
                                 <a href="#">Blog</a>
