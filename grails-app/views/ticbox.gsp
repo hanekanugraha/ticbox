@@ -6,7 +6,7 @@
     </head>
     <body>
 
-        <div class="jumbotron" style="padding: 20px 20px 28px 28px; margin-bottom: 20px">
+        <div class="jumbotron" style="padding: 15px 20px 28px 28px; margin-bottom: 20px;">
             <h1 style="color:#525252; font-size: 46px">Do It Yourself Market Research</h1>
             <p style="font-size: 14px">
                 There's an awesome way to make sure you don't invest a lot of time, effort & money into something that
@@ -15,18 +15,9 @@
                 Market Research has never been this fun!
             </p>
             <p>
-                <button class="btn btn-light-oak btn-lg">Watch the short video</button>
+                <button class="btn btn-green btn-lg">Watch the short video</button>
             </p>
         </div>
-
-        %{--<div class="clearfix home-content" id="makeUrLifeEasier" style="margin-top: 30px">--}%
-            %{--<img class="right img-responsive" width="480" alt="Do It Yourself Market Research" src="images/ticbox/collaterals/ticbox-iphone3.png">--}%
-
-            %{--<div id="makeUrLifeEasierMore" class="panel-collapse collapse out"></div>--}%
-            %{--<a data-toggle="collapse" data-parent="#makeUrLifeEasier" href="#makeUrLifeEasierMore" class="btn btn-light-oak btn-xs right">--}%
-            %{--Read More &gt;&gt;--}%
-            %{--</a>--}%
-        %{--</div>--}%
 
         <div class="clearfix home-content module features" style="padding-bottom: 40px">
             <div style="padding-left: 12px">
@@ -128,8 +119,8 @@
     %{--</div>--}%
 
     <div class="clearfix home-content " style="padding: 24px;margin-bottom: 50px; text-align: center;">
-        %{--<img src="images/ticbox/collaterals/work-in-progress.jpg" class="img-responsive img-thumbnail" style="margin: auto" width="546" height="auto" alt="Solution For You"/>--}%
-        <div style="width: 100%; height: 300px; background-image: url(images/ticbox/collaterals/work-in-progress.jpg); background-repeat: no-repeat; background-position: 0 -200px; margin: auto; background-size: 80% auto; background-position: center"></div>
+        <img src="images/ticbox/collaterals/work-in-progress2.jpg" class="img-responsive img-thumbnail" style="margin: auto" width="100%" height="auto" alt="Solution For You"/>
+        %{--<div style="width: 100%; height: 300px; background-image: url(images/ticbox/collaterals/work-in-progress.jpg); background-repeat: no-repeat; background-position: 0 -200px; margin: auto; background-size: 80% auto; background-position: center"></div>--}%
         <h3>Our <span class="marroon">People</span></h3>
         <p class="nowrap" style="font-size: 14px">
             No one knows a person better than himself.<br>
@@ -158,6 +149,7 @@
         %{--</p>--}%
         <button class="btn btn-blue-trust btn-lg center">Learn More About Our Communities</button>
     </div>
+
 
                 %{--<div class="row">--}%
                     %{--<div class="col-xs-12">--}%
@@ -209,7 +201,6 @@
 
                 <script type="text/javascript">
                     $('#aboutUs').tooltip({'placement': 'right','content':'html'});
-                    $('#solutionForYou').popover();
                 </script>
     </body>
 </html>
