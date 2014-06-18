@@ -21,7 +21,6 @@
         %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'app.css')}" type="text/css">--}%
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'custom.css')}" type="text/css">
 
-        %{--<LINK REL="SHORTCUT ICON" HREF="/~your_directory/logo.ico">--}%
         <g:layoutHead/>
     </head>
 

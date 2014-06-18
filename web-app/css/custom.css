@@ -218,8 +218,7 @@ a:focus {
 }
 
 .home-content {
-    margin-bottom: 20px;
-    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .home-content li {
@@ -471,14 +470,13 @@ fieldset[disabled] .btn-green.active {
 }
 
 .ticbox-logo {
-    background: url("../images/ticbox/ticbox-logo-5b.png") no-repeat scroll transparent;
+    background: url("../images/ticbox/ticboxlogo-new2.png") no-repeat scroll transparent;
     background-position: left center;
     background-size: 100%;
     width: 200px;
     min-height: 100px;
     margin-right: 15px;
     margin-left: 0 !important;
-    background-position: -5px 29px;
 }
 
 @media (max-width: 819px) {
@@ -631,7 +629,7 @@ fieldset[disabled] .btn-green.active {
         top: 0;
         right: 15px;
         height: 40px;
-        background-color: #ffffff;
+        background-color: #F5F5F5;
         border: 1px solid #DDDDDD;
         border-radius: 0 0 15px 15px;
         padding-left: 10px;
