@@ -119,6 +119,37 @@
     </div>
     <div id="surveyList" class="module-content">
         <div style="width: 100%">
+            <g:if test="${!submitted.isEmpty()}">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr class="top-header">
+                        <th colspan="4">SUBMITTED</th>
+                    </tr>
+                    <tr class="sub-header">
+                        <th>Name</th>
+                        <th>Total Charge</th>
+                        <th>Modified</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <g:if test="${submitted.isEmpty()}">
+                        <tr>
+                            <td colspan="4" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>
+                        </tr>
+                    </g:if>
+                    <g:each in="${submitted}" var="survey">
+                        <tr>
+                            <td><a href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}">${survey.name}</a></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </g:each>
+                    </tbody>
+                </table>
+            </g:if>
+
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
@@ -142,7 +173,9 @@
                         <td><a href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}">${survey.name}</a></td>
                         <td></td>
                         <td></td>
-                        <td></td>
+                        <td class="content-width">
+                            <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="${request.contextPath}/survey/deleteSurvey?surveyId=${survey.surveyId}">Delete</a>
+                        </td>
                     </tr>
                 </g:each>
                 </tbody>

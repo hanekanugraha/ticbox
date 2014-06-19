@@ -29,6 +29,7 @@ class SurveyController {
             drafts : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.DRAFT),
             inProgress : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.IN_PROGRESS),
             completes : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.COMPLETED),
+            submitted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.SUBMITTED),
             surveyorProfile: surveyorProfile,
             surveyor: surveyor,
             survey: survey
@@ -44,7 +45,8 @@ class SurveyController {
     }
 
     def editSurvey(){
-        session.putAt('current-edited-survey-id', params.surveyId)
+        Survey survey=surveyService.getSurvey(params.surveyId)
+        session.putAt('current-edited-survey', survey)
 
         redirect action: 'respondentFilter'
     }
@@ -68,7 +70,8 @@ class SurveyController {
         if(params.surveyId){
             survey = surveyService.getSurvey(params.surveyId)
         }else{
-            survey = surveyService.getCurrentEditedSurvey()
+            def surveyId = surveyService.getCurrentEditedSurvey().surveyId
+            survey = surveyService.getSurvey(surveyId)
         }
 
         def jsonStr = null
@@ -141,6 +144,12 @@ class SurveyController {
             e.printStackTrace()
             render 'FAILED'
         }
+    }
+
+    def submitToAdmin(){
+        surveyService.submitToAdmin(surveyService.getCurrentEditedSurvey())
+
+        redirect action: 'index'
     }
 
     def finalizeAndPublishSurvey(){
@@ -216,4 +225,9 @@ class SurveyController {
         render result as JSON
     }
 
+    def deleteSurvey(){
+        surveyService.deleteSurvey(params)
+
+        redirect action: 'index'
+    }
 }

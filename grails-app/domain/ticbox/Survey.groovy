@@ -3,7 +3,7 @@ package ticbox
 class Survey {
     static SURVEY_TYPE = [EASY:"EASY", FREE:"FREE"]
     static POINT_TYPE = [TRUST:"TRUST", GOLD:"GOLD"]
-    static STATUS = [DRAFT:'DRAFT', IN_PROGRESS:'IN_PROGRESS', COMPLETED:'COMPLETED']
+    static STATUS = [DRAFT:'DRAFT', IN_PROGRESS:'IN_PROGRESS', COMPLETED:'COMPLETED', SUBMITTED:'SUBMITTED']
 
     static QUESTION_TYPE = [
         CHOICE : 'CHOICE',
@@ -33,4 +33,5 @@ class Survey {
     static constraints = {
         title maxSize: 1000, nullable: true
     }
+
 }

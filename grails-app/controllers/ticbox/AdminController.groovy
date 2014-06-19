@@ -1,8 +1,11 @@
 package ticbox
 
+import org.apache.shiro.SecurityUtils
+
 class AdminController {
     def userService
     def goldService
+    def surveyService
 
     def index() {
         // todo add pagination
@@ -58,4 +61,28 @@ class AdminController {
         }
         redirect(controller: "admin", action: "redemptions")
     }
+
+    def surveys ={
+
+        def principal = SecurityUtils.subject.principal
+        def admin = User.findByUsername(principal.toString())
+        Survey survey = surveyService.getCurrentEditedSurvey()
+
+        [
+                inProgress : Survey.findAllByStatus( Survey.STATUS.IN_PROGRESS),
+                completes : Survey.findAllByStatus( Survey.STATUS.COMPLETED),
+                submitted : Survey.findAllByStatus( Survey.STATUS.SUBMITTED),
+                admin : admin,
+                survey: survey
+        ]
+
+    }
+
+    def finalizeAndPublishSurvey(){
+        Survey survey=surveyService.getSurvey(params.surveyId)
+        surveyService.finalizeAndPublishSurvey(params, survey)
+
+        redirect action: 'index'
+    }
+
 }

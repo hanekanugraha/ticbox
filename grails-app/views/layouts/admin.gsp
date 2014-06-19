@@ -142,7 +142,7 @@
                             </g:link>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                 <li role="presentation">
-                                    <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
+                                    <a href="${request.contextPath}/admin/surveys"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
                                 </li>
                                 <li role="presentation" class="divider"></li>
                                 <li role="presentation">

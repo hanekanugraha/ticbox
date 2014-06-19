@@ -19,17 +19,16 @@ class SurveyService {
     Survey createSurvey(def params){
         SurveyorProfile surveyor = surveyorService.getCurrentSurveyor()
 
-        Survey survey = new Survey(surveyId: UUID.randomUUID().toString(), name: params.surveyName, surveyor: surveyor).save();
+        Survey survey = new Survey(surveyId: UUID.randomUUID().toString(), name: params.surveyName, surveyor: surveyor)
 
-        WebUtils.retrieveGrailsWebRequest().session.putAt('current-edited-survey-id', survey?.surveyId)
+        WebUtils.retrieveGrailsWebRequest().session.putAt('current-edited-survey', survey)
 
         return survey
     }
 
     Survey getCurrentEditedSurvey(){
         //TODO should be fetching from current surveyor's edited survey
-        def surveyId = WebUtils.retrieveGrailsWebRequest().session.getAt('current-edited-survey-id')
-        Survey survey = surveyId?Survey.findBySurveyId("${surveyId}"):null
+        Survey survey = WebUtils.retrieveGrailsWebRequest().session.getAt('current-edited-survey')
 
         //TODO should be fetching from global conf and keep save per survey for locking
         /*survey[Survey.COMPONENTS.SUMMARY_DETAIL] = com.mongodb.util.JSON.parse(
@@ -60,10 +59,10 @@ class SurveyService {
 
                 survey[Survey.COMPONENTS.RESPONDENT_FILTER] = dbObject
             }
-
             survey.type = surveyType
-
             survey.save()
+
+
         }
     }
 
@@ -134,6 +133,11 @@ class SurveyService {
         survey.status = Survey.STATUS.IN_PROGRESS
         survey.save()
 
+    }
+
+    def submitToAdmin(Survey survey){
+        survey.status = Survey.STATUS.SUBMITTED
+        survey.save()
     }
 
     def getFilteredRespondents(Survey survey){
@@ -309,6 +313,11 @@ class SurveyService {
         DBObject dbObject = (DBObject) com.mongodb.util.JSON.parse(responseJSON)
         surveyResponse["response"] = dbObject
         surveyResponse.save()
+    }
+
+    def deleteSurvey(def params){
+        Survey survey = params.surveyId?Survey.findBySurveyId(params.surveyId):null
+        survey.delete()
     }
 
 }
