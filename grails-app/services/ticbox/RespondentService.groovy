@@ -1,5 +1,7 @@
 package ticbox
 
+import org.grails.datastore.mapping.query.Query
+
 class RespondentService {
 
     def helperService
@@ -11,7 +13,10 @@ class RespondentService {
 
     def getSurveyList(RespondentDetail detail){
         //TODO should be fetching only relevant surveys
-        return Survey.findAllByStatus(Survey.STATUS.IN_PROGRESS)
+        def surveys=Survey.findAllBySurveyIdNotInListAndStatus(SurveyResponse.findAllByRespondentId(detail.respondentId).surveyId,Survey.STATUS.IN_PROGRESS)
+
+
+        return surveys
 
     }
 

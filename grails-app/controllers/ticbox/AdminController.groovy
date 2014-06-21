@@ -79,10 +79,16 @@ class AdminController {
     }
 
     def finalizeAndPublishSurvey(){
-        Survey survey=surveyService.getSurvey(params.surveyId)
-        surveyService.finalizeAndPublishSurvey(params, survey)
+        try{
+            Survey survey=surveyService.getSurvey(params.surveyId)
 
-        redirect action: 'index'
-    }
+            surveyService.finalizeAndPublishSurvey(params, survey)
+
+        } catch (Exception e) {
+            flash.error = message(code: "general.create.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        forward(action: 'surveys')
+        }
 
 }

@@ -121,6 +121,7 @@
                     <th>Name</th>
                     <th>Total Charge</th>
                     <th>Modified</th>
+                    <th>Point</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -131,14 +132,22 @@
                     </tr>
                 </g:if>
                 <g:each in="${submitted}" var="survey">
+                <g:form name="finalizeForm" action="finalizeAndPublishSurvey" class="form-horizontal" role="form">
+                    <input type="hidden" name="surveyId" value="${survey.surveyId}"/>
                     <tr>
                         <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
                         <td></td>
                         <td></td>
+                        <td><g:textField name="surveyPoint" data-max="100" data-min="0" class="num form-control" style="text-align:right;min-width: 40%; width: auto;"/>
+                        </td>
                         <td class="content-width">
-                            <a class="btn btn-xs btn-primary displayResultLink" href="${request.contextPath}/admin/finalizeAndPublishSurvey?surveyId=${survey.surveyId}"><g:message code="label.button.finalize" default="Finalize and Publish"/></a>
+                            <g:submitButton name="submit" value="${g.message(code:'label.button.finalize')}" class="btn btn-xs btn-primary displayResultLink"/>
+
+                            %{--<a class="btn btn-xs btn-primary displayResultLink" href="${request.contextPath}/admin/finalizeAndPublishSurvey?surveyId=${survey.surveyId}&surveyPoint=$("input[name='${survey.surveyId}']").val()">--}%
+                            %{--<g:message code="label.button.finalize" default="Finalize and Publish"/></a>--}%
                         </td>
                     </tr>
+                </g:form>
                 </g:each>
                 </tbody>
             </table>
@@ -369,8 +378,9 @@
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.highlighter.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.cursor.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.dateAxisRenderer.min.js')}"></script>
-
+<g:javascript src="jquery.validate.min.js"/>
 <script type="text/javascript">
+
 
     jQuery(function(){
 

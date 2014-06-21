@@ -129,7 +129,7 @@ class SurveyService {
 
                 break
         }
-
+        survey.point=Long.parseLong(params.surveyPoint)
         survey.status = Survey.STATUS.IN_PROGRESS
         survey.save()
 

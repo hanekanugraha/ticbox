@@ -71,6 +71,7 @@
 <script type="text/javascript">
 
     var ttlQuestions = 0;
+    var questionSeq = 1;
 
     jQuery(function () {
 
@@ -84,6 +85,15 @@
             saveResponse(questionItems, this);
 
         });
+        jQuery('#nextQuestion').click(function () {
+            jQuery('#question'+questionSeq).attr('hidden',true)
+            questionSeq++;
+            jQuery('#question'+questionSeq).attr('hidden',false)
+            if(questionSeq>=ttlQuestions)
+                jQuery('#nextQuestion').hide()
+
+        });
+
 
         jQuery('#surveyName').text('${survey.name}');
         jQuery('#surveyTitle').text('${survey.title}');
@@ -327,10 +337,15 @@
                 }
 
 //                jQuery('.questionTextContainer div', container).text(item.questionStr);
+                container.attr('id',"question"+item.seq)
                 jQuery('.question-text', container).html("<span style='font-size:24px;color:grey;'>"+item.questionStr.charAt(0)+"</span>" + item.questionStr.substring(1));
+                if(i==0){
+                    container.attr('hidden',false)
+                }
+                ttlQuestions++;
+            }
 
-
-            });
+        );
 
         }
 
@@ -378,13 +393,14 @@
         </div>
 
         <div class="" style="padding: 0 0 3em 0;">
+            <button id="nextQuestion" class="btn btn-blue-trust btn-md">${g.message(code:'app.next.label')}</button>
             <button id="saveResponse" class="btn btn-blue-trust btn-md">${g.message(code:'app.submit.label')}</button>
             <button id="cancel" class="btn btn-light-oak btn-md" href="${request.contextPath}/respondent/">Cancel</button>
         </div>
 
         <div class="templates" style="display: none;">
 
-            <div id="questionTemplate" class="surveyItemContainer">
+            <div id="questionTemplate" class="surveyItemContainer" hidden="true">
                 <div class="row">
                     <div class="seqNumberContainer questionNumber col-xs-1"></div>
                     <div class="questionTextContainer col-xs-11">
