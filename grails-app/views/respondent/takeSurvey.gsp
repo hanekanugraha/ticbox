@@ -86,8 +86,8 @@
 
         });
         jQuery('#nextQuestion').click(function () {
-            jQuery('#question'+questionSeq).attr('hidden',true)
-            questionSeq++;
+            var lastQuestion= jQuery('#question'+questionSeq).attr('hidden',true)
+            questionSeq=lastQuestion.attr("nextSeq");
             jQuery('#question'+questionSeq).attr('hidden',false)
             if(questionSeq>=ttlQuestions)
                 jQuery('#nextQuestion').hide()
@@ -338,6 +338,10 @@
 
 //                jQuery('.questionTextContainer div', container).text(item.questionStr);
                 container.attr('id',"question"+item.seq)
+                container.attr('seq',item.seq)
+                var nextSeq=item.nextSeq
+                if(nextSeq==null)
+                    container.attr('nextSeq',item.seq+1)
                 jQuery('.question-text', container).html("<span style='font-size:24px;color:grey;'>"+item.questionStr.charAt(0)+"</span>" + item.questionStr.substring(1));
                 if(i==0){
                     container.attr('hidden',false)

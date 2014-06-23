@@ -1267,6 +1267,14 @@ footer ul li {
     background: transparent url("../images/ticbox/07b_Question_UploadIcon_Video.png") no-repeat center;
 }
 
+.single-question-next-icon {
+    background: transparent url("../images/ticbox/07_Question_UploadIcon_Video.png") no-repeat center;
+}
+
+.single-question-next-icon:hover {
+    background: transparent url("../images/ticbox/07b_Question_UploadIcon_Video.png") no-repeat center;
+}
+
 .delete-question-icon {
     background: transparent url("../images/ticbox/07_Question_Delete.png") no-repeat center;
 }

@@ -45,22 +45,22 @@ grails.project.dependency.resolution = {
 
     plugins {
         //runtime ":hibernate:$grailsVersion" //removed
-        runtime ":jquery:1.8.3"
-        runtime ":resources:1.1.6"
+        runtime ":jquery:1.11.1"
+        runtime ":resources:1.2.7"
 
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0"
         //runtime ":cached-resources:1.0"
         //runtime ":yui-minify-resources:0.1.5"
 
-        build ":tomcat:$grailsVersion"
+        build ":tomcat:7.0.53"
 
         //runtime ":database-migration:1.3.2" //removed
 
         //compile ':cache:1.0.1' //removed
 
         //App plugins
-        runtime ":mongodb:1.3.0" // User runtime to solve exception
+        runtime ":mongodb:3.0.1" // User runtime to solve exception
         compile ":webxml:1.4.1" // Heroku deployment requirement
         compile ":oauth:2.1.0"
         compile ":shiro:1.1.4"
