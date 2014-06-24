@@ -19,6 +19,7 @@
     <script type="text/javascript">
 
         var ttlQuestions = 0;
+        var answerId=0;
 
         jQuery(function() {
             console.log('~ BEGIN jQuery function');
@@ -114,12 +115,21 @@
 
             });
 
-            jQuery('#singleQuestionNextModal').on('shown.bs.modal', function(){
-                console.log('~ BEGIN #singleQuestionNextModal.onShown');
+            jQuery('#singleQuestionNextModal').on('show.bs.modal', function(){
 
-            }).on('hidden.bs.modal', function(){
                 jQuery('#singleQuestionNextModal .modal-body').empty();
+
+                jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
+                    var seq=jQuery(jQuery(this)).attr('seq');
+                    var nextQuestionWrapper = jQuery('.templates .nextQuestionWrapper').clone().appendTo(jQuery('#singleQuestionNextModal .modal-body'));
+                    jQuery('.questionNumber', nextQuestionWrapper).html(seq);
+                });
+            }).on('hide.bs.modal', function(){
+
+                //TODO
+
             });
+
 
         });
 
@@ -148,11 +158,13 @@
                     jQuery('.choice-type', answerComp).val('single');
 
                     changeTypeIconClass = 'single-choice-icon';
-
+                    jQuery('.single-question-next-icon',answerComp).attr('answerId',answerId);
+//                    jQuery('.single-question-next-icon',answerComp).attr('href','#singleQuestionNextModal');
                     jQuery('.single-question-next-icon',answerComp).click(function(){
-                        jQuery('#singleQuestionNextModal').modal('show');
-                        alert("kenapa gak masuk ya");
+                        alert('masuk');
                     });
+                    jQuery('.item-seq',answerComp).attr('answerId',answerId);
+                    jQuery('.item-seq',answerComp).val(answerId++);
 
                     jQuery('.add-item', answerComp).click(function(){
                         var newItem = jQuery('.choice-item:first', '#answerTemplate-choice-single').clone();
@@ -252,14 +264,14 @@
 
             jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
                 jQuery('.questionNumber', jQuery(this)).html(idx + 1 + '.');
-                jQuery(this).attr('seq',idx);
+                jQuery(this).attr('seq',idx+1);
             });
 
             jQuery('.surveyItemActions .remove', questionComp).click(function(){
                 jQuery(this).parents('.surveyItemContainer').remove();
                 jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
                     jQuery('.questionNumber', jQuery(this)).html(idx + 1 + '.');
-                    jQuery(this).attr('seq',idx);
+                    jQuery(this).attr('seq',idx+1);
                 });
             });
 
@@ -764,8 +776,10 @@
                         %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
                         %{--<div style="width: 20px; height: 100%; cursor: pointer; background: transparent url('../images/ticbox/06_Question_UploadIcon_Picture.png') no-repeat center"></div>--}%
                         <div class="question-action-btn upload-pic-icon clickable" style="margin: 0 0 0 0"></div>
-                        <div class="question-action-btn single-question-next-icon clickable" style="margin: 3px 0 0 0"></div>
+                        <div class="question-action-btn single-question-next-icon clickable" style="margin: 3px 0 0 0" data-toggle="modal"></div>
                     </div>
+                    <input class="item-seq form-control" type="text">
+
             </div>
         </div>
         <div class="form-group col col-xs-11 col-xs-offset-1" style="clear: both; width: 100%; padding: 5px 15px 0">
@@ -956,6 +970,14 @@
         </div>
         <div class="line line-centered" style="margin: 10px auto;">
             <input type="radio" name="logoResourceId" class="logoResourceId">
+        </div>
+    </div>
+
+    <div class="nextQuestionWrapper row">
+        <div class="seqNumberContainer col-xs-1 questionNumber">
+        </div>
+        <div class="line line-centered" style="margin: 10px auto;">
+            <input type="radio" name="nextQuestionId" class="nextQuestionId">
         </div>
     </div>
 
