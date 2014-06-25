@@ -158,13 +158,14 @@
                     jQuery('.choice-type', answerComp).val('single');
 
                     changeTypeIconClass = 'single-choice-icon';
-                    jQuery('.single-question-next-icon',answerComp).attr('answerId',answerId);
-//                    jQuery('.single-question-next-icon',answerComp).attr('href','#singleQuestionNextModal');
-                    jQuery('.single-question-next-icon',answerComp).click(function(){
-                        alert('masuk');
-                    });
+
                     jQuery('.item-seq',answerComp).attr('answerId',answerId);
                     jQuery('.item-seq',answerComp).val(answerId++);
+
+                    var choiceItemDefault = jQuery('.choice-item:first', answerComp);
+                    jQuery('.question-next',choiceItemDefault).click(function(){
+                            alert('masuk');
+                    });
 
                     jQuery('.add-item', answerComp).click(function(){
                         var newItem = jQuery('.choice-item:first', '#answerTemplate-choice-single').clone();
@@ -176,8 +177,14 @@
                             newItem.remove();
                         });
 
-                    });
+                        jQuery('.question-next',newItem).attr('answerId',answerId);
 
+                        jQuery('.question-next',newItem).click(function(){
+                            alert('masuk');
+
+                        });
+
+                    });
 
 
                     break;
@@ -776,9 +783,9 @@
                         %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
                         %{--<div style="width: 20px; height: 100%; cursor: pointer; background: transparent url('../images/ticbox/06_Question_UploadIcon_Picture.png') no-repeat center"></div>--}%
                         <div class="question-action-btn upload-pic-icon clickable" style="margin: 0 0 0 0"></div>
-                        <div class="question-action-btn single-question-next-icon clickable" style="margin: 3px 0 0 0" data-toggle="modal"></div>
+                        <div class="question-action-btn clickable question-next" style="margin: 3px 0 0 0" data-toggle="modal"></div>
                     </div>
-                    <input class="item-seq form-control" type="text">
+                    <input class="item-seq form-control form-control" type="text">
 
             </div>
         </div>

@@ -1041,6 +1041,13 @@ footer ul li {
     margin-left: 12px;
 }
 
+.surveyItemContainer .item-seq {
+    /*width: 485px !important;*/
+    float: left;
+    width: 20%;
+    margin-left: 12px;
+}
+
 .surveyItemContainer .row {
     margin-bottom: 5px;
 }
@@ -1267,11 +1274,11 @@ footer ul li {
     background: transparent url("../images/ticbox/07b_Question_UploadIcon_Video.png") no-repeat center;
 }
 
-.single-question-next-icon {
+.question-next {
     background: transparent url("../images/ticbox/07_Question_UploadIcon_Video.png") no-repeat center;
 }
 
-.single-question-next-icon:hover {
+.question-next:hover {
     background: transparent url("../images/ticbox/07b_Question_UploadIcon_Video.png") no-repeat center;
 }
 
