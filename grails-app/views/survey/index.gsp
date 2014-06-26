@@ -371,59 +371,74 @@
 
                 switch(answerDetails.type){
 
-                    case '${Survey.QUESTION_TYPE.CHOICE}' :
+                    case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
+                    case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
 
                         var data = [];
 
-                        jQuery.each(summary, function(label, count){
-                            data.push([label, count]);
-                        });
+                        if(summary){
+                            jQuery.each(summary, function (label, count) {
+                                data.push([label, count]);
+                            });
 
-                        constructPieChart(target, data, 'Answer Type - Choice');
-
+                            constructPieChart(target, data, 'Answer Type - Choice');
+                        }
                         break;
 
                     case '${Survey.QUESTION_TYPE.FREE_TEXT}' :
 
-                        var line1= [['23-May-08', 578.55], ['20-Jun-08', 566.5], ['25-Jul-08', 480.88], ['22-Aug-08', 509.84],
-                            ['26-Sep-08', 454.13], ['24-Oct-08', 379.75], ['21-Nov-08', 303], ['26-Dec-08', 308.56],
-                            ['23-Jan-09', 299.14], ['20-Feb-09', 346.51], ['20-Mar-09', 325.99], ['24-Apr-09', 386.15]];
+                        if(summary) {
+                            var line1 = [
+                                ['23-May-08', 578.55],
+                                ['20-Jun-08', 566.5],
+                                ['25-Jul-08', 480.88],
+                                ['22-Aug-08', 509.84],
+                                ['26-Sep-08', 454.13],
+                                ['24-Oct-08', 379.75],
+                                ['21-Nov-08', 303],
+                                ['26-Dec-08', 308.56],
+                                ['23-Jan-09', 299.14],
+                                ['20-Feb-09', 346.51],
+                                ['20-Mar-09', 325.99],
+                                ['24-Apr-09', 386.15]
+                            ];
 
-                        constructLineChart(target, line1, 'Answer Type - Free Text');
-
+                            constructLineChart(target, line1, 'Answer Type - Free Text');
+                        }
                         break;
 
                     case '${Survey.QUESTION_TYPE.SCALE_RATING}' :
 
-                        jQuery.each(summary, function(rowLabel, rowSummary){
+                        if(summary) {
+                            jQuery.each(summary, function (rowLabel, rowSummary) {
 
-                            var data = [];
+                                var data = [];
 
-                            jQuery.each(rowSummary, function(colLabel, count){
-                                data.push([colLabel, count]);
+                                jQuery.each(rowSummary, function (colLabel, count) {
+                                    data.push([colLabel, count]);
+                                });
+
+                                var targetCopy = target.clone();
+
+                                jQuery('.chart-container .col', container).append(targetCopy);
+
+                                constructPieChart(targetCopy, data, 'Scale Rating (' + rowLabel + ')');
                             });
 
-                            var targetCopy = target.clone();
-
-                            jQuery('.chart-container .col', container).append(targetCopy);
-
-                            constructPieChart(targetCopy, data, 'Scale Rating (' + rowLabel + ')');
-                        });
-
-                        target.remove();
-
+                            target.remove();
+                        }
                         break;
 
                     case '${Survey.QUESTION_TYPE.STAR_RATING}' :
 
                         var data = [];
+                        if(summary) {
+                            jQuery.each(summary, function (label, count) {
+                                data.push([label, count]);
+                            });
 
-                        jQuery.each(summary, function(label, count){
-                            data.push([label, count]);
-                        });
-
-                        constructPieChart(target, data, 'Answer Type - Star Rating');
-
+                            constructPieChart(target, data, 'Answer Type - Star Rating');
+                        }
                         break;
 
                 }

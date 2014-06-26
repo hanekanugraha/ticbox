@@ -115,19 +115,10 @@
 
             });
 
-            jQuery('#singleQuestionNextModal').on('show.bs.modal', function(){
-
-                jQuery('#singleQuestionNextModal .modal-body').empty();
-
-                jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
-                    var seq=jQuery(jQuery(this)).attr('seq');
-                    var nextQuestionWrapper = jQuery('.templates .nextQuestionWrapper').clone().appendTo(jQuery('#singleQuestionNextModal .modal-body'));
-                    jQuery('.questionNumber', nextQuestionWrapper).html(seq);
-                });
-            }).on('hide.bs.modal', function(){
-
-                //TODO
-
+            jQuery('#singleQuestionNextModal .nextButton').click(function(){
+                nextQuestionId = jQuery('input.nextQuestionId:checked').val();
+                jQuery('.item-seq[answerid='+jQuery('#singleQuestionNextModal .modal-body').attr('answerid')+']').val(nextQuestionId);
+                jQuery('#singleQuestionNextModal').modal('hide');
             });
 
 
@@ -159,12 +150,25 @@
 
                     changeTypeIconClass = 'single-choice-icon';
 
-                    jQuery('.item-seq',answerComp).attr('answerId',answerId);
-                    jQuery('.item-seq',answerComp).val(answerId++);
+                    jQuery('.question-next',answerComp).attr('answerid',answerId);
+                    jQuery('.item-seq',answerComp).attr('answerid',answerId);
+                    answerId++;
 
-                    var choiceItemDefault = jQuery('.choice-item:first', answerComp);
-                    jQuery('.question-next',choiceItemDefault).click(function(){
-                            alert('masuk');
+                    jQuery('.question-next',answerComp).click(function(){
+//                            alert(this.getAttribute('answerid'))
+                        jQuery('#singleQuestionNextModal .modal-body').empty();
+
+                        jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
+                            var seq=jQuery(jQuery(this)).attr('seq');
+                            var nextQuestionWrapper = jQuery('.templates .nextQuestionWrapper').clone().appendTo(jQuery('#singleQuestionNextModal .modal-body'));
+                            jQuery('.questionNumber', nextQuestionWrapper).html(seq);
+                            jQuery('.nextQuestionId', nextQuestionWrapper).val(seq);
+                            jQuery('#singleQuestionNextModal .modal-body').attr('answerid',jQuery('.item-seq',answerComp).attr('answerid'));
+
+                        });
+
+                        jQuery('#singleQuestionNextModal').modal('show');
+
                     });
 
                     jQuery('.add-item', answerComp).click(function(){
@@ -177,10 +181,25 @@
                             newItem.remove();
                         });
 
-                        jQuery('.question-next',newItem).attr('answerId',answerId);
+                        jQuery('.question-next',newItem).attr('answerid',answerId);
+                        jQuery('.item-seq',newItem).attr('answerid',answerId);
+                        answerId++;
+//                        jQuery('.item-seq',newItem).val(answerId++);
 
                         jQuery('.question-next',newItem).click(function(){
-                            alert('masuk');
+//                            alert(this.getAttribute('answerid'))
+                            jQuery('#singleQuestionNextModal .modal-body').empty();
+
+                            jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
+                                var seq=jQuery(jQuery(this)).attr('seq');
+                                var nextQuestionWrapper = jQuery('.templates .nextQuestionWrapper').clone().appendTo(jQuery('#singleQuestionNextModal .modal-body'));
+                                jQuery('.questionNumber', nextQuestionWrapper).html(seq);
+                                jQuery('.nextQuestionId', nextQuestionWrapper).val(seq);
+                                jQuery('#singleQuestionNextModal .modal-body').attr('answerid',jQuery('.item-seq',newItem).attr('answerid'));
+
+                            });
+
+                            jQuery('#singleQuestionNextModal').modal('show');
 
                         });
 
@@ -307,7 +326,11 @@
                         jQuery('.choice-items > .choice-item', container).each(function(){
 
                             var item = jQuery(this);
-                            answerDetails['choiceItems'].push(jQuery('input.item-label', item).val());
+                            var choiceItem = {};
+                            choiceItem['label'] = jQuery('input.item-label', item).val();
+                            choiceItem['rule'] = 'selected';
+                            choiceItem['nextQuestion'] = jQuery('input.item-seq', item).val();
+                            answerDetails['choiceItems'].push(choiceItem);
                         });
 
                         answerDetails['choiceType'] = jQuery('select.choice-type', container).val();
@@ -403,11 +426,36 @@
                             jQuery.each(choiceItems, function(idx, choiceItem){
                                 var choiceItemCont = jQuery('.choice-items > .choice-item:first', container).clone();
                                 jQuery('.choice-items', container).append(choiceItemCont);
-                                jQuery('.item-label', choiceItemCont).val(choiceItem);
+                                jQuery('.item-label', choiceItemCont).val(choiceItem.label);
+                                jQuery('.item-seq', choiceItemCont).val(choiceItem.nextQuestion);
+
+                                jQuery('.question-next',choiceItemCont).attr('answerid',answerId);
+                                jQuery('.item-seq',choiceItemCont).attr('answerid',answerId);
+                                answerId++;
 
                                 jQuery('input.item-check', choiceItemCont).click(function(){
                                     choiceItemCont.remove();
                                 });
+                                jQuery('.question-next',choiceItemCont).click(function(){
+//                                    alert(this.getAttribute('answerid'));
+                                    jQuery('#singleQuestionNextModal .modal-body').empty();
+
+                                    jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
+                                        var seq=jQuery(jQuery(this)).attr('seq');
+                                        var nextQuestionWrapper = jQuery('.templates .nextQuestionWrapper').clone().appendTo(jQuery('#singleQuestionNextModal .modal-body'));
+                                        jQuery('.questionNumber', nextQuestionWrapper).html(seq);
+                                        jQuery('.nextQuestionId', nextQuestionWrapper).val(seq);
+                                        jQuery('#singleQuestionNextModal .modal-body').attr('answerid',jQuery('.item-seq',choiceItemCont).attr('answerid'));
+
+                                    });
+//                                    jQuery('input.nextQuestionId', nextQuestionWrapper).val(id).prettyCheckable();
+
+
+
+
+                                    jQuery('#singleQuestionNextModal').modal('show');
+                                });
+
                             });
                             jQuery('.choice-items > .choice-item:first', container).remove();
 
@@ -525,7 +573,7 @@
                             var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
                             jQuery('input.item-check', choiceItemContainer).attr('name', idx);
                             jQuery('input.item-check', choiceItemContainer).val(choiceItem);
-                            jQuery('.item-label', choiceItemContainer).html(choiceItem);
+                            jQuery('.item-label', choiceItemContainer).html(choiceItem.labelN);
 //                                    answerTemplate.append(choiceItemContainer);
                             jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
                         });
@@ -1042,7 +1090,7 @@
 
             </div>
             <div class="modal-footer">
-                <button id="nextButton" class="btn btn-light-oak">Select</button>
+                <button class="btn btn-light-oak nextButton">Select</button>
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close" default="Close"/></button>
             </div>
         </div>
