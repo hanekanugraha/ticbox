@@ -86,8 +86,12 @@
 
         });
         jQuery('#nextQuestion').click(function () {
-            jQuery('#question'+questionSeq).attr('hidden',true)
-            questionSeq++;
+            var lastQuestion= jQuery('#question'+questionSeq).attr('hidden',true)
+            var nextSeq = jQuery('input.item-check:checked',lastQuestion).attr('nextQuestion');
+            if(nextSeq==null)
+                questionSeq++;
+            else
+                questionSeq=nextSeq;
             jQuery('#question'+questionSeq).attr('hidden',false)
             if(questionSeq>=ttlQuestions)
                 jQuery('#nextQuestion').hide()
@@ -113,7 +117,8 @@
 
         switch (type) {
 
-            case '${Survey.QUESTION_TYPE.CHOICE}' :
+            case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
+            case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
 
                 answerComp = jQuery('#answerTemplate-choice').clone().removeAttr('id');
 
@@ -181,8 +186,8 @@
 
             switch (type) {
 
-                case '${Survey.QUESTION_TYPE.CHOICE}' :
-
+                case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
+                case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
                     answerDetails['value'] = [];
                     jQuery('.item-check:checked', container).each(function () {
                         answerDetails['value'].push(jQuery(this).val());
@@ -249,7 +254,8 @@
 
                 switch (answerDetails.type) {
 
-                    case '${Survey.QUESTION_TYPE.CHOICE}' :
+                    case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
+                    case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
 
                         var choiceItems = answerDetails.choiceItems;
                         var choiceType = answerDetails.choiceType;
@@ -259,9 +265,11 @@
                         jQuery.each(choiceItems, function (j, choiceItem) {
                             var choiceItemCont = jQuery('.choice-items > .choice-item:first', container).clone();
                             choiceItemCont.find('.item-check').attr('name', i);
-                            choiceItemCont.find('.item-check').val(choiceItem);
+                            choiceItemCont.find('.item-check').val(choiceItem.label);
+                            choiceItemCont.find('.item-check').attr('nextQuestion',choiceItem.nextQuestion);
                             jQuery('.choice-items', container).append(choiceItemCont);
-                            jQuery('.item-label', choiceItemCont).text(choiceItem);
+                            jQuery('.item-label', choiceItemCont).text(choiceItem.label);
+                            choiceItemCont.attr('nextquestion',choiceItem.nextQuestion);
                         });
                         jQuery('.choice-items > .choice-item:first', container).remove();
 
@@ -337,7 +345,8 @@
                 }
 
 //                jQuery('.questionTextContainer div', container).text(item.questionStr);
-                container.attr('id',"question"+item.seq)
+                container.attr('id',"question"+item.seq);
+                container.attr('seq',item.seq);
                 jQuery('.question-text', container).html("<span style='font-size:24px;color:grey;'>"+item.questionStr.charAt(0)+"</span>" + item.questionStr.substring(1));
                 if(i==0){
                     container.attr('hidden',false)
@@ -416,7 +425,7 @@
                 </div>
             </div>
 
-            <div id="answerTemplate-choice" class="row answerTemplate" type="${Survey.QUESTION_TYPE.CHOICE}">
+            <div id="answerTemplate-choice" class="row answerTemplate" type="${Survey.QUESTION_TYPE.CHOICE_SINGLE}">
                 <div class="choice-items col-xs-11 col-xs-offset-1">
                     <div class="choice-item row">
                         %{--<div class="col col-xs-1" style="text-align: right">--}%
@@ -424,6 +433,20 @@
                             <input class="item-check">
                         %{--</div>--}%
                         %{--<div class="col col-xs-11" style="padding-left: 0">--}%
+                            <label class="item-label" style="font-weight: normal; margin-bottom: 0">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="answerTemplate-choice" class="row answerTemplate" type="${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}">
+                <div class="choice-items col-xs-11 col-xs-offset-1">
+                    <div class="choice-item row">
+                        %{--<div class="col col-xs-1" style="text-align: right">--}%
+                        <div class="col col-xs-12">
+                            <input class="item-check">
+                            %{--</div>--}%
+                            %{--<div class="col col-xs-11" style="padding-left: 0">--}%
                             <label class="item-label" style="font-weight: normal; margin-bottom: 0">
                             </label>
                         </div>

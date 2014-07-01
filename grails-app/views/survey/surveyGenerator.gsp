@@ -19,6 +19,7 @@
     <script type="text/javascript">
 
         var ttlQuestions = 0;
+        var answerId=0;
 
         jQuery(function() {
             console.log('~ BEGIN jQuery function');
@@ -32,6 +33,7 @@
                         .trigger('click');
             });
 
+
             jQuery('#pickLogoBtn').click(function(){
                 logoId = jQuery('input.logoResourceId:checked').val();
 
@@ -39,6 +41,10 @@
                     jQuery('#surveyLogo > img').attr('src', '${request.contextPath}/survey/viewLogo?resourceId='+logoId);
                     jQuery('#chooseLogoModal').modal('hide');
                 }
+            });
+
+            jQuery('#nextButton').click(function(){
+                jQuery('#singleQuestionNextModal').modal('hide');
             });
 
             jQuery('.surveyItemTypeAdd').click(function(){
@@ -109,6 +115,13 @@
 
             });
 
+            jQuery('#singleQuestionNextModal .nextButton').click(function(){
+                nextQuestionId = jQuery('input.nextQuestionId:checked').val();
+                jQuery('.item-seq[answerid='+jQuery('#singleQuestionNextModal .modal-body').attr('answerid')+']').val(nextQuestionId);
+                jQuery('#singleQuestionNextModal').modal('hide');
+            });
+
+
         });
 
         var logoId = null;
@@ -129,22 +142,83 @@
 
             switch(type){
 
-                case '${Survey.QUESTION_TYPE.CHOICE}' :
+                case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
 
-                    answerComp = jQuery('#answerTemplate-choice').clone().removeAttr('id');
+                    answerComp = jQuery('#answerTemplate-choice-single').clone().removeAttr('id');
 
-                    if (subtype == 'single') {
-                        jQuery('.choice-type', answerComp).val('single');
+                    jQuery('.choice-type', answerComp).val('single');
 
-                        changeTypeIconClass = 'single-choice-icon';
-                    }else if (subtype == 'multiple') {
-                        jQuery('.choice-type', answerComp).val('multiple');
+                    changeTypeIconClass = 'single-choice-icon';
 
-                        changeTypeIconClass = 'multiple-choice-icon';
-                    }
+                    jQuery('.question-next',answerComp).attr('answerid',answerId);
+                    jQuery('.item-seq',answerComp).attr('answerid',answerId);
+                    answerId++;
+
+                    jQuery('.question-next',answerComp).click(function(){
+//                            alert(this.getAttribute('answerid'))
+                        jQuery('#singleQuestionNextModal .modal-body').empty();
+
+                        jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
+                            var seq=jQuery(jQuery(this)).attr('seq');
+                            var nextQuestionWrapper = jQuery('.templates .nextQuestionWrapper').clone().appendTo(jQuery('#singleQuestionNextModal .modal-body'));
+                            jQuery('.questionNumber', nextQuestionWrapper).html(seq);
+                            jQuery('.nextQuestionId', nextQuestionWrapper).val(seq);
+                            jQuery('#singleQuestionNextModal .modal-body').attr('answerid',jQuery('.item-seq',answerComp).attr('answerid'));
+
+                        });
+
+                        jQuery('#singleQuestionNextModal').modal('show');
+
+                    });
 
                     jQuery('.add-item', answerComp).click(function(){
-                        var newItem = jQuery('.choice-item:first', '#answerTemplate-choice').clone();
+                        var newItem = jQuery('.choice-item:first', '#answerTemplate-choice-single').clone();
+                        jQuery('.item-label', newItem).val('');
+
+                        newItem.appendTo(jQuery('.choice-items', answerComp));
+
+                        jQuery('input.item-check', newItem).click(function(){
+                            newItem.remove();
+                        });
+
+                        jQuery('.question-next',newItem).attr('answerid',answerId);
+                        jQuery('.item-seq',newItem).attr('answerid',answerId);
+                        answerId++;
+//                        jQuery('.item-seq',newItem).val(answerId++);
+
+                        jQuery('.question-next',newItem).click(function(){
+//                            alert(this.getAttribute('answerid'))
+                            jQuery('#singleQuestionNextModal .modal-body').empty();
+
+                            jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
+                                var seq=jQuery(jQuery(this)).attr('seq');
+                                var nextQuestionWrapper = jQuery('.templates .nextQuestionWrapper').clone().appendTo(jQuery('#singleQuestionNextModal .modal-body'));
+                                jQuery('.questionNumber', nextQuestionWrapper).html(seq);
+                                jQuery('.nextQuestionId', nextQuestionWrapper).val(seq);
+                                jQuery('#singleQuestionNextModal .modal-body').attr('answerid',jQuery('.item-seq',newItem).attr('answerid'));
+
+                            });
+
+                            jQuery('#singleQuestionNextModal').modal('show');
+
+                        });
+
+                    });
+
+
+                    break;
+
+                case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
+
+                    answerComp = jQuery('#answerTemplate-choice-multiple').clone().removeAttr('id');
+
+                    jQuery('.choice-type', answerComp).val('multiple');
+
+                    changeTypeIconClass = 'multiple-choice-icon';
+
+
+                    jQuery('.add-item', answerComp).click(function(){
+                        var newItem = jQuery('.choice-item:first', '#answerTemplate-choice-multiple').clone();
                         jQuery('.item-label', newItem).val('');
 
                         newItem.appendTo(jQuery('.choice-items', answerComp));
@@ -216,12 +290,14 @@
 
             jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
                 jQuery('.questionNumber', jQuery(this)).html(idx + 1 + '.');
+                jQuery(this).attr('seq',idx+1);
             });
 
             jQuery('.surveyItemActions .remove', questionComp).click(function(){
                 jQuery(this).parents('.surveyItemContainer').remove();
                 jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
                     jQuery('.questionNumber', jQuery(this)).html(idx + 1 + '.');
+                    jQuery(this).attr('seq',idx+1);
                 });
             });
 
@@ -244,7 +320,24 @@
 
                 switch(type){
 
-                    case '${Survey.QUESTION_TYPE.CHOICE}' :
+                    case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
+                        console.log('~ type is choice');
+                        answerDetails['choiceItems'] = [];
+                        jQuery('.choice-items > .choice-item', container).each(function(){
+
+                            var item = jQuery(this);
+                            var choiceItem = {};
+                            choiceItem['label'] = jQuery('input.item-label', item).val();
+                            choiceItem['rule'] = 'selected';
+                            choiceItem['nextQuestion'] = jQuery('input.item-seq', item).val();
+                            answerDetails['choiceItems'].push(choiceItem);
+                        });
+
+                        answerDetails['choiceType'] = jQuery('select.choice-type', container).val();
+
+                        break;
+
+                    case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
                         console.log('~ type is choice');
                         answerDetails['choiceItems'] = [];
                         jQuery('.choice-items > .choice-item', container).each(function(){
@@ -323,7 +416,54 @@
 
                     switch(answerDetails.type){
 
-                        case '${Survey.QUESTION_TYPE.CHOICE}' :
+                        case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
+
+                            var choiceItems = answerDetails.choiceItems;
+                            var choiceType = answerDetails.choiceType;
+
+                            container = constructQuestionItem(answerDetails.type, choiceType);
+
+                            jQuery.each(choiceItems, function(idx, choiceItem){
+                                var choiceItemCont = jQuery('.choice-items > .choice-item:first', container).clone();
+                                jQuery('.choice-items', container).append(choiceItemCont);
+                                jQuery('.item-label', choiceItemCont).val(choiceItem.label);
+                                jQuery('.item-seq', choiceItemCont).val(choiceItem.nextQuestion);
+
+                                jQuery('.question-next',choiceItemCont).attr('answerid',answerId);
+                                jQuery('.item-seq',choiceItemCont).attr('answerid',answerId);
+                                answerId++;
+
+                                jQuery('input.item-check', choiceItemCont).click(function(){
+                                    choiceItemCont.remove();
+                                });
+                                jQuery('.question-next',choiceItemCont).click(function(){
+//                                    alert(this.getAttribute('answerid'));
+                                    jQuery('#singleQuestionNextModal .modal-body').empty();
+
+                                    jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
+                                        var seq=jQuery(jQuery(this)).attr('seq');
+                                        var nextQuestionWrapper = jQuery('.templates .nextQuestionWrapper').clone().appendTo(jQuery('#singleQuestionNextModal .modal-body'));
+                                        jQuery('.questionNumber', nextQuestionWrapper).html(seq);
+                                        jQuery('.nextQuestionId', nextQuestionWrapper).val(seq);
+                                        jQuery('#singleQuestionNextModal .modal-body').attr('answerid',jQuery('.item-seq',choiceItemCont).attr('answerid'));
+
+                                    });
+//                                    jQuery('input.nextQuestionId', nextQuestionWrapper).val(id).prettyCheckable();
+
+
+
+
+                                    jQuery('#singleQuestionNextModal').modal('show');
+                                });
+
+                            });
+                            jQuery('.choice-items > .choice-item:first', container).remove();
+
+                            jQuery('select.choice-type', container).val(choiceType);
+
+                            break;
+
+                        case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
 
                             var choiceItems = answerDetails.choiceItems;
                             var choiceType = answerDetails.choiceType;
@@ -419,46 +559,45 @@
 
                 switch(answerDetails.type){
 
-                    case '${Survey.QUESTION_TYPE.CHOICE}' :
+                    case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
 
                         var choiceItems = answerDetails.choiceItems;
                         var choiceType = answerDetails.choiceType;
 
-                        switch(choiceType){
 
-                            case 'multiple' :
-
-                                answerTemplate = jQuery('#answerPreviewTemplate-multipleChoice').clone().removeAttr('id');
+                        answerTemplate = jQuery('#answerPreviewTemplate-singleChoice').clone().removeAttr('id');
 
 //                                jQuery.each(choiceItems, function(idx, choiceItem){
-                                jQuery.each(choiceItems, function(j, choiceItem){
-                                    var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
-                                    jQuery('input.item-check', choiceItemContainer).val(choiceItem);
-                                    jQuery('.item-label', choiceItemContainer).html(choiceItem);
-//                                    answerTemplate.append(choiceItemContainer);
-                                    jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
-                                });
-                                jQuery('.choice-item:first', answerTemplate).remove();
-
-                                break;
-                            case 'single' :
-
-                                answerTemplate = jQuery('#answerPreviewTemplate-singleChoice').clone().removeAttr('id');
-
-//                                jQuery.each(choiceItems, function(idx, choiceItem){
-                                jQuery.each(choiceItems, function(j, choiceItem){
+                        jQuery.each(choiceItems, function(j, choiceItem){
 //                                    jQuery('.item-select', answerTemplate).append(jQuery('<option></option>').append(choiceItem).val(choiceItem));
-                                    var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
-                                    jQuery('input.item-check', choiceItemContainer).attr('name', idx);
-                                    jQuery('input.item-check', choiceItemContainer).val(choiceItem);
-                                    jQuery('.item-label', choiceItemContainer).html(choiceItem);
+                            var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
+                            jQuery('input.item-check', choiceItemContainer).attr('name', idx);
+                            jQuery('input.item-check', choiceItemContainer).val(choiceItem);
+                            jQuery('.item-label', choiceItemContainer).html(choiceItem.labelN);
 //                                    answerTemplate.append(choiceItemContainer);
-                                    jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
-                                });
-                                jQuery('.choice-item:first', answerTemplate).remove();
+                            jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
+                        });
+                        jQuery('.choice-item:first', answerTemplate).remove();
 
-                                break;
-                        }
+
+                        break;
+
+                    case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
+
+                        var choiceItems = answerDetails.choiceItems;
+                        var choiceType = answerDetails.choiceType;
+
+                        answerTemplate = jQuery('#answerPreviewTemplate-multipleChoice').clone().removeAttr('id');
+
+//                                jQuery.each(choiceItems, function(idx, choiceItem){
+                        jQuery.each(choiceItems, function(j, choiceItem){
+                            var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
+                            jQuery('input.item-check', choiceItemContainer).val(choiceItem);
+                            jQuery('.item-label', choiceItemContainer).html(choiceItem);
+//                                    answerTemplate.append(choiceItemContainer);
+                            jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
+                        });
+                        jQuery('.choice-item:first', answerTemplate).remove();
 
                         break;
 
@@ -616,8 +755,8 @@
     <div id="questionTypesMenuContainer" class="side-panel">
         <div id="questionTypesItemContainer">
             <ul>
-                <li class="surveyItemTypeAdd single-choice clickable" type="${Survey.QUESTION_TYPE.CHOICE}" subtype="single"></li>
-                <li class="surveyItemTypeAdd multiple-choice clickable" type="${Survey.QUESTION_TYPE.CHOICE}" subtype="multiple"></li>
+                <li class="surveyItemTypeAdd single-choice clickable" type="${Survey.QUESTION_TYPE.CHOICE_SINGLE}" subtype="single"></li>
+                <li class="surveyItemTypeAdd multiple-choice clickable" type="${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}" subtype="multiple"></li>
                 <li class="surveyItemTypeAdd single-text clickable" type="${Survey.QUESTION_TYPE.FREE_TEXT}"></li>
                 <li class="surveyItemTypeAdd scale clickable" type="${Survey.QUESTION_TYPE.SCALE_RATING}"></li>
                 <li class="surveyItemTypeAdd star-rating clickable" type="${Survey.QUESTION_TYPE.STAR_RATING}"></li>
@@ -665,6 +804,7 @@
                     <div class="question-action-btn upload-pic-icon clickable" style="margin: 0 0 0 0"></div>
                     %{--<button class="btn remove" data-toggle="tooltip" data-placement="top" title="Remove"><i class="icon-remove"></i></button>--}%
                     <div class="question-action-btn upload-vid-icon clickable" style="margin: 3px 0 0 0"></div>
+
                     %{--</div>--}%
                 </div>
             </div>
@@ -681,7 +821,7 @@
         </div>
     </div>
 
-    <div id="answerTemplate-choice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">
+    <div id="answerTemplate-choice-single" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE_SINGLE}">
 
         <div class="choice-items col col-xs-11 col-xs-offset-1">
             <div class="choice-item row" style="margin-bottom: 3px">
@@ -691,18 +831,47 @@
                         %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
                         %{--<div style="width: 20px; height: 100%; cursor: pointer; background: transparent url('../images/ticbox/06_Question_UploadIcon_Picture.png') no-repeat center"></div>--}%
                         <div class="question-action-btn upload-pic-icon clickable" style="margin: 0 0 0 0"></div>
+                        <div class="question-action-btn clickable question-next" style="margin: 3px 0 0 0" data-toggle="modal"></div>
                     </div>
+                    <input class="item-seq form-control form-control" type="text">
+
             </div>
         </div>
         <div class="form-group col col-xs-11 col-xs-offset-1" style="clear: both; width: 100%; padding: 5px 15px 0">
             <div class="col" style="display: none;">
                 <select class="choice-type">
                     <option value="single">Single Choice</option>
-                    <option value="multiple">Multiple Choice</option>
                 </select>
             </div>
             <div class="col">
                 <button class="btn btn-default btn-info add-item"><i class="glyphicon glyphicon-plus"></i> New Item</button>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="answerTemplate-choice-multiple" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}">
+
+        <div class="choice-items col col-xs-11 col-xs-offset-1">
+            <div class="choice-item row" style="margin-bottom: 3px">
+                <input class="item-check" type="checkbox" checked style="height: 34px">
+                <input class="item-label form-control" type="text" placeholder="${message([code: 'message.type-to-set-label', default: 'Type here to set label..'])}">
+                <div class="col" style="float: left; padding: 1px 0 0 5px">
+                    %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
+                    %{--<div style="width: 20px; height: 100%; cursor: pointer; background: transparent url('../images/ticbox/06_Question_UploadIcon_Picture.png') no-repeat center"></div>--}%
+                    <div class="question-action-btn upload-pic-icon clickable" style="margin: 0 0 0 0"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col col-xs-11 col-xs-offset-1" style="clear: both; width: 100%; padding: 5px 15px 0">
+            <div class="col" style="display: none;">
+                <select class="choice-type">
+                    <option value="single">Single Choice</option>
+                </select>
+            </div>
+            <div class="col">
+                <button class="btn btn-default btn-info add-item"><i class="glyphicon glyphicon-plus"></i> New Item</button>
+
             </div>
         </div>
     </div>
@@ -785,7 +954,7 @@
         </div>
     </div>
 
-    <div id="answerPreviewTemplate-multipleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">
+    <div id="answerPreviewTemplate-multipleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}">
         <div class="choice-items col-xs-11 col-xs-offset-1">
             <div class="choice-item row">
                 %{--<label class="checkbox">--}%
@@ -809,7 +978,7 @@
         %{--</div>--}%
     %{--</div>--}%
 
-    <div id="answerPreviewTemplate-singleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">
+    <div id="answerPreviewTemplate-singleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE_SINGLE}">
         <div class="choice-items col-xs-11 col-xs-offset-1">
             <div class="choice-item row">
                 %{--<div class="col col-xs-1" style="text-align: right">--}%
@@ -859,6 +1028,14 @@
         </div>
     </div>
 
+    <div class="nextQuestionWrapper row">
+        <div class="seqNumberContainer col-xs-1 questionNumber">
+        </div>
+        <div class="line line-centered" style="margin: 10px auto;">
+            <input type="radio" name="nextQuestionId" class="nextQuestionId">
+        </div>
+    </div>
+
 </div>
 
 <!-- Preview Modal -->
@@ -894,6 +1071,26 @@
             <div class="modal-footer">
                 <button id="pickLogoBtn" class="btn btn-light-oak">Pick</button>
                 <button id="uploadLogoBtn" class="btn btn-green">Upload</button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close" default="Close"/></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Single Question Next Modal -->
+<div id="singleQuestionNextModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby=singleQuestionNextModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="singleQuestionNextModalLabel" class="modal-title" >Next Question</span>
+            </div>
+            <div class="modal-body" style="overflow: auto;">
+                <span>hello world</span>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light-oak nextButton">Select</button>
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close" default="Close"/></button>
             </div>
         </div>

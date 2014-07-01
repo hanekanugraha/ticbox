@@ -13,7 +13,7 @@ class RespondentService {
 
     def getSurveyList(RespondentDetail detail){
         //TODO should be fetching only relevant surveys
-        def surveys=Survey.findAllBySurveyIdNotInListAndStatus(SurveyResponse.findAllByRespondentId(detail.respondentId).surveyId,Survey.STATUS.IN_PROGRESS)
+        def surveys=Survey.findAllByStatus(Survey.STATUS.IN_PROGRESS)
 
 
         return surveys

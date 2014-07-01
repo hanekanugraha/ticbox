@@ -237,7 +237,19 @@ class SurveyService {
                                     def summary = null
 
                                     switch (answerDetails['type']){
-                                        case Survey.QUESTION_TYPE.CHOICE :
+                                        case Survey.QUESTION_TYPE.CHOICE_SINGLE :
+
+                                            if(!summary){
+                                                summary = [:]
+                                            }
+
+                                            value.each{ String choice ->
+                                                summary[choice] = summary[choice] ? summary[choice] + 1 : 1
+                                            }
+
+                                            break
+
+                                        case Survey.QUESTION_TYPE.CHOICE_MULTIPLE :
 
                                             if(!summary){
                                                 summary = [:]
