@@ -14,7 +14,7 @@ class BootStrap {
     def bootstrapService
 
     def init = { servletContext ->
-        // todo for dev only but required on Heroku (which automatically set env as Production)
+        /*// todo for dev only but required on Heroku (which automatically set env as Production)
         // todo should only be modified on deployment to real Production or delivery to client
         Role.collection.drop()
         User.collection.drop()
@@ -63,7 +63,7 @@ class BootStrap {
 
         //parameters
         new Parameter(code:"GOLD_RATE_IDR", value: "1000", desc: "Gold to IDR conversion").save()
-        new Parameter(code:"GOLD_MIN_REDEMPTION", value: "50", desc: "Minimum Gold can be redeemed").save()
+        new Parameter(code:"GOLD_MIN_REDEMPTION", value: "50", desc: "Minimum Gold can be redeemed").save()*/
 
         println 'should be ok!!....'
     }
