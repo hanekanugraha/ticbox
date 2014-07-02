@@ -19,11 +19,11 @@ environments {
     production {
         grails {
             mongo {
-                host = "linus.mongohq.com"
-                port = 10012
-                username = "heroku"
-                password = "ticbox"
-                databaseName = "app15680173"
+                host = "kahana.mongohq.com"
+                port = 10040
+                username = "ticboxnew"
+                password = "ticboxnew"
+                databaseName = "ticboxnew"
             }
         }
     }
