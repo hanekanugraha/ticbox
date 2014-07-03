@@ -58,9 +58,13 @@ class SurveyService {
                 DBObject dbObject = (DBObject) com.mongodb.util.JSON.parse(filterItemsJSON)
 
                 survey[Survey.COMPONENTS.RESPONDENT_FILTER] = dbObject
+                survey.type = surveyType
+                survey.save()
             }
-            survey.type = surveyType
-            survey.save()
+        else{
+                survey.type = surveyType
+                survey.save()
+            }
 
 
         }

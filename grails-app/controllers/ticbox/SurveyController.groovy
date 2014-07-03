@@ -58,7 +58,9 @@ class SurveyController {
     }
 
     def getRespondentFilter() {
-        def jsonStr = com.mongodb.util.JSON.serialize(surveyService.getCurrentEditedSurvey()[Survey.COMPONENTS.RESPONDENT_FILTER])
+        Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
+
+        def jsonStr = com.mongodb.util.JSON.serialize(survey[Survey.COMPONENTS.RESPONDENT_FILTER])
 
         render jsonStr
     }
@@ -106,8 +108,9 @@ class SurveyController {
     def submitRespondentFilter() {
         try {
             def filterItemsJSON = params.filterItemsJSON
+            Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
 
-            surveyService.submitRespondentFilter(params.surveyType, filterItemsJSON, surveyService.getCurrentEditedSurvey())
+            surveyService.submitRespondentFilter(params.surveyType, filterItemsJSON, survey)
 
             render filterItemsJSON
         } catch (Exception e) {
@@ -136,8 +139,9 @@ class SurveyController {
 
     def submitSurvey(){
         try {
+            Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
 
-            surveyService.submitSurvey(params, surveyService.getCurrentEditedSurvey())
+            surveyService.submitSurvey(params, survey)
 
             render 'SUCCESS'
         } catch (Exception e) {
