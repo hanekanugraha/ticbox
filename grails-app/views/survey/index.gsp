@@ -140,7 +140,7 @@
                     </g:if>
                     <g:each in="${submitted}" var="survey">
                         <tr>
-                            <td><a href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}">${survey.name}</a></td>
+                            <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -304,6 +304,104 @@
     </div>
 </div>
 
+<div id="surveyPreviewModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="surveyPreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="surveyPreviewModalLabel" class="modal-title" >Survey Preview</span>
+            </div>
+            <div class="modal-body" style="overflow: auto; padding: 20px 50px 20px 20px">
+                <div class="questionItemsContainer">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close" default="Close"/></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="questionPreviewTemplate" class="surveyItemContainer">
+    <div class="row">
+        <div class="seqNumberContainer questionNumber col-xs-1"> </div>
+        <div class="questionTextContainer col-xs-11">
+            <span class="question-text"></span>
+        </div>
+    </div>
+</div>
+
+<div id="answerPreviewTemplate-singleText" class="answerTemplate row" type="${Survey.QUESTION_TYPE.FREE_TEXT}">
+    <div class="col col-xs-11 col-xs-offset-1">
+        <textarea class="form-control" rows="3" placeholder="" style="width: 100% !important;"></textarea>
+    </div>
+</div>
+
+<div id="answerPreviewTemplate-multipleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">
+    <div class="choice-items col-xs-11 col-xs-offset-1">
+        <div class="choice-item row">
+            %{--<label class="checkbox">--}%
+            %{--<div class="col col-xs-1" style="text-align: right">--}%
+            <div class="col col-xs-12">
+                <input class="item-check" type="checkbox">
+                %{--</div>--}%
+                %{--<div class="col col-xs-11" style="padding-left: 0">--}%
+                <span class="item-label" style="font-weight: normal; margin-bottom: 0"></span>
+            </div>
+            %{--</label>--}%
+        </div>
+    </div>
+</div>
+
+%{--<div id="answerPreviewTemplate-singleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">--}%
+%{--<div class="col col-xs-11 col-xs-offset-1">--}%
+%{--<select class="item-select" style="min-width: 200px">--}%
+%{--<option></option>--}%
+%{--</select>--}%
+%{--</div>--}%
+%{--</div>--}%
+
+<div id="answerPreviewTemplate-singleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">
+    <div class="choice-items col-xs-11 col-xs-offset-1">
+        <div class="choice-item row">
+            %{--<div class="col col-xs-1" style="text-align: right">--}%
+            <div class="col col-xs-12">
+                <input class="item-check" type="radio">
+                %{--</div>--}%
+                %{--<div class="col col-xs-11" style="padding-left: 0">--}%
+                <span class="item-label" style="font-weight: normal; margin-bottom: 0"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="answerPreviewTemplate-scale" class="answerTemplate row" type="${Survey.QUESTION_TYPE.SCALE_RATING}">
+    <div class="col col-xs-11 col-xs-offset-1" style="overflow-x: auto;width: auto">
+        <table class="table scale-table table-bordered table-responsive">
+            <thead>
+            <tr class="scale-head">
+                <th style="text-align: center;"></th>
+                %{--<th class="rating-label" style="text-align: center"></th>--}%
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="scale-row">
+                <td class="row-label"> </td>
+                <td class="rating-weight" style="text-align: center">
+                    <input type="radio" name="rd-1">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="answerPreviewTemplate-starRating" class="answerTemplate row" type="${Survey.QUESTION_TYPE.STAR_RATING}">
+    <div class="line stars col-xs-11 col-xs-offset-1">
+
+    </div>
+</div>
+
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot', file: 'jquery.jqplot.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.pieRenderer.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.highlighter.min.js')}"></script>
@@ -336,7 +434,153 @@
         jQuery('#surveyorProfileContent').addClass('in');
         jQuery('#surveyInfoAccordion').hide();
 
+        jQuery('.displayQuestionLink').click(function(){
+            var that = jQuery(this);
+            var surveyId = that.attr('surveyid');
+
+            // var txt = that.text();
+            //that.text('Loading Data..');
+            jQuery('#surveyPreviewModal .modal-body').empty();
+            jQuery.getJSON('${request.contextPath}/survey/getQuestionItems', {surveyId: surveyId}, function(result){
+
+                jQuery('#surveyPreviewModal').modal('show').find('.questionItemsContainer').empty();
+
+                setTimeout(function() {
+                    loadQuestionGraph(result);
+
+                    //        that.text(txt);
+                }, 500);
+            });
+        });
+
     });
+
+    function loadQuestionGraph(questionItems){
+
+        console.log('~ BEGIN constructPreview');
+        jQuery.each(questionItems, function(idx, item){
+
+            var questionStr = item.questionStr;
+            var answerDetails = item.answerDetails;
+
+            var questionTemplate = jQuery('#questionPreviewTemplate').clone().removeAttr('id');
+
+            jQuery('.seqNumberContainer', questionTemplate).html(idx+1+'.');
+
+            jQuery('.question-text', questionTemplate).html("<span style='font-size:24px;color:grey;'>"+questionStr.charAt(0)+"</span>" + questionStr.substring(1));
+
+            var answerTemplate = null;
+
+            switch(answerDetails.type){
+
+                case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
+
+                    var choiceItems = answerDetails.choiceItems;
+                    var choiceType = answerDetails.choiceType;
+
+                    answerTemplate = jQuery('#answerPreviewTemplate-singleChoice').clone().removeAttr('id');
+
+//                                jQuery.each(choiceItems, function(idx, choiceItem){
+                    jQuery.each(choiceItems, function(j, choiceItem){
+//                                    jQuery('.item-select', answerTemplate).append(jQuery('<option></option>').append(choiceItem).val(choiceItem));
+                        var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
+                        jQuery('input.item-check', choiceItemContainer).attr('name', idx);
+                        jQuery('input.item-check', choiceItemContainer).val(choiceItem);
+                        jQuery('.item-label', choiceItemContainer).html(choiceItem);
+//                                    answerTemplate.append(choiceItemContainer);
+                        jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
+                    });
+                    jQuery('.choice-item:first', answerTemplate).remove();
+
+                    break;
+
+                case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
+
+                    var choiceItems = answerDetails.choiceItems;
+                    var choiceType = answerDetails.choiceType;
+
+                    answerTemplate = jQuery('#answerPreviewTemplate-multipleChoice').clone().removeAttr('id');
+
+//                                jQuery.each(choiceItems, function(idx, choiceItem){
+                    jQuery.each(choiceItems, function(j, choiceItem){
+                        var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
+                        jQuery('input.item-check', choiceItemContainer).val(choiceItem);
+                        jQuery('.item-label', choiceItemContainer).html(choiceItem);
+//                                    answerTemplate.append(choiceItemContainer);
+                        jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
+                    });
+                    jQuery('.choice-item:first', answerTemplate).remove();
+
+                    break;
+
+                case '${Survey.QUESTION_TYPE.FREE_TEXT}' :
+
+                    answerTemplate = jQuery('#answerPreviewTemplate-singleText').clone().removeAttr('id');
+                    jQuery('textarea', answerTemplate).attr('placeholder', answerDetails.questionPlaceholder);
+
+                    break;
+
+                case '${Survey.QUESTION_TYPE.SCALE_RATING}' :
+
+                    answerTemplate = jQuery('#answerPreviewTemplate-scale').clone().removeAttr('id');
+
+                    var ratingLabels = answerDetails.ratingLabels;
+                    var rowLabels = answerDetails.rowLabels;
+
+                    jQuery.each(ratingLabels, function(idx, ratingLabel){
+                        jQuery('.scale-head', answerTemplate).append(jQuery('<th class="rating-label" style="text-align: center"></th>').html(ratingLabel));
+                    });
+
+                    jQuery.each(rowLabels, function(idx, rowLabel){
+                        var scaleRow = jQuery('table.scale-table > tbody > tr.scale-row:first', answerTemplate).clone();
+                        jQuery('.row-label', scaleRow).html(rowLabel);
+
+                        jQuery.each(ratingLabels, function(idx, ratingLabel){
+                            var ratingWeightCont = jQuery('td.rating-weight:first', scaleRow).clone();
+                            jQuery('input', ratingWeightCont).attr('name', rowLabel);
+                            scaleRow.append(ratingWeightCont);
+                        });
+                        jQuery('td.rating-weight:first', scaleRow).remove();
+
+                        jQuery('table.scale-table > tbody', answerTemplate).append(scaleRow);
+                    });
+                    jQuery('table.scale-table > tbody > tr.scale-row:first', answerTemplate).remove();
+
+                    break;
+
+                case '${Survey.QUESTION_TYPE.STAR_RATING}' :
+
+                    answerTemplate = jQuery('#answerPreviewTemplate-starRating').clone().removeAttr('id');
+                    var stars = jQuery('.stars', answerTemplate).empty();
+                    for(var i = 0; i < parseInt(answerDetails.nofStars); i++){
+                        jQuery('.stars', answerTemplate).append(jQuery('<div class="col star clickable" seq="'+i+'"></div>').click(function(){
+                            var seq = parseInt(jQuery(this).attr('seq'));
+                            jQuery('.star', stars).each(function(idx){
+                                if(idx <= seq){
+                                    jQuery(this).removeClass('basic');
+                                    jQuery(this).addClass('active');
+                                }else{
+                                    jQuery(this).removeClass('active');
+                                    jQuery(this).addClass('basic');
+                                }
+                            });
+
+                        }));
+                    }
+
+                    break;
+
+            }
+
+            if (answerTemplate) {
+                questionTemplate.append(answerTemplate);
+            }
+
+            jQuery('#surveyPreviewModal').find('.modal-body').append(questionTemplate);
+
+        });
+
+    }
 
     function constructQuestionItemCont(questionStr, seq){
 

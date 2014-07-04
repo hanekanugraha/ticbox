@@ -110,7 +110,10 @@ class SurveyController {
             def filterItemsJSON = params.filterItemsJSON
             Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
 
-            surveyService.submitRespondentFilter(params.surveyType, filterItemsJSON, survey)
+            if(survey)
+                surveyService.submitSurvey(params, survey)
+            else
+                surveyService.submitSurvey(params, surveyService.getCurrentEditedSurvey())
 
             render filterItemsJSON
         } catch (Exception e) {
@@ -140,8 +143,10 @@ class SurveyController {
     def submitSurvey(){
         try {
             Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
-
-            surveyService.submitSurvey(params, survey)
+            if(survey)
+                surveyService.submitSurvey(params, survey)
+            else
+                surveyService.submitSurvey(params, surveyService.getCurrentEditedSurvey())
 
             render 'SUCCESS'
         } catch (Exception e) {

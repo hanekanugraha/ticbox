@@ -460,46 +460,43 @@
 
             switch(answerDetails.type){
 
-                case '${Survey.QUESTION_TYPE.CHOICE}' :
+                case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
 
                     var choiceItems = answerDetails.choiceItems;
                     var choiceType = answerDetails.choiceType;
 
-                    switch(choiceType){
-
-                        case 'multiple' :
-
-                            answerTemplate = jQuery('#answerPreviewTemplate-multipleChoice').clone().removeAttr('id');
+                    answerTemplate = jQuery('#answerPreviewTemplate-singleChoice').clone().removeAttr('id');
 
 //                                jQuery.each(choiceItems, function(idx, choiceItem){
-                            jQuery.each(choiceItems, function(j, choiceItem){
-                                var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
-                                jQuery('input.item-check', choiceItemContainer).val(choiceItem);
-                                jQuery('.item-label', choiceItemContainer).html(choiceItem);
-//                                    answerTemplate.append(choiceItemContainer);
-                                jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
-                            });
-                            jQuery('.choice-item:first', answerTemplate).remove();
-
-                            break;
-                        case 'single' :
-
-                            answerTemplate = jQuery('#answerPreviewTemplate-singleChoice').clone().removeAttr('id');
-
-//                                jQuery.each(choiceItems, function(idx, choiceItem){
-                            jQuery.each(choiceItems, function(j, choiceItem){
+                    jQuery.each(choiceItems, function(j, choiceItem){
 //                                    jQuery('.item-select', answerTemplate).append(jQuery('<option></option>').append(choiceItem).val(choiceItem));
-                                var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
-                                jQuery('input.item-check', choiceItemContainer).attr('name', idx);
-                                jQuery('input.item-check', choiceItemContainer).val(choiceItem);
-                                jQuery('.item-label', choiceItemContainer).html(choiceItem);
+                        var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
+                        jQuery('input.item-check', choiceItemContainer).attr('name', idx);
+                        jQuery('input.item-check', choiceItemContainer).val(choiceItem);
+                        jQuery('.item-label', choiceItemContainer).html(choiceItem);
 //                                    answerTemplate.append(choiceItemContainer);
-                                jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
-                            });
-                            jQuery('.choice-item:first', answerTemplate).remove();
+                        jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
+                    });
+                    jQuery('.choice-item:first', answerTemplate).remove();
 
-                            break;
-                    }
+                    break;
+
+                case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
+
+                    var choiceItems = answerDetails.choiceItems;
+                    var choiceType = answerDetails.choiceType;
+
+                    answerTemplate = jQuery('#answerPreviewTemplate-multipleChoice').clone().removeAttr('id');
+
+//                                jQuery.each(choiceItems, function(idx, choiceItem){
+                    jQuery.each(choiceItems, function(j, choiceItem){
+                        var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
+                        jQuery('input.item-check', choiceItemContainer).val(choiceItem);
+                        jQuery('.item-label', choiceItemContainer).html(choiceItem);
+//                                    answerTemplate.append(choiceItemContainer);
+                        jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
+                    });
+                    jQuery('.choice-item:first', answerTemplate).remove();
 
                     break;
 
