@@ -243,6 +243,7 @@
 
                     jQuery('.add-row', answerComp).click(function(){
                         var row = jQuery('.scale-row:first', answerComp).clone();
+                        jQuery('.row-label', row).val('');
                         jQuery('table', answerComp).append(row);
                         jQuery('.rating-weight > input', row).attr('name', 'rd-'+jQuery('.scale-row',answerComp).size());
                     });
