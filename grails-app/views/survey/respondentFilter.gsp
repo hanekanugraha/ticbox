@@ -134,7 +134,7 @@
             <button id="submitFilterBtn" class="btn btn-sm btn-green" type="button" style="margin: 3px 0">
                 <g:message code="label.button.save" default="Save"/>
             </button>
-            <button class="btn btn-sm btn-blue-trust link" href="${request.contextPath}/survey/surveyGenerator" style="margin: 3px 0">
+            <button id="nextAndSubmitFilterBtn" class="btn btn-sm btn-blue-trust link" href="${request.contextPath}/survey/surveyGenerator" style="margin: 3px 0">
                 <g:message code="label.button.next" default="Next"/>
             </button>
         </div>
@@ -253,6 +253,83 @@
                 var filterComponentCode = jQuery('#respondentFilterComponents').val();
 
                 populateFilterComponent(filterComponentCode);
+
+            });
+
+            jQuery('#nextAndSubmitFilterBtn').click(function () {
+
+                var filterItems = [];
+
+                if (jQuery('#easySurveyChk').is(':checked')) {
+                    jQuery('#filterForm').find('.profile-item-container').each(function () {
+
+                        var filterItem = {};
+
+                        filterItem['code'] = jQuery(this).attr('code');
+                        filterItem['type'] = jQuery(this).attr('type');
+                        filterItem['label'] = jQuery(this).attr('label');
+
+                        switch (filterItem['type']) {
+
+                            case '${ProfileItem.TYPES.STRING}' :
+
+                                filterItem['val'] = jQuery('.filter-value', this).val();
+
+                                break;
+
+                            case '${ProfileItem.TYPES.NUMBER}' :
+
+                                filterItem['valFrom'] = jQuery('.filter-value-from', this).val();
+                                filterItem['valTo'] = jQuery('.filter-value-to', this).val();
+
+                                break;
+
+                            case '${ProfileItem.TYPES.CHOICE}' :
+                                filterItem['checkItems'] = [];
+                                jQuery('input.check-item:checked', this).each(function () {
+                                    if (jQuery(this).attr('label')) {
+                                        filterItem['checkItems'].push({key: jQuery(this).val(), value: jQuery(this).attr('label')});
+                                    } else {
+                                        filterItem['checkItems'].push(jQuery(this).val());
+                                    }
+                                });
+
+                                break;
+
+                            case '${ProfileItem.TYPES.LOOKUP}' :
+                                filterItem['checkItems'] = [];
+                                jQuery('input.check-item:checked', this).each(function () {
+                                    filterItem['checkItems'].push({key: jQuery(this).val(), value: jQuery(this).attr('label')});
+                                });
+
+                                break;
+
+                            case '${ProfileItem.TYPES.DATE}' :
+
+                                filterItem['valFrom'] = jQuery('.filter-value-from', this).val();
+                                filterItem['valTo'] = jQuery('.filter-value-to', this).val();
+
+                                break;
+
+                            default :
+
+                                break;
+
+                        }
+
+                        filterItems.push(filterItem);
+
+                    });
+                }
+
+                var filterItemsJSON = JSON.stringify(filterItems);
+
+                jQuery.getJSON('${request.contextPath}/survey/submitRespondentFilter', {filterItemsJSON: filterItemsJSON, surveyType: jQuery('input.surveyType:checked').val()}, function (data) {
+
+                    //alert('Submitted');
+
+                    //loadRespondentFilter(data);
+                });
 
             });
 
