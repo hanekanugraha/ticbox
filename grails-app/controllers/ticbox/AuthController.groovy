@@ -23,6 +23,47 @@ class AuthController {
         return [username: params.username, rememberMe: (params.rememberMe != null), targetUri: params.targetUri]
     }
 
+    def verifyUser = {
+        return [username: params.username, rememberMe: (params.rememberMe != null), targetUri: params.targetUri]
+    }
+
+    def verifyCode = {
+        def targetUri = params.targetUri
+        def user = User.findByUsername(SecurityUtils.subject.principal)
+        if(params.verifyCode==user.verifyCode) {
+            def role = user?.roles?.first()
+            switch (role.name.toLowerCase()) {
+                case "admin":
+                    targetUri = "/admin/index"
+                    break
+                case "surveyor":
+                    targetUri = "/survey/index"
+                    break
+                case "respondent":
+                    targetUri = "/respondent/index"
+                    break
+                default:
+                    targetUri = "/"
+            }
+
+            def savedRequest = WebUtils.getSavedRequest(request)
+            if (savedRequest) {
+                targetUri = savedRequest.requestURI - request.contextPath
+                if (savedRequest.queryString) targetUri = targetUri + '?' + savedRequest.queryString
+            }
+
+            user.verify="1"
+            user.save()
+
+            log.info "Redirecting to '${targetUri}'."
+            redirect(uri: targetUri)
+        }
+        else{
+            flash.error = message(code: "verify.failed")
+            redirect(uri: "/auth/verifyUser")
+        }
+    }
+
     def signIn = {
         def authToken = new UsernamePasswordToken(params.username, params.password as String)
 
@@ -42,19 +83,24 @@ class AuthController {
             def targetUri = params.targetUri
             if (!targetUri) {
                 def user = User.findByUsername(SecurityUtils.subject.principal)
-                def role = user?.roles?.first()
-                switch (role.name.toLowerCase()) {
-                    case "admin":
-                        targetUri = "/admin/index"
-                        break
-                    case "surveyor":
-                        targetUri = "/survey/index"
-                        break
-                    case "respondent":
-                        targetUri = "/respondent/index"
-                        break
-                    default:
-                        targetUri = "/"
+                if (user.verify == "0") {
+                    targetUri = "/auth/verifyUser"
+                } else {
+                    def role = user?.roles?.first()
+                    switch (role.name.toLowerCase()) {
+                        case "admin":
+                            targetUri = "/admin/index"
+                            break
+                        case "surveyor":
+                            targetUri = "/survey/index"
+                            break
+                        case "respondent":
+                            targetUri = "/respondent/index"
+                            break
+                        default:
+                            targetUri = "/"
+                    }
+                    session.putAt('role', role.name.toLowerCase())
                 }
             }
 

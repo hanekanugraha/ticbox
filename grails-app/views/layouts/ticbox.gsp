@@ -158,7 +158,16 @@
                                     %{--</li>--}%
                                     %{--</g:else>--}%
                                     <li role="presentation">
-                                        <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
+                                        <g:if test="${request.getSession().getAttribute("role") == "admin"}">
+                                            <a href="${request.contextPath}/admin/surveys"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
+                                        </g:if>
+                                        <g:elseif test="${request.getSession().getAttribute("role") == "surveyor"}">
+                                            <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
+                                        </g:elseif>
+                                    <g:elseif test="${request.getSession().getAttribute("role") == "respondent"}">
+                                        <a href="${request.contextPath}/respondent"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
+                                    </g:elseif>
+
                                     </li>
                                     <li role="presentation" class="divider"></li>
                                     <li role="presentation">

@@ -1,6 +1,6 @@
 <html>
     <head>
-        <meta name="layout" content="ticbox"/>
+        <meta name="layout" content="ticbox">
         <title>Welcome</title>
 
     </head>

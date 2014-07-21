@@ -156,7 +156,9 @@ class SurveyController {
     }
 
     def submitToAdmin(){
-        surveyService.submitToAdmin(surveyService.getCurrentEditedSurvey())
+        Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
+        if(survey)
+            surveyService.submitToAdmin(survey)
 
         redirect action: 'index'
     }
