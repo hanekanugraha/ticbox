@@ -70,6 +70,24 @@
                         <shiro:notAuthenticated>
                             %{--<li><g:link controller="auth" action="login" style="padding-right: 0">Register | Login</g:link></li>--}%
                             <li><g:link controller="auth" action="login">Register | Login</g:link></li>
+                            <li>
+                                <g:link class="dropdown-toggle" data-toggle="dropdown">
+                                    <span>
+                                        <g:message code="app.language.label"/>
+                                        <b class="caret"></b>
+                                    </span>
+                                </g:link>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                    <li role="presentation">
+                                        <a href="${request.forwardURI }?lang=en"> <g:message code="app.language.english"/></a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="${request.forwardURI }?lang=in"> <g:message code="app.language.indonesia"/></a>
+                                    </li>
+                                </ul>
+                            </li>
+                    </ul>
+
                         </shiro:notAuthenticated>
                         <shiro:authenticated>
                         %{--INBOX--}%
@@ -175,6 +193,22 @@
                                     </li>
                                     <li role="presentation">
                                         <a>Report a Problem</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <g:link class="dropdown-toggle" data-toggle="dropdown">
+                                    <span>
+                                        <g:message code="app.language.label"/>
+                                        <b class="caret"></b>
+                                    </span>
+                                </g:link>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                    <li role="presentation">
+                                        <a href="${request.forwardURI }?lang=en"> <g:message code="app.language.english"/></a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="${request.forwardURI }?lang=in"> <g:message code="app.language.indonesia"/></a>
                                     </li>
                                 </ul>
                             </li>

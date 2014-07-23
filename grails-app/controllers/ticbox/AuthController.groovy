@@ -11,13 +11,15 @@ import org.apache.shiro.crypto.hash.Sha256Hash
 import org.apache.shiro.grails.ConfigUtils
 import org.apache.shiro.web.util.WebUtils
 import org.scribe.model.Token
+import org.springframework.web.servlet.support.RequestContextUtils
 
 class AuthController {
     def userService
     def respondentService
     def oauthService
 
-    def index = { redirect(action: "login", params: params) }
+    def index = {
+        redirect(action: "login", params: params) }
 
     def login = {
         return [username: params.username, rememberMe: (params.rememberMe != null), targetUri: params.targetUri]

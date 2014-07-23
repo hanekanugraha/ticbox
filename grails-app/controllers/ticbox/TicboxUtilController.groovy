@@ -10,7 +10,7 @@ class TicboxUtilController {
 
     def bootstrapService
 
-    def reloadBootStrap(){
+    def reloadBootStrap() {
 
         bootstrapService.init(servletContext)
 

@@ -9,13 +9,13 @@ class UrlMappings {
 
         "/oauth/success"(controller: "shiroOAuth", action: "onSuccess")
         "/oauth/callback/$provider"(controller: "oauth", action: "callback")
-        "/"(view: "ticbox")
+        "/"(controller: "home", action: "index")
         "500"(view:'/error')
 
-        "/policies/termsOfUse"(view: "/policies/termsOfUse")
-        "/policies/privacy"(view: "/policies/privacy")
-        "/policies/antiSpam"(view: "/policies/antiSpam")
-        "/policies/surveyContent"(view: "/policies/surveyContent")
-        "/policies/surveyTermsOfService"(view: "/policies/surveyTermsOfService")
+        "/policies/termsOfUse"(controller: "policies",action: "termsOfUse")
+        "/policies/privacy"(controller: "policies",action: "privacy")
+        "/policies/antiSpam"(controller: "policies",action: "antiSpam")
+        "/policies/surveyContent"(controller: "policies",action: "surveyContent")
+        "/policies/surveyTermsOfService"(controller: "policies",action: "surveyTermsOfService")
     }
 }
