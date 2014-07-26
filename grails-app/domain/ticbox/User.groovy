@@ -7,6 +7,7 @@ class User {
     String pic
     String verify
     String verifyCode
+    String status
     RespondentProfile respondentProfile
     static embedded = ["respondentProfile"]
     static hasMany = [ roles: Role ]
@@ -21,6 +22,14 @@ class User {
     }
     static mapping = {
         username index: true
+    }
+
+    public static String getStatusLabel(String statusCode){
+        if(statusCode.equals("1"))
+            return "common.label.enable"
+        else if(statusCode.equals("0"))
+            return "common.label.disable"
+        else return "common.label.unknown"
     }
 }
 

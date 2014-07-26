@@ -54,10 +54,13 @@
                                     <button id="submit" class="btn btn-default btn-green">
                                         <span class="glyphicon glyphicon-log-in"></span> Sign In
                                     </button>
+
                                 </div>
                             </div>
                         </g:form>
-
+                        <a id="forgotPassword" class="btn btn-default btn-green" href="${request.contextPath}/home/forgotPassword">
+                            <span class="glyphicon glyphicon-log-in" ></span> Forgot Password
+                        </a>
                     </div>
 
                     <div class="module-header"></div>

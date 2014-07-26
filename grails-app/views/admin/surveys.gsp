@@ -275,6 +275,8 @@
     </div>
 </div>
 
+<div class="templates" style="display: none;">
+
 <div id="questionPreviewTemplate" class="surveyItemContainer">
     <div class="row">
         <div class="seqNumberContainer questionNumber col-xs-1"> </div>
@@ -353,6 +355,7 @@
     <div class="line stars col-xs-11 col-xs-offset-1">
 
     </div>
+</div>
 </div>
 
 <div class="templates">

@@ -91,4 +91,19 @@ class AdminController {
         forward(action: 'surveys')
         }
 
+    def activeUsers(){
+        try {
+            if (params.activeUserIds) {
+                def activeUserIds = ((String) params.activeUserIds).split(",")
+                userService.activeUsers(activeUserIds)
+                flash.message = message(code: "general.active.success.message")
+            } else {
+                throw Exception("No user was found")
+            }
+        } catch (Exception e) {
+            flash.error = message(code: "general.active.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        redirect(controller: "admin", action: "index")
+    }
 }

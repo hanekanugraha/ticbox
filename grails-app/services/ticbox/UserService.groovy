@@ -12,7 +12,8 @@ class UserService {
             passwordHash: new Sha256Hash(params.password).toHex(),
             email: params.email,
             verify:0,
-            verifyCode: generator( (('A'..'Z')+('0'..'9')).join(), 9 )
+            verifyCode: generator( (('A'..'Z')+('0'..'9')).join(), 9 ),
+            status:1
         )
 
         newUser.save()
@@ -92,6 +93,62 @@ class UserService {
         new Random().with {
             (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
         }
+    }
+
+    def activeUsers(String[] ids) throws Exception {
+        List<Long> activeIds = HelperService.getListOfLong(ids)
+            def users = User.findAll{
+                inList("_id", activeIds)
+            }
+            if (users) {
+                try {
+
+                    if (users.get(0).getStatus().equals("1")) {
+                        for(user in users){
+                            user.setStatus("0");
+                            def recipients = []
+                            recipients << [
+                                    email : user.email,
+                                    fullname : user.username //TODO RespondentProfile should consists full name
+                            ]
+
+                            emailBlasterService.blastEmail(recipients,'disableUser','Disable User',[message: 'message'])
+
+                        }
+                        User.saveAll(users);
+                    } else {
+                       for(user in users) {
+                           user.status = "1"
+                       }
+                        User.saveAll(users);
+
+                    }
+                }catch (e) {
+                    throw new Exception("Error in update user, ${e.message}")
+                }
+            } else {
+                throw new Exception("No user was found")
+            }
+    }
+
+    def resetPassword(String email){
+        String newPassword =generator( (('A'..'Z')+('0'..'9')).join(), 9 )
+        String passwordHash= new Sha256Hash(newPassword).toHex()
+        def recipients = []
+        User user= User.findByEmail(email)
+
+        if(user) {
+            user.passwordHash=passwordHash
+
+            recipients << [
+                    email   : user.email,
+                    fullname: user.username //TODO RespondentProfile should consists full name
+            ]
+
+            emailBlasterService.blastEmail(recipients, 'forgotPassword', 'Reset Ticbox Password', [newPassword: newPassword])
+            user.save()
+        }
+        return true
     }
 
 }

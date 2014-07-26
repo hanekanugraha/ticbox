@@ -37,7 +37,7 @@
     <%--
         NAVBAR
     --%>
-    <div class="navbar navbar-inverse navbar-fixed-top navbar-ticbox-green">
+    <div class="navbar navbar-default">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -196,6 +196,9 @@
                     </shiro:authenticated>
                 </ul>
             </div>
+        </div>
+        <div class="container">
+            <div style="border-bottom: solid 1px #E7E7E7;"></div>
         </div>
     </div>
     <%--

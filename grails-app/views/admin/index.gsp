@@ -1,4 +1,4 @@
-<%@ page import="org.apache.shiro.SecurityUtils" %>
+<%@ page import="ticbox.User; org.apache.shiro.SecurityUtils" %>
 <html>
 <head>
     <meta name="layout" content="admin"/>
@@ -17,6 +17,7 @@
                 <div class="col-sm-12">
                     <a id="addNewUser" href="#add-new-user-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> New User</a>
                     <a id="delUsers" href="#delete-users-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Delete</a>
+                    <a id="dactiveUsers" href="#active-users-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Reactive/Inactive</a>
                 </div>
             </div>
             <div class="row">
@@ -28,21 +29,24 @@
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Role(s)</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             <g:each in="${users}" var="user" status="status">
                                 <tr>
-                                    <td><input type="checkbox" name="userIds" value="${user.id}" ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)?.equals(user.username) ? 'disabled="disabled"' : ''} /></td>
+                                    <td><input type="checkbox" name="userIds" userstatus="${user.status}" value="${user.id}" ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)?.equals(user.username) ? 'disabled="disabled"' : ''} /></td>
                                     <td>${user.username}</td>
                                     <td>${user.email}</td>
                                     <td>${user.roles*.name}</td>
+                                    <td><g:message code="${User.getStatusLabel(user.status)}"/></td>
                                 </tr>
                             </g:each>
                         </tbody>
                     </table>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -120,6 +124,33 @@
     </div>
 </div>
 
+<!-- Activeation users modal -->
+<div id="active-users-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="activeUsersLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="ActiveUsersLabel" class="modal-title">
+                    Active Users
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="activeUsersForm" controller="admin" action="activeUsers" role="form">
+                    <input type="hidden" id="activeUserIds" name="activeUserIds" value=""/>
+                    <div class="well">
+                        <p><b>Are you sure to inactive/reactive these users?</b></p>
+                        There is no rollback for inactive/reactive users. Please make sure you know what you are doing.
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button id="activeUsers" class="btn btn-danger" data-loading-text="Processing..">Active</button>
+                <button id="cancelActiveUsers" class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <g:javascript src="jquery.validate.min.js"/>
 <g:javascript src="additional-methods.min.js"/>
@@ -147,6 +178,29 @@
             });
             $('#delUserIds', form).val(selected);
             form.submit();
+        });
+
+        $('#activeUsers').click(function() {
+            $(this).button('loading');
+            var selected = [];
+            var form = $('#activeUsersForm');
+            var status= null
+            var checking=true
+            $('input[name=userIds]:checked').each(function(id, elmt) {
+                selected.push(elmt.value);
+                if(status==null&&elmt.getAttribute("userstatus")!=null)
+                    status=elmt.getAttribute("userstatus");
+                if(status!=null&&elmt.getAttribute("userstatus")!=null&&status!=elmt.getAttribute("userstatus")){
+                    alert("user not same");
+                    checking= false;
+                }
+            });
+            if(checking) {
+                $('#activeUserIds', form).val(selected);
+                form.submit();
+            }else{
+                $('#cancelActiveUsers').click();
+            }
         });
 
         // Validations

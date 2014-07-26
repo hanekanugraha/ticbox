@@ -87,6 +87,9 @@ class AuthController {
                 def user = User.findByUsername(SecurityUtils.subject.principal)
                 if (user.verify == "0") {
                     targetUri = "/auth/verifyUser"
+                }
+                else if (user.status == "0") {
+                    targetUri = "/auth/disableUser"
                 } else {
                     def role = user?.roles?.first()
                     switch (role.name.toLowerCase()) {
