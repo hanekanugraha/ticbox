@@ -95,7 +95,7 @@ class AdminController {
         try {
             if (params.activeUserIds) {
                 def activeUserIds = ((String) params.activeUserIds).split(",")
-                userService.activeUsers(activeUserIds)
+                userService.activeUsers(activeUserIds,params.dactiveReason)
                 flash.message = message(code: "general.active.success.message")
             } else {
                 throw Exception("No user was found")
@@ -105,5 +105,53 @@ class AdminController {
             log.error(e.message, e)
         }
         redirect(controller: "admin", action: "index")
+    }
+
+    def deleteSurveys(){
+        try {
+            if (params.delSurveyIds) {
+                def delSurveyIds = ((String) params.delSurveyIds).split(",")
+                surveyService.deleteSurveys(delSurveyIds)
+                flash.message = message(code: "general.delete.success.message")
+            } else {
+                throw Exception("No Surveys was found")
+            }
+        } catch (Exception e) {
+            flash.error = message(code: "general.delete.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        redirect(controller: "admin", action: "surveys")
+    }
+
+    def disableSurveys(){
+        try {
+            if (params.disableSurveyIds) {
+                def disableSurveyIds = ((String) params.disableSurveyIds).split(",")
+                surveyService.disableSurveys(disableSurveyIds)
+                flash.message = message(code: "general.disable.success.message")
+            } else {
+                throw Exception("No Surveys was found")
+            }
+        } catch (Exception e) {
+            flash.error = message(code: "general.disable.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        redirect(controller: "admin", action: "surveys")
+    }
+
+    def enableSurveys(){
+        try {
+            if (params.enableSurveyIds) {
+                def enableSurveyIds = ((String) params.enableSurveyIds).split(",")
+                surveyService.enableSurveys(enableSurveyIds)
+                flash.message = message(code: "general.enable.success.message")
+            } else {
+                throw Exception("No Surveys was found")
+            }
+        } catch (Exception e) {
+            flash.error = message(code: "general.enable.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        redirect(controller: "admin", action: "surveys")
     }
 }

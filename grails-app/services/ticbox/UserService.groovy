@@ -95,7 +95,7 @@ class UserService {
         }
     }
 
-    def activeUsers(String[] ids) throws Exception {
+    def activeUsers(String[] ids,String reason) throws Exception {
         List<Long> activeIds = HelperService.getListOfLong(ids)
             def users = User.findAll{
                 inList("_id", activeIds)
@@ -112,13 +112,20 @@ class UserService {
                                     fullname : user.username //TODO RespondentProfile should consists full name
                             ]
 
-                            emailBlasterService.blastEmail(recipients,'disableUser','Disable User',[message: 'message'])
+                            emailBlasterService.blastEmail(recipients,'disableUser','Disable User',[message: 'message',reason:reason])
 
                         }
                         User.saveAll(users);
                     } else {
                        for(user in users) {
                            user.status = "1"
+                           def recipients = []
+                           recipients << [
+                                   email : user.email,
+                                   fullname : user.username //TODO RespondentProfile should consists full name
+                           ]
+
+                           emailBlasterService.blastEmail(recipients,'disableUser','Disable User',[message: 'message',reason:reason])
                        }
                         User.saveAll(users);
 

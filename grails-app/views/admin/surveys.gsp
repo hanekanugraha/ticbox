@@ -70,7 +70,7 @@
 </head>
 <body>
 
-<div id="menuNavPanelContent">
+%{--<div id="menuNavPanelContent">--}%
     %{--<div class="module">--}%
     %{--<div class="line side-panel">--}%
     %{--<div class="line header">--}%
@@ -96,13 +96,13 @@
     %{--</div>--}%
     %{--</div>--}%
 
-    <div class="" style="width: 100%">
-        <div class="line line-centered">
-            <button style="border-radius: 8px; width: 100%" id="createSurveyModalBtn" href="#createSurveyModal" role="button" data-toggle="modal" class="btn btn-green btn-lg" type="button"><g:message code="label.button.create" default="Create"/> Survey</button>
-        </div>
-    </div>
+    %{--div>--}%
+    %{--</div><div class="" style="width: 100%">--}%
+    %{--<div class="line line-centered">--}%
+        %{--<button style="border-radius: 8px; width: 100%" id="createSurveyModalBtn" href="#createSurveyModal" role="button" data-toggle="modal" class="btn btn-green btn-lg" type="button"><g:message code="label.button.create" default="Create"/> Survey</button>--}%
+    %{--</--}%
 
-</div>
+%{--</div>--}%
 
 
 <div class="module">
@@ -111,30 +111,37 @@
         <div class="title">Your Survey List</div>
     </div>
     <div id="surveyList" class="module-content">
+        <div class="row" style="margin-bottom:10px">
+            <div class="col-sm-12">
+                <a id="delSubmitedSurvey" href="#delete-submitted-survey-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Delete</a>
+            </div>
+        </div>
         <div style="width: 100%">
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="4">SUBMITTED</th>
+                    <th colspan="5">SUBMITTED</th>
                 </tr>
                 <tr class="sub-header">
+                    <th></th>
                     <th>Name</th>
                     <th>Total Charge</th>
                     <th>Modified</th>
                     <th>Point</th>
-                    <th></th>
+
                 </tr>
                 </thead>
                 <tbody>
                 <g:if test="${submitted.isEmpty()}">
                     <tr>
-                        <td colspan="4" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>
+                        <td colspan="5" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>
                     </tr>
                 </g:if>
                 <g:each in="${submitted}" var="survey">
                 <g:form name="finalizeForm" action="finalizeAndPublishSurvey" class="form-horizontal" role="form">
                     <input type="hidden" name="surveyId" value="${survey.surveyId}"/>
                     <tr>
+                        <td><input type="checkbox" name="surveySubmitedIds"  value="${survey.id}" /></td>
                         <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
                         <td></td>
                         <td></td>
@@ -151,13 +158,20 @@
                 </g:each>
                 </tbody>
             </table>
-
+            <div class="row" style="margin-bottom:10px">
+                <div class="col-sm-12">
+                    <a id="delInprogressSurvey" href="#delete-inprogress-survey-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Delete</a>
+                    <a id="disableInprogressSurvey" href="#disable-inprogress-survey-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Disable</a>
+                    <a id="enableInprogressSurvey" href="#enable-inprogress-survey-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Enable</a>
+                </div>
+            </div>
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="4">IN PROGRESS</th>
+                    <th colspan="5">IN PROGRESS</th>
                 </tr>
                 <tr class="sub-header">
+                    <th></th>
                     <th>Name</th>
                     <th>Running Time</th>
                     <th>Status</th>
@@ -167,11 +181,12 @@
                 <tbody>
                 <g:if test="${inProgress.isEmpty()}">
                     <tr>
-                        <td colspan="4" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>
+                        <td colspan="5" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>
                     </tr>
                 </g:if>
                 <g:each in="${inProgress}" var="survey">
                     <tr>
+                        <td><input type="checkbox" name="surveyInprogressIds"  value="${survey.id}" /></td>
                         <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
                         <td></td>
                         <td></td>
@@ -186,7 +201,7 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="4">COMPLETED</th>
+                    <th colspan="5">COMPLETED</th>
                 </tr>
                 <tr class="sub-header">
                     <th>Name</th>
@@ -198,7 +213,7 @@
                 <tbody>
                 <g:if test="${completes.isEmpty()}">
                     <tr>
-                        <td colspan="4" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>
+                        <td colspan="5" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>
                     </tr>
                 </g:if>
                 <g:each in="${completes}" var="survey">
@@ -270,6 +285,114 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close" default="Close"/></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="delete-submitted-survey-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteSurveyLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="deleteSubmittedSurveyLabel" class="modal-title">
+                    Delete Surveys
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="deleteSurveysForm" controller="admin" action="deleteSurveys" role="form">
+                    <input type="hidden" id="delSurveyIds" name="delSurveyIds" value=""/>
+                    <div class="well">
+                        <p><b>Are you sure to delete these surveys?</b></p>
+                        There is no rollback for deleted surveys. Please make sure you know what you are doing.
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button id="deleteSubmittedSurveys" class="btn btn-danger" data-loading-text="Processing..">Delete</button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="delete-inprogress-survey-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteSurveyLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="deleteInprogressSurveyLabel" class="modal-title">
+                    Delete Surveys
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="deleteSurveysForm" controller="admin" action="deleteSurveys" role="form">
+                    <input type="hidden" id="delSurveyIds" name="delSurveyIds" value=""/>
+                    <div class="well">
+                        <p><b>Are you sure to delete these surveys?</b></p>
+                        There is no rollback for deleted surveys. Please make sure you know what you are doing.
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button id="deleteInprogressSurveys" class="btn btn-danger" data-loading-text="Processing..">Delete</button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="disable-inprogress-survey-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="disableSurveyLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="disableSurveyLabel" class="modal-title">
+                    Disable Surveys
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="disableSurveysForm" controller="admin" action="disableSurveys" role="form">
+                    <input type="hidden" id="disableSurveyIds" name="disableSurveyIds" value=""/>
+                    <div class="well">
+                        <p><b>Are you sure to disable these surveys?</b></p>
+                        There is no rollback for deleted surveys. Please make sure you know what you are doing.
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button id="disableSurveys" class="btn btn-danger" data-loading-text="Processing..">Disable</button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="enable-inprogress-survey-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="enableSurveyLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="enableSurveyLabel" class="modal-title">
+                    Enable Surveys
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="enableSurveysForm" controller="admin" action="enableSurveys" role="form">
+                    <input type="hidden" id="enableSurveyIds" name="enableSurveyIds" value=""/>
+                    <div class="well">
+                        <p><b>Are you sure to enable these surveys?</b></p>
+                        There is no rollback for deleted surveys. Please make sure you know what you are doing.
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button id="enableSurveys" class="btn btn-danger" data-loading-text="Processing..">Enable</button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
             </div>
         </div>
     </div>
@@ -386,6 +509,50 @@
 
 
     jQuery(function(){
+
+        $('#deleteSubmittedSurveys').click(function() {
+            $(this).button('loading');
+            var selected = [];
+            var form = $('#deleteSurveysForm');
+            $('input[name=surveySubmitedIds]:checked').each(function(id, elmt) {
+                selected.push(elmt.value);
+            });
+            $('#delSurveyIds', form).val(selected);
+            form.submit();
+        });
+
+        $('#deleteInprogressSurveys').click(function() {
+            $(this).button('loading');
+            var selected = [];
+            var form = $('#deleteSurveysForm');
+            $('input[name=surveyInprogressIds]:checked').each(function(id, elmt) {
+                selected.push(elmt.value);
+            });
+            $('#delSurveyIds', form).val(selected);
+            form.submit();
+        });
+
+        $('#disableSurveys').click(function() {
+            $(this).button('loading');
+            var selected = [];
+            var form = $('#disableSurveysForm');
+            $('input[name=surveyInprogressIds]:checked').each(function(id, elmt) {
+                selected.push(elmt.value);
+            });
+            $('#disableSurveyIds', form).val(selected);
+            form.submit();
+        });
+
+        $('#enableSurveys').click(function() {
+            $(this).button('loading');
+            var selected = [];
+            var form = $('#enableSurveysForm');
+            $('input[name=surveyInprogressIds]:checked').each(function(id, elmt) {
+                selected.push(elmt.value);
+            });
+            $('#enableSurveyIds', form).val(selected);
+            form.submit();
+        });
 
         jQuery('.displayResultLink').click(function(){
             var that = jQuery(this);
@@ -708,6 +875,8 @@
             }
         });
     }
+
+
 
 </script>
 

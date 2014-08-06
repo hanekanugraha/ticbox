@@ -32,7 +32,7 @@
                 Hi ${fullname?:'User'},
 
 
-                user disable
+                user disable ${reason}
 
 
             </pre>

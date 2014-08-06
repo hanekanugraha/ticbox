@@ -4,6 +4,7 @@ class Survey {
     static SURVEY_TYPE = [EASY:"EASY", FREE:"FREE"]
     static POINT_TYPE = [TRUST:"TRUST", GOLD:"GOLD"]
     static STATUS = [DRAFT:'DRAFT', IN_PROGRESS:'IN_PROGRESS', COMPLETED:'COMPLETED', SUBMITTED:'SUBMITTED']
+    static ENABLE_STATUS = [ENABLE:'ENABLE', DISABLE:'DISABLE']
 
     static QUESTION_TYPE = [
         CHOICE_SINGLE : 'CHOICE_SINGLE',
@@ -28,6 +29,7 @@ class Survey {
     String pointType = POINT_TYPE.GOLD
     String status = STATUS.DRAFT
     String type = SURVEY_TYPE.EASY
+    String enableStatus = ENABLE_STATUS.ENABLE
 
     static belongsTo = [surveyor:SurveyorProfile]
 

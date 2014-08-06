@@ -14,6 +14,14 @@ class HelperService {
         return res
     }
 
+    static List<Long> getListOfString(String[] ids) {
+        def res = []
+        for (String id : ids) {
+            res << id
+        }
+        return res
+    }
+
     public String getProperty(String key, String defaultVal){
         return messageSource.getMessage(key, [].toArray(), defaultVal, LocaleContextHolder.getLocale())
     }

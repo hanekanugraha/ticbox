@@ -336,4 +336,47 @@ class SurveyService {
         survey.delete()
     }
 
+    def deleteSurveys(String[] ids){
+        List<String> delIds = HelperService.getListOfString(ids)
+        def surveys = Survey.findAll{
+            inList("_id", delIds)
+        }
+        if (surveys) {
+            Survey.deleteAll(surveys)
+        } else {
+            throw new Exception("No user was found")
+        }
+    }
+
+    def disableSurveys(String[] ids){
+        List<String> enableIds = HelperService.getListOfString(ids)
+        def surveys = Survey.findAll{
+            inList("_id", enableIds)
+        }
+        if (surveys) {
+            for(i in surveys){
+                i.enableStatus=Survey.ENABLE_STATUS.DISABLE;
+            }
+
+            Survey.saveAll(surveys)
+        } else {
+            throw new Exception("No user was found")
+        }
+    }
+
+    def enableSurveys(String[] ids){
+        List<String> enableIds = HelperService.getListOfString(ids)
+        def surveys = Survey.findAll{
+            inList("_id", enableIds)
+        }
+        if (surveys) {
+            for(i in surveys){
+                i.enableStatus=Survey.ENABLE_STATUS.ENABLE;
+            }
+
+            Survey.saveAll(surveys)
+        } else {
+            throw new Exception("No user was found")
+        }
+    }
 }
