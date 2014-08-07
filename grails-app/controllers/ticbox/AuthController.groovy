@@ -31,38 +31,41 @@ class AuthController {
 
     def verifyCode = {
         def targetUri = params.targetUri
-        def user = User.findByUsername(SecurityUtils.subject.principal)
+        def user = User.findByUsername(params.username)
         if(params.verifyCode==user.verifyCode) {
-            def role = user?.roles?.first()
-            switch (role.name.toLowerCase()) {
-                case "admin":
-                    targetUri = "/admin/index"
-                    break
-                case "surveyor":
-                    targetUri = "/survey/index"
-                    break
-                case "respondent":
-                    targetUri = "/respondent/index"
-                    break
-                default:
-                    targetUri = "/"
-            }
+//            def role = user?.roles?.first()
+//            switch (role.name.toLowerCase()) {
+//                case "admin":
+//                    targetUri = "/admin/index"
+//                    break
+//                case "surveyor":
+//                    targetUri = "/survey/index"
+//                    break
+//                case "respondent":
+//                    targetUri = "/respondent/index"
+//                    break
+//                default:
+//                    targetUri = "/home/index"
+//            }
 
-            def savedRequest = WebUtils.getSavedRequest(request)
-            if (savedRequest) {
-                targetUri = savedRequest.requestURI - request.contextPath
-                if (savedRequest.queryString) targetUri = targetUri + '?' + savedRequest.queryString
+//            def savedRequest = WebUtils.getSavedRequest(request)
+//            if (savedRequest) {
+//                targetUri = savedRequest.requestURI - request.contextPath
+//                if (savedRequest.queryString) targetUri = targetUri + '?' + savedRequest.queryString
+//            }
+            try {
+                user.verify = "1"
+                user.save()
+            }catch (Exception e){
+                e.printStackTrace()
             }
-
-            user.verify="1"
-            user.save()
 
             log.info "Redirecting to '${targetUri}'."
-            redirect(uri: targetUri)
+            redirect(controller: "auth",action:"login",params:[username: user.username])
         }
         else{
             flash.error = message(code: "verify.failed")
-            redirect(uri: "/auth/verifyUser")
+            redirect(controller: "home",action:"verifyUser",params:[username: user.username])
         }
     }
 
@@ -86,10 +89,12 @@ class AuthController {
             if (!targetUri) {
                 def user = User.findByUsername(SecurityUtils.subject.principal)
                 if (user.verify == "0") {
-                    targetUri = "/auth/verifyUser"
+                    SecurityUtils.subject.logout()
+                    redirect(controller: "home",action:"verifyUser",params:[username: user.username])
                 }
                 else if (user.status == "0") {
-                    targetUri = "/auth/disableUser"
+                    SecurityUtils.subject.logout()
+                    redirect(uri:"/home/disableUser",params:[username: user.username])
                 } else {
                     def role = user?.roles?.first()
                     switch (role.name.toLowerCase()) {
@@ -106,18 +111,22 @@ class AuthController {
                             targetUri = "/"
                     }
                     session.putAt('role', role.name.toLowerCase())
+
+                    // Handle requests saved by Shiro filters.
+                    def savedRequest = WebUtils.getSavedRequest(request)
+                    if (savedRequest) {
+                        targetUri = savedRequest.requestURI - request.contextPath
+                        if (savedRequest.queryString) targetUri = targetUri + '?' + savedRequest.queryString
+                    }
+
+                    log.info "Redirecting to '${targetUri}'."
+                    redirect(uri: targetUri)
                 }
             }
 
-            // Handle requests saved by Shiro filters.
-            def savedRequest = WebUtils.getSavedRequest(request)
-            if (savedRequest) {
-                targetUri = savedRequest.requestURI - request.contextPath
-                if (savedRequest.queryString) targetUri = targetUri + '?' + savedRequest.queryString
-            }
 
-            log.info "Redirecting to '${targetUri}'."
-            redirect(uri: targetUri)
+
+
         }
         catch (AuthenticationException ex) {
             // Authentication failed, so display the appropriate message

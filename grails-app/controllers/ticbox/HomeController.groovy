@@ -20,4 +20,10 @@ class HomeController {
 //        }
         redirect (controller: "auth", action: "index")
     }
+
+    def verifyUser = {
+        return [username: params.username, rememberMe: (params.rememberMe != null), targetUri: params.targetUri]
+    }
+
+    def disableUser ={}
 }
