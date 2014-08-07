@@ -60,15 +60,7 @@ class UserService {
                     throw new Exception("Cannot get user's role")
                 }
 
-                def recipients = []
-                recipients << [
-                        email : params.email,
-                        fullname : params.username //TODO RespondentProfile should consists full name
-                ]
-                String link = grailsLinkGenerator.getServerBaseURL()+"/home/verifyUserByEmail?username="+params.username+"&verifyCode="+newUser.verifyCode;
-
-                emailBlasterService.blastEmail(recipients,'verifyMail','Verify Code',[verifyCode: newUser.verifyCode,verifyLink : link])
-
+                sendVerifyCode(params,newUser.verifyCode)
                 newUser.save()
 
             } catch (e) {
@@ -166,4 +158,16 @@ class UserService {
         user.save()
     }
 
+    def sendVerifyCode(Map params,String verifyCode){
+
+        def recipients = []
+        recipients << [
+                email : params.email,
+                fullname : params.username //TODO RespondentProfile should consists full name
+        ]
+        String link = grailsLinkGenerator.getServerBaseURL()+"/home/verifyUserByEmail?username="+params.username+"&verifyCode="+verifyCode;
+
+        emailBlasterService.blastEmail(recipients,'verifyMail','Verify Code',[verifyCode: verifyCode,verifyLink : link])
+
+    }
 }

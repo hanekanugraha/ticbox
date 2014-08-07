@@ -41,12 +41,15 @@
                             <button id="submit" class="btn btn-default btn-green">
                                 <span class="glyphicon glyphicon-log-in"></span> Verify
                             </button>
+                            <a id="resend" class="btn btn-default btn-green" href="${g.createLink(controller: 'home', action: 'resendVerifyCode',params: [username: username] )}">
+                                <span class="glyphicon glyphicon-log-in"></span> Resend
+                            </a>
                         </div>
+
                     </div>
                 </g:form>
 
             </div>
-
 
         </div>
     </div>
@@ -62,6 +65,7 @@
         $('#submit').click(function() {
             $('#verifyCode').submit();
         });
+
 
         $('#verifyUser').validate({
             rules: {

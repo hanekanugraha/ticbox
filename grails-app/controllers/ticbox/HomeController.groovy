@@ -47,4 +47,16 @@ class HomeController {
     def verifySuccess ={
         return [username: params.username]
     }
+
+    def resendVerifyCode ={
+
+        def user = User.findByUsername(params.username)
+        params.put("email",user.email)
+
+        user.verifyCode = userService.generator( (('A'..'Z')+('0'..'9')).join(), 9 )
+        userService.sendVerifyCode(params,user.verifyCode)
+        userService.updateUser(user)
+        flash.message = message(code: "general.create.success.message")
+        redirect(controller: "home", action: "verifyUser",params:[username: params.username])
+    }
 }
