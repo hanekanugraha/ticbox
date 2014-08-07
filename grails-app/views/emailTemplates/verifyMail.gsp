@@ -34,6 +34,7 @@
 
                 verify code, '${verifyCode}'
 
+                or click this link <a href="${verifyLink}">${verifyLink}</a>
 
             </pre>
         </td>

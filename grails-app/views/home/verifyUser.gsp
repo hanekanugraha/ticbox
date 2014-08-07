@@ -30,6 +30,8 @@
                         <div class="col-sm-3">
                             <input type="text" class="form-control" name="verifyCode" id="verifyCode" value="${verifyCode}" placeholder="Verify Code"/>
                         </div>
+
+
                     </div>
 
 

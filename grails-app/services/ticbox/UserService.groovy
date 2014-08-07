@@ -1,10 +1,13 @@
 package ticbox
 
 import org.apache.shiro.crypto.hash.Sha256Hash
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
+import org.codehaus.groovy.grails.web.util.WebUtils
 
 class UserService {
     def respondentService
     def emailBlasterService
+    LinkGenerator grailsLinkGenerator
 
     def createUser(Map params) throws Exception {
         User newUser = new User(
@@ -62,8 +65,9 @@ class UserService {
                         email : params.email,
                         fullname : params.username //TODO RespondentProfile should consists full name
                 ]
+                String link = grailsLinkGenerator.getServerBaseURL()+"/home/verifyUserByEmail?username="+params.username+"&verifyCode="+newUser.verifyCode;
 
-                emailBlasterService.blastEmail(recipients,'verifyMail','Verify Code',[verifyCode: newUser.verifyCode])
+                emailBlasterService.blastEmail(recipients,'verifyMail','Verify Code',[verifyCode: newUser.verifyCode,verifyLink : link])
 
                 newUser.save()
 
@@ -156,6 +160,10 @@ class UserService {
             user.save()
         }
         return true
+    }
+
+    def updateUser(User user){
+        user.save()
     }
 
 }
