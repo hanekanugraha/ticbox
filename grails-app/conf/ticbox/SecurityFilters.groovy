@@ -6,7 +6,7 @@ package ticbox
  */
 class SecurityFilters {
 
-    def publicControllers = ["oauth","shiroOAuth","home","policies"]
+    def publicControllers = ["oauth","shiroOAuth","home","policies","userMessage"]
 
     def filters = {
         all(uri: "/**") {

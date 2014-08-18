@@ -93,12 +93,12 @@
                     <shiro:authenticated>
                     %{--INBOX--}%
                         <li class="dropdown">
-                            <g:link class="dropdown-toggle" data-toggle="dropdown" style="padding-right: 5px">
+                            <g:link class="dropdown-toggle" data-toggle="dropdown">
                                 <span id="inbox" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title="Inbox">
                                 </span>
-                                <g:if test="">
+                                <g:if test="${ticbox.UserMessage.findAllByToUsernameAndIsRead(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
                                     <span class="badge">
-                                        %{--lookup--}%
+                                        ${ticbox.UserMessage.findAllByToUsernameAndIsRead(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()}
                                     </span>
                                 </g:if>
                             </g:link>
@@ -107,10 +107,10 @@
                                     <b style="padding: 0 20px">Inbox</b>
                                 </li>
                                 <li role="presentation" class="divider" style="margin: 3px 0 5px"></li>
-                                <g:if test="">
-                                    <g:each in="" var="inbox">
+                                <g:if test="${ticbox.UserMessage.findAllByToUsernameAndIsRead(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
+                                    <g:each in="${ticbox.UserMessage.findAllByToUsernameAndIsRead(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false)}" var="inbox">
                                         <li role="presentation">
-                                            <g:link controller="" title="${inbox.title}" params="[code: inbox.code]">${inbox.title}</g:link>
+                                            <g:link controller="userMessage" title="${inbox.subject}" params="[code: inbox.id]">${inbox.subject}</g:link>
                                         </li>
                                     </g:each>
                                 </g:if>
@@ -119,6 +119,12 @@
                                         <a style="color:grey;">You have ... Inbox</a>
                                     </li>
                                 </g:else>
+                                <li role="presentation">
+                                    <g:link controller="userMessage" action="createMessage" title="Create Message" >Create Message</g:link>
+                                </li>
+                                <li role="presentation">
+                                    <g:link controller="userMessage" action="oldMessage" title="Old Message" >Old Message</g:link>
+                                </li>
                             </ul>
                         </li>
                     %{--NOTIFICATION--}%
