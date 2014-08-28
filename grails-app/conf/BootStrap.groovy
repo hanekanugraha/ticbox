@@ -35,6 +35,7 @@ class BootStrap {
         surveyorRole.permissions = []
         surveyorRole.addToPermissions("survey:*")
                 .addToPermissions("ajaxUpload:*")
+                .addToPermissions("ticboxUtil:*")
                 .save()
 
         def respondentRole = new Role(name: "Respondent")
@@ -42,6 +43,7 @@ class BootStrap {
         respondentRole.addToPermissions("respondent:*")
                 .addToPermissions("ajaxUpload:*")
                 .addToPermissions("userNotification:*")
+                .addToPermissions("ticboxUtil:*")
                 .save()
 
 
@@ -64,6 +66,8 @@ class BootStrap {
         //parameters
         new Parameter(code:"GOLD_RATE_IDR", value: "1000", desc: "Gold to IDR conversion").save()
         new Parameter(code:"GOLD_MIN_REDEMPTION", value: "50", desc: "Minimum Gold can be redeemed").save()*/
+//        new Parameter(code:"MAX_QUESTION_FREE_SURVEY", value: "20", desc: "Maximum number of Questions/Free Survey").save()
+//        new Parameter(code:"MAX_FREE_SURVEY_PER_SURVEYOR", value: "20", desc: "Maximum number of Free Surveys/Surveyor").save()
 
         println 'should be ok!!....'
     }

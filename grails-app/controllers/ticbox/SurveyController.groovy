@@ -142,6 +142,12 @@ class SurveyController {
 
     def submitSurvey(){
         try {
+            def count=surveyService.getCountFreeSurvey()
+            def limit=Integer.parseInt(Parameter.findByCode("MAX_FREE_SURVEY_PER_SURVEYOR").value)
+            if(count>limit) {
+                render 'LIMIT'
+                return
+            }
             Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
             if(survey)
                 surveyService.submitSurvey(params, survey)

@@ -170,6 +170,9 @@
                                 <li role="presentation">
                                     <a href="${request.contextPath}/admin/index"><span class="glyphicon glyphicon-home"></span> Users</a>
                                 </li>
+                                <li role="presentation">
+                                    <a href="${request.contextPath}/email/index"><span class="glyphicon glyphicon-home"></span> Emails</a>
+                                </li>
                                 <li role="presentation" class="divider"></li>
                                 <li role="presentation">
                                     <a>Help</a>

@@ -379,4 +379,8 @@ class SurveyService {
             throw new Exception("No user was found")
         }
     }
+
+    def getCountFreeSurvey(){
+        Survey.countBySurveyorAndType(surveyorService.currentSurveyor,Survey.SURVEY_TYPE.FREE)
+    }
 }

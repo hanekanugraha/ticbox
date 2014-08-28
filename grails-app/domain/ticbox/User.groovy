@@ -1,6 +1,9 @@
 package ticbox
 
 class User {
+
+    static USER_STATUS= [ENABLE:"1", DISABLE:"0"]
+
     String username
     String passwordHash
     String email

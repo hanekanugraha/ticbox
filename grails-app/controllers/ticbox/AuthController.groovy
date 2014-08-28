@@ -97,14 +97,14 @@ class AuthController {
                     redirect(uri:"/home/disableUser",params:[username: user.username])
                 } else {
                     def role = user?.roles?.first()
-                    switch (role.name.toLowerCase()) {
-                        case "admin":
+                    switch (role.name) {
+                        case Role.ROLE.ADMIN:
                             targetUri = "/admin/index"
                             break
-                        case "surveyor":
+                        case Role.ROLE.SURVEYOR:
                             targetUri = "/survey/index"
                             break
-                        case "respondent":
+                        case Role.ROLE.RESPONDENT:
                             targetUri = "/respondent/index"
                             break
                         default:
