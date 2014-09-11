@@ -173,6 +173,12 @@
                                 <li role="presentation">
                                     <a href="${request.contextPath}/email/index"><span class="glyphicon glyphicon-home"></span> Emails</a>
                                 </li>
+                                <li role="presentation">
+                                    <a href="${request.contextPath}/parameter/index"><span class="glyphicon glyphicon-home"></span> Parameters</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="${request.contextPath}/lookupMaster/index"><span class="glyphicon glyphicon-home"></span> Lookup Master</a>
+                                </li>
                                 <li role="presentation" class="divider"></li>
                                 <li role="presentation">
                                     <a>Help</a>
