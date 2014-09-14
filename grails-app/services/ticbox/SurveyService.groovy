@@ -140,7 +140,10 @@ class SurveyService {
     }
 
     def submitToAdmin(Survey survey){
-        survey.status = Survey.STATUS.SUBMITTED
+        if(survey.type==Survey.SURVEY_TYPE.FREE)
+            survey.status=Survey.STATUS.IN_PROGRESS
+        else
+            survey.status = Survey.STATUS.SUBMITTED
         survey.save()
     }
 
@@ -326,6 +329,12 @@ class SurveyService {
 
     def saveResponse(String responseJSON, String surveyId, String respondentId){
         SurveyResponse surveyResponse = SurveyResponse.findBySurveyIdAndRespondentId(surveyId, respondentId) ?: new SurveyResponse(surveyId: surveyId, respondentId: respondentId).save()
+        DBObject dbObject = (DBObject) com.mongodb.util.JSON.parse(responseJSON)
+        surveyResponse["response"] = dbObject
+        surveyResponse.save()
+    }
+    def saveResponseFreeSurvey(String responseJSON, String surveyId){
+        SurveyResponse surveyResponse = new SurveyResponse(surveyId: surveyId,respondentId: "-1").save()
         DBObject dbObject = (DBObject) com.mongodb.util.JSON.parse(responseJSON)
         surveyResponse["response"] = dbObject
         surveyResponse.save()

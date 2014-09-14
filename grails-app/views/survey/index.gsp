@@ -286,7 +286,7 @@
     </div>
 </div>
 
-<div class="templates">
+<div class="templates" style="display: none">
 
     <div id="questionItemTemplate" class="surveyItemContainer">
         <div class="row">
@@ -322,77 +322,81 @@
     </div>
 </div>
 
-<div id="questionPreviewTemplate" class="surveyItemContainer">
-    <div class="row">
-        <div class="seqNumberContainer questionNumber col-xs-1"> </div>
-        <div class="questionTextContainer col-xs-11">
-            <span class="question-text"></span>
-        </div>
-    </div>
-</div>
+<div class="templates" style="display: none">
 
-<div id="answerPreviewTemplate-singleText" class="answerTemplate row" type="${Survey.QUESTION_TYPE.FREE_TEXT}">
-    <div class="col col-xs-11 col-xs-offset-1">
-        <textarea class="form-control" rows="3" placeholder="" style="width: 100% !important;"></textarea>
-    </div>
-</div>
-
-<div id="answerPreviewTemplate-multipleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">
-    <div class="choice-items col-xs-11 col-xs-offset-1">
-        <div class="choice-item row">
-            %{--<label class="checkbox">--}%
-            %{--<div class="col col-xs-1" style="text-align: right">--}%
-            <div class="col col-xs-12">
-                <input class="item-check" type="checkbox">
-                %{--</div>--}%
-                %{--<div class="col col-xs-11" style="padding-left: 0">--}%
-                <span class="item-label" style="font-weight: normal; margin-bottom: 0"></span>
-            </div>
-            %{--</label>--}%
-        </div>
-    </div>
-</div>
-
-%{--<div id="answerPreviewTemplate-singleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">--}%
-%{--<div class="col col-xs-11 col-xs-offset-1">--}%
-%{--<select class="item-select" style="min-width: 200px">--}%
-%{--<option></option>--}%
-%{--</select>--}%
-%{--</div>--}%
-%{--</div>--}%
-
-<div id="answerPreviewTemplate-singleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">
-    <div class="choice-items col-xs-11 col-xs-offset-1">
-        <div class="choice-item row">
-            %{--<div class="col col-xs-1" style="text-align: right">--}%
-            <div class="col col-xs-12">
-                <input class="item-check" type="radio">
-                %{--</div>--}%
-                %{--<div class="col col-xs-11" style="padding-left: 0">--}%
-                <span class="item-label" style="font-weight: normal; margin-bottom: 0"></span>
+    <div id="questionPreviewTemplate" class="surveyItemContainer">
+        <div class="row">
+            <div class="seqNumberContainer questionNumber col-xs-1"> </div>
+            <div class="questionTextContainer col-xs-11">
+                <span class="question-text"></span>
             </div>
         </div>
     </div>
-</div>
 
-<div id="answerPreviewTemplate-scale" class="answerTemplate row" type="${Survey.QUESTION_TYPE.SCALE_RATING}">
-    <div class="col col-xs-11 col-xs-offset-1" style="overflow-x: auto;width: auto">
-        <table class="table scale-table table-bordered table-responsive">
-            <thead>
-            <tr class="scale-head">
-                <th style="text-align: center;"></th>
-                %{--<th class="rating-label" style="text-align: center"></th>--}%
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="scale-row">
-                <td class="row-label"> </td>
-                <td class="rating-weight" style="text-align: center">
-                    <input type="radio" name="rd-1">
-                </td>
-            </tr>
-            </tbody>
-        </table>
+
+    <div id="answerPreviewTemplate-singleText" class="answerTemplate row" type="${Survey.QUESTION_TYPE.FREE_TEXT}">
+        <div class="col col-xs-11 col-xs-offset-1">
+            <textarea class="form-control" rows="3" placeholder="" style="width: 100% !important;"></textarea>
+        </div>
+    </div>
+
+    <div id="answerPreviewTemplate-multipleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">
+        <div class="choice-items col-xs-11 col-xs-offset-1">
+            <div class="choice-item row">
+                %{--<label class="checkbox">--}%
+                %{--<div class="col col-xs-1" style="text-align: right">--}%
+                <div class="col col-xs-12">
+                    <input class="item-check" type="checkbox">
+                    %{--</div>--}%
+                    %{--<div class="col col-xs-11" style="padding-left: 0">--}%
+                    <span class="item-label" style="font-weight: normal; margin-bottom: 0"></span>
+                </div>
+                %{--</label>--}%
+            </div>
+        </div>
+    </div>
+
+    %{--<div id="answerPreviewTemplate-singleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">--}%
+    %{--<div class="col col-xs-11 col-xs-offset-1">--}%
+    %{--<select class="item-select" style="min-width: 200px">--}%
+    %{--<option></option>--}%
+    %{--</select>--}%
+    %{--</div>--}%
+    %{--</div>--}%
+
+    <div id="answerPreviewTemplate-singleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">
+        <div class="choice-items col-xs-11 col-xs-offset-1">
+            <div class="choice-item row">
+                %{--<div class="col col-xs-1" style="text-align: right">--}%
+                <div class="col col-xs-12">
+                    <input class="item-check" type="radio">
+                    %{--</div>--}%
+                    %{--<div class="col col-xs-11" style="padding-left: 0">--}%
+                    <span class="item-label" style="font-weight: normal; margin-bottom: 0"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="answerPreviewTemplate-scale" class="answerTemplate row" type="${Survey.QUESTION_TYPE.SCALE_RATING}">
+        <div class="col col-xs-11 col-xs-offset-1" style="overflow-x: auto;width: auto">
+            <table class="table scale-table table-bordered table-responsive">
+                <thead>
+                <tr class="scale-head">
+                    <th style="text-align: center;"></th>
+                    %{--<th class="rating-label" style="text-align: center"></th>--}%
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="scale-row">
+                    <td class="row-label"> </td>
+                    <td class="rating-weight" style="text-align: center">
+                        <input type="radio" name="rd-1">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

@@ -2,7 +2,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="ticbox"/>
-    <title>Disable User</title>
+    <title>Free Survey Link</title>
 </head>
 
 <body>
@@ -10,12 +10,12 @@
     <div class="col-md-12">
         <div class="module">
             <div class="module-header">
-                <div class="title">Disable User</div>
+                <div class="title">Free Survey Link</div>
             </div>
 
             <div class="module-content">
 
-                <div style="font-weight: bold; margin-top: 10px;">User Disable. Please contact admin</div>
+                <div style="font-weight: bold; margin-top: 10px;">Free survey link <a href="${freeLink}">${freeLink}</a></div>
 
                 <g:if test="${flash.message}">
                     <div class="alert alert-success" style="display: block">${flash.message}</div>

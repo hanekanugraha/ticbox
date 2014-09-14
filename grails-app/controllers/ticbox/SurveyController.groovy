@@ -166,7 +166,12 @@ class SurveyController {
         if(survey)
             surveyService.submitToAdmin(survey)
 
-        redirect action: 'index'
+        if(survey.type==Survey.SURVEY_TYPE.FREE){
+            redirect action: 'freeSurveyLink' , params: [freeLink:createLink(controller:'Home',action: 'takeFreeSurvey',params: [surveyId:survey.surveyId] )]
+        }
+
+        else
+            redirect action: 'index'
     }
 
     def finalizeAndPublishSurvey(){
@@ -246,5 +251,9 @@ class SurveyController {
         surveyService.deleteSurvey(params)
 
         redirect action: 'index'
+    }
+
+    def freeSurveyLink={
+        [freeLink: params.freeLink]
     }
 }

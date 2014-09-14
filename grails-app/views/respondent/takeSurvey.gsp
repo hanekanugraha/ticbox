@@ -105,7 +105,8 @@
         jQuery.getJSON('${request.contextPath}/respondent/getSurvey', {surveyId: '${survey.surveyId}'}, function (questionItems) {
 
             loadSurvey(questionItems);
-
+            if(questionItems.length<2)
+                jQuery('#nextQuestion').hide()
         });
 
     });
