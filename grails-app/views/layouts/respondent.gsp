@@ -183,6 +183,7 @@
                                 <li role="presentation">
                                     <a href="${request.contextPath}/respondent"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
                                 </li>
+
                                 <li role="presentation" class="divider"></li>
                                 <li role="presentation">
                                     <a>Help</a>

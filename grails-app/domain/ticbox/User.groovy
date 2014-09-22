@@ -21,7 +21,8 @@ class User {
         pic(nullable: true)
         respondentProfile(nullable: true)
         verify(nullable: false)
-        verifyCode(nullable: false)
+        verifyCode(nullable: true)
+        status(nullable: false)
     }
     static mapping = {
         username index: true

@@ -35,9 +35,12 @@ class BootstrapService {
                     code: 'LM_EDU001',
                     label: 'Education',
                     values: [
-                            DEGREE : 'Bachelor',
-                            MAGISTER : 'Magister',
-                            DOCTOR : 'Doctor'
+                            NO_COLLEGE : 'No College',
+                            SOME_COLLEGE : 'Some College',
+                            TWO_YR_DEGREE : 'Two Year Degree',
+                            FOUR_YR_DEGREE : 'Four Year Degree',
+                            GRAD_SCHOOL_DEGREE: 'Grad School Degree',
+                            PROFESSIONAL_DEGREE:'Professional Degree'
                     ]
             ).save()
 
@@ -50,6 +53,177 @@ class BootstrapService {
                             DMY3 : 'Dummy Item 3',
                             DMY4 : 'Dummy Item 4',
                             DMY5 : 'Dummy Item 5',
+                    ]
+            ).save()
+
+            new LookupMaster(
+                    code: 'LM_RELIGION001',
+                    label: 'Religion',
+                    values: [
+                            MOSLEM : 'Moslem',
+                            CHRISTIAN : 'Christian',
+                            CATHOLIC : 'Catholic',
+                            BUDDHISM : 'Buddhism',
+                            HINDUISM: 'Hinduism',
+                            OTHERS:'Others'
+                    ]
+            ).save()
+
+            new LookupMaster(
+                    code: 'LM_EMP_STATUS001',
+                    label: 'Employment Status',
+                    values: [
+                            FULLTIME : 'Fulltime',
+                            PARTTIME : 'Part time',
+                            RETIRED : 'Retired',
+                            STUDENT : 'Student',
+                            UNEMPLOYED: 'Unemployed'
+                    ]
+            ).save()
+
+            new LookupMaster(
+                    code: 'LM_CAREER001',
+                    label: 'Career',
+                    values: [
+                            ACC_FINANCE_BANK : 'accounting/finance/banking',
+                            ADV_GRP_DESIGN : 'advertising/graphic design',
+                            ART_ENTERTAINMENT : 'arts/entertainment',
+                            CLERICAL : 'clerical',
+                            HEALTHCARE: 'healthcare',
+                            HOSPITALITY: 'hospitality',
+                            IT: 'IT',
+                            LEGAL:  'legal',
+                            MANAGEMENT: 'management',
+                            MILITARY:   'military',
+                            PUBLIC_SAFETY:  'public safety',
+                            REAL_ESTATE:    'real estate',
+                            RETAIL  :'retail',
+                            SMALL_BSN_OWNER:    'small business owner',
+                            STUDENT: 'student',
+                            OTHERS: 'others'
+
+                    ]
+            ).save()
+
+            new LookupMaster(
+                    code: 'LM_GENDER001',
+                    label: 'Gender',
+                    values: [
+                            MALE : 'Male',
+                            FEMALE : 'Female'
+                    ]
+            ).save()
+
+            new LookupMaster(
+                    code: 'LM_RELASIONSHIP001',
+                    label: 'Relasionship Status',
+                    values: [
+                            SINGLE : 'Single',
+                            ENGAGED : 'engaged',
+                            LVL_S_O: 'living with significant other',
+                            MARRIED: 'Married',
+                            DIVORCED:   'Divorced',
+                            WIDOWED:    'Widowed',
+                            COMPLICATED:    "It's Complicated"
+                    ]
+            ).save()
+
+            new LookupMaster(
+                    code: 'LM_PARENTAL_STATUS001',
+                    label: 'Parental Status',
+                    values: [
+                            NO_CHILDREN : 'No Children',
+                            ONE_CHILD : '1 Child',
+                            TWO_CHILD : '2 Child',
+                            THREE_CHILD : '3 Child',
+                            FOUR_CHILD : '4 Child',
+                            FIVEPLUS_CHILD : '5+ Child'
+                    ]
+            ).save()
+
+            new LookupMaster(
+                    code: 'LM_PROVINCE001',
+                    label: 'Province',
+                    values: [
+                            ACEH:'Aceh',
+                            BALI:'Bali',
+                            BANTEN:'Banten',
+                            BENGKULU:'Bengkulu',
+                            GORONTALO:'Gorontalo',
+                            JAKARTA:'Jakarta',
+                            JAMBI:'Jambi',
+                            JAWA_BARAT:'Jawa Barat',
+                            JAWA_TENGAH:'Jawa Tengah',
+                            JAWA_TIMUR:'Jawa Timur',
+                            KALIMANTAN_BARAT:'Kalimantan Barat',
+                            KALIMANTAN_SELATAN:'Kalimantan Selatan',
+                            BANJARMASIN:'Banjarmasin',
+                            KALIMANTAN_TENGAH:'Kalimantan Tengah',
+                            KALIMANTAN_TIMUR:'Kalimantan Timur',
+                            KALIMANTAN_UTARA:'Kalimantan Utara',
+                            KEP_BANGKA_BELITUNG:'Kepulauan Bangka Belitung',
+                            KEP_RIAU:'Kepulauan Riau',
+                            LAMPUNG:'Lampung',
+                            MALUKU:'Maluku',
+                            MALUKU_UTARA:'Maluku Utara',
+                            NTB:'Nusa Tenggara Barat',
+                            NTT:'Nusa Tenggara Timur',
+                            PAPUA:'Papua',
+                            PAPUA_BARAT:'Papua Barat',
+                            RIAU:'Riau',
+                            SULAWESI_BARAT:'Sulawesi Barat',
+                            SULAWESI_SELATAN:'Sulawesi Selatan',
+                            MAKASSAR:'Makassar',
+                            SULAWESI_TENGAH:'Sulawesi Tengah',
+                            SULAWESI_TENGGARA:'Sulawesi Tenggara',
+                            SULAWESI_UTARA:'Sulawesi Utara',
+                            SUMATERA_BARAT:'Sumatera Barat',
+                            SUMATERA_SELATAN:'Sumatera Selatan',
+                            SUMATERA_UTARA:'Sumatera Utara',
+                            YOGYAKARTA:'Yogyakarta'
+                    ]
+            ).save()
+
+            new LookupMaster(
+                    code: 'LM_CITY001',
+                    label: 'City',
+                    values: [
+                            ACEH:'Aceh',
+                            BALI:'Bali',
+                            BANTEN:'Banten',
+                            BENGKULU:'Bengkulu',
+                            GORONTALO:'Gorontalo',
+                            JAKARTA:'Jakarta',
+                            JAMBI:'Jambi',
+                            JAWA_BARAT:'Jawa Barat',
+                            JAWA_TENGAH:'Jawa Tengah',
+                            JAWA_TIMUR:'Jawa Timur',
+                            KALIMANTAN_BARAT:'Kalimantan Barat',
+                            KALIMANTAN_SELATAN:'Kalimantan Selatan',
+                            BANJARMASIN:'Banjarmasin',
+                            KALIMANTAN_TENGAH:'Kalimantan Tengah',
+                            KALIMANTAN_TIMUR:'Kalimantan Timur',
+                            KALIMANTAN_UTARA:'Kalimantan Utara',
+                            KEP_BANGKA_BELITUNG:'Kepulauan Bangka Belitung',
+                            KEP_RIAU:'Kepulauan Riau',
+                            LAMPUNG:'Lampung',
+                            MALUKU:'Maluku',
+                            MALUKU_UTARA:'Maluku Utara',
+                            NTB:'Nusa Tenggara Barat',
+                            NTT:'Nusa Tenggara Timur',
+                            PAPUA:'Papua',
+                            PAPUA_BARAT:'Papua Barat',
+                            RIAU:'Riau',
+                            SULAWESI_BARAT:'Sulawesi Barat',
+                            SULAWESI_SELATAN:'Sulawesi Selatan',
+                            MAKASSAR:'Makassar',
+                            SULAWESI_TENGAH:'Sulawesi Tengah',
+                            SULAWESI_TENGGARA:'Sulawesi Tenggara',
+                            SULAWESI_UTARA:'Sulawesi Utara',
+                            SUMATERA_BARAT:'Sumatera Barat',
+                            SUMATERA_SELATAN:'Sumatera Selatan',
+                            SUMATERA_UTARA:'Sumatera Utara',
+                            YOGYAKARTA:'Yogyakarta'
                     ]
             ).save()
         }
@@ -123,7 +297,8 @@ class BootstrapService {
                 code: 'PI_EDU001',
                 label: 'Education',
                 type: ProfileItem.TYPES.CHOICE,
-                seq: 6
+                seq: 6,
+                lookupFrom: 'LM_EDU001'
         )
         education['lookupFrom'] = 'LM_EDU001'
         education['componentType'] = ProfileItem.COMPONENT_TYPES.SELECT
@@ -200,5 +375,97 @@ class BootstrapService {
         dummy4['multiple'] = true
         dummy4.save()
 
+
+        ProfileItem gender = ProfileItem.findByCode('PI_GENDER001')?:new ProfileItem(
+                code: 'PI_GENDER001',
+                label: 'Gender',
+                type: ProfileItem.TYPES.CHOICE,
+                seq: 9
+        )
+        gender['lookupFrom'] = 'LM_GENDER001'
+        gender['componentType'] = ProfileItem.COMPONENT_TYPES.RADIO
+        gender.save()
+
+        ProfileItem religion = ProfileItem.findByCode('PI_RELIGION001')?:new ProfileItem(
+                code: 'PI_RELIGION001',
+                label: 'Religion',
+                type: ProfileItem.TYPES.CHOICE,
+                seq: 10
+        )
+        religion['lookupFrom'] = 'LM_RELIGION001'
+        religion['componentType'] = ProfileItem.COMPONENT_TYPES.SELECT
+        religion.save()
+
+        ProfileItem income = ProfileItem.findByCode('PI_INCOME001')?:new ProfileItem(
+                code: 'PI_INCOME001',
+                label: 'Income',
+                type: ProfileItem.TYPES.NUMBER,
+                seq: 11
+        )
+
+        income['unit'] = 'Rp'
+        income['min'] = 0
+        income['max'] = 9999999999
+        income.save()
+
+        ProfileItem employmentStatus = ProfileItem.findByCode('PI_EMP_STATUS001')?:new ProfileItem(
+                code: 'PI_EMP_STATUS001',
+                label: 'Employment Status',
+                type: ProfileItem.TYPES.CHOICE,
+                seq: 12
+        )
+        employmentStatus['lookupFrom'] = 'LM_EMP_STATUS001'
+        employmentStatus['componentType'] = ProfileItem.COMPONENT_TYPES.SELECT
+        employmentStatus.save()
+
+        ProfileItem career = ProfileItem.findByCode('PI_CAREER001')?:new ProfileItem(
+                code: 'PI_CAREER001',
+                label: 'Career',
+                type: ProfileItem.TYPES.CHOICE,
+                seq: 13
+        )
+        career['lookupFrom'] = 'LM_CAREER001'
+        career['componentType'] = ProfileItem.COMPONENT_TYPES.SELECT
+        career.save()
+
+        ProfileItem relasionship = ProfileItem.findByCode('PI_RELASIONSHIP001')?:new ProfileItem(
+                code: 'PI_RELASIONSHIP001',
+                label: 'Relasionship Status',
+                type: ProfileItem.TYPES.CHOICE,
+                seq: 14
+        )
+        relasionship['lookupFrom'] = 'LM_RELASIONSHIP001'
+        relasionship['componentType'] = ProfileItem.COMPONENT_TYPES.SELECT
+        relasionship.save()
+
+        ProfileItem parentalStatus = ProfileItem.findByCode('PI_PARENTAL_STATUS001')?:new ProfileItem(
+                code: 'PI_PARENTAL_STATUS001',
+                label: 'Parental Status',
+                type: ProfileItem.TYPES.CHOICE,
+                seq: 15
+        )
+        parentalStatus['lookupFrom'] = 'LM_PARENTAL_STATUS001'
+        parentalStatus['componentType'] = ProfileItem.COMPONENT_TYPES.SELECT
+        parentalStatus.save()
+
+        ProfileItem province = ProfileItem.findByCode('PI_PROVINCE001')?:new ProfileItem(
+                code: 'PI_PROVINCE001',
+                label: 'Province',
+                type: ProfileItem.TYPES.CHOICE,
+                seq: 16
+        )
+        province['lookupFrom'] = 'LM_PROVINCE001'
+        province['componentType'] = ProfileItem.COMPONENT_TYPES.SELECT
+        province.save()
+
+        ProfileItem city = ProfileItem.findByCode('PI_CITY001')?:new ProfileItem(
+                code: 'PI_CITY001',
+                label: 'City',
+                type: ProfileItem.TYPES.CHOICE,
+                seq: 17
+        )
+        city['lookupFrom'] = 'LM_CITY001'
+        city['componentType'] = ProfileItem.COMPONENT_TYPES.SELECT
+        city.save()
     }
 }

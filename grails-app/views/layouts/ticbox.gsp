@@ -1,4 +1,4 @@
-<%@ page import="org.apache.shiro.SecurityUtils" %>
+<%@ page import="ticbox.Role; org.apache.shiro.SecurityUtils" %>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
@@ -17,14 +17,16 @@
         <link rel="stylesheet" href="${resource(dir: 'frameworks/jquery-ui-1.10.2/css/smoothness', file: 'jquery-ui-1.10.2.custom.css')}" type="text/css">
         <link rel="stylesheet" href="${resource(dir: 'frameworks/bootstrap/css', file: 'bootstrap.min.css')}" type="text/css">
         %{--<link rel="stylesheet" href="${resource(dir: 'frameworks/bootstrap/css', file: 'bootstrap-responsive.css')}" type="text/css">--}%
+        %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'app.css')}" type="text/css">--}%
 
         <script type="text/javascript" src="${resource(dir: 'frameworks/jquery-ui-1.10.2/js', file: 'jquery-1.9.1.js')}"></script>
         <script type="text/javascript" src="${resource(dir: 'frameworks/jquery-ui-1.10.2/js', file: 'jquery-ui-1.10.2.custom.js')}"></script>
         <script type="text/javascript" src="${resource(dir: 'frameworks/bootstrap/js', file: 'bootstrap.min.js')}"></script>
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'custom.css')}" type="text/css">
 
-        %{--<LINK REL="SHORTCUT ICON" HREF="/~your_directory/logo.ico">--}%
         <g:layoutHead/>
+        <r:layoutResources />
+
     </head>
 
     <body>
@@ -88,8 +90,6 @@
                                     </li>
                                 </ul>
                             </li>
-                    </ul>
-
                         </shiro:notAuthenticated>
                         <shiro:authenticated>
                         %{--INBOX--}%
@@ -184,13 +184,13 @@
                                     %{--</li>--}%
                                     %{--</g:else>--}%
                                     <li role="presentation">
-                                        <g:if test="${request.getSession().getAttribute("role") == "admin"}">
+                                        <g:if test="${request.getSession().getAttribute("role") == Role.ROLE.ADMIN}">
                                             <a href="${request.contextPath}/admin/surveys"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
                                         </g:if>
-                                        <g:elseif test="${request.getSession().getAttribute("role") == "surveyor"}">
+                                        <g:elseif test="${request.getSession().getAttribute("role") == Role.ROLE.SURVEYOR}">
                                             <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
                                         </g:elseif>
-                                    <g:elseif test="${request.getSession().getAttribute("role") == "respondent"}">
+                                    <g:elseif test="${request.getSession().getAttribute("role") == Role.ROLE.RESPONDENT}">
                                         <a href="${request.contextPath}/respondent"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
                                     </g:elseif>
 
@@ -242,9 +242,6 @@
 
         <div class="container" id="page-outer">
             %{--<div id="wrapper-effect" class="" style="padding-top: 0">--}%
-                <script type="text/javascript" src="${resource(dir: 'frameworks/jquery-ui-1.10.2/js', file: 'jquery-1.9.1.js')}"></script>
-                <script type="text/javascript" src="${resource(dir: 'frameworks/jquery-ui-1.10.2/js', file: 'jquery-ui-1.10.2.custom.js')}"></script>
-                <script type="text/javascript" src="${resource(dir: 'frameworks/bootstrap/js', file: 'bootstrap.min.js')}"></script>
 
                 <g:if test="${flash.error}">
                     <div class="alert alert-error" style="display: block">${flash.error}</div>
@@ -258,6 +255,7 @@
         </div>
         <g:render template="/layouts/footer"></g:render>
 
+        <r:layoutResources />
 
     <script type="text/javascript">
             $('#log-out-btn').tooltip({'placement': 'bottom','content':'html'});
@@ -272,6 +270,8 @@
                         window.location.href = href;
                     }
                 });
+
+
 
                 jQuery('.datePicker').datepicker({
                     showAnim : 'slideDown',

@@ -42,7 +42,7 @@ class AdminController {
     }
 
     def redemptions = {
-        def redemptionRequestList = RedemptionRequest.all
+        def redemptionRequestList = RedemptionRequest.findByStatus(RedemptionRequest.STATUS.New)
         [redemptionRequestList:redemptionRequestList, redemptionStatuses: RedemptionRequest.STATUS]
     }
 
@@ -154,4 +154,39 @@ class AdminController {
         }
         redirect(controller: "admin", action: "surveys")
     }
+
+    def approveRedemps(){
+        try {
+            if (params.approveRedempIds) {
+                def approveRedempIds = ((String) params.approveRedempIds).split(",")
+
+                goldService.approveRedemptions(approveRedempIds)
+                flash.message = message(code: "general.delete.success.message")
+            } else {
+                throw Exception("No Redemption was found")
+            }
+        } catch (Exception e) {
+            flash.error = message(code: "general.delete.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        redirect(controller: "admin", action: "redemptions")
+    }
+
+    def rejectRedemps(){
+        try {
+            if (params.rejectRedempIds) {
+                def rejectRedempIds = ((String) params.rejectRedempIds).split(",")
+
+                goldService.rejectRedemptions(rejectRedempIds)
+                flash.message = message(code: "general.delete.success.message")
+            } else {
+                throw Exception("No Redemption was found")
+            }
+        } catch (Exception e) {
+            flash.error = message(code: "general.delete.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        redirect(controller: "admin", action: "redemptions")
+    }
+
 }

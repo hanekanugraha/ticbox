@@ -19,7 +19,7 @@ class RedemptionRequest {
     static constraints = {
         respondentId (blank: false)
         respondentUsername (blank: false)
-        respondentGoldHistoryId (blank: false)
+        respondentGoldHistoryId (nullable: true)
         redemptionAmount (blank: false)
         bankName (blank: false)
         bankBranchName (nullable: true)

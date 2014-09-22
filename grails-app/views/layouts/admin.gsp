@@ -179,6 +179,9 @@
                                 <li role="presentation">
                                     <a href="${request.contextPath}/lookupMaster/index"><span class="glyphicon glyphicon-home"></span> Lookup Master</a>
                                 </li>
+                                <li role="presentation">
+                                    <a href="${request.contextPath}/admin/redemptions"><span class="glyphicon glyphicon-home"></span> Redemptions</a>
+                                </li>
                                 <li role="presentation" class="divider"></li>
                                 <li role="presentation">
                                     <a>Help</a>

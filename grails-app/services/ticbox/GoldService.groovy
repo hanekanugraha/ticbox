@@ -10,6 +10,7 @@ class GoldService {
         params.redemptionAmount = redemptionAmount
         params.status = RedemptionRequest.STATUS.New
         def history = deductGold(params)
+
         def newRequest = new RedemptionRequest(respondentId: respondent.id, respondentUsername: respondent.username, respondentGoldHistoryId: history.id, redemptionAmount: params.redemptionAmount, bankName: params.bankName, bankBranchName: params.bankBranchName, bankAccountNumber: params.bankAccountNumber, bankAccountName: params.bankAccountName, status: params.status).save()
     }
 
@@ -27,6 +28,45 @@ class GoldService {
             throw new Exception("Invalid amount")
         }
         return history
+    }
+
+    def approveRedemptions(String[] ids){
+        List<String> redempIds = HelperService.getListOfString(ids)
+        def redempionRequests = RedemptionRequest.findAll{
+            inList("_id", redempIds)
+        }
+        if (redempionRequests) {
+            for(request in redempionRequests){
+                RespondentGoldHistory goldHistory = RespondentGoldHistory.findById(request.respondentGoldHistoryId)
+                goldHistory.status = RespondentGoldHistory.STATUS.SUCCESS
+                goldHistory.save()
+                request.status = RedemptionRequest.STATUS.Success
+                request.save()
+                }
+        } else {
+            throw new Exception("No Redemption was found")
+        }
+    }
+
+    def rejectRedemptions(String[] ids){
+        List<String> redempIds = HelperService.getListOfString(ids)
+        def redempionRequests = RedemptionRequest.findAll{
+            inList("_id", redempIds)
+        }
+        if (redempionRequests) {
+            for(request in redempionRequests){
+                RespondentGoldHistory goldHistory = RespondentGoldHistory.findById(request.respondentGoldHistoryId)
+                goldHistory.status = RespondentGoldHistory.STATUS.FAILED
+                goldHistory.save()
+                request.status = RedemptionRequest.STATUS.Failed
+                request.save()
+                def respondent = User.findById(request.respondentId)
+                respondent.respondentProfile.gold += goldHistory.amount
+                respondent.save()
+            }
+        } else {
+            throw new Exception("No Redemption was found")
+        }
     }
 
     def addGoldToReferrer(String description, User respondent, Date date) {

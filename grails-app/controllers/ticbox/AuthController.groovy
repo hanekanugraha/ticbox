@@ -110,7 +110,7 @@ class AuthController {
                         default:
                             targetUri = "/"
                     }
-                    session.putAt('role', role.name.toLowerCase())
+                    session.putAt('role', role.name)
 
                     // Handle requests saved by Shiro filters.
                     def savedRequest = WebUtils.getSavedRequest(request)
