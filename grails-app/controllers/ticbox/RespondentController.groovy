@@ -13,6 +13,7 @@ class RespondentController {
     def surveyService
     def goldService
     def mailService
+    def itemService
 
     def index() {
         def principal = SecurityUtils.subject.principal
@@ -214,4 +215,32 @@ class RespondentController {
     private String getRespondentReferenceLink(User respondent) {
         return "${g.createLink(controller: 'auth', action: 'registerRespondent', absolute: true)}?ref=${respondent.username}"
     }
+
+    def redeemItems = {
+        def principal = SecurityUtils.subject.principal
+        def respondent = User.findByUsername(principal.toString())
+
+        def items=Item.findAllByStatus(Item.STATUS.Active)
+
+        [items:items,respondent: respondent]
+    }
+
+    def requestItemsRedemption={
+        try {
+            if (params.redeemItemIds) {
+                def redeemItemIds = ((String) params.redeemItemIds).split(",")
+                def principal = SecurityUtils.subject.principal
+                def respondent = User.findByUsername(principal.toString())
+                itemService.requestItemsRedemption(redeemItemIds,respondent)
+                flash.message = message(code: "general.delete.success.message")
+            } else {
+                throw Exception("No Item was found")
+            }
+        } catch (Exception e) {
+            flash.error = message(code: "general.delete.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        redirect(controller: "respondent", action: "redeemItems")
+    }
+
 }

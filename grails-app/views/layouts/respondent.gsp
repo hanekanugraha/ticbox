@@ -297,6 +297,9 @@
                                         <li class="redeemGold">
                                             <g:link action="redeemGold">Redeem GOLD Points</g:link>
                                         </li>
+                                        <li class="redeemItems">
+                                            <g:link action="redeemItems">Redeem Items</g:link>
+                                        </li>
                                         <li class="goldHistory">
                                             <g:link action="goldHistory">GOLD Points History</g:link>
                                         </li>

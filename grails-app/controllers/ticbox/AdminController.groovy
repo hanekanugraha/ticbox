@@ -6,6 +6,7 @@ class AdminController {
     def userService
     def goldService
     def surveyService
+    def itemService
 
     def index() {
         // todo add pagination
@@ -42,8 +43,9 @@ class AdminController {
     }
 
     def redemptions = {
-        def redemptionRequestList = RedemptionRequest.findByStatus(RedemptionRequest.STATUS.New)
-        [redemptionRequestList:redemptionRequestList, redemptionStatuses: RedemptionRequest.STATUS]
+        def redemptionRequestList = RedemptionRequest.findAllByStatus(RedemptionRequest.STATUS.New)
+        def redemptionItemRequestList=RedemptionItemRequest.findAllByStatus(RedemptionItemRequest.STATUS.New)
+        [redemptionRequestList:redemptionRequestList, redemptionStatuses: RedemptionRequest.STATUS,redemptionItemRequestList:redemptionItemRequestList]
     }
 
     def changeRedemptionStatus = {
@@ -189,4 +191,71 @@ class AdminController {
         redirect(controller: "admin", action: "redemptions")
     }
 
+    def listItems(){
+        def items=Item.findAllByStatus(Item.STATUS.Active)
+
+        [items:items]
+    }
+
+    def createItem ={
+        try {
+            itemService.createItem(params)
+            flash.message = message(code: "general.create.success.message")
+        } catch (Exception e) {
+            flash.error = message(code: "general.create.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        redirect(controller: "admin", action: "listItems")
+
+    }
+
+    def deleteItems ={
+        try {
+            if (params.delItemIds) {
+                def delItemIds = ((String) params.delItemIds).split(",")
+                itemService.deleteItems(delItemIds)
+                flash.message = message(code: "general.delete.success.message")
+            } else {
+                throw Exception("No user was found")
+            }
+        } catch (Exception e) {
+            flash.error = message(code: "general.delete.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        redirect(controller: "admin", action: "listItems")
+    }
+
+    def approveRedempsItem(){
+        try {
+            if (params.approveRedempItemIds) {
+                def approveRedempItemIds = ((String) params.approveRedempItemIds).split(",")
+
+                itemService.approveRedemptionsItem(approveRedempItemIds)
+                flash.message = message(code: "general.delete.success.message")
+            } else {
+                throw Exception("No Redemption was found")
+            }
+        } catch (Exception e) {
+            flash.error = message(code: "general.delete.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        redirect(controller: "admin", action: "redemptions")
+    }
+
+    def rejectRedempsItem(){
+        try {
+            if (params.rejectRedempItemIds) {
+                def rejectRedempItemIds = ((String) params.rejectRedempItemIds).split(",")
+
+                itemService.rejectRedemptionsItem(rejectRedempItemIds)
+                flash.message = message(code: "general.delete.success.message")
+            } else {
+                throw Exception("No Redemption was found")
+            }
+        } catch (Exception e) {
+            flash.error = message(code: "general.delete.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        redirect(controller: "admin", action: "redemptions")
+    }
 }

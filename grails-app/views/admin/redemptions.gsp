@@ -1,4 +1,4 @@
-<%@ page import="ticbox.User; org.apache.shiro.SecurityUtils" %>
+<%@ page import="ticbox.Item; ticbox.User; org.apache.shiro.SecurityUtils" %>
 <html>
 <head>
     <meta name="layout" content="admin"/>
@@ -8,7 +8,7 @@
     </style>
 </head>
 <body>
-    <h3>Redemptions</h3>
+    <h3>Gold Redemptions</h3>
 
     %{--<div class="row-fluid">--}%
         %{--<div class="span2">--}%
@@ -56,6 +56,49 @@
             </g:each>
         </tbody>
     </table>
+
+    <h3>Item Redemptions</h3>
+
+
+    <div class="row" style="margin-bottom:10px">
+        <div class="col-sm-12">
+            <a id="approveItemRedemps" href="#approve-submitted-redemp-item-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> Approve</a>
+            <a id="rejectItemRedemps" href="#reject-submitted-redemp-item-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Reject</a>
+        </div>
+    </div>
+    <br />
+
+<table id="redemptionItemTable" class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th></th>
+        <th>Date Created</th>
+        <th>Respondent ID</th>
+        <th>Name</th>
+        <th>Gold Amount</th>
+        <th>Item</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <g:each in="${redemptionItemRequestList}" var="redemptionItem">
+        <tr>
+            <td><input type="checkbox" name="redemptionItemIds" value="${redemptionItem.id}" /></td>
+            <td>${redemptionItem.dateCreated}</td>
+            <td>${redemptionItem.respondentId}</td>
+            <td>${redemptionItem.respondentUsername}</td>
+            <td>${redemptionItem.goldAmount}</td>
+            <td><g:each in="${redemptionItem.ITEMS}" var="item" status="status">
+                ${Item.findById(item)?.itemName}
+                ${Item.findById(item)?.gold}
+                <br/>
+                </g:each>
+            </td>
+            <td>${redemptionItem.status}</td>
+        </tr>
+    </g:each>
+    </tbody>
+</table>
 
 <div id="approve-submitted-redemp-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="approveRedempLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -111,6 +154,58 @@
     </div>
 </div>
 
+<div id="approve-submitted-redemp-item-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="approveRedempLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="approveRedempLabel" class="modal-title">
+                    Approve Item Redemptions
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="approveRedempsItemForm" controller="admin" action="approveRedempsItem" role="form">
+                    <input type="hidden" id="approveRedempItemIds" name="approveRedempItemIds" value=""/>
+                    <div class="well">
+                        <p><b>Are you sure to approve these item redemption?</b></p>
+                        There is no rollback for approve these redemption. Please make sure you know what you are doing.
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button id="approveRedempItem" class="btn btn-danger" data-loading-text="Processing..">Approve</button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="reject-submitted-redemp-item-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="rejectRedempItemLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="rejectRedempItemLabel" class="modal-title">
+                    Reject Item Redemptions
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="rejectRedempsItemForm" controller="admin" action="rejectRedempsItem" role="form">
+                    <input type="hidden" id="rejectRedempItemIds" name="rejectRedempItemIds" value=""/>
+                    <div class="well">
+                        <p><b>Are you sure to reject these redemption?</b></p>
+                        There is no rollback for reject these redemption. Please make sure you know what you are doing.
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button id="rejectRedempItem" class="btn btn-danger" data-loading-text="Processing..">Reject</button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            </div>
+        </div>
+    </div>
 
 
 <g:form name="changeRedemptionStatusForm" action="changeRedemptionStatus">
@@ -146,6 +241,17 @@
             form.submit();
         });
 
+        $('#approveRedempItem').click(function() {
+            $(this).button('loading');
+            var selected = [];
+            var form = $('#approveRedempsItemForm');
+            $('input[name=redemptionItemIds]:checked').each(function(id, elmt) {
+                selected.push(elmt.value);
+            });
+            $('#approveRedempItemIds', form).val(selected);
+            form.submit();
+        });
+
         $('#rejectRedemp').click(function() {
             $(this).button('loading');
             var selected = [];
@@ -154,6 +260,17 @@
                 selected.push(elmt.value);
             });
             $('#rejectRedempIds', form).val(selected);
+            form.submit();
+        });
+
+        $('#rejectRedempItem').click(function() {
+            $(this).button('loading');
+            var selected = [];
+            var form = $('#rejectRedempsItemForm');
+            $('input[name=redemptionItemIds]:checked').each(function(id, elmt) {
+                selected.push(elmt.value);
+            });
+            $('#rejectRedempItemIds', form).val(selected);
             form.submit();
         });
     });

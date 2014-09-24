@@ -182,6 +182,9 @@
                                 <li role="presentation">
                                     <a href="${request.contextPath}/admin/redemptions"><span class="glyphicon glyphicon-home"></span> Redemptions</a>
                                 </li>
+                                <li role="presentation">
+                                    <a href="${request.contextPath}/admin/listItems"><span class="glyphicon glyphicon-home"></span> Items</a>
+                                </li>
                                 <li role="presentation" class="divider"></li>
                                 <li role="presentation">
                                     <a>Help</a>
