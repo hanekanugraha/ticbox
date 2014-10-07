@@ -457,6 +457,53 @@ fieldset[disabled] .btn-green.active {
     background-color: #fff;
 }
 
+/*coffee*/
+.btn-coffee {
+    color: #ffffff;
+    background-color: #998675;
+    border-color: #998675;
+}
+
+.btn-coffee:hover,
+.btn-coffee:focus,
+.btn-coffee:active,
+.btn-coffee.active,
+.open .dropdown-toggle.btn-coffee{
+    color: #ffffff;
+    background-color: #736357;
+    border-color: #736357;
+}
+
+.btn-coffee:active,
+.btn-coffee.active,
+.open .dropdown-toggle.green {
+    background-image: none;
+}
+
+.btn-coffee.disabled,
+.btn-coffee[disabled],
+fieldset[disabled] .btn-coffee,
+.btn-coffee.disabled:hover,
+.btn-coffee[disabled]:hover,
+fieldset[disabled] .btn-coffee:hover,
+.btn-coffee.disabled:focus,
+.btn-coffee[disabled]:focus,
+fieldset[disabled] .btn-coffee:focus,
+.btn-coffee.disabled:active,
+.btn-coffee[disabled]:active,
+fieldset[disabled] .btn-coffee:active,
+.btn-coffee.disabled.active,
+.btn-coffee[disabled].active,
+fieldset[disabled] .btn-coffee.active {
+    background-color: #A7A3A0;
+    border-color: #A7A3A0;
+}
+
+.btn-coffee .badge {
+    color: #998675;
+    background-color: #fff;
+}
+
 /*
  ###################################################################################################################
  NAVBAR
@@ -471,7 +518,7 @@ fieldset[disabled] .btn-green.active {
 }
 
 .ticbox-logo {
-    background: url("../images/ticbox/ticbox-logo-5b.png") no-repeat scroll transparent;
+    background: url("../images/ticbox/ticbox-logo-6b.png") no-repeat scroll transparent;
     background-position: left center;
     background-size: 100%;
     width: 200px;

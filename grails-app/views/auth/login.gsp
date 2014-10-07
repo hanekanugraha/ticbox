@@ -26,20 +26,20 @@
 
                             <div class="form-group">
                                 <label for="username" class="col-sm-2 control-label">Username</label>
-                                <div class="col-sm-3">
+                                <div class="col-sm-4">
                                     <input type="text" class="form-control" name="username" id="username" value="${username}" placeholder="Username"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="password" class="col-sm-2 control-label">Password</label>
-                                <div class="col-sm-3">
+                                <div class="col-sm-4">
                                     <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-3">
+                                <div class="col-sm-offset-2 col-sm-4">
                                     <div class="checkbox">
                                         <label>
                                             <g:checkBox name="rememberMe" id="rememberMe" value="${rememberMe}"/>
@@ -50,17 +50,19 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-3">
-                                    <button id="submit" class="btn btn-default btn-green">
+                                <div class="col-sm-offset-2 col-sm-4">
+                                    <button style="margin:0 0 5px 0" id="submit" class="btn btn-default btn-green">
                                         <span class="glyphicon glyphicon-log-in"></span> Sign In
                                     </button>
-
+                                    <a style="margin:0 0 5px 0" id="forgotPassword" class="btn btn-default btn-coffee" href="${request.contextPath}/home/forgotPassword">
+                                        <span class="glyphicon glyphicon-log-in" ></span> Forgot Password
+                                    </a>
                                 </div>
                             </div>
                         </g:form>
-                        <a id="forgotPassword" class="btn btn-default btn-green" href="${request.contextPath}/home/forgotPassword">
-                            <span class="glyphicon glyphicon-log-in" ></span> Forgot Password
-                        </a>
+                        %{--<a id="forgotPassword" class="btn btn-default btn-green" href="${request.contextPath}/home/forgotPassword">--}%
+                            %{--<span class="glyphicon glyphicon-log-in" ></span> Forgot Password--}%
+                        %{--</a>--}%
                     </div>
 
                     <div class="module-header"></div>
