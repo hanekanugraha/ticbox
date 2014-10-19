@@ -8,7 +8,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title><g:layoutTitle default="TicBOX"/></title>
+        <title><g:layoutTitle default="Ticbox"/></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link rel="shortcut icon" href="${resource(dir: 'images/ticbox', file: 'ticbox-favicon.png')}" type="image/png">
@@ -262,7 +262,7 @@
             %{--<div id="wrapper-effect" class="" style="padding-top: 0">--}%
 
                 <g:if test="${flash.error}">
-                    <div class="alert alert-error" style="display: block">${flash.error}</div>
+                    <div class="alert alert-danger" style="display: block">${flash.error}</div>
                 </g:if>
                 <g:if test="${flash.message}">
                     <div class="alert alert-success" style="display: block">${flash.message}</div>

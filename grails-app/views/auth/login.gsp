@@ -17,9 +17,9 @@
 
                         <div style="font-weight: bold; margin-top: 10px;">Already one of us? Please sign in</div>
 
-                        <g:if test="${flash.message}">
-                            <div class="alert alert-success" style="display: block">${flash.message}</div>
-                        </g:if>
+                        %{--<g:if test="${flash.message}">--}%
+                            %{--<div class="alert alert-success" style="display: block">${flash.message}</div>--}%
+                        %{--</g:if>--}%
 
                         <g:form name="signIn" action="signIn" class="form-horizontal" style="margin: 20px 0 0 0;">
                             <input type="hidden" name="targetUri" value="${targetUri}"/>
