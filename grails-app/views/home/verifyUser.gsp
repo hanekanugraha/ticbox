@@ -17,9 +17,9 @@
 
                 <div style="font-weight: bold; margin-top: 10px;">Please input verify code</div>
 
-                <g:if test="${flash.message}">
-                    <div class="alert alert-success" style="display: block">${flash.message}</div>
-                </g:if>
+                %{--<g:if test="${flash.message}">--}%
+                    %{--<div class="alert alert-success" style="display: block">${flash.message}</div>--}%
+                %{--</g:if>--}%
 
                 <g:form name="verifyUser" controller="auth" action="verifyCode" class="form-horizontal" style="margin: 20px 0 0 0;">
                     <input type="hidden" name="targetUri" value="${targetUri}"/>

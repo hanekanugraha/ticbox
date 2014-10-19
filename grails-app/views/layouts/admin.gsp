@@ -236,7 +236,7 @@
         <div id="wrapper-effect" class="wrapper grey">
 
             <g:if test="${flash.error}">
-                <div class="alert alert-error" style="display: block">${flash.error}</div>
+                <div class="alert alert-danger" style="display: block">${flash.error}</div>
             </g:if>
             <g:if test="${flash.message}">
                 <div class="alert alert-success" style="display: block">${flash.message}</div>

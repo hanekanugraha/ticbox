@@ -124,9 +124,6 @@ class AuthController {
                 }
             }
 
-
-
-
         }
         catch (AuthenticationException ex) {
             // Authentication failed, so display the appropriate message
@@ -148,6 +145,16 @@ class AuthController {
 
             // Now redirect back to the login page.
             redirect(uri: "/auth/login", params: m)
+        }
+        catch (Exception ex) {
+            // Just to make sure, log the user out of the application.
+            SecurityUtils.subject.logout()
+
+            log.info "Exception at sign in for user '${params.username}'."
+            flash.error = message(code: "auth.general.error")
+
+            // Redirect back to the login page.
+            redirect(uri: "/auth/login")
         }
     }
 

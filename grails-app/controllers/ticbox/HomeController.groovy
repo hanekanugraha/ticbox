@@ -2,6 +2,7 @@ package ticbox
 
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64
 import org.apache.shiro.SecurityUtils
+import org.apache.shiro.authc.AuthenticationException
 
 class HomeController {
 
@@ -32,19 +33,41 @@ class HomeController {
     def disableUser ={}
 
     def verifyUserByEmail() {
-        def user = User.findByUsernameAndVerify(params.username,"0")
-        if(user && params.verifyCode==user.verifyCode) {
-            user.verify="1"
-            userService.updateUser(user)
-            flash.message = message(code: "general.create.success.message")
-            redirect(controller: "home", action: "verifySuccess")
+        try {
+            // def user = User.findByUsernameAndVerify(params.username,"0")
+            // Keep the username so that the user doesn't have to enter them again.
+            def m = [username: params.username]
+            def user = User.findByUsername(params.username)
+            if (user && user.verify == "0" && params.verifyCode == user.verifyCode) {
+                user.verify = "1"
+                userService.updateUser(user)
+                //flash.message = message(code: "general.create.success.message")
+                //redirect(controller: "home", action: "verifySuccess")
+                def role = user?.roles?.first()
+                switch (role.name) {
+                    case Role.ROLE.SURVEYOR:
+                        flash.message = message(code: "auth.verify.success.surveyor")
+                        break
+                    case Role.ROLE.RESPONDENT:
+                        flash.message = message(code: "auth.verify.success.respondent")
+                        break
+                    default:
+                        flash.message = message(code: "auth.verify.success.default")
+                }
+                redirect(controller: "auth", action: "login", params: m)
+            } else if (user && user.verify == "1") {
+                flash.message = message(code: "auth.verify.useralreadyverified")
+                redirect(controller: "auth", action: "login", params: m)
+            } else {
+                flash.error = message(code: "auth.verify.failed")
+                //log.error(e.message, e)
+                redirect(controller: "auth", action: "login")
+            }
+        }catch (Exception ex) {
+            log.info "Verification failure for user '${params.username}'."
+            flash.error = message(code: "auth.general.error")
+            redirect(uri: "/auth/login")
         }
-        else {
-            flash.error = message(code: "general.create.failed.message") + " : ${params.username}'"
-//            log.error(e.message, e)
-            redirect(controller: "auth", action: "login")
-        }
-
 
     }
 
