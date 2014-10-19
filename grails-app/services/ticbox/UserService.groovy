@@ -59,9 +59,9 @@ class UserService {
                 }else{
                     throw new Exception("Cannot get user's role")
                 }
-
-                sendVerifyCode(params,newUser.verifyCode)
                 newUser.save()
+                sendVerifyCode(params,newUser.verifyCode)
+
 
             } catch (e) {
                 throw new Exception("Error in creating profile, ${e.message}")

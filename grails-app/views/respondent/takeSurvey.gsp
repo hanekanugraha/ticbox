@@ -88,7 +88,7 @@
         jQuery('#nextQuestion').click(function () {
             var lastQuestion= jQuery('#question'+questionSeq).attr('hidden',true)
             var nextSeq = jQuery('input.item-check:checked',lastQuestion).attr('nextQuestion');
-            if(nextSeq==null)
+            if(nextSeq!=null||nextSeq==undefined)
                 questionSeq++;
             else
                 questionSeq=nextSeq;
@@ -120,12 +120,11 @@
 
             case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
             case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
-
-                answerComp = jQuery('#answerTemplate-choice').clone().removeAttr('id');
-
-                if (subtype == 'single') {
+                if (type == '${Survey.QUESTION_TYPE.CHOICE_SINGLE}') {
+                    answerComp = jQuery('#answerTemplate-choice-single').clone().removeAttr('id');
                     jQuery('.item-check', answerComp).attr('type', 'radio');
-                } else if (subtype == 'multiple') {
+                } else if (type == '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}') {
+                    answerComp = jQuery('#answerTemplate-choice-multiple').clone().removeAttr('id');
                     jQuery('.item-check', answerComp).attr('type', 'checkbox');
                 }
 
@@ -269,7 +268,12 @@
                             choiceItemCont.find('.item-check').val(choiceItem.label);
                             choiceItemCont.find('.item-check').attr('nextQuestion',choiceItem.nextQuestion);
                             jQuery('.choice-items', container).append(choiceItemCont);
-                            jQuery('.item-label', choiceItemCont).text(choiceItem.label);
+                            if(answerDetails.type=='${Survey.QUESTION_TYPE.CHOICE_SINGLE}') {
+                                jQuery('.item-label', choiceItemCont).text(choiceItem.label);
+                            }
+                            else{
+                                jQuery('.item-label', choiceItemCont).text(choiceItem);
+                            }
                             choiceItemCont.attr('nextquestion',choiceItem.nextQuestion);
                         });
                         jQuery('.choice-items > .choice-item:first', container).remove();
@@ -426,7 +430,7 @@
                 </div>
             </div>
 
-            <div id="answerTemplate-choice" class="row answerTemplate" type="${Survey.QUESTION_TYPE.CHOICE_SINGLE}">
+            <div id="answerTemplate-choice-single" class="row answerTemplate" type="${Survey.QUESTION_TYPE.CHOICE_SINGLE}">
                 <div class="choice-items col-xs-11 col-xs-offset-1">
                     <div class="choice-item row">
                         %{--<div class="col col-xs-1" style="text-align: right">--}%
@@ -440,7 +444,7 @@
                     </div>
                 </div>
             </div>
-            <div id="answerTemplate-choice" class="row answerTemplate" type="${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}">
+            <div id="answerTemplate-choice-multiple" class="row answerTemplate" type="${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}">
                 <div class="choice-items col-xs-11 col-xs-offset-1">
                     <div class="choice-item row">
                         %{--<div class="col col-xs-1" style="text-align: right">--}%

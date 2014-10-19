@@ -149,6 +149,11 @@ class SurveyController {
                 return
             }
             Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
+            if(survey.type==Survey.SURVEY_TYPE.FREE){
+                def maxQuestion = Parameter.findByCode("MAX_QUESTION_FREE_SURVEY")
+                if(((Map)survey[Survey.COMPONENTS.QUESTION_ITEMS]).size()> maxQuestion)
+                    throw new Exception()
+            }
             if(survey)
                 surveyService.submitSurvey(params, survey)
             else
@@ -163,6 +168,7 @@ class SurveyController {
 
     def submitToAdmin(){
         Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
+
         if(survey)
             surveyService.submitToAdmin(survey)
 

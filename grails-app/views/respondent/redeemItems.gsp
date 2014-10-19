@@ -4,6 +4,9 @@
     <title>Redeem Items</title>
     <style type="text/css">
     </style>
+
+    <g:javascript src="simpleCart.js"/>
+
 </head>
 
 <body>
@@ -48,6 +51,48 @@
 
 
 
+<p>
+    Cart: <span class="simpleCart_total"></span> (<span id="simpleCart_quantity" class="simpleCart_quantity"></span> items)
+    <br />
+    <a href="javascript:;" class="simpleCart_empty">empty cart</a>
+    <br />
+</p>
+<table id="itemTable" class="table table-bordered table-striped table-hover">
+    <thead>
+    <tr>
+        %{--<th></th>--}%
+        <th>Pic</th>
+        <th>Item Name</th>
+        <th>Quantity</th>
+        <th>Gold</th>
+        <th>Action</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <g:each in="${items}" var="item" >
+        <tr class="simpleCart_shelfItem">
+            %{--<td><input type="checkbox" name="itemIds"  value="${item.id}" gold="${item.gold}" /></td>--}%
+            <td>${item.pic}</td>
+            <td class="item_name">${item.itemName}</td>
+            <td><input type="text" value="1" class="item_quantity"></td>
+            <td class="item_price">${item.gold}</td>
+            <td><a class="item_add" href="javascript:;"> Add to Cart </a></td>
+            <td hidden="true" class="item_code">${item.id}</td>
+        </tr>
+    </g:each>
+    </tbody>
+</table>
+
+    <div class="simpleCart_items" >
+    </div>
+
+    Final Total: <span id="simpleCart_grandTotal" class="simpleCart_grandTotal"></span> <br />
+
+    <a href="javascript:;simpleCart.empty();" class="simpleCart_checkout">checkout</a>
+
+
+
 </div>
 
 <div id="redeem-item-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="redeemItemsLabel" aria-hidden="true">
@@ -79,9 +124,17 @@
 
 <g:javascript src="jquery.validate.min.js"/>
 <g:javascript src="additional-methods.min.js"/>
+
+
+
 <script type="text/javascript">
 
-
+    simpleCart({
+        checkout: {
+            type: "SendForm",
+            url: "/ticbox/respondent/requestItemsRedemptionCart"
+        }
+    });
 
     $(document).ready(function () {
 

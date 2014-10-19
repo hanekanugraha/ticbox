@@ -25,7 +25,7 @@ class HomeController {
         redirect (controller: "auth", action: "index")
     }
 
-    def verifyUser = {
+    def boverifyUser = {
         return [username: params.username, rememberMe: (params.rememberMe != null), targetUri: params.targetUri]
     }
 
@@ -103,5 +103,9 @@ class HomeController {
             log.error(e.message, e)
             render 'FAILED'
         }
+    }
+
+    def successTakeFreeSurvey={
+
     }
 }

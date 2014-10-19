@@ -19,18 +19,19 @@ class LookupMasterController {
 
     def submitLookup= {
         try {
-            LookupMaster lookupMaster=LookupMaster.findByCode(params.lookupCode)
-            DBObject dbObject = (DBObject) com.mongodb.util.JSON.parse(params.lookupValues)
+            LookupMaster lm=LookupMaster.findByCode(params.lookupCode)
 
-            lookupMaster.values=dbObject;
+            lm.values=(DBObject) com.mongodb.util.JSON.parse(params.lookupValues)
 
-            lookupMaster.save()
+            lm.save()
+//            render 'SUCCESS'
+//            redirect action: 'index'
 
-            render 'SUCCESS'
         } catch (Exception e) {
             e.printStackTrace()
             render 'FAILED'
         }
+//        render 'SUCCESS'
         redirect action: 'index'
     }
 }

@@ -23,7 +23,7 @@ class RespondentController {
         //def surveyList = Survey.findByStatus(Survey.STATUS.IN_PROGRESS)
         def surveyList = respondentService.getSurveyList(detail)
 
-        [surveyList:surveyList, respondent: respondent]
+        [surveyList:surveyList, respondent: respondent,surveyJoined:SurveyResponse.countByRespondentId(respondent.id)]
     }
 
     def profileForm() {
@@ -32,7 +32,7 @@ class RespondentController {
         def respondent = User.findByUsername(principal.toString())
         def respondentDetail = RespondentDetail.findByRespondentId(respondent.id)
         respondentDetail = respondentDetail ?: new RespondentDetail(respondentId: respondent.id).save()
-        [profileItems: profileItems, respondent: respondent, respondentDetail: respondentDetail]
+        [profileItems: profileItems, respondent: respondent, respondentDetail: respondentDetail,surveyJoined:SurveyResponse.countByRespondentId(respondent.id)]
     }
 
     def modify = {
@@ -93,7 +93,7 @@ class RespondentController {
         def survey = surveyService.getSurveyForRespondent(params.surveyId)
         def principal = SecurityUtils.subject.principal
         def respondent = User.findByUsername(principal.toString())
-        [survey: survey, respondent: respondent]
+        [survey: survey, respondent: respondent,surveyJoined:SurveyResponse.countByRespondentId(respondent.id)]
     }
 
     def getSurvey = {
@@ -131,7 +131,7 @@ class RespondentController {
         def principal = SecurityUtils.subject.principal
         def respondent = User.findByUsername(principal.toString())
         def goldHistory = RespondentGoldHistory.findAllByRespondentId(respondent.id)
-        [goldHistory:goldHistory, respondent: respondent]
+        [goldHistory:goldHistory, respondent: respondent,surveyJoined:SurveyResponse.countByRespondentId(respondent.id)]
     }
 
     def redeemGold = {
@@ -148,7 +148,7 @@ class RespondentController {
         def minRedemptionPointValue = Double.parseDouble(Parameter.findByCode("GOLD_MIN_REDEMPTION")?.value)
         def minRedemptionValue = minRedemptionPointValue * goldRateValue
 
-        [maxRedemption: balanceValue, minRedemption:minRedemptionValue, goldRate:goldRate, balance:balance, respondent: respondent]
+        [maxRedemption: balanceValue, minRedemption:minRedemptionValue, goldRate:goldRate, balance:balance, respondent: respondent,surveyJoined:SurveyResponse.countByRespondentId(respondent.id)]
     }
 
     def requestRedemption = {
@@ -176,7 +176,7 @@ class RespondentController {
         } catch (Exception e) {
             log.error(e.message, e)
         }
-        [respondent: respondent, refLink: getRespondentReferenceLink(respondent), fbAppId:fbAppId, totalGold: totalGold]
+        [respondent: respondent, refLink: getRespondentReferenceLink(respondent), fbAppId:fbAppId, totalGold: totalGold,surveyJoined:SurveyResponse.countByRespondentId(respondent.id)]
     }
 
     def inviteByEmail = {
@@ -222,7 +222,7 @@ class RespondentController {
 
         def items=Item.findAllByStatus(Item.STATUS.Active)
 
-        [items:items,respondent: respondent]
+        [items:items,respondent: respondent,surveyJoined:SurveyResponse.countByRespondentId(respondent.id)]
     }
 
     def requestItemsRedemption={
@@ -242,5 +242,32 @@ class RespondentController {
         }
         redirect(controller: "respondent", action: "redeemItems")
     }
+
+
+
+    def requestItemsRedemptionCart={
+        def listItem=[];
+        try{
+            int count=Integer.parseInt(params.itemCount)
+            def principal = SecurityUtils.subject.principal
+            def respondent = User.findByUsername(principal.toString())
+
+            for(int i=1;i<=count;i++){
+                int quantity=Integer.parseInt(params.get("item_quantity_"+i));
+                for(int j =1;j<=quantity;j++) {
+                    listItem << params.get("item_code_" + i)
+                }
+            }
+            itemService.requestItemsRedemption(listItem,respondent)
+            flash.message = message(code: "general.delete.success.message")
+
+        } catch (Exception e) {
+            flash.error = message(code: "general.delete.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        redirect(controller: "respondent", action: "redeemItems")
+
+    }
+
 
 }

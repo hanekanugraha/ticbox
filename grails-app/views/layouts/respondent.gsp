@@ -280,7 +280,7 @@
                                             <div class="trust"><b>Trust</b></div>
                                         </div>
                                         <div class="col-xs-6 stats leftBordered">
-                                            <div><strong>XX</strong></div>
+                                            <div><strong>${surveyJoined}</strong></div>
                                             <div><b>Survey Joined</b></div>
                                         </div>
                                     </div>

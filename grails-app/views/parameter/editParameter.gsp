@@ -37,7 +37,6 @@
                             <input type="text" class="form-control" name="parameterValue" id="parameterValue" value="${parameter.value}" placeholder="Parameter Value"/>
                         </div>
 
-
                     </div>
 
 
@@ -45,8 +44,9 @@
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-3">
                             <button id="submit" class="btn btn-default btn-green">
-                                <span class="glyphicon glyphicon-log-in"></span> Edit
+                                <span class="glyphicon glyphicon-log-in"></span> Save
                             </button>
+                            <button id="cancel" class="btn btn-light-oak btn-md" href="${request.contextPath}/parameter/">Cancel</button>
 
                         </div>
 

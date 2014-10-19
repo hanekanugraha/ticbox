@@ -73,8 +73,9 @@
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-3">
                             <button id="submit" class="btn btn-default btn-green">
-                                <span class="glyphicon glyphicon-log-in"></span> Edit
+                                <span class="glyphicon glyphicon-log-in"></span> Save
                             </button>
+                            <button id="cancel" class="btn btn-light-oak btn-md" href="${request.contextPath}/lookupMaster/">Cancel</button>
 
                         </div>
 
@@ -167,12 +168,11 @@
 
             jQuery.post('${request.contextPath}/lookupMaster/submitLookup', {lookupValues: JSON.stringify(lookupValues), lookupCode:jQuery('#lookupCode').val()}, function(data){
 
-                if('SUCCESS' == data){
-                    alert('Submission success..');
-                }else if('LIMIT' == data){
-                    alert('Max Free Survey more than limit..');
-                }else{
+                if('FAILED' == data){
                     alert('Submission failure');
+
+                }else{
+                    alert('Submission success');
                 }
 
             });

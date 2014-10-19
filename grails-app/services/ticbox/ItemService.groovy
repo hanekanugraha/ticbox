@@ -56,6 +56,35 @@ class ItemService {
             throw new Exception("Gold Not Enough")
         }
     }
+    def requestItemsRedemption(List itemIds,User user) throws Exception {
+//        def items = Item.findAll{
+//            inList("_id", itemIds)
+//        }
+
+        def goldUser=user.respondentProfile.gold
+        double goldRedeem=0
+        for(itemId in itemIds){
+            def item=Item.findById(itemId)
+            goldRedeem+=item.gold
+        }
+
+
+        if (goldRedeem<=goldUser) {
+            def history = deductGold(user.id,goldRedeem,itemIds)
+            RedemptionItemRequest request= new RedemptionItemRequest(
+                    respondentId:user.id,
+                    respondentUsername:user.username,
+                    respondentGoldHistoryId:history.id,
+                    status:RedemptionRequest.STATUS.New,
+                    goldAmount: goldRedeem
+            )
+            request[RedemptionItemRequest.COMPONENTS.ITEMS]=itemIds.toArray()
+            request.save()
+
+        } else {
+            throw new Exception("Gold Not Enough")
+        }
+    }
 
     def deductGold(long respondentId,double goldAmount,List<String> items) throws Exception {
 
