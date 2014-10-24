@@ -26,7 +26,7 @@ class HomeController {
         redirect (controller: "auth", action: "index")
     }
 
-    def boverifyUser = {
+    def verifyUser = {
         return [username: params.username, rememberMe: (params.rememberMe != null), targetUri: params.targetUri]
     }
 
