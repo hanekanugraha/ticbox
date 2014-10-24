@@ -30,7 +30,6 @@ class Survey {
     String status = STATUS.DRAFT
     String type = SURVEY_TYPE.EASY
     String enableStatus = ENABLE_STATUS.ENABLE
-
     static belongsTo = [surveyor:SurveyorProfile]
 
     static constraints = {

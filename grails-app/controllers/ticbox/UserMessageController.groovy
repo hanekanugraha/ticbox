@@ -56,12 +56,11 @@ class UserMessageController {
         def userMessages= UserMessage.findAllByToUsername(SecurityUtils.subject.principal)
 
         if(userMessages){
-            [userMessages:userMessages
-            ]
+            [userMessages:userMessages]
         }
-        else{
-            redirect uri: '/'
-        }
+//        else{
+//            redirect uri: '/'
+//        }
     }
 
     def deleteMessages(){

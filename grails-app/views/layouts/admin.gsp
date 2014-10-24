@@ -169,25 +169,25 @@
                                     <a href="${request.contextPath}/admin/surveys"><span class="glyphicon glyphicon-home"></span> Admin Dashboard</a>
                                 </li>
                                 <li role="presentation" class="divider"></li>
-                                <li role="presentation">
-                                    <a href="${request.contextPath}/admin/index"><span class="glyphicon glyphicon-home"></span> Users</a>
-                                </li>
-                                <li role="presentation">
-                                    <a href="${request.contextPath}/email/index"><span class="glyphicon glyphicon-home"></span> Emails</a>
-                                </li>
-                                <li role="presentation">
-                                    <a href="${request.contextPath}/parameter/index"><span class="glyphicon glyphicon-home"></span> Parameters</a>
-                                </li>
-                                <li role="presentation">
-                                    <a href="${request.contextPath}/lookupMaster/index"><span class="glyphicon glyphicon-home"></span> Lookup Master</a>
-                                </li>
-                                <li role="presentation">
-                                    <a href="${request.contextPath}/admin/redemptions"><span class="glyphicon glyphicon-home"></span> Redemptions</a>
-                                </li>
-                                <li role="presentation">
-                                    <a href="${request.contextPath}/admin/listItems"><span class="glyphicon glyphicon-home"></span> Items</a>
-                                </li>
-                                <li role="presentation" class="divider"></li>
+                                %{--<li role="presentation">--}%
+                                    %{--<a href="${request.contextPath}/admin/index"><span class="glyphicon glyphicon-home"></span> Users</a>--}%
+                                %{--</li>--}%
+                                %{--<li role="presentation">--}%
+                                    %{--<a href="${request.contextPath}/email/index"><span class="glyphicon glyphicon-home"></span> Emails</a>--}%
+                                %{--</li>--}%
+                                %{--<li role="presentation">--}%
+                                    %{--<a href="${request.contextPath}/parameter/index"><span class="glyphicon glyphicon-home"></span> Parameters</a>--}%
+                                %{--</li>--}%
+                                %{--<li role="presentation">--}%
+                                    %{--<a href="${request.contextPath}/lookupMaster/index"><span class="glyphicon glyphicon-home"></span> Lookup Master</a>--}%
+                                %{--</li>--}%
+                                %{--<li role="presentation">--}%
+                                    %{--<a href="${request.contextPath}/admin/redemptions"><span class="glyphicon glyphicon-home"></span> Redemptions</a>--}%
+                                %{--</li>--}%
+                                %{--<li role="presentation">--}%
+                                    %{--<a href="${request.contextPath}/admin/listItems"><span class="glyphicon glyphicon-home"></span> Items</a>--}%
+                                %{--</li>--}%
+                                %{--<li role="presentation" class="divider"></li>--}%
                                 <li role="presentation">
                                     <a>Help</a>
                                 </li>
@@ -242,7 +242,56 @@
                 <div class="alert alert-success" style="display: block">${flash.message}</div>
             </g:if>
 
-            <g:layoutBody/>
+            <div class="row">
+                <div id="menuNavPanel" class="col-sm-3" style="margin-bottom: 10px;">
+
+                    <div id="adminNavAccordion" class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#adminNavAccordion" href="#adminNavContainer">
+                                        DASHBOARD
+                                    </a>
+                                </div>
+                            </div>
+                            <div id="adminNavContainer" class="panel-collapse collapse in">
+                                <div class="panel-body" style="padding-left: 12px;">
+                                    <ul class="nav nav-pills nav-stacked">
+                                        <li class="adminsurveys">
+                                            <g:link controller="admin" action="surveys">Surveys</g:link>
+                                        </li>
+                                        <li class="adminindex">
+                                            <g:link controller="admin" action="index">User List</g:link>
+                                        </li>
+                                        <li class="emailindex">
+                                            <g:link controller="email" action="index">Emails</g:link>
+                                        </li>
+                                        <li class="parameterindex">
+                                            <g:link controller="parameter" action="index">Parameters</g:link>
+                                        </li>
+                                        <li class="lookupMasterindex">
+                                            <g:link controller="lookupMaster" action="index">Lookup Master</g:link>
+                                        </li>
+                                        <li class="adminredemptions">
+                                            <g:link controller="admin" action="redemptions">Redemptions</g:link>
+                                        </li>
+                                        <li class="adminlistItems">
+                                            <g:link controller="admin" action="listItems">Items</g:link>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div role="main" class="col-sm-9" id="contentPanel">
+                    %{--<div class="module">--}%
+                        <g:layoutBody/>
+                    %{--</div>--}%
+                </div>
+            </div>
         </div>
     </div>
 
@@ -257,7 +306,7 @@
 
         jQuery(function(){
 
-            jQuery(".nav > li.${actionName}").addClass('active');
+            jQuery(".nav > li.${controllerName}${actionName}").addClass('active');
 
             jQuery('#menuNavPanel').append(jQuery('#menuNavPanelContent'));
 

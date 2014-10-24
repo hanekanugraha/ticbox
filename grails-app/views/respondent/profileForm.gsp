@@ -299,7 +299,7 @@
 
         $('.datePicker').each(function() {
             $(this).rules('add', {
-                date: true
+                dateITA: true
             });
         });
 

@@ -1,6 +1,7 @@
 package ticbox
 
 import org.grails.datastore.mapping.query.Query
+import org.springframework.data.mongodb.core.query.Criteria
 
 class RespondentService {
 
@@ -13,7 +14,58 @@ class RespondentService {
 
     def getSurveyList(RespondentDetail detail){
         //TODO should be fetching only relevant surveys
-        def surveys=Survey.findAllByStatusAndType(Survey.STATUS.IN_PROGRESS,Survey.SURVEY_TYPE.EASY)
+        def takenSurvey=SurveyResponse.findAllByRespondentId(detail.respondentId).surveyId
+        List oldsurveys=Survey.findAllByStatusAndType(Survey.STATUS.IN_PROGRESS,Survey.SURVEY_TYPE.EASY)
+
+        def surveys = Survey.createCriteria().list {
+            like "status",Survey.STATUS.IN_PROGRESS
+            and {
+                like "type", Survey.SURVEY_TYPE.EASY
+            }
+            and {
+                not {
+                    'in' "surveyId", takenSurvey
+                }
+            }
+
+//            and {
+//                sizeEq "RESPONDENT_FILTER",0
+//                or{
+//                    sizeGt "RESPONDENT_FILTER",0
+////                    and{
+////                        detail.profileItems?.each { filter ->
+////                               def profile=ProfileItem.findByCode(filter.key)
+////
+////                            switch(profile.type){
+////                                case ProfileItem.TYPES.CHOICE :
+////
+////                                or {
+////
+////                                        like "RESPONDENT_FILTER.checkItems.key",  filter.key
+////
+////                                }
+////
+////                                break
+////
+////                                case ProfileItem.TYPES.DATE :
+////
+////                                gte "RESPONDENT_FILTER.valFrom", new Date(filter.value)
+////                                lte "RESPONDENT_FILTER.valTo", new Date(filter.value)
+////
+////                                break
+////
+////                                default :
+////
+////                                break
+////
+////                            }
+////                        }
+////                    }
+//                }
+//            }
+
+
+        }
 
 
         return surveys

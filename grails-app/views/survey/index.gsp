@@ -201,7 +201,7 @@
                     </g:if>
                     <g:each in="${inProgress}" var="survey">
                         <tr>
-                            <td><a href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}">${survey.name}</a></td>
+                            <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
                             <td></td>
                             <td></td>
                             <td class="content-width">
@@ -232,7 +232,7 @@
                     </g:if>
                     <g:each in="${completes}" var="survey">
                         <tr>
-                            <td><a href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}">${survey.name}</a></td>
+                            <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
                             <td></td>
                             <td></td>
                             <td></td>

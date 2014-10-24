@@ -60,7 +60,12 @@ class UserService {
                     throw new Exception("Cannot get user's role")
                 }
                 newUser.save()
-                sendVerifyCode(params,newUser.verifyCode)
+                try {
+                    sendVerifyCode(params, newUser.verifyCode)
+                }catch (Exception e){
+                    log.error(e.getMessage())
+                    //throw new Exception("Error sending email, ${e.message}")
+                }
 
 
             } catch (e) {

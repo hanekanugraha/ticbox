@@ -184,7 +184,6 @@ class SurveyService {
 
                         gte "profileItems.${filter.code}", Double.valueOf(filter.valFrom)
                         lte "profileItems.${filter.code}", Double.valueOf(filter.valTo)
-
                         break
 
                     case ProfileItem.TYPES.STRING :
