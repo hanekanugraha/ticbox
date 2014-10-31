@@ -20,7 +20,7 @@ class RespondentController {
         def respondent = User.findByUsername(principal.toString())
         def detail = RespondentDetail.findByRespondentId(respondent.id)
 
-        //def surveyList = Survey.findByStatus(Survey.STATUS.IN_PROGRESS)
+//        def surveyList = Survey.findByStatus(Survey.STATUS.IN_PROGRESS)
         def surveyList = respondentService.getSurveyList(detail)
 
         [surveyList:surveyList, respondent: respondent,surveyJoined:SurveyResponse.countByRespondentId(respondent.id)]

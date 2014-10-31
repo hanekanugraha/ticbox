@@ -131,4 +131,18 @@ class HomeController {
     def successTakeFreeSurvey={
 
     }
+    def getCity  = {
+        def cities = City.findAllByParent(params.province)
+        def cityList = new ArrayList();
+
+        for(city in cities){
+            Map cityMaps= new HashMap();
+            cityMaps.put("label",city.label)
+            cityMaps.put("code",city.code)
+            cityList.add(cityMaps)
+
+        }
+
+        render com.mongodb.util.JSON.serialize(cityList)
+    }
 }

@@ -8,6 +8,7 @@ class ProfileItem {
         DATE   : 'DATE',      //will have
         LOOKUP : 'LOOKUP',    //will have lookUpFrom(LookupMaster.code)
         CHOICE : 'CHOICE'     //will have either items(List) or lookUpFrom(LookupMaster.code), will have componentType(ProfileItem.COMPONENT_TYPES), may have multiple(boolean)
+
     ]
 
     static COMPONENT_TYPES = [

@@ -115,6 +115,12 @@ class RespondentService {
 
                             break
 
+                        case ProfileItem.TYPES.PROVINCE :
+
+                            profileItems.put(entry.key, entry.value)
+//                            profileItems.put("CITY", params.city)
+                            break
+
                         default :
 
                             break

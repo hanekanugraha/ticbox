@@ -47,7 +47,7 @@ class BootStrap {
 //                .addToPermissions("ajaxUpload:*")
 //                .addToPermissions("userNotification:*")
 //                .addToPermissions("ticboxUtil:*")
-// //               .addToPermissions("home:*")
+////               .addToPermissions("home:*")
 //                .save()
 //
 //

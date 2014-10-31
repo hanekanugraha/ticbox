@@ -140,6 +140,7 @@ class SurveyService {
     }
 
     def submitToAdmin(Survey survey){
+
         if(survey.type==Survey.SURVEY_TYPE.FREE)
             survey.status=Survey.STATUS.IN_PROGRESS
         else

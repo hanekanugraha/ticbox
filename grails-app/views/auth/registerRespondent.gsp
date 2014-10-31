@@ -1,10 +1,10 @@
-<%@ page import="ticbox.LookupMaster; ticbox.ProfileItem" contentType="text/html;charset=UTF-8" %>
+<%@ page import="ticbox.City; ticbox.LookupMaster; ticbox.ProfileItem" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="ticbox"/>
     <title><g:message code="app.register.respondent.label" /></title>
 </head>
-<body>
+<body >
 <div class="module ">
     <div class="module-header">
         <div class="title"><g:message code="app.register.respondent.label" /></div>
@@ -88,7 +88,15 @@
                                             <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" multiple="true" class="form-control" style="min-width: 40%; width: auto;"/>
                                         </g:if>
                                         <g:else> %{--this is stupid!!!!--}%
-                                            <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;"/>
+                                            <g:if test="${profileItem.code=="PI_PROVINCE001"}" >
+                                                <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;" onchange="changeIt(this)"/>
+                                            </g:if>
+                                            <g:elseif test="${profileItem.code=="PI_CITY001"}" >
+                                                <g:select name="${profileItem.code}" from="" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;" />
+                                            </g:elseif>
+                                            <g:else>
+                                                <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;"/>
+                                            </g:else>
                                         </g:else>
                                     </g:elseif>
                                 </g:elseif>
@@ -134,6 +142,8 @@
 <g:javascript src="additional-methods.min.js"/>
 <script type="text/javascript">
     $(document).ready(function() {
+        loadIt();
+
         $('#registerForm').validate({
             rules: {
                 username: {
@@ -171,6 +181,45 @@
         });
 
     });
+
+    function changeIt(selectObj) {
+        var val = selectObj.options[selectObj.selectedIndex].value;
+        var elmtCity= $('#PI_CITY001')
+        if(elmtCity) {
+            elmtCity.find('option').remove().end();
+            jQuery.getJSON('${request.contextPath}/home/getCity', {province: val}, function (cities) {
+//                var temp = cities;
+                jQuery.each(cities, function (i, item) {
+                    var option = document.createElement("option");
+                    option.text = item.label;
+                    option.value = item.code;
+                    elmtCity.append(option);
+                });
+            });
+        }
+//                                            }
+
+    }
+    function loadIt() {
+
+        var elmtProvince=document.getElementById("PI_PROVINCE001");
+        var val = elmtProvince.options[elmtProvince.selectedIndex].value;
+        var elmtCity= $('#PI_CITY001')
+        if(elmtCity) {
+            elmtCity.find('option').remove().end();
+            jQuery.getJSON('${request.contextPath}/home/getCity', {province: val}, function (cities) {
+
+                jQuery.each(cities, function (i, item) {
+                    var option = document.createElement("option");
+                    option.text = item.label;
+                    option.value = item.code;
+                    elmtCity.append(option);
+                });
+            });
+        }
+
+    }
+
 </script>
 </body>
 </html>

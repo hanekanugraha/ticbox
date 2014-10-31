@@ -226,6 +226,12 @@ class BootstrapService {
                             YOGYAKARTA:'Yogyakarta'
                     ]
             ).save()
+
+            new City(
+                    code: "AC01",
+                    label: "SABANG",
+                    parent: "ACEH"
+            ).save()
         }
 
     }

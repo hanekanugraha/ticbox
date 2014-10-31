@@ -169,15 +169,18 @@ class SurveyController {
     def submitToAdmin(){
         Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
 
-        if(survey)
+        if(survey) {
+//            surveyService.submitSurvey(params, survey)
             surveyService.submitToAdmin(survey)
 
+        }
+
         if(survey.type==Survey.SURVEY_TYPE.FREE){
-            redirect action: 'freeSurveyLink' , params: [freeLink:createLink(controller:'Home',action: 'takeFreeSurvey',params: [surveyId:survey.surveyId] )]
+            redirect  action: 'freeSurveyLink' , params: [freeLink:createLink(controller:'Home',action: 'takeFreeSurvey',params: [surveyId:survey.surveyId] )]
         }
 
         else
-            redirect action: 'index'
+            redirect   action: 'index'
     }
 
     def finalizeAndPublishSurvey(){

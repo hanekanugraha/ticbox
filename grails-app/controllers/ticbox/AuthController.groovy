@@ -57,6 +57,7 @@ class AuthController {
                 user.verify = "1"
                 user.save()
             }catch (Exception e){
+                log.info(e.getMessage())
                 e.printStackTrace()
             }
 
