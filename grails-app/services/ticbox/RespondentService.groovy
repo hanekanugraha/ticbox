@@ -1,5 +1,6 @@
 package ticbox
 
+import com.mongodb.DBCollection
 import org.grails.datastore.mapping.query.Query
 import org.springframework.data.mongodb.core.query.Criteria
 
@@ -12,21 +13,22 @@ class RespondentService {
         return ProfileItem.list()?.sort{it.seq}
     }
 
-    def getSurveyList(RespondentDetail detail){
+    def getSurveyList(RespondentDetail respondentDetail){
         //TODO should be fetching only relevant surveys
-        def takenSurvey=SurveyResponse.findAllByRespondentId(detail.respondentId).surveyId
-        List oldsurveys=Survey.findAllByStatusAndType(Survey.STATUS.IN_PROGRESS,Survey.SURVEY_TYPE.EASY)
-
-        def surveys = Survey.createCriteria().list {
-            like "status",Survey.STATUS.IN_PROGRESS
-            and {
-                like "type", Survey.SURVEY_TYPE.EASY
-            }
-            and {
-                not {
-                    'in' "surveyId", takenSurvey
-                }
-            }
+        def takenSurvey=SurveyResponse.findAllByRespondentId(respondentDetail.respondentId).surveyId
+//        List oldsurveys=Survey.findAllByStatusAndType(Survey.STATUS.IN_PROGRESS,Survey.SURVEY_TYPE.EASY)
+//
+//        def surveys = Survey.createCriteria().list {
+//            like "status", Survey.STATUS.IN_PROGRESS
+//            and {
+//                like "type", Survey.SURVEY_TYPE.EASY
+//            }
+//            and {
+//                not {
+//                    'in' "surveyId", takenSurvey
+//                }
+//            }
+//        }
 
 //            and {
 //                sizeEq "RESPONDENT_FILTER",0
@@ -65,10 +67,55 @@ class RespondentService {
 //            }
 
 
+//        }
+
+
+        StringBuilder sb = new StringBuilder('{ $and: [');
+
+        respondentDetail.profileItems.each {key, val ->
+
+            def profileItem = ProfileItem.findByCode(key)
+
+            switch (profileItem.type){
+
+                case ProfileItem.TYPES.STRING :
+                    sb.append("{RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', val: '$val'} } }")
+                    break
+                case [ProfileItem.TYPES.NUMBER, ProfileItem.TYPES.DATE] :
+                    sb.append("{RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', valFrom: {${'$lte'}: $val }, valTo: {${'$gte'}: $val } } }")
+                    break
+                case [ProfileItem.TYPES.CHOICE, ProfileItem.TYPES.LOOKUP] :
+                    sb.append("{RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', checkItems: { ${'$elemMatch'}: { key: '$val' } } } } }")
+                    break
+
+            }
+            if(val !=profileItems.last()){
+                sb.append(",")
+            }
         }
 
+        sb.append(" {status:'"+Survey.STATUS.IN_PROGRESS+"'}, " )
+        sb.append(" {type:'"+Survey.SURVEY_TYPE.EASY+"'}, " )
+        sb.append(" {surveyId: { ${'$nin'} :  [")
+        takenSurvey.each { i,val->
+            sb.append("'"+val+"'")
+            if(val !=takenSurvey.last()){
+                sb.append(",")
+            }
+        }
 
-        return surveys
+        sb.append(" ]} }" )
+
+        sb.append(']}')
+
+        DBCollection coll = Survey.collection
+        def found = coll.find(com.mongodb.util.JSON.parse(sb.toString()))
+        //TODO try to debug here
+
+        return found
+
+
+//        return surveys
 
     }
 

@@ -32,7 +32,11 @@ class SurveyController {
             submitted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.SUBMITTED),
             surveyorProfile: surveyorProfile,
             surveyor: surveyor,
-            survey: survey
+            survey: survey,
+            countDraft:Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.DRAFT).size(),
+            countInProgress : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.IN_PROGRESS).size(),
+            countCompleted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.COMPLETED).size(),
+            countSubmitted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.SUBMITTED).size()
         ]
 
     }
@@ -101,7 +105,11 @@ class SurveyController {
                 survey : survey,
                 profileItems : surveyService.profileItemsForRespondentFilter,
                 surveyorProfile: surveyorProfile,
-                surveyor: surveyor
+                surveyor: surveyor,
+                countDraft:Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.DRAFT).size(),
+                countInProgress : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.IN_PROGRESS).size(),
+                countCompleted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.COMPLETED).size(),
+                countSubmitted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.SUBMITTED).size()
         ]
     }
 
@@ -136,7 +144,11 @@ class SurveyController {
         [
                 survey : survey,
                 surveyorProfile: surveyorProfile,
-                surveyor: surveyor
+                surveyor: surveyor,
+                countDraft:Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.DRAFT).size(),
+                countInProgress : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.IN_PROGRESS).size(),
+                countCompleted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.COMPLETED).size(),
+                countSubmitted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.SUBMITTED).size()
         ]
     }
 

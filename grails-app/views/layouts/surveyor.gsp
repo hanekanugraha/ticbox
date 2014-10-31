@@ -295,15 +295,19 @@
                                 <div class="panel-body" style="padding: 0 12px;">
                                     <div class="row profileStats">
                                         <div class="col-xs-3 stats">
-                                            <div><strong>1</strong></div>
+                                            <div><strong>${countDraft}</strong></div>
                                             <div>Drafts</div>
                                         </div>
-                                        <div class="col-xs-5 stats leftBordered">
-                                            <div><strong>0</strong></div>
+                                        <div class="col-xs-3 stats leftBordered">
+                                            <div><strong>${countInProgress}</strong></div>
                                             <div style="color: #7F9B09">In Progress</div>
                                         </div>
-                                        <div class="col-xs-4 stats leftBordered">
-                                            <div><strong>15</strong></div>
+                                        <div class="col-xs-3 stats leftBordered">
+                                            <div><strong>${countSubmitted}</strong></div>
+                                            <div >Submitted</div>
+                                        </div>
+                                        <div class="col-xs-3 stats leftBordered">
+                                            <div><strong>${countCompleted}</strong></div>
                                             <div class="trust">Completed</div>
                                         </div>
                                     </div>
