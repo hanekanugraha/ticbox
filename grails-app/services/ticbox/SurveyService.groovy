@@ -1,5 +1,6 @@
 package ticbox
 
+import com.mongodb.DBCollection
 import com.mongodb.DBObject
 import org.bson.types.ObjectId
 import org.codehaus.groovy.grails.web.util.WebUtils
@@ -203,6 +204,37 @@ class SurveyService {
         }
 
         return profiles
+    }
+
+    def getFilteredSurveys(RespondentDetail respondentDetail){
+
+        StringBuilder sb = new StringBuilder('{ $and: [');
+
+        respondentDetail.profileItems.each {key, val ->
+
+            def profileItem = ProfileItem.findByCode(key)
+
+            switch (profileItem.type){
+
+                case ProfileItem.TYPES.STRING :
+                    sb.append("{RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', val: '$val'} } }")
+                    break
+                case [ProfileItem.TYPES.NUMBER, ProfileItem.TYPES.DATE] :
+                    sb.append("{RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', valFrom: {${'$lte'}: $val }, valTo: {${'$gte'}: $val } } }")
+                    break
+
+            }
+
+        }
+
+        sb.append(']}')
+
+        DBCollection coll = Survey.collection
+        def found = coll.find(com.mongodb.util.JSON.parse(sb.toString()))
+        //TODO try to debug here
+
+        return found
+
     }
 
     def getSurveyResult(String surveyId){

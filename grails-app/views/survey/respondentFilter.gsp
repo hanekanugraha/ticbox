@@ -209,6 +209,7 @@
     </div>
 
     <script type="text/javascript">
+
         $('#freeSurveyInfo').tooltip({'placement': 'right','content':'text', 'container':'body'});
         $('#easySurveyInfo').tooltip({'placement': 'right','content':'text', 'container':'body'});
 
@@ -256,8 +257,7 @@
 
             });
 
-            jQuery('#nextAndSubmitFilterBtn').click(function () {
-
+            var submitFilterItems = function() {
                 var filterItems = [];
 
                 if (jQuery('#easySurveyChk').is(':checked')) {
@@ -279,8 +279,11 @@
 
                             case '${ProfileItem.TYPES.NUMBER}' :
 
-                                filterItem['valFrom'] = jQuery('.filter-value-from', this).val();
-                                filterItem['valTo'] = jQuery('.filter-value-to', this).val();
+                                var valFrom = jQuery('.filter-value-from', this).val();
+                                var valTo = jQuery('.filter-value-to', this).val();
+
+                                filterItem['valFrom'] = valFrom ? parseInt(valFrom) : 0;
+                                filterItem['valTo'] =  valTo ? parseInt(valTo) : 0;
 
                                 break;
 
@@ -306,85 +309,14 @@
 
                             case '${ProfileItem.TYPES.DATE}' :
 
-                                filterItem['valFrom'] = jQuery('.filter-value-from', this).val();
-                                filterItem['valTo'] = jQuery('.filter-value-to', this).val();
+                                var dateFrom = jQuery('.filter-value-from', this).datepicker('getDate');
+                                var dateTo = jQuery('.filter-value-to', this).datepicker('getDate');
 
-                                break;
+                                dateFrom = dateFrom ? $.datepicker.formatDate( 'yymmdd', dateFrom) : undefined;
+                                dateTo = dateTo ? $.datepicker.formatDate( 'yymmdd', dateTo) : undefined;
 
-                            default :
-
-                                break;
-
-                        }
-
-                        filterItems.push(filterItem);
-
-                    });
-                }
-
-                var filterItemsJSON = JSON.stringify(filterItems);
-
-                jQuery.getJSON('${request.contextPath}/survey/submitRespondentFilter', {filterItemsJSON: filterItemsJSON, surveyType: jQuery('input.surveyType:checked').val()}, function (data) {
-
-                    //alert('Submitted');
-
-                    //loadRespondentFilter(data);
-                });
-
-            });
-
-            jQuery('#submitFilterBtn').click(function () {
-
-                var filterItems = [];
-
-                if (jQuery('#easySurveyChk').is(':checked')) {
-                    jQuery('#filterForm').find('.profile-item-container').each(function () {
-
-                        var filterItem = {};
-
-                        filterItem['code'] = jQuery(this).attr('code');
-                        filterItem['type'] = jQuery(this).attr('type');
-                        filterItem['label'] = jQuery(this).attr('label');
-
-                        switch (filterItem['type']) {
-
-                            case '${ProfileItem.TYPES.STRING}' :
-
-                                filterItem['val'] = jQuery('.filter-value', this).val();
-
-                                break;
-
-                            case '${ProfileItem.TYPES.NUMBER}' :
-
-                                filterItem['valFrom'] = jQuery('.filter-value-from', this).val();
-                                filterItem['valTo'] = jQuery('.filter-value-to', this).val();
-
-                                break;
-
-                            case '${ProfileItem.TYPES.CHOICE}' :
-                                filterItem['checkItems'] = [];
-                                jQuery('input.check-item:checked', this).each(function () {
-                                    if (jQuery(this).attr('label')) {
-                                        filterItem['checkItems'].push({key: jQuery(this).val(), value: jQuery(this).attr('label')});
-                                    } else {
-                                        filterItem['checkItems'].push(jQuery(this).val());
-                                    }
-                                });
-
-                                break;
-
-                            case '${ProfileItem.TYPES.LOOKUP}' :
-                                filterItem['checkItems'] = [];
-                                jQuery('input.check-item:checked', this).each(function () {
-                                    filterItem['checkItems'].push({key: jQuery(this).val(), value: jQuery(this).attr('label')});
-                                });
-
-                                break;
-
-                            case '${ProfileItem.TYPES.DATE}' :
-
-                                filterItem['valFrom'] = jQuery('.filter-value-from', this).val();
-                                filterItem['valTo'] = jQuery('.filter-value-to', this).val();
+                                filterItem['valFrom'] = dateFrom ? parseInt(dateFrom) : 0;
+                                filterItem['valTo'] = dateTo ? parseInt(dateTo) : 0;
 
                                 break;
 
@@ -407,8 +339,11 @@
 
                     loadRespondentFilter(data);
                 });
+            };
 
-            });
+            jQuery('#nextAndSubmitFilterBtn').click(submitFilterItems);
+
+            jQuery('#submitFilterBtn').click(submitFilterItems);
 
             if ('${ticbox.Survey.SURVEY_TYPE.EASY}' == '${survey.type}') {
                 jQuery.getJSON('${request.contextPath}/survey/getRespondentFilter', {}, function (respondentFilter) {
