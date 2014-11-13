@@ -11,6 +11,7 @@ class User {
     String verify
     String verifyCode
     String status
+    String resetPassword
     RespondentProfile respondentProfile
     static embedded = ["respondentProfile"]
     static hasMany = [ roles: Role ]
@@ -23,6 +24,7 @@ class User {
         verify(nullable: false)
         verifyCode(nullable: true)
         status(nullable: false)
+        resetPassword(null:true)
     }
     static mapping = {
         username index: true

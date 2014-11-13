@@ -43,7 +43,12 @@
                                 </tr>
                             </g:each>
                         </tbody>
+                        <tfoot>
+                            <g:paginate next="Forward" prev="Back"
+                                        maxsteps="3"  action="index" total="${users.size()}" max="4" />
+                        </tfoot>
                     </table>
+
                 </div>
             </div>
 

@@ -140,20 +140,23 @@ class UserService {
     }
 
     def resetPassword(String email){
-        String newPassword =generator( (('A'..'Z')+('0'..'9')).join(), 9 )
-        String passwordHash= new Sha256Hash(newPassword).toHex()
+//        String newPassword =generator( (('A'..'Z')+('0'..'9')).join(), 9 )
+//        String passwordHash= new Sha256Hash(newPassword).toHex()
+        String resetPassword=UUID.randomUUID().toString()
         def recipients = []
         User user= User.findByEmail(email)
 
         if(user) {
-            user.passwordHash=passwordHash
+            user.resetPassword=resetPassword
 
             recipients << [
                     email   : user.email,
                     fullname: user.username //TODO RespondentProfile should consists full name
             ]
 
-            emailBlasterService.blastEmail(recipients, 'forgotPassword', 'Reset Ticbox Password', [newPassword: newPassword])
+            String link = grailsLinkGenerator.getServerBaseURL()+"/home/resetPassword?email="+email+"&resetPassword="+resetPassword;
+
+            emailBlasterService.blastEmail(recipients, 'forgotPassword', 'Reset Ticbox Password', [link: link])
             user.save()
         }
         return true

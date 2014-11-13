@@ -124,8 +124,11 @@ class SurveyService {
                     String link = "${servletContext.contextPath}/userNotification?code=${notifCode}"
 
                     //TODO should be sending bulk emails personally
-                    emailBlasterService.blastEmail(recipients, 'takeSurvey', 'Take a survey', [link:link, surveyName: survey.name])
-
+                    try{
+                        emailBlasterService.blastEmail(recipients, 'takeSurvey', 'Take a survey', [link:link, surveyName: survey.name])
+                    }catch (Exception e){
+                        log.error(e.printStackTrace())
+                    }
                 }
 
 
@@ -278,8 +281,11 @@ class SurveyService {
                                     switch (answerDetails['type']){
                                         case Survey.QUESTION_TYPE.CHOICE_SINGLE :
 
-                                            if(!summary){
+                                            if(!result[seq]['summary']){
                                                 summary = [:]
+                                            }
+                                            else{
+                                                summary=result[seq]['summary']
                                             }
 
                                             value.each{ String choice ->
@@ -290,8 +296,11 @@ class SurveyService {
 
                                         case Survey.QUESTION_TYPE.CHOICE_MULTIPLE :
 
-                                            if(!summary){
+                                            if(!result[seq]['summary']){
                                                 summary = [:]
+                                            }
+                                            else{
+                                                summary=result[seq]['summary']
                                             }
 
                                             value.each{ String choice ->
@@ -302,8 +311,10 @@ class SurveyService {
 
                                         case Survey.QUESTION_TYPE.FREE_TEXT :
 
-                                            if(!summary){
+                                            if(!result[seq]['summary']){
                                                 summary = []
+                                            }else{
+                                                summary=result[seq]['summary']
                                             }
 
                                             summary << value
@@ -312,10 +323,11 @@ class SurveyService {
 
                                         case Survey.QUESTION_TYPE.SCALE_RATING :
 
-                                            if(!summary){
+                                            if(!result[seq]['summary']){
                                                 summary = [:]
+                                            }else{
+                                                summary=result[seq]['summary']
                                             }
-
                                             for(row in value){
                                                 if(!summary[row.key]){
                                                     summary[row.key] = [:]
@@ -328,8 +340,10 @@ class SurveyService {
 
                                         case Survey.QUESTION_TYPE.STAR_RATING :
 
-                                            if(!summary){
+                                            if(!result[seq]['summary']){
                                                 summary = [:]
+                                            }else{
+                                                summary=result[seq]['summary']
                                             }
 
                                             summary[value] = summary[value] ? summary[row.key][row.value] + 1 : 1

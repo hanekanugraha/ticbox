@@ -116,7 +116,7 @@
                 <a id="delSubmitedSurvey" href="#delete-submitted-survey-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Delete</a>
             </div>
         </div>
-        <div style="width: 100%">
+        <div style="width: 100%" id="surveySummitedList">
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
@@ -157,6 +157,10 @@
                 </g:form>
                 </g:each>
                 </tbody>
+                <tfoot>
+                <g:paginate next="Forward" prev="Back"
+                            maxsteps="3"  action="surveys" total="${submittedTotal}"  />
+                </tfoot>
             </table>
             <div class="row" style="margin-bottom:10px">
                 <div class="col-sm-12">
@@ -776,30 +780,50 @@
                         var line1= [['23-May-08', 578.55], ['20-Jun-08', 566.5], ['25-Jul-08', 480.88], ['22-Aug-08', 509.84],
                             ['26-Sep-08', 454.13], ['24-Oct-08', 379.75], ['21-Nov-08', 303], ['26-Dec-08', 308.56],
                             ['23-Jan-09', 299.14], ['20-Feb-09', 346.51], ['20-Mar-09', 325.99], ['24-Apr-09', 386.15]];
-
-                        constructLineChart(target, line1, 'Answer Type - Free Text');
+                        var tab = jQuery("<table></table>");
+                        jQuery.each(summary, function (index, val) {
+                            var row = jQuery('<tr><td>' + (index+1)+". " +  val + '</td></tr>');
+                            tab.append(row);
+                        });
+                        target.append(tab);
+//                        constructLineChart(target, line1, 'Answer Type - Free Text');
 
                         break;
 
                     case '${Survey.QUESTION_TYPE.SCALE_RATING}' :
 
-                        jQuery.each(summary, function(rowLabel, rowSummary){
+                        if(summary) {
+                            var ticks =[];
+                            var series =[];
+                            var dataAll=[];
+                            var len= summary.length;
+                            var last;
 
-                            var data = [];
+                            jQuery.each(summary, function (rowLabel, rowSummary) {
 
-                            jQuery.each(rowSummary, function(colLabel, count){
-                                data.push([colLabel, count]);
+                                var data = [];
+                                last=rowSummary;
+                                ticks.push(rowLabel);
+                                jQuery.first
+                                jQuery.each(rowSummary, function (colLabel, count) {
+                                    data.push(count);
+                                });
+                                dataAll.push(data);
+
+                            });
+                            jQuery.each(last, function (colLabel, count) {
+                                series.push({label:colLabel});
                             });
 
                             var targetCopy = target.clone();
 
                             jQuery('.chart-container .col', container).append(targetCopy);
 
-                            constructPieChart(targetCopy, data, 'Scale Rating (' + rowLabel + ')');
-                        });
 
-                        target.remove();
+                            constructMultipleChart(targetCopy, dataAll, 'Scale Rating',ticks,series);
 
+                            target.remove();
+                        }
                         break;
 
                     case '${Survey.QUESTION_TYPE.STAR_RATING}' :
@@ -845,6 +869,41 @@
 
     }
 
+    function constructMultipleChart(target, data, title,ticks,series){
+
+        return jQuery.jqplot (target, data,
+                {
+                    stackSeries: true,
+//                    captureRightClick: true,
+                    seriesDefaults:{
+                        renderer:$.jqplot.BarRenderer,
+                        rendererOptions: {
+                            // Put a 30 pixel margin between bars.
+//                            barMargin: 30,
+                            // Highlight bars when mouse button pressed.
+                            // Disables default highlighting on mouse over.
+//                            highlightMouseDown: true
+                            barDirection: 'horizontal'
+                        },
+                        pointLabels: {show: true}
+                    },series:series,
+
+                    axes: {
+                        yaxis: {
+                            renderer: $.jqplot.CategoryAxisRenderer,
+                            ticks:ticks
+                        }
+                    },
+                    legend: { show:true, location: 'e' },
+                    title: {
+                        text: title?title:'',
+                        show: title != null
+                    }
+
+                }
+        );
+
+    }
     function constructLineChart(target, data, title){
 
         return jQuery.jqplot(target, [data], {

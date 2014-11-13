@@ -71,11 +71,12 @@ class AdminController {
         Survey survey = surveyService.getCurrentEditedSurvey()
 
         [
-                inProgress : Survey.findAllByStatus( Survey.STATUS.IN_PROGRESS),
-                completes : Survey.findAllByStatus( Survey.STATUS.COMPLETED),
-                submitted : Survey.findAllByStatus( Survey.STATUS.SUBMITTED),
+                inProgress : Survey.findAllByStatus( Survey.STATUS.IN_PROGRESS,[max:params.max==null?10:params.max,offset:params.offset==null?0:params.offset]),
+                completes : Survey.findAllByStatus( Survey.STATUS.COMPLETED,[max:params.max==null?10:params.max,offset:params.offset==null?0:params.offset]),
+                submitted : Survey.findAllByStatus( Survey.STATUS.SUBMITTED,[max:params.max==null?10:params.max,offset:params.offset==null?0:params.offset]),
                 admin : admin,
-                survey: survey
+                survey: survey,
+                submittedTotal : Survey.findAllByStatus( Survey.STATUS.SUBMITTED).size()
         ]
 
     }

@@ -1,5 +1,6 @@
 package ticbox
 
+import com.mongodb.DBObject
 import grails.converters.JSON
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64
 import org.bson.types.ObjectId
@@ -163,7 +164,8 @@ class SurveyController {
             Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
             if(survey.type==Survey.SURVEY_TYPE.FREE){
                 def maxQuestion = Parameter.findByCode("MAX_QUESTION_FREE_SURVEY")
-                if(((Map)survey[Survey.COMPONENTS.QUESTION_ITEMS]).size()> maxQuestion)
+                DBObject dbObject = (DBObject) com.mongodb.util.JSON.parse(params.questionItems)
+                if(((List)dbObject).size() > Integer.parseInt(maxQuestion.value))
                     throw new Exception()
             }
             if(survey)
@@ -276,5 +278,25 @@ class SurveyController {
 
     def freeSurveyLink={
         [freeLink: params.freeLink]
+    }
+
+    def profileForm() {
+        //def profileItems = respondentService.getProfileItems()
+        def principal = SecurityUtils.subject.principal
+        def surveyor = User.findByUsername(principal.toString())
+//        def surveyorDetail = SurveyorDetail.findByRespondentId(respondent.id)
+//        respondentDetail = respondentDetail ?: new RespondentDetail(respondentId: respondent.id).save()
+        [surveyor: surveyor,countDraft:Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.DRAFT).size(),
+                            countInProgress : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.IN_PROGRESS).size(),
+                            countCompleted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.COMPLETED).size(),
+                            countSubmitted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.SUBMITTED).size()]
+    }
+
+    def modify = {
+        def surveyor = User.findById(params.id)
+        surveyor.email = params.email
+        surveyor.save()
+        
+        forward(action: "profileForm")
     }
 }

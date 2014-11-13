@@ -5,7 +5,7 @@
   Time: 8:53 PM
 --%>
 
-<%@ page import="ticbox.LookupMaster" contentType="text/html;charset=UTF-8" %>
+<%@ page import="ticbox.City; ticbox.LookupMaster" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="respondent"/>
@@ -187,7 +187,15 @@
                                         <g:select class="form-control" style="width: auto" name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" multiple="true" value="${respondentDetail?.profileItems[profileItem.code]?.toList()}"/>
                                     </g:if>
                                     <g:else> %{--this is stupid!!!!--}%
-                                        <g:select class="form-control" style="width: auto" name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" value="${respondentDetail?.profileItems[profileItem.code]}"/>
+                                        <g:if test="${profileItem.code=="PI_PROVINCE001"}" >
+                                            <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;" onchange="changeIt(this)" value="${respondentDetail?.profileItems[profileItem.code]}"/>
+                                        </g:if>
+                                        <g:elseif test="${profileItem.code=="PI_CITY001"}" >
+                                            <g:select name="${profileItem.code}" from="${City.findAllByParent(respondentDetail.getProfileItems().get('PI_PROVINCE001'))}" optionKey="code" optionValue="label" class="form-control" style="min-width: 40%; width: auto;" value="${respondentDetail?.profileItems[profileItem.code]}"/>
+                                        </g:elseif>
+                                        <g:else>
+                                            <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;" value="${respondentDetail?.profileItems[profileItem.code]}"/>
+                                        </g:else>
                                     </g:else>
                                 </g:elseif>
                             </g:elseif>
@@ -280,6 +288,8 @@
     });
 
     $(document).ready(function() {
+
+
         $('#respProfileForm').validate({
             rules: {
                 email: {
@@ -304,6 +314,46 @@
         });
 
     });
+
+    function changeIt(selectObj) {
+        var val = selectObj.options[selectObj.selectedIndex].value;
+        var elmtCity= $('#PI_CITY001')
+        if(elmtCity) {
+            elmtCity.find('option').remove().end();
+            jQuery.getJSON('${request.contextPath}/home/getCity', {province: val}, function (cities) {
+//                var temp = cities;
+                jQuery.each(cities, function (i, item) {
+                    var option = document.createElement("option");
+                    option.text = item.label;
+                    option.value = item.code;
+                    elmtCity.append(option);
+                });
+            });
+        }
+//                                            }
+
+    }
+    function loadIt() {
+
+        var elmtProvince=document.getElementById("PI_PROVINCE001");
+        var val = elmtProvince.options[elmtProvince.selectedIndex].value;
+        var elmtCity= $('#PI_CITY001')
+        if(elmtCity) {
+            elmtCity.find('option').remove().end();
+            jQuery.getJSON('${request.contextPath}/home/getCity', {province: val}, function (cities) {
+
+                jQuery.each(cities, function (i, item) {
+                    var option = document.createElement("option");
+                    option.text = item.label;
+                    option.value = item.code;
+
+                    elmtCity.append(option);
+                });
+            });
+        }
+
+    }
+
 </script>
 
 </body>

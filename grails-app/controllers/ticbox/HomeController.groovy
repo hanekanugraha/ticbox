@@ -145,4 +145,14 @@ class HomeController {
 
         render com.mongodb.util.JSON.serialize(cityList)
     }
+
+    def resetPassword ={
+        def user= User.findByEmailAndResetPassword(params.email,params.resetPassword)
+        if(user){
+            [user:user]
+        }
+        else{
+            redirect(uri: "/auth/login")
+        }
+    }
 }

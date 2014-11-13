@@ -4,6 +4,11 @@ import grails.converters.JSON
 import grails.plugin.shiro.oauth.FacebookOAuthToken
 import grails.plugin.shiro.oauth.GoogleOAuthToken
 import grails.plugin.shiro.oauth.TwitterOAuthToken
+import net.tanesha.recaptcha.ReCaptchaImpl
+import net.tanesha.recaptcha.ReCaptchaResponse
+
+//import net.tanesha.recaptcha.ReCaptchaImpl
+//import net.tanesha.recaptcha.ReCaptchaResponse
 import org.apache.shiro.SecurityUtils
 import org.apache.shiro.authc.AuthenticationException
 import org.apache.shiro.authc.UsernamePasswordToken
@@ -229,9 +234,24 @@ class AuthController {
         def errorAction
         try {
             errorAction = ("surveyor".equalsIgnoreCase(params.userType)) ? "registerSurveyor" : "registerRespondent"
-            userService.createUser(params)
-            flash.message = message(code: "general.create.success.message")
-            redirect(uri: "/")
+            String remoteAddr = request.getRemoteAddr();
+            ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
+            reCaptcha.setPrivateKey("6LfZNf0SAAAAAHWHbxemEPT9puobq6IdHX1v3SUL");
+
+            String challenge = request.getParameter("recaptcha_challenge_field");
+            String uresponse = request.getParameter("recaptcha_response_field");
+            ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
+
+            if (reCaptchaResponse.isValid()) {
+                userService.createUser(params)
+                flash.message = message(code: "general.create.success.message")
+                redirect(uri: "/")
+            } else {
+                flash.error = message(code: "general.create.failed.message") + " : "+ "invalid captcha"
+                forward(action: errorAction)
+            }
+
+
         } catch (Exception e) {
             flash.error = message(code: "general.create.failed.message") + " : " + e.message
             log.error(e.message, e)
@@ -251,6 +271,7 @@ class AuthController {
                     def user = User.findByIdAndPasswordHash(params.id, oldPasswordHash)
                     if (user) {
                         user.passwordHash = newPasswordHash
+
                         user.save()
                         success = true
                         message = "Password successfully changed"
@@ -268,6 +289,42 @@ class AuthController {
         }
         result = [success: success, message: message]
         render result as JSON
+    }
+
+    def resetPassword = {
+        def result
+        def success = false
+//        def message
+        if (params.id) {
+            if ( params.newPassword && params.confirmPassword) {
+                if (params.newPassword == params.confirmPassword) {
+                    def newPasswordHash = new Sha256Hash(params.newPassword).toHex()
+                    def user = User.findByIdAndResetPassword(params.id, params.resetPassword)
+                    if (user) {
+                        user.passwordHash = newPasswordHash
+                        user.resetPassword=UUID.randomUUID()
+                        user.save()
+                        success = true
+//                        message =
+
+                        flash.message = message(code: "general.resetpassword.success.message")
+
+                    } else {
+                        flash.error = message("Invalid password")
+
+                    }
+                } else {
+                    flash.error = message("New password mismatch")
+                }
+            } else {
+                flash.error = message("Please provide all details")
+
+            }
+        } else {
+            flash.error = message("invalid user")
+        }
+        redirect(uri: "/auth/login")
+
     }
 
 }

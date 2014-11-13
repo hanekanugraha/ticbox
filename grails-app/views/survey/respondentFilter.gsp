@@ -115,7 +115,9 @@
 
                     <select id="respondentFilterComponents" class="form-control" style="display: inline; width: auto">
                         <g:each in="${profileItems}" var="profileItem">
-                            <option value="${profileItem.code}">${profileItem.label}</option>
+                            <g:if test="${profileItem.code!="PI_CITY001"}" >
+                                <option value="${profileItem.code}">${profileItem.label}</option>
+                            </g:if>
                         </g:each>
                     </select>
 
@@ -185,19 +187,60 @@
                                 %{--<label class="checkbox">
                                             <input id="${profileItem.code}_${item}" class="check-item" type="checkbox" name="${profileItem.code}" value="${item}"> ${item}
                                         </label>--}%
-                                    <input id="${profileItem.code}_${item}" class="check-item prettyChk form-control" type="checkbox"
+
+                                        <input id="${profileItem.code}_${item}" class="check-item prettyChk form-control" type="checkbox"
                                            data-label="${item}" name="${profileItem.code}" value="${item}">
+
                                 </g:each>
                             </g:if>
                             <g:elseif test="${profileItem.lookupFrom}">
-                                <g:each in="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" var="item">
+                                <g:if test="${profileItem.code=="PI_PROVINCE001"}" >
+                                    <g:each in="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" var="item">
+                                    %{--<label class="checkbox">
+                                                <input id="${profileItem.code}_${item.key}" class="check-item" type="checkbox" name="${profileItem.code}" value="${item.key}" label="${item.value}"> ${item.value}
+                                            </label>--}%
+
+                                        <input id="${profileItem.code}_${item.key}" class="check-item prettyChk form-control" type="checkbox"
+                                               data-label="${item.value}" name="${profileItem.code}" value="${item.key}"
+                                               label="${item.value}" onchange="loadCity()">
+                                        <br/>
+
+                                    </g:each>
+                                    </div>
+                                    <div class="profile-item-container form-inline" code="PI_CITY001" type="CHOICE" label="City" style="position: relative">
+                                    %{--<i class="remove-filter glyphicon glyphicon-remove clickable" style="position: absolute; top: 5px; right: 7px;"></i>--}%
+                                    <label class="col-sm-2 control-label" for="PI_CITY001">City</label>
+                                    <div class="col-sm-9 form-inline" style="font-weight: normal">
+                                        <select name="listCity" size=8 class="listCity" multiple>
+                                            <option name=one value=one> one </option>
+                                            <option name=two value=two> two </option>
+                                            <option name=three value=three> three </option>
+                                            <option name=four value=four> four </option>
+                                        </select>
+                                        <input type="button" value="Add &gt;&gt;" style="width:80px" onclick="addCity()">
+                                        <input type="button" value="Remove &lt;&lt;" style="width:80px" onclick="removeCity()">
+
+                                        <select name="selectedCity" class="selectedCity" size=8 multiple>
+                                            <option name=one value=one> one </option>
+                                            <option name=two value=two> two </option>
+                                            <option name=three value=three> three </option>
+                                            <option name=four value=four> four </option>
+                                        </select>
+
+                                    </div>
+                                </g:if>
+                                <g:elseif test="${profileItem.code!="PI_CITY001"}">
+                                    <g:each in="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" var="item">
                                 %{--<label class="checkbox">
                                             <input id="${profileItem.code}_${item.key}" class="check-item" type="checkbox" name="${profileItem.code}" value="${item.key}" label="${item.value}"> ${item.value}
                                         </label>--}%
-                                    <input id="${profileItem.code}_${item.key}" class="check-item prettyChk form-control" type="checkbox"
+
+                                        <input id="${profileItem.code}_${item.key}" class="check-item prettyChk form-control" type="checkbox"
                                            data-label="${item.value}" name="${profileItem.code}" value="${item.key}"
-                                           label="${item.value}">
-                                </g:each>
+                                           label="${item.value}" >
+
+                                    </g:each>
+                                </g:elseif>
                             </g:elseif>
 
                         </g:elseif>
@@ -469,6 +512,7 @@
 
                         case '${ProfileItem.TYPES.CHOICE}' :
 
+                            if(filter)
                             filterContent = jQuery('<div style="margin-left: 15px"></div>');
                             var ul = jQuery('<ul></ul>');
 
@@ -479,6 +523,10 @@
                                     ul.append(jQuery('<li></li>').append(item));
                                 }
                             });
+
+                            if(filter.code=='PI_PROVINCE001'){
+                                ;
+                            }
 
                             filterContent.append(ul);
 
@@ -519,6 +567,10 @@
             } else {
                 //TODO no survey fetched
             }
+        }
+
+        function loadCity() {
+            alert("change")
         }
 
     </script>

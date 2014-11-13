@@ -408,7 +408,11 @@
 
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot', file: 'jquery.jqplot.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.pieRenderer.min.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.barRenderer.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.highlighter.min.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.categoryAxisRenderer.min.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.pointLabels.min.js')}"></script>
+
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.cursor.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.dateAxisRenderer.min.js')}"></script>
 
@@ -650,30 +654,50 @@
                                 ['20-Mar-09', 325.99],
                                 ['24-Apr-09', 386.15]
                             ];
+                            var tab = jQuery("<table></table>");
+                            jQuery.each(summary, function (index, val) {
+                                var row = jQuery('<tr><td>' + (index+1)+". " +  val + '</td></tr>');
+                                tab.append(row);
+                            });
+                            target.append(tab);
 
-                            constructLineChart(target, line1, 'Answer Type - Free Text');
+//                            constructLineChart(target, line1, 'Answer Type - Free Text');
                         }
                         break;
 
                     case '${Survey.QUESTION_TYPE.SCALE_RATING}' :
 
                         if(summary) {
+                            var ticks =[];
+                            var series =[];
+                            var dataAll=[];
+                            var len= summary.length;
+                            var last;
+
                             jQuery.each(summary, function (rowLabel, rowSummary) {
 
                                 var data = [];
-
+                                last=rowSummary;
+                                ticks.push(rowLabel);
+                                jQuery.first
                                 jQuery.each(rowSummary, function (colLabel, count) {
-                                    data.push([colLabel, count]);
+                                    data.push(count);
                                 });
+                                dataAll.push(data);
 
-                                var targetCopy = target.clone();
-
-                                jQuery('.chart-container .col', container).append(targetCopy);
-
-                                constructPieChart(targetCopy, data, 'Scale Rating (' + rowLabel + ')');
+                            });
+                            jQuery.each(last, function (colLabel, count) {
+                                series.push({label:colLabel});
                             });
 
-                            target.remove();
+//                            var targetCopy = target.clone();
+
+                            jQuery('.chart-container .col', container).append(target);
+
+
+                            constructMultipleChart(target, dataAll, 'Scale Rating',ticks,series);
+
+//                            target.remove();
                         }
                         break;
 
@@ -715,6 +739,42 @@
                         text: title?title:'',
                         show: title != null
                     }
+                }
+        );
+
+    }
+
+    function constructMultipleChart(target, data, title,ticks,series){
+
+        return jQuery.jqplot (target, data,
+                {
+                    stackSeries: true,
+//                    captureRightClick: true,
+                    seriesDefaults:{
+                        renderer:$.jqplot.BarRenderer,
+                        rendererOptions: {
+                            // Put a 30 pixel margin between bars.
+//                            barMargin: 30,
+                            // Highlight bars when mouse button pressed.
+                            // Disables default highlighting on mouse over.
+//                            highlightMouseDown: true
+                            barDirection: 'horizontal'
+                        },
+                        pointLabels: {show: true}
+                    },series:series,
+
+                    axes: {
+                        yaxis: {
+                            renderer: $.jqplot.CategoryAxisRenderer,
+                            ticks:ticks
+                        }
+                    },
+                    legend: { show:true, location: 'e' },
+                    title: {
+                        text: title?title:'',
+                        show: title != null
+                    }
+
                 }
         );
 

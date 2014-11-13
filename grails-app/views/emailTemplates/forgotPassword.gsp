@@ -41,7 +41,7 @@
                     <br/><br/><br/>
                     Kami telah menerima permintaan reset password atas akun Ticbox anda.
                     <br/><br/>
-                    Password baru anda: ${newPassword}
+                    Password baru anda: <a href="${link}">here</a>
                     <br/><br/>
                     Setelah melakukan log in dengan password baru diatas, harap segera mengubah password sesuai yang anda inginkan.
                     <br/><br/>
@@ -56,7 +56,7 @@
                     <br/>
                     You are receiving this email because a reset password action was requested for your Ticbox account.
                     <br/><br/>
-                    Your new password is: ${newPassword}
+                    Your new password is: <a href="${link}">here</a>
                     <br/><br/>
                     After logging in, please immediately change your password.
                     <br/><br/>

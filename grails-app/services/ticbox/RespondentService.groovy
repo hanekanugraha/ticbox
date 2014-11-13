@@ -72,34 +72,34 @@ class RespondentService {
 
         StringBuilder sb = new StringBuilder('{ $and: [');
 
-        respondentDetail.profileItems.each {key, val ->
-
-            def profileItem = ProfileItem.findByCode(key)
-
-            switch (profileItem.type){
-
-                case ProfileItem.TYPES.STRING :
-                    sb.append("{RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', val: '$val'} } }")
-                    break
-                case [ProfileItem.TYPES.NUMBER, ProfileItem.TYPES.DATE] :
-                    sb.append("{RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', valFrom: {${'$lte'}: $val }, valTo: {${'$gte'}: $val } } }")
-                    break
-                case [ProfileItem.TYPES.CHOICE, ProfileItem.TYPES.LOOKUP] :
-                    sb.append("{RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', checkItems: { ${'$elemMatch'}: { key: '$val' } } } } }")
-                    break
-
-            }
-            if(val !=profileItems.last()){
-                sb.append(",")
-            }
-        }
+//        respondentDetail.profileItems.each {key, val ->
+//
+//            def profileItem = ProfileItem.findByCode(key)
+//
+//            switch (profileItem.type){
+//
+//                case ProfileItem.TYPES.STRING :
+//                    sb.append("{RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', val: '$val'} } }")
+//                    break
+//                case [ProfileItem.TYPES.NUMBER, ProfileItem.TYPES.DATE] :
+//                    sb.append("{RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', valFrom: {${'$lte'}: $val }, valTo: {${'$gte'}: $val } } }")
+//                    break
+//                case [ProfileItem.TYPES.CHOICE, ProfileItem.TYPES.LOOKUP] :
+//                    sb.append("{RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', checkItems: { ${'$elemMatch'}: { key: '$val' } } } } }")
+//                    break
+//
+//            }
+//            if(val !=profileItems.last()){
+//                sb.append(",")
+//            }
+//        }
 
         sb.append(" {status:'"+Survey.STATUS.IN_PROGRESS+"'}, " )
         sb.append(" {type:'"+Survey.SURVEY_TYPE.EASY+"'}, " )
         sb.append(" {surveyId: { ${'$nin'} :  [")
-        takenSurvey.each { i,val->
-            sb.append("'"+val+"'")
-            if(val !=takenSurvey.last()){
+        for(valueTaken in takenSurvey){
+            sb.append("'"+valueTaken+"'")
+            if(valueTaken !=takenSurvey.last()){
                 sb.append(",")
             }
         }

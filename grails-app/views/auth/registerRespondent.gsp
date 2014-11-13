@@ -1,4 +1,4 @@
-<%@ page import="ticbox.City; ticbox.LookupMaster; ticbox.ProfileItem" contentType="text/html;charset=UTF-8" %>
+<%@ page import="net.tanesha.recaptcha.ReCaptcha; net.tanesha.recaptcha.ReCaptchaFactory; ticbox.City; ticbox.LookupMaster; ticbox.ProfileItem" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="ticbox"/>
@@ -31,96 +31,101 @@
                     <label for="passwordconfirm" class="col-sm-3 control-label"><g:message code="app.passwordconfirm.label"/></label>
                     <div class="col-sm-4"><g:passwordField name="passwordconfirm" class="form-control"/></div>
                 </div>
-                <g:each in="${profileItemList}" var="profileItem">
-                    <div class="form-group">
-                        <label for="${profileItem.code}" class="col-sm-3 control-label">
-                            ${profileItem.label}
-                            <g:if test="${profileItem.unit}">
-                                (${profileItem.unit})
-                            </g:if>
-                        </label>
-                        <div class="col-sm-8">
-                            <g:if test="${profileItem.type == ticbox.ProfileItem.TYPES.STRING}">
-                                <g:if test="${profileItem.row > 1}">
-                                    <g:textArea name="${profileItem.code}" rows="${profileItem.row}" cols="30" maxlength="${profileItem.max}" placeholder="${profileItem.placeHolder}" class="form-control"></g:textArea>
-                                </g:if>
-                                <g:else>
-                                    <input name="${profileItem.code}" type="text" maxlength="${profileItem.max}" placeholder="${profileItem.placeHolder}" class="form-control" style="min-width: 40%; width: auto;"/>
-                                </g:else>
-                            </g:if>
-                            <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.DATE}">
-                                <input name="${profileItem.code}" type="text" class="datePicker form-control" placeholder="${message([code: 'app.date.format.input', default: 'dd/MM/yyyy'])}" style="min-width: 40%; width: auto;">
-                            </g:elseif>
-                            <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.NUMBER}">
-                                <input name="${profileItem.code}" type="text" class="num form-control" data-max="${profileItem.max}" data-min="${profileItem.min}" placeholder="${profileItem.min && profileItem.max ? "${profileItem.min} - ${profileItem.max}" : ''}" style="text-align:right;min-width: 40%; width: auto;">
-                            </g:elseif>
-                            <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.LOOKUP}">
-                                <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;"/>
-                            </g:elseif>
-                            <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.CHOICE}">
-                                <g:if test="${profileItem.componentType == ticbox.ProfileItem.COMPONENT_TYPES.CHK_BOX}">
-                                    <g:if test="${profileItem.items}">
-                                        <g:each in="${profileItem.items}" var="item">
-                                            <label class="checkbox">
-                                                <input type="checkbox" name="${profileItem.code}" value="${item}"> ${"$item"}
-                                            </label>
-                                        </g:each>
-                                    </g:if>
-                                    <g:elseif test="${profileItem.lookupFrom}">
-                                        <g:each in="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" var="item">
-                                            <label class="checkbox">
-                                                <input type="checkbox" name="${profileItem.code}" value="${item.key}"> ${"$item.value"}
-                                            </label>
-                                        </g:each>
-                                    </g:elseif>
-                                </g:if>
-                                <g:elseif test="${profileItem.componentType == ticbox.ProfileItem.COMPONENT_TYPES.SELECT}">
-                                    <g:if test="${profileItem.items}">
-                                        <g:if test="${profileItem.multiple}">
-                                            <g:select name="${profileItem.code}" from="${profileItem.items}"  multiple="true" class="form-control" style="min-width: 40%; width: auto;"/>
-                                        </g:if>
-                                        <g:else> %{--this is stupid!!!!--}%
-                                            <g:select name="${profileItem.code}" from="${profileItem.items}" class="form-control" style="min-width: 40%; width: auto;"/>
-                                        </g:else>
-                                    </g:if>
-                                    <g:elseif test="${profileItem.lookupFrom}">
-                                        <g:if test="${profileItem.multiple}">
-                                            <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" multiple="true" class="form-control" style="min-width: 40%; width: auto;"/>
-                                        </g:if>
-                                        <g:else> %{--this is stupid!!!!--}%
-                                            <g:if test="${profileItem.code=="PI_PROVINCE001"}" >
-                                                <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;" onchange="changeIt(this)"/>
-                                            </g:if>
-                                            <g:elseif test="${profileItem.code=="PI_CITY001"}" >
-                                                <g:select name="${profileItem.code}" from="" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;" />
-                                            </g:elseif>
-                                            <g:else>
-                                                <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;"/>
-                                            </g:else>
-                                        </g:else>
-                                    </g:elseif>
-                                </g:elseif>
-                                <g:elseif test="${profileItem.componentType == ticbox.ProfileItem.COMPONENT_TYPES.RADIO}">
-                                    <g:if test="${profileItem.items}">
-                                        <g:each in="${profileItem.items}" var="item">
-                                            <label class="radio">
-                                                <input type="radio" name="${profileItem.code}" value="${item}"> ${"$item"}
-                                            </label>
-                                        </g:each>
-                                    </g:if>
-                                    <g:elseif test="${profileItem.lookupFrom}">
-                                        <g:each in="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" var="item">
-                                            <label class="radio">
-                                                <input type="radio" name="${profileItem.code}" value="${item.key}"> ${"$item.value"}
-                                            </label>
-                                        </g:each>
-                                    </g:elseif>
-                                </g:elseif>
-                            </g:elseif>
-                        </div>
-                    </div>
-                </g:each>
+                %{--<g:each in="${profileItemList}" var="profileItem">--}%
+                    %{--<div class="form-group">--}%
+                        %{--<label for="${profileItem.code}" class="col-sm-3 control-label">--}%
+                            %{--${profileItem.label}--}%
+                            %{--<g:if test="${profileItem.unit}">--}%
+                                %{--(${profileItem.unit})--}%
+                            %{--</g:if>--}%
+                        %{--</label>--}%
+                        %{--<div class="col-sm-8">--}%
+                            %{--<g:if test="${profileItem.type == ticbox.ProfileItem.TYPES.STRING}">--}%
+                                %{--<g:if test="${profileItem.row > 1}">--}%
+                                    %{--<g:textArea name="${profileItem.code}" rows="${profileItem.row}" cols="30" maxlength="${profileItem.max}" placeholder="${profileItem.placeHolder}" class="form-control"></g:textArea>--}%
+                                %{--</g:if>--}%
+                                %{--<g:else>--}%
+                                    %{--<input name="${profileItem.code}" type="text" maxlength="${profileItem.max}" placeholder="${profileItem.placeHolder}" class="form-control" style="min-width: 40%; width: auto;"/>--}%
+                                %{--</g:else>--}%
+                            %{--</g:if>--}%
+                            %{--<g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.DATE}">--}%
+                                %{--<input name="${profileItem.code}" type="text" class="datePicker form-control" placeholder="${message([code: 'app.date.format.input', default: 'dd/MM/yyyy'])}" style="min-width: 40%; width: auto;">--}%
+                            %{--</g:elseif>--}%
+                            %{--<g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.NUMBER}">--}%
+                                %{--<input name="${profileItem.code}" type="text" class="num form-control" data-max="${profileItem.max}" data-min="${profileItem.min}" placeholder="${profileItem.min && profileItem.max ? "${profileItem.min} - ${profileItem.max}" : ''}" style="text-align:right;min-width: 40%; width: auto;">--}%
+                            %{--</g:elseif>--}%
+                            %{--<g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.LOOKUP}">--}%
+                                %{--<g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;"/>--}%
+                            %{--</g:elseif>--}%
+                            %{--<g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.CHOICE}">--}%
+                                %{--<g:if test="${profileItem.componentType == ticbox.ProfileItem.COMPONENT_TYPES.CHK_BOX}">--}%
+                                    %{--<g:if test="${profileItem.items}">--}%
+                                        %{--<g:each in="${profileItem.items}" var="item">--}%
+                                            %{--<label class="checkbox">--}%
+                                                %{--<input type="checkbox" name="${profileItem.code}" value="${item}"> ${"$item"}--}%
+                                            %{--</label>--}%
+                                        %{--</g:each>--}%
+                                    %{--</g:if>--}%
+                                    %{--<g:elseif test="${profileItem.lookupFrom}">--}%
+                                        %{--<g:each in="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" var="item">--}%
+                                            %{--<label class="checkbox">--}%
+                                                %{--<input type="checkbox" name="${profileItem.code}" value="${item.key}"> ${"$item.value"}--}%
+                                            %{--</label>--}%
+                                        %{--</g:each>--}%
+                                    %{--</g:elseif>--}%
+                                %{--</g:if>--}%
+                                %{--<g:elseif test="${profileItem.componentType == ticbox.ProfileItem.COMPONENT_TYPES.SELECT}">--}%
+                                    %{--<g:if test="${profileItem.items}">--}%
+                                        %{--<g:if test="${profileItem.multiple}">--}%
+                                            %{--<g:select name="${profileItem.code}" from="${profileItem.items}"  multiple="true" class="form-control" style="min-width: 40%; width: auto;"/>--}%
+                                        %{--</g:if>--}%
+                                        %{--<g:else> --}%%{--this is stupid!!!!--}%
+                                            %{--<g:select name="${profileItem.code}" from="${profileItem.items}" class="form-control" style="min-width: 40%; width: auto;"/>--}%
+                                        %{--</g:else>--}%
+                                    %{--</g:if>--}%
+                                    %{--<g:elseif test="${profileItem.lookupFrom}">--}%
+                                        %{--<g:if test="${profileItem.multiple}">--}%
+                                            %{--<g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" multiple="true" class="form-control" style="min-width: 40%; width: auto;"/>--}%
+                                        %{--</g:if>--}%
+                                        %{--<g:else> --}%%{--this is stupid!!!!--}%
+                                            %{--<g:if test="${profileItem.code=="PI_PROVINCE001"}" >--}%
+                                                %{--<g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;" onchange="changeIt(this)"/>--}%
+                                            %{--</g:if>--}%
+                                            %{--<g:elseif test="${profileItem.code=="PI_CITY001"}" >--}%
+                                                %{--<g:select name="${profileItem.code}" from="" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;" />--}%
+                                            %{--</g:elseif>--}%
+                                            %{--<g:else>--}%
+                                                %{--<g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;"/>--}%
+                                            %{--</g:else>--}%
+                                        %{--</g:else>--}%
+                                    %{--</g:elseif>--}%
+                                %{--</g:elseif>--}%
+                                %{--<g:elseif test="${profileItem.componentType == ticbox.ProfileItem.COMPONENT_TYPES.RADIO}">--}%
+                                    %{--<g:if test="${profileItem.items}">--}%
+                                        %{--<g:each in="${profileItem.items}" var="item">--}%
+                                            %{--<label class="radio">--}%
+                                                %{--<input type="radio" name="${profileItem.code}" value="${item}"> ${"$item"}--}%
+                                            %{--</label>--}%
+                                        %{--</g:each>--}%
+                                    %{--</g:if>--}%
+                                    %{--<g:elseif test="${profileItem.lookupFrom}">--}%
+                                        %{--<g:each in="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" var="item">--}%
+                                            %{--<label class="radio">--}%
+                                                %{--<input type="radio" name="${profileItem.code}" value="${item.key}"> ${"$item.value"}--}%
+                                            %{--</label>--}%
+                                        %{--</g:each>--}%
+                                    %{--</g:elseif>--}%
+                                %{--</g:elseif>--}%
+                            %{--</g:elseif>--}%
+                        %{--</div>--}%
+                    %{--</div>--}%
+                %{--</g:each>--}%
                 <br/>
+
+                <%
+                    ReCaptcha c = ReCaptchaFactory.newReCaptcha("6LfZNf0SAAAAAL_JSi_c5j0fN6bn5BM5YvpotYXr", "6LfZNf0SAAAAAHWHbxemEPT9puobq6IdHX1v3SUL", false);
+                    out.print(c.createRecaptchaHtml(null, null));
+                %>
 
                 <div class="form-group">
                     <div class="col-sm-8 col-sm-offset-3"><p class="muted"><g:message code="app.register.disclaimer.message" args="${[request.getContextPath()]}"/></p></div>
