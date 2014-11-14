@@ -266,7 +266,12 @@
                                 jQuery.each(choiceItems, function (j, choiceItem) {
                                     var choiceItemCont = jQuery('.choice-items > .choice-item:first', container).clone();
                                     choiceItemCont.find('.item-check').attr('name', i);
-                                    choiceItemCont.find('.item-check').val(choiceItem.label);
+                                    if(answerDetails.type=='${Survey.QUESTION_TYPE.CHOICE_SINGLE}') {
+                                        choiceItemCont.find('.item-check').val(choiceItem.label);
+                                    }
+                                    else{
+                                        choiceItemCont.find('.item-check').val(choiceItem);
+                                    }
                                     choiceItemCont.find('.item-check').attr('nextQuestion',choiceItem.nextQuestion);
                                     jQuery('.choice-items', container).append(choiceItemCont);
                                     if(answerDetails.type=='${Survey.QUESTION_TYPE.CHOICE_SINGLE}') {
