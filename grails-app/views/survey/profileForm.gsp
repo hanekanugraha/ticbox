@@ -93,7 +93,7 @@
                         </g:else>
                     </div>
                     <div class="uploader-button">
-                        <uploader:uploader id="imageUploader" url="${[controller:'respondent', action:'uploadImage']}" params="${[surveyorId: surveyor.id]}">
+                        <uploader:uploader id="imageUploader" url="${[controller:'survey', action:'uploadImage']}" params="${[surveyorId: surveyor.id]}">
                             <uploader:onComplete>
                                 $('.profilePic').attr('src', '${g.createLink(action: "viewImage", params: [surveyorId: surveyor.id])}&u='+new Date().getTime());
                             </uploader:onComplete>

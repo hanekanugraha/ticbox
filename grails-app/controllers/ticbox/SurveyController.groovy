@@ -7,6 +7,7 @@ import org.bson.types.ObjectId
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.multipart.MultipartHttpServletRequest
 import org.apache.shiro.SecurityUtils
+import uk.co.desirableobjects.ajaxuploader.exception.FileUploadException
 
 class SurveyController {
 
@@ -298,8 +299,47 @@ class SurveyController {
         surveyor.email = params.email
         surveyor.save()
 
-        forward(action: "profileForm")
+        forward(action: "index")
     }
 
 
+    def uploadImage = {
+        def message
+        try {
+            def inputStream
+            if (request instanceof MultipartHttpServletRequest) {
+                MultipartFile multipartFile = ((MultipartHttpServletRequest) request).getFile("qqfile")
+                inputStream = multipartFile.inputStream
+            } else {
+                inputStream = request.inputStream
+            }
+
+            // update user
+            def user = User.findById(params.surveyorId)
+            user.pic = Base64.encode(inputStream.bytes)
+            user.save()
+
+            if (user.hasErrors()) {
+                throw new Exception(user.errors.allErrors.first())
+            }
+
+            return render(text: [success:true] as JSON, contentType:'text/json')
+        } catch (FileUploadException e) {
+            message = "Failed to upload file."
+            log.error(message, e)
+        } catch (Exception e) {
+            message = "Failed to save surveyor"
+            log.error(message, e)
+        }
+        return render(text: [success:false, message: message] as JSON, contentType:'text/json')
+    }
+
+    def viewImage = {
+        def user = User.findById(params.surveyorId)
+        def imageByte
+        if (user?.pic) {
+            imageByte = Base64.decode(user?.pic)
+        }
+        response.outputStream << imageByte
+    }
 }

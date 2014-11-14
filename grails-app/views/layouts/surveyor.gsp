@@ -275,8 +275,8 @@
                             <div class="panel-heading" style="padding-bottom: 7px">
                                 <div class="media">
                                     <div class="col-xs-5" style="padding-left: 0">
-                                        <g:if test="${true}">
-                                            <img id="sidebarPic" class="img-thumbnail img-responsive" src="${g.resource(dir: 'images/ticbox', file: 'pd128x128.jpg')}" style=""/>
+                                        <g:if test="${surveyor.pic}">
+                                            <img id="sidebarPic" class="img-thumbnail img-responsive" src="${g.createLink(action: 'viewImage', params: [surveyorId: surveyor.id])}"/>
                                         </g:if>
                                         <g:else>
                                             <img id="sidebarPic" class="img-thumbnail img-responsive" src="${g.resource(dir: 'images/ticbox', file: 'anonymous.png')}"/>
