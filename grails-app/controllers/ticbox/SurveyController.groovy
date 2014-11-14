@@ -281,12 +281,13 @@ class SurveyController {
     }
 
     def profileForm() {
-        //def profileItems = respondentService.getProfileItems()
+        def profileItems = surveyService.getSurveyorProfileItems()
         def principal = SecurityUtils.subject.principal
         def surveyor = User.findByUsername(principal.toString())
-//        def surveyorDetail = SurveyorDetail.findByRespondentId(respondent.id)
-//        respondentDetail = respondentDetail ?: new RespondentDetail(respondentId: respondent.id).save()
-        [surveyor: surveyor,countDraft:Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.DRAFT).size(),
+        def surveyorDetail = SurveyorDetail.findBySurveyorId(surveyor.id)
+        surveyorDetail = surveyorDetail ?: new SurveyorDetail(surveyorId: surveyor.id).save()
+        [profileItems: profileItems,surveyor: surveyor, surveyorDetail: surveyorDetail,
+                            countDraft:Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.DRAFT).size(),
                             countInProgress : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.IN_PROGRESS).size(),
                             countCompleted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.COMPLETED).size(),
                             countSubmitted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.SUBMITTED).size()]
@@ -296,7 +297,9 @@ class SurveyController {
         def surveyor = User.findById(params.id)
         surveyor.email = params.email
         surveyor.save()
-        
+
         forward(action: "profileForm")
     }
+
+
 }

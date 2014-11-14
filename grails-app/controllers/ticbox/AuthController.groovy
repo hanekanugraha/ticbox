@@ -226,7 +226,7 @@ class AuthController {
     def registerSurveyor = {}
 
     def registerRespondent = {
-        def profileItemList = respondentService.getProfileItems()
+        def profileItemList = respondentService.getRespondentProfileItems()
         [profileItemList: profileItemList, ref: params.ref]
     }
 

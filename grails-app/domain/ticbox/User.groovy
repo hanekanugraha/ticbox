@@ -24,7 +24,7 @@ class User {
         verify(nullable: false)
         verifyCode(nullable: true)
         status(nullable: false)
-        resetPassword(null:true)
+        resetPassword(nullable:true)
     }
     static mapping = {
         username index: true

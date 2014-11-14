@@ -13,6 +13,11 @@ class RespondentService {
         return ProfileItem.list()?.sort{it.seq}
     }
 
+
+    def getRespondentProfileItems () {
+        return ProfileItem.findAllByRole(ProfileItem.ROLES.RESPONDENT)?.sort{it.seq}
+    }
+
     def getSurveyList(RespondentDetail respondentDetail){
         //TODO should be fetching only relevant surveys
         def takenSurvey=SurveyResponse.findAllByRespondentId(respondentDetail.respondentId).surveyId

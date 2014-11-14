@@ -16,13 +16,19 @@ class ProfileItem {
         SELECT : 'SELECT',
         RADIO : 'RADIO'
     ]
+    static ROLES = [
+        SURVEYOR : 'SURVEYOR',
+        RESPONDENT: 'RESPONDENT'
+    ]
 
     String id
     String code
     String label
     String type
     int seq = 0
+    String role
 
     static constraints = {
+        role(nullable: true)
     }
 }

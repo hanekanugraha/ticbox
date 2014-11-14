@@ -265,7 +265,7 @@
                         jQuery.each(choiceItems, function (j, choiceItem) {
                             var choiceItemCont = jQuery('.choice-items > .choice-item:first', container).clone();
                             choiceItemCont.find('.item-check').attr('name', i);
-                            if(answerDetails.type==${Survey.QUESTION_TYPE.CHOICE_SINGLE}) {
+                            if(answerDetails.type=='${Survey.QUESTION_TYPE.CHOICE_SINGLE}') {
                                 choiceItemCont.find('.item-check').val(choiceItem.label);
                             }
                             else{

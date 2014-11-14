@@ -19,7 +19,7 @@ class RespondentController {
         def principal = SecurityUtils.subject.principal
         def respondent = User.findByUsername(principal.toString())
         def detail = RespondentDetail.findByRespondentId(respondent.id)
-
+        detail = detail ?: new RespondentDetail(respondentId: respondent.id).save()
 //        def surveyList = Survey.findByStatus(Survey.STATUS.IN_PROGRESS)
         def surveyList = respondentService.getSurveyList(detail)
 
@@ -27,7 +27,7 @@ class RespondentController {
     }
 
     def profileForm() {
-        def profileItems = respondentService.getProfileItems()
+        def profileItems = respondentService.getRespondentProfileItems()
         def principal = SecurityUtils.subject.principal
         def respondent = User.findByUsername(principal.toString())
         def respondentDetail = RespondentDetail.findByRespondentId(respondent.id)

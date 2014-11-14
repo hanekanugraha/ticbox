@@ -438,4 +438,8 @@ class SurveyService {
     def getCountFreeSurvey(){
         Survey.countBySurveyorAndType(surveyorService.currentSurveyor,Survey.SURVEY_TYPE.FREE)
     }
+
+    def getSurveyorProfileItems () {
+        return ProfileItem.findAllByRole(ProfileItem.ROLES.RESPONDENT)?.sort{it.seq}
+    }
 }

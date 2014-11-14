@@ -272,7 +272,8 @@ class BootstrapService {
                 code: 'PI_DOB001',
                 label: 'Date of Birth',
                 type: ProfileItem.TYPES.DATE,
-                seq: 4
+                seq: 4,
+                role: ProfileItem.ROLES.RESPONDENT
         )
 
         dob.save()
@@ -304,7 +305,8 @@ class BootstrapService {
                 label: 'Education',
                 type: ProfileItem.TYPES.CHOICE,
                 seq: 6,
-                lookupFrom: 'LM_EDU001'
+                lookupFrom: 'LM_EDU001',
+                role: ProfileItem.ROLES.RESPONDENT
         )
         education['lookupFrom'] = 'LM_EDU001'
         education['componentType'] = ProfileItem.COMPONENT_TYPES.SELECT
@@ -386,7 +388,8 @@ class BootstrapService {
                 code: 'PI_GENDER001',
                 label: 'Gender',
                 type: ProfileItem.TYPES.CHOICE,
-                seq: 9
+                seq: 9,
+                role: ProfileItem.ROLES.RESPONDENT
         )
         gender['lookupFrom'] = 'LM_GENDER001'
         gender['componentType'] = ProfileItem.COMPONENT_TYPES.RADIO
@@ -396,7 +399,8 @@ class BootstrapService {
                 code: 'PI_RELIGION001',
                 label: 'Religion',
                 type: ProfileItem.TYPES.CHOICE,
-                seq: 10
+                seq: 10,
+                role: ProfileItem.ROLES.RESPONDENT
         )
         religion['lookupFrom'] = 'LM_RELIGION001'
         religion['componentType'] = ProfileItem.COMPONENT_TYPES.SELECT
@@ -418,7 +422,8 @@ class BootstrapService {
                 code: 'PI_EMP_STATUS001',
                 label: 'Employment Status',
                 type: ProfileItem.TYPES.CHOICE,
-                seq: 12
+                seq: 12,
+                role: ProfileItem.ROLES.RESPONDENT
         )
         employmentStatus['lookupFrom'] = 'LM_EMP_STATUS001'
         employmentStatus['componentType'] = ProfileItem.COMPONENT_TYPES.SELECT
@@ -428,7 +433,8 @@ class BootstrapService {
                 code: 'PI_CAREER001',
                 label: 'Career',
                 type: ProfileItem.TYPES.CHOICE,
-                seq: 13
+                seq: 13,
+                role: ProfileItem.ROLES.RESPONDENT
         )
         career['lookupFrom'] = 'LM_CAREER001'
         career['componentType'] = ProfileItem.COMPONENT_TYPES.SELECT
@@ -438,7 +444,8 @@ class BootstrapService {
                 code: 'PI_RELASIONSHIP001',
                 label: 'Relasionship Status',
                 type: ProfileItem.TYPES.CHOICE,
-                seq: 14
+                seq: 14,
+                role: ProfileItem.ROLES.RESPONDENT
         )
         relasionship['lookupFrom'] = 'LM_RELASIONSHIP001'
         relasionship['componentType'] = ProfileItem.COMPONENT_TYPES.SELECT
@@ -448,7 +455,8 @@ class BootstrapService {
                 code: 'PI_PARENTAL_STATUS001',
                 label: 'Parental Status',
                 type: ProfileItem.TYPES.CHOICE,
-                seq: 15
+                seq: 15,
+                role: ProfileItem.ROLES.RESPONDENT
         )
         parentalStatus['lookupFrom'] = 'LM_PARENTAL_STATUS001'
         parentalStatus['componentType'] = ProfileItem.COMPONENT_TYPES.SELECT
@@ -458,7 +466,8 @@ class BootstrapService {
                 code: 'PI_PROVINCE001',
                 label: 'Province',
                 type: ProfileItem.TYPES.CHOICE,
-                seq: 16
+                seq: 16,
+                role: ProfileItem.ROLES.RESPONDENT
         )
         province['lookupFrom'] = 'LM_PROVINCE001'
         province['componentType'] = ProfileItem.COMPONENT_TYPES.SELECT
@@ -468,7 +477,8 @@ class BootstrapService {
                 code: 'PI_CITY001',
                 label: 'City',
                 type: ProfileItem.TYPES.CHOICE,
-                seq: 17
+                seq: 17,
+                role: ProfileItem.ROLES.RESPONDENT
         )
         city['lookupFrom'] = 'LM_CITY001'
         city['componentType'] = ProfileItem.COMPONENT_TYPES.SELECT

@@ -43,10 +43,7 @@
                                 </tr>
                             </g:each>
                         </tbody>
-                        <tfoot>
-                            <g:paginate next="Forward" prev="Back"
-                                        maxsteps="3"  action="index" total="${users.size()}" max="4" />
-                        </tfoot>
+
                     </table>
 
                 </div>
@@ -162,6 +159,22 @@
 <g:javascript src="additional-methods.min.js"/>
 <script type="text/javascript">
     $(document).ready(function() {
+
+        $('#userTable').DataTable( {
+            "ordering": false,
+            "info":     false,
+            "searching": false,
+            "oLanguage": {
+                "sEmptyTable":     "No User found..",
+                "sLengthMenu": 'Display <select>'+
+                        '<option value="5">5</option>'+
+                        '<option value="10">10</option>'+
+                        '<option value="20">20</option>'+
+                        '<option value="-1">All</option>'+
+                        '</select> records'
+            }
+
+        } );
 
         /* Add new user submit button */
         $('#createNewUser').click(function() {

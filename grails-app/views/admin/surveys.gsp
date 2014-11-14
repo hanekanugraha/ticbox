@@ -117,13 +117,13 @@
             </div>
         </div>
         <div style="width: 100%" id="surveySummitedList">
-            <table class="table table-striped table-bordered table-hover">
+            <table id="submittedTable" class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
                     <th colspan="5">SUBMITTED</th>
                 </tr>
                 <tr class="sub-header">
-                    <th></th>
+                     <th></th>
                     <th>Name</th>
                     <th>Total Charge</th>
                     <th>Modified</th>
@@ -132,11 +132,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <g:if test="${submitted.isEmpty()}">
-                    <tr>
-                        <td colspan="5" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>
-                    </tr>
-                </g:if>
+                %{--<g:if test="${submitted.isEmpty()}">--}%
+                    %{--<tr>--}%
+                        %{--<td colspan="5" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>--}%
+                    %{--</tr>--}%
+                %{--</g:if>--}%
                 <g:each in="${submitted}" var="survey">
                 <g:form name="finalizeForm" action="finalizeAndPublishSurvey" class="form-horizontal" role="form">
                     <input type="hidden" name="surveyId" value="${survey.surveyId}"/>
@@ -157,10 +157,7 @@
                 </g:form>
                 </g:each>
                 </tbody>
-                <tfoot>
-                <g:paginate next="Forward" prev="Back"
-                            maxsteps="3"  action="surveys" total="${submittedTotal}"  />
-                </tfoot>
+
             </table>
             <div class="row" style="margin-bottom:10px">
                 <div class="col-sm-12">
@@ -169,7 +166,7 @@
                     <a id="enableInprogressSurvey" href="#enable-inprogress-survey-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Enable</a>
                 </div>
             </div>
-            <table class="table table-striped table-bordered table-hover">
+            <table id="inProgressTable" class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
                     <th colspan="5">IN PROGRESS</th>
@@ -183,11 +180,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <g:if test="${inProgress.isEmpty()}">
-                    <tr>
-                        <td colspan="5" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>
-                    </tr>
-                </g:if>
+                %{--<g:if test="${inProgress.isEmpty()}">--}%
+                    %{--<tr>--}%
+                        %{--<td colspan="5" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>--}%
+                    %{--</tr>--}%
+                %{--</g:if>--}%
                 <g:each in="${inProgress}" var="survey">
                     <tr>
                         <td><input type="checkbox" name="surveyInprogressIds"  value="${survey.id}" /></td>
@@ -202,7 +199,7 @@
                 </tbody>
             </table>
 
-            <table class="table table-striped table-bordered table-hover">
+            <table id="completedTable"  class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
                     <th colspan="5">COMPLETED</th>
@@ -215,11 +212,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <g:if test="${completes.isEmpty()}">
-                    <tr>
-                        <td colspan="5" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>
-                    </tr>
-                </g:if>
+                %{--<g:if test="${completes.isEmpty()}">--}%
+                    %{--<tr>--}%
+                        %{--<td colspan="5" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>--}%
+                    %{--</tr>--}%
+                %{--</g:if>--}%
                 <g:each in="${completes}" var="survey">
                     <tr>
                         <td><a href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}">${survey.name}</a></td>
@@ -508,11 +505,62 @@
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.highlighter.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.cursor.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.dateAxisRenderer.min.js')}"></script>
+
+<script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.barRenderer.min.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.categoryAxisRenderer.min.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.pointLabels.min.js')}"></script>
+
+
 <g:javascript src="jquery.validate.min.js"/>
 <script type="text/javascript">
 
 
     jQuery(function(){
+
+        $('#submittedTable').DataTable( {
+            "ordering": false,
+            "info":     false,
+            "searching": false,
+            "oLanguage": {
+                "sEmptyTable":     "No survey yet..",
+                "sLengthMenu": 'Display <select>'+
+                        '<option value="5">5</option>'+
+                        '<option value="10">10</option>'+
+                        '<option value="20">20</option>'+
+                        '<option value="-1">All</option>'+
+                        '</select> records'
+            }
+        } );
+
+        $('#inProgressTable').DataTable( {
+            "ordering": false,
+            "info":     false,
+            "searching": false,
+            "oLanguage": {
+                "sEmptyTable":     "No survey yet..",
+                "sLengthMenu": 'Display <select>'+
+                        '<option value="5">5</option>'+
+                        '<option value="10">10</option>'+
+                        '<option value="20">20</option>'+
+                        '<option value="-1">All</option>'+
+                        '</select> records'
+            }
+        } );
+
+        $('#completedTable').DataTable( {
+            "ordering": false,
+            "info":     false,
+            "searching": false,
+            "oLanguage": {
+                "sEmptyTable":     "No survey yet..",
+                "sLengthMenu": 'Display <select>'+
+                        '<option value="5">5</option>'+
+                        '<option value="10">10</option>'+
+                        '<option value="20">20</option>'+
+                        '<option value="-1">All</option>'+
+                        '</select> records'
+            }
+        } );
 
         $('#deleteSubmittedSurveys').click(function() {
             $(this).button('loading');
@@ -763,17 +811,20 @@
 
                 switch(answerDetails.type){
 
-                    case '${Survey.QUESTION_TYPE.CHOICE}' :
+                    case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
+                    case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
 
                         var data = [];
 
-                        jQuery.each(summary, function(label, count){
-                            data.push([label, count]);
-                        });
+                        if(summary){
+                            jQuery.each(summary, function (label, count) {
+                                data.push([label, count]);
+                            });
 
-                        constructPieChart(target, data, 'Answer Type - Choice');
-
+                            constructPieChart(target, data, 'Answer Type - Choice');
+                        }
                         break;
+
 
                     case '${Survey.QUESTION_TYPE.FREE_TEXT}' :
 
