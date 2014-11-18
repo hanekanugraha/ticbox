@@ -70,5 +70,6 @@ grails.project.dependency.resolution = {
         compile ":ajax-uploader:1.1"
         compile ":mail:1.0.1"
         compile ":remote-pagination:0.4.8"
+
     }
 }
