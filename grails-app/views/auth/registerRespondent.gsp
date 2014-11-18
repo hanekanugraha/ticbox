@@ -122,10 +122,23 @@
                 %{--</g:each>--}%
                 <br/>
 
-                <%
-                    ReCaptcha c = ReCaptchaFactory.newReCaptcha("6LcX7_0SAAAAAENhL5WPKwRbZPi7UusrWcCr_fUp", "6LcX7_0SAAAAAOSBotMxA8-igpdWpclgrKhQfqGz", false);
-                    out.print(c.createRecaptchaHtml(null, null));
-                %>
+                %{--<%--}%
+                    %{--ReCaptcha c = ReCaptchaFactory.newReCaptcha("6LcX7_0SAAAAAENhL5WPKwRbZPi7UusrWcCr_fUp", "6LcX7_0SAAAAAOSBotMxA8-igpdWpclgrKhQfqGz", false);--}%
+                    %{--out.print(c.createRecaptchaHtml(null, null));--}%
+                %{--%>--}%
+
+                <script type="text/javascript"
+                        src="https://www.google.com/recaptcha/api/challenge?k=6LcX7_0SAAAAAENhL5WPKwRbZPi7UusrWcCr_fUp">
+                </script>
+
+                <noscript>
+                    <iframe src="https://www.google.com/recaptcha/api/noscript?k=6LcX7_0SAAAAAENhL5WPKwRbZPi7UusrWcCr_fUp"
+                            height="300" width="500" frameborder="0"></iframe><br>
+                    <textarea name="recaptcha_challenge_field" rows="3" cols="40">
+                    </textarea>
+                    <input type="hidden" name="recaptcha_response_field"
+                           value="manual_challenge">
+                </noscript>
 
                 <div class="form-group">
                     <div class="col-sm-8 col-sm-offset-3"><p class="muted"><g:message code="app.register.disclaimer.message" args="${[request.getContextPath()]}"/></p></div>
