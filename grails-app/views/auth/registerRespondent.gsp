@@ -123,7 +123,7 @@
                 <br/>
 
                 <%
-                    ReCaptcha c = ReCaptchaFactory.newReCaptcha("6LfZNf0SAAAAAL_JSi_c5j0fN6bn5BM5YvpotYXr", "6LfZNf0SAAAAAHWHbxemEPT9puobq6IdHX1v3SUL", false);
+                    ReCaptcha c = ReCaptchaFactory.newReCaptcha("6LcX7_0SAAAAAENhL5WPKwRbZPi7UusrWcCr_fUp", "6LcX7_0SAAAAAOSBotMxA8-igpdWpclgrKhQfqGz", false);
                     out.print(c.createRecaptchaHtml(null, null));
                 %>
 
