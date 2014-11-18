@@ -41,7 +41,7 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 
         // runtime 'mysql:mysql-connector-java:5.1.22'
-        runtime ':recaptcha4j:0.0.7'
+
     }
 
     plugins {
@@ -69,5 +69,6 @@ grails.project.dependency.resolution = {
         compile ":ajax-uploader:1.1"
         compile ":mail:1.0.1"
         compile ":remote-pagination:0.4.8"
+        runtime ':recaptcha4j:0.0.7'
     }
 }
