@@ -33,6 +33,20 @@
                         <label for="company" class="col-sm-2 control-label"><g:message code="app.company.label"/></label>
                         <div class="col-sm-4"><g:textField name="company" class="form-control"/></div>
                     </div>
+
+                    <script type="text/javascript"
+                            src="https://www.google.com/recaptcha/api/challenge?k=6LcX7_0SAAAAAENhL5WPKwRbZPi7UusrWcCr_fUp">
+                    </script>
+
+                    <noscript>
+                        <iframe src="https://www.google.com/recaptcha/api/noscript?k=6LcX7_0SAAAAAENhL5WPKwRbZPi7UusrWcCr_fUp"
+                                height="300" width="500" frameborder="0"></iframe><br>
+                        <textarea name="recaptcha_challenge_field" rows="3" cols="40">
+                        </textarea>
+                        <input type="hidden" name="recaptcha_response_field"
+                               value="manual_challenge">
+                    </noscript>
+                    
                     <div class="form-group">
                         <div class="col-sm-10 col-sm-offset-2"><p class="muted"><g:message code="app.register.disclaimer.message" args="${[request.getContextPath()]}"/></p></div>
                     </div>
