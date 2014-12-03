@@ -46,7 +46,7 @@
                         <input type="hidden" name="recaptcha_response_field"
                                value="manual_challenge">
                     </noscript>
-                    
+
                     <div class="form-group">
                         <div class="col-sm-10 col-sm-offset-2"><p class="muted"><g:message code="app.register.disclaimer.message" args="${[request.getContextPath()]}"/></p></div>
                     </div>

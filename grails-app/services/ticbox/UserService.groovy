@@ -178,4 +178,8 @@ class UserService {
         emailBlasterService.blastEmail(recipients,'verifyMail','Verify Code',[verifyCode: verifyCode,verifyLink : link])
 
     }
+
+    def User checkeExistUser(String email){
+        return User.findByEmail(email)
+    }
 }
