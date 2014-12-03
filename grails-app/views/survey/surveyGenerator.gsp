@@ -426,11 +426,22 @@
             });
         }
 
-        function saveSurvey() {
+        function saveAndSubmitSurvey() {
 
             var questionItems = buildQuestionItemsMap();
 
-            submitSurvey(questionItems);
+            jQuery.post('${request.contextPath}/survey/submitAndFinalizeSurvey', {questionItems: JSON.stringify(questionItems), surveyTitle: jQuery('#surveyTitle').val(), logoResourceId:logoId}, function(data){
+
+
+                if('SUCCESS' == data){
+                    alert('Submission success..');
+                    window.location = "${request.contextPath}/survey/index";
+                }else if('LIMIT' == data){
+                    alert('Max Free Survey more than limit..');
+                }else{
+                    alert('Submission failure');
+                }
+            });
 
         }
 
@@ -774,7 +785,7 @@
         <div id="buttonBarContent" class="module-content">
             <button class="btn btn-sm btn-light-oak link" href="${request.contextPath}/survey/respondentFilter"><g:message code="label.button.back" default="Back"/></button>
             <button id="saveSurveyBtn" class="btn btn-sm btn-green"><g:message code="label.button.save" default="Save"/></button>
-            <button id="finalizeSurveyBtn" class="btn btn-sm btn-blue-trust link" href="${request.contextPath}/survey/submitToAdmin" onclick="saveSurvey();"><g:message code="label.button.submit" default="Submit"/></button>
+            <button id="finalizeSurveyBtn" class="btn btn-sm btn-blue-trust link" onclick="saveAndSubmitSurvey();"><g:message code="label.button.submit" default="Submit"/></button>
         </div>
     </div>
 </div>

@@ -154,6 +154,40 @@ class SurveyController {
         ]
     }
 
+
+    def submitAndFinalizeSurvey(){
+        try {
+            def count=surveyService.getCountFreeSurvey()
+            def limit=Integer.parseInt(Parameter.findByCode("MAX_FREE_SURVEY_PER_SURVEYOR").value)
+            if(count>limit) {
+                render 'LIMIT'
+                return
+            }
+            Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
+            if(survey.type==Survey.SURVEY_TYPE.FREE){
+                def maxQuestion = Parameter.findByCode("MAX_QUESTION_FREE_SURVEY")
+                DBObject dbObject = (DBObject) com.mongodb.util.JSON.parse(params.questionItems)
+                if(((List)dbObject).size() > Integer.parseInt(maxQuestion.value))
+                    throw new Exception()
+            }
+            if(survey.type==Survey.SURVEY_TYPE.FREE)
+                survey.status=Survey.STATUS.IN_PROGRESS
+            else
+                survey.status = Survey.STATUS.SUBMITTED
+
+            if(survey)
+                surveyService.submitSurvey(params, survey)
+            else
+                surveyService.submitSurvey(params, surveyService.getCurrentEditedSurvey())
+
+            render 'SUCCESS'
+        } catch (Exception e) {
+            e.printStackTrace()
+            render 'FAILED'
+        }
+    }
+
+
     def submitSurvey(){
         try {
             def count=surveyService.getCountFreeSurvey()
