@@ -72,7 +72,9 @@ class UserService {
                 throw new Exception("Error in creating profile, ${e.message}")
             }
         }else{
-            throw new Exception("Error in creating user, ${newUser ? newUser.errors : ''}")
+//            throw new Exception("Error in creating user, ${newUser ? newUser.errors : ''}")
+            log.error "Error in creating user '${params.username}'."
+            flash.error = message(code: "auth.general.error")
         }
 
         return newUser
@@ -179,7 +181,11 @@ class UserService {
 
     }
 
-    def User checkeExistUser(String email){
+    def User checkExistEmail(String email){
         return User.findByEmail(email)
+    }
+
+    def User checkExistUsername(String username){
+        return User.findByUsername(username)
     }
 }

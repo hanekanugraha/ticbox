@@ -223,11 +223,14 @@ class AuthController {
         }
     }
 
-    def registerSurveyor = {}
+    def registerSurveyor = {
+        [username: params.username, email: params.email, company: params.company]
+    }
 
     def registerRespondent = {
-        def profileItemList = respondentService.getRespondentProfileItems()
-        [profileItemList: profileItemList, ref: params.ref]
+//        def profileItemList = respondentService.getRespondentProfileItems()
+//        [profileItemList: profileItemList, ref: params.ref]
+        [ref: params.ref, username: params.username, email: params.email]
     }
 
     def register = {
@@ -241,25 +244,17 @@ class AuthController {
             String challenge = request.getParameter("recaptcha_challenge_field");
             String uresponse = request.getParameter("recaptcha_response_field");
 
-            if((challenge==null&&uresponse==null)){
-                if(userService.checkeExistUser(params.email)){
-                    flash.error = message(code: "general.create.failed.message") + " : "+ "user already exist"
-                    forward(action: errorAction)
-                }
-                else{
-                    userService.createUser(params)
-                    flash.message = message(code: "general.create.success.message")
-                    redirect(uri: "/")
-                }
-            }
-            else{
+            if(challenge!=null && uresponse!=null && uresponse.length()>0){
                 ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
 
                 if (reCaptchaResponse.isValid()) {
-
-                    if(userService.checkeExistUser(params.email)){
-                        flash.error = message(code: "general.create.failed.message") + " : "+ "user already exist"
-                        forward(action: errorAction)
+                    if(userService.checkExistUsername(params.username)){
+                        flash.error = message(code: "auth.register.username.exists")
+                        params.username = null
+                    }
+                    else if(userService.checkExistEmail(params.email)){
+                        flash.error = message(code: "auth.register.email.exists")
+                        params.email = null
                     }
                     else{
                         userService.createUser(params)
@@ -267,16 +262,17 @@ class AuthController {
                         redirect(uri: "/")
                     }
                 } else {
-                    flash.error = message(code: "general.create.failed.message") + " : "+ "invalid captcha"
-                    forward(action: errorAction)
+                    flash.error = message(code: "auth.register.invalid.captcha")
                 }
+            } else {
+                flash.error = message(code: "auth.register.invalid.captcha")
             }
 
-
         } catch (Exception e) {
-            flash.error = message(code: "general.create.failed.message") + " : " + e.message
+            flash.error = message(code: "auth.register.failed") + " : " + e.message
             log.error(e.message, e)
         }
+
         forward(action: errorAction)
     }
 
