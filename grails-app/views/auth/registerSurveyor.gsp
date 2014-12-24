@@ -4,6 +4,7 @@
     <meta name="layout" content="ticbox"/>
     <title><g:message code="app.register.surveyor.label" /></title>
 </head>
+
 <body>
     <div class="module">
         <div class="module-header">
