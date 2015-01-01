@@ -7,18 +7,22 @@ environments {
             mongo {
 
 
-                /*host = "localhost"
+                host = "localhost"
                 port = 27017
                 username = ""
                 password = ""
-                databaseName = "ticbox"*/
+                databaseName = "ticbox-wl"
+
                 //diaglog = 3
 
-                host = "kahana.mongohq.com"
-                port = 10040
-                username = "ticboxnew"
-                password = "ticboxnew"
-                databaseName = "ticboxnew"
+
+                /*
+                host = "ds037215.mongolab.com"
+                port = 37215
+                username = "firman"
+                password = "redchair45"
+                databaseName = "ticboxdb-wl"
+                */
             }
         }
     }
@@ -27,11 +31,11 @@ environments {
     production {
         grails {
             mongo {
-                host = "kahana.mongohq.com"
-                port = 10040
-                username = "ticboxnew"
-                password = "ticboxnew"
-                databaseName = "ticboxnew"
+                host = "ds037215.mongolab.com"
+                port = 37215
+                username = "firman"
+                password = "redchair45"
+                databaseName = "ticboxdb-wl"
             }
         }
     }

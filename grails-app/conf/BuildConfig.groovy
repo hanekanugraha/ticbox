@@ -46,6 +46,9 @@ grails.project.dependency.resolution = {
 
         // runtime 'mysql:mysql-connector-java:5.1.22'
         runtime 'net.tanesha.recaptcha4j:recaptcha4j:0.0.7'
+
+        // add compatibility to mongoLab - kucing
+//        compile "org.mongdb:mongo-java-driver:2.13.1"
     }
 
     plugins {
