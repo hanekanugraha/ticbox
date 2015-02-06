@@ -106,6 +106,7 @@
     <div class="" style="width: 100%">
         <div class="line line-centered">
             <button style="border-radius: 8px; width: 100%" id="createSurveyModalBtn" href="#createSurveyModal" role="button" data-toggle="modal" class="btn btn-green btn-lg" type="button"><g:message code="label.button.create" default="Create"/> Survey</button>
+            <!--a id="addNewUser" href="#add-new-user-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> New User</a-->
         </div>
     </div>
 
@@ -296,11 +297,17 @@
                 </span>
             </div>
             <div class="modal-body" style="overflow: auto">
-                <label for="surveyName">Please name your survey</label>
-                <input type="text" class="form-control" id="surveyName" name="surveyName" param-of="createSurveyBtn">
+                <g:form name="createSurveyForm" controller="survey" action="createSurvey" class="form-horizontal" role="form">
+                    <label for="surveyName">Please name your survey</label>
+                    <!--input type="text" class="form-control" id="surveyName" name="surveyName" param-of="createSurveyBtn"-->
+                    <g:textField name="surveyName" class="form-control"/>
+                </g:form>
             </div>
             <div class="modal-footer">
-                <button href="${request.contextPath}/survey/createSurvey" id="createSurveyBtn" class="btn btn-green submit-redirect"><g:message code="label.button.create" default="Create"/></button>
+                <!--button href="${request.contextPath}/survey/createSurvey" id="createSurveyBtn" class="btn btn-green submit-redirect">
+                    <!--g:message code="label.button.create" default="Create"/-->
+                <!--/button-->
+                <button id="createNewSurvey" class="btn btn-green" data-loading-text="Processing..">Create New Survey</button>
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close" default="Close"/></button>
             </div>
         </div>
@@ -457,7 +464,33 @@
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.cursor.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.dateAxisRenderer.min.js')}"></script>
 
+<g:javascript src="jquery.validate.min.js"/>
+<g:javascript src="additional-methods.min.js"/>
 <script type="text/javascript">
+
+    $(document).ready(function() {
+
+        // Validations
+        $('#createSurveyForm').validate({
+            rules: {
+                surveyName: {
+                    required: true
+                }
+            }
+        });
+
+        /* Add new survey submit button */
+        $('#createNewSurvey').click(function() {
+            $(this).button('loading');
+            var form = $('#createSurveyForm');
+            if (form.valid()) {
+                form.submit();
+
+            } else {
+                $(this).button('reset');
+            }
+        });
+    });
 
     jQuery(function(){
 
