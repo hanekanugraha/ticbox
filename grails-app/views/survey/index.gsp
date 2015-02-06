@@ -173,9 +173,50 @@
                         <td><a href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}">${survey.name}</a></td>
                         <td></td>
                         <td></td>
+                        <!-- Delete Draft -->
                         <td class="content-width">
-                            <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="${request.contextPath}/survey/deleteSurvey?surveyId=${survey.surveyId}">Delete</a>
+                            <!-- a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="${request.contextPath}/survey/deleteSurvey?surveyId=${survey.surveyId}">Delete</a -->
+                            <!--a class="btn btn-xs btn-primary displayResultLink" id="delDraft" href="#delete-drafts-modal" role="button"  data-toggle="modal">Delete</a-->
+                            <button id="delDraft" href="#delete-drafts-modal"
+                                    role="button" data-toggle="modal" class="btn btn-danger">Delete</button>
                         </td>
+
+
+
+                        <div id="delete-drafts-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteDraftsLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <span id="deleteDraftsLabel" class="modal-title">Delete Drafts</span>
+                                    </div>
+                                    <div class="modal-body">
+                                        <g:form name="deleteDraftsForm" controller="admin" action="deleteDrafts" role="form">
+                                            <input type="hidden" id="delDraftIds" name="delDraftIds" value=""/>
+                                            <div class="well">
+                                                <p><b>Are you sure to delete this draft?</b></p>
+                                                There is no rollback for deleted draft. Please make sure you know what you are doing.
+                                            </div>
+                                        </g:form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <!--button id="deleteDraft" class="btn btn-danger" data-loading-text="Processing..">Delete</button-->
+                                        <a class="btn btn-danger" surveyid="${survey.surveyId}" href="${request.contextPath}/survey/deleteSurvey?surveyId=${survey.surveyId}">Delete</a>
+                                        <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+
                     </tr>
                 </g:each>
                 </tbody>
