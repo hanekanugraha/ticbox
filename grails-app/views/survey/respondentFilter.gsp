@@ -133,12 +133,15 @@
             <button class="btn btn-sm btn-light-oak link" href="${request.contextPath}/survey/" type="button" style="margin: 3px 0">
                 <g:message code="label.button.back" default="Back"/>
             </button>
-            <button id="submitFilterBtn" class="btn btn-sm btn-green" type="button" style="margin: 3px 0">
+            <%--button id="submitFilterBtn" class="btn btn-sm btn-green" type="button" style="margin: 3px 0">
                 <g:message code="label.button.save" default="Save"/>
-            </button>
-            <button id="nextAndSubmitFilterBtn" class="btn btn-sm btn-blue-trust link" href="${request.contextPath}/survey/surveyGenerator" style="margin: 3px 0">
+            </button--%>
+            <button id="nextAndSubmitFilterBtn" class="btn btn-sm btn-blue-trust link" style="margin: 3px 0">
                 <g:message code="label.button.next" default="Next"/>
             </button>
+            <%--button id="hulabtn" class="btn btn-sm btn-blue-trust link" href="${request.contextPath}/survey/surveyGenerator" style="margin: 3px 0">
+                <g:message code="label.button.next" default="hula"/>
+            </button--%>
         </div>
 
         <form id="filterTemplates" class="form-horizontal" style="display: none">
@@ -373,6 +376,8 @@
                         filterItems.push(filterItem);
 
                     });
+                    <%--href="${request.contextPath}/survey/surveyGenerator"--%>
+
                 }
 
                 var filterItemsJSON = JSON.stringify(filterItems);
@@ -382,6 +387,7 @@
                     alert('Submitted');
 
                     loadRespondentFilter(data);
+                    window.location = "${request.contextPath}/survey/surveyGenerator";
                 });
             };
 
