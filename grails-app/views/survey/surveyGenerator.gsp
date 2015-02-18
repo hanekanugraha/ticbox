@@ -24,7 +24,8 @@
         jQuery(function() {
             console.log('~ BEGIN jQuery function');
             jQuery('#surveyorProfileContent').addClass('out');
-            jQuery('#surveyInfoAccordion').show();
+            <!-- jQuery('#surveyInfoAccordion').show(); -->
+            jQuery('#surveyInfoAccordion').hide();
             jQuery('#surveyInfoContainer').addClass('out');
 
             jQuery('#uploadLogoBtn').click(function(){

@@ -260,7 +260,8 @@
 
             jQuery('#surveyorProfileContent').addClass('out');
             jQuery('#surveyInfoContainer').addClass('in');
-            jQuery('#surveyInfoAccordion').show();
+            <!-- jQuery('#surveyInfoAccordion').show(); -->
+            jQuery('#surveyInfoAccordion').hide();
 
             jQuery.getJSON('${request.contextPath}/survey/getSurveySummary', {}, function (data) {
                 if (data) {
