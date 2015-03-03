@@ -65,11 +65,15 @@ grails.project.dependency.resolution = {
         runtime ":mongodb:3.0.1" // User runtime to solve exception
         compile ":webxml:1.4.1" // Heroku deployment requirement
         compile ":oauth:2.1.0"
-        compile ":shiro:1.1.4"
+        //compile ":shiro:1.1.4"
+        compile (":shiro:1.1.4") {
+            excludes([name: 'quartz', group: 'org.opensymphony.quartz'])
+        }
         compile ":shiro-oauth:0.2"
         compile ":ajax-uploader:1.1"
         compile ":mail:1.0.1"
         compile ":remote-pagination:0.4.8"
+        compile ":quartz:1.0.1"
 
     }
 }

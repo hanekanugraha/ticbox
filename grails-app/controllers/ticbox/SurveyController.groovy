@@ -121,9 +121,9 @@ class SurveyController {
             Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
 
             if(survey)
-                surveyService.submitRespondentFilter(params.surveyType, filterItemsJSON, survey)
+                surveyService.submitRespondentFilter(params.surveyType, params.compDateFrom, params.compDateTo, filterItemsJSON, survey)
             else
-                surveyService.submitRespondentFilter(params.surveyType, filterItemsJSON, surveyService.getCurrentEditedSurvey())
+                surveyService.submitRespondentFilter(params.surveyType, params.compDateFrom, params.compDateTo, filterItemsJSON, surveyService.getCurrentEditedSurvey())
 
             render filterItemsJSON
         } catch (Exception e) {

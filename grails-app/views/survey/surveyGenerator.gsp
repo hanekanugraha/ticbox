@@ -784,7 +784,8 @@
 
     <div id="buttonBarHeader" class="module-header"></div>
         <div id="buttonBarContent" class="module-content">
-            <button class="btn btn-sm btn-light-oak link" href="${request.contextPath}/survey/respondentFilter"><g:message code="label.button.back" default="Back"/></button>
+            <button class="btn btn-sm btn-light-oak link" href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}"><g:message code="label.button.back" default="Back"/></button>
+            <%--a class="btn btn-danger" surveyid="${survey.surveyId}" href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}">Back</a--%>
             <button id="saveSurveyBtn" class="btn btn-sm btn-green"><g:message code="label.button.save" default="Save"/></button>
             <button id="finalizeSurveyBtn" class="btn btn-sm btn-blue-trust link" onclick="saveAndSubmitSurvey();"><g:message code="label.button.submit" default="Submit"/></button>
         </div>

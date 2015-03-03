@@ -36,5 +36,7 @@ class Survey {
         title maxSize: 1000, nullable: true
     }
 
+    String completionDateFrom
+    String completionDateTo
 
 }

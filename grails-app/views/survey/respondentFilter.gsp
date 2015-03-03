@@ -107,6 +107,23 @@
         <div id="filterContent" class="module-content">
             <form id="filterForm" class="form-horizontal">
 
+                <!-- completion filter -->
+                <div class="profile-item-container form-group" style="position: relative" label="Completion by Time" type="DATE">
+                    <!--i class="remove-filter glyphicon glyphicon-remove clickable" style="position: absolute; top: 5px; right: 7px;"></i-->
+                    <label class="col-sm-2 control-label">Completion by Time</label>
+
+                    <div class="col-sm-9 form-inline" style="font-weight: normal">
+                        <input id="completionDateFrom" name="completionDateFrom" class="filter-value-from datePicker form-control"
+                               type="text" placeholder="Start Date" style="width: auto"
+                               value="${survey.completionDateFrom}">
+                        -
+                        <input id="completionDateTo" name="completionDateTo" class="filter-value-to datePicker form-control"
+                               type="text" placeholder="End Date" style="width: auto"
+                               value="${survey.completionDateTo}">
+
+                    </div>
+                </div>
+
             </form>
 
             <form id="filterAddForm" class="form-inline" style="text-align: center !important">
@@ -307,6 +324,13 @@
             var submitFilterItems = function() {
                 var filterItems = [];
 
+                <%-- completion date --%>
+                var compDateFrom = jQuery('#completionDateFrom').datepicker('getDate');
+                var compDateTo   = jQuery('#completionDateTo').datepicker('getDate');
+                compDateFrom = compDateFrom ? $.datepicker.formatDate( 'mm/dd/yy', compDateFrom) : undefined;
+                compDateTo = compDateTo ? $.datepicker.formatDate( 'mm/dd/yy', compDateTo) : undefined;
+                alert('NEW DATE FILTER= ' + compDateFrom + compDateTo);
+
                 if (jQuery('#easySurveyChk').is(':checked')) {
                     jQuery('#filterForm').find('.profile-item-container').each(function () {
 
@@ -359,12 +383,14 @@
                                 var dateFrom = jQuery('.filter-value-from', this).datepicker('getDate');
                                 var dateTo = jQuery('.filter-value-to', this).datepicker('getDate');
 
-                                dateFrom = dateFrom ? $.datepicker.formatDate( 'yymmdd', dateFrom) : undefined;
-                                dateTo = dateTo ? $.datepicker.formatDate( 'yymmdd', dateTo) : undefined;
+                                dateFrom = dateFrom ? $.datepicker.formatDate( 'mm/dd/yy', dateFrom) : undefined;
+                                dateTo = dateTo ? $.datepicker.formatDate( 'mm/dd/yy', dateTo) : undefined;
 
-                                filterItem['valFrom'] = dateFrom ? parseInt(dateFrom) : 0;
-                                filterItem['valTo'] = dateTo ? parseInt(dateTo) : 0;
-
+                                //filterItem['valFrom'] = dateFrom ? parseInt(dateFrom) : 0;
+                                //filterItem['valTo'] = dateTo ? parseInt(dateTo) : 0;
+                                filterItem['valFrom'] = dateFrom ? dateFrom : undefined;
+                                filterItem['valTo'] = dateTo ? dateTo : undefined;
+                                alert('valFrom= ' + dateFrom + 'valTo= ' + dateTo);
                                 break;
 
                             default :
@@ -382,7 +408,7 @@
 
                 var filterItemsJSON = JSON.stringify(filterItems);
 
-                jQuery.getJSON('${request.contextPath}/survey/submitRespondentFilter', {filterItemsJSON: filterItemsJSON, surveyType: jQuery('input.surveyType:checked').val()}, function (data) {
+                jQuery.getJSON('${request.contextPath}/survey/submitRespondentFilter', {filterItemsJSON: filterItemsJSON, compDateFrom: compDateFrom, compDateTo:compDateTo, surveyType: jQuery('input.surveyType:checked').val()}, function (data) {
 
                     alert('Submitted');
 
