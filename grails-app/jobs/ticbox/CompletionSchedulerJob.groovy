@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 class CompletionSchedulerJob {
 
     static triggers = {
-      //simple repeatInterval: 5000l // execute job once in 5 seconds
+      // simple repeatInterval: 5000l // execute job once in 5 seconds
       cron name: 'MyTrigger', cronExpression: "0, 0, 0, *, *, ?"
     }
 
@@ -25,7 +25,15 @@ class CompletionSchedulerJob {
             if(today.after(endDate)) {
 
                 survey.status = Survey.STATUS.COMPLETED
+                survey.enableStatus = Survey.ENABLE_STATUS.ENABLE
+
                 survey.save(flush: true)
+
+
+                if(survey.hasErrors()) {
+                    System.out.println("hasErrors= " + survey.errors)
+                }
+
             }
         }
     }
