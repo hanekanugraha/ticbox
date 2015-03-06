@@ -93,8 +93,11 @@
             else
                 questionSeq=nextSeq;
             jQuery('#question'+questionSeq).attr('hidden',false)
-            if(questionSeq>=ttlQuestions)
+            if(questionSeq>=ttlQuestions) {
+
                 jQuery('#nextQuestion').hide()
+                jQuery('#saveResponse').show()
+            }
 
         });
 
@@ -105,8 +108,11 @@
         jQuery.getJSON('${request.contextPath}/respondent/getSurvey', {surveyId: '${survey.surveyId}'}, function (questionItems) {
 
             loadSurvey(questionItems);
-            if(questionItems.length<2)
+            if(questionItems.length<2) {
                 jQuery('#nextQuestion').hide()
+            } else
+                jQuery('#saveResponse').hide()
+
         });
 
     });
@@ -412,9 +418,10 @@
         </div>
 
         <div class="" style="padding: 0 0 3em 0;">
-            <button id="nextQuestion" class="btn btn-blue-trust btn-md">${g.message(code:'app.next.label')}</button>
-            <button id="saveResponse" class="btn btn-blue-trust btn-md">${g.message(code:'app.submit.label')}</button>
             <button id="cancel" class="btn btn-light-oak btn-md" href="${request.contextPath}/respondent/">Cancel</button>
+            <button id="nextQuestion" class="btn btn-blue-trust btn-md">${g.message(code:'app.next.label')}</button>
+            <button id="saveResponse" class="btn btn-blue-trust btn-md">${g.message(code:'app.submit.label')}
+
         </div>
 
         <div class="templates" style="display: none;">
