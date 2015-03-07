@@ -86,17 +86,20 @@
 
         });
         jQuery('#nextQuestion').click(function () {
-            var lastQuestion= jQuery('#question'+questionSeq).attr('hidden',true)
-            var nextSeq = jQuery('input.item-check:checked',lastQuestion).attr('nextQuestion');
-            if(nextSeq!=null||nextSeq==undefined)
-                questionSeq++;
-            else
-                questionSeq=nextSeq;
-            jQuery('#question'+questionSeq).attr('hidden',false)
-            if(questionSeq>=ttlQuestions) {
+            // kucing
+            if(!validateCurrentQuestion()) {
 
-                jQuery('#nextQuestion').hide()
-                jQuery('#saveResponse').show()
+                var lastQuestion= jQuery('#question'+questionSeq).attr('hidden',true)
+                var nextSeq = jQuery('input.item-check:checked',lastQuestion).attr('nextQuestion');
+                if(nextSeq!=null||nextSeq==undefined)
+                    questionSeq++;
+                else
+                    questionSeq=nextSeq;
+                jQuery('#question'+questionSeq).attr('hidden',false)
+                if(questionSeq>=ttlQuestions) {
+                    jQuery('#nextQuestion').hide()
+                    jQuery('#saveResponse').show()
+                }
             }
 
         });
@@ -116,6 +119,63 @@
         });
 
     });
+
+    function validateCurrentQuestion() {
+        var currQuestion = jQuery('#question'+questionSeq);
+        var type = jQuery('.answerTemplate', currQuestion).attr('type');
+        var answerDetails = {}
+        var returnBoolean = false;
+
+        switch (type) {
+            case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
+            case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
+                answerDetails['value'] = [];
+                jQuery('.item-check:checked', currQuestion).each(function () {
+                    answerDetails['value'].push(jQuery(this).val());
+                });
+
+                if(answerDetails['value']==null||answerDetails['value']==undefined||answerDetails['value']=='') {
+
+                    $('#validate-question-modal').modal('show');
+                    returnBoolean = true;
+                }
+                return returnBoolean;
+                break;
+            case '${Survey.QUESTION_TYPE.FREE_TEXT}' :
+
+                answerDetails['value'] = jQuery('textarea', currQuestion).val();
+                if(answerDetails['value']==null||answerDetails['value']==undefined||answerDetails['value']=='') {
+                    $('#validate-question-modal').modal('show');
+                    returnBoolean = true;
+                }
+                return returnBoolean;
+                break;
+
+            case '${Survey.QUESTION_TYPE.SCALE_RATING}' :
+
+                answerDetails['value'] = {};
+                jQuery('.scale-row', currQuestion).each(function () {
+                    var label = jQuery(this).find('.row-label').text();
+                    var value = jQuery(this).find('input:checked').val();
+                    answerDetails['value'][label] = (value) ? value : '';
+                });
+                if(answerDetails['value']==null||answerDetails['value']==undefined||answerDetails['value']=='') {
+                    $('#validate-question-modal').modal('show');
+                    returnBoolean = true;
+                }
+                return returnBoolean;
+                break;
+
+            case '${Survey.QUESTION_TYPE.STAR_RATING}' :
+                answerDetails['value'] = jQuery('.stars .star.active', currQuestion).length;
+                if(answerDetails['value']==null||answerDetails['value']==undefined||answerDetails['value']=='') {
+                    $('#validate-question-modal').modal('show');
+                    returnBoolean = true;
+                }
+                return returnBoolean;
+                break;
+        }
+    }
 
     function constructQuestionItem(type, subtype) {
         var answerComp = null;
@@ -509,6 +569,32 @@
 
         </div>
     </div>
+
+<!-- validate question modal -->
+<div id="validate-question-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="validateQuestionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="validateQuestionLabel" class="modal-title">
+                    Answer Validation
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="validateQuestionForm" role="form">
+                    <div class="well">
+                        <p><b>Are you not answering the question?</b></p>
+                        Please answer the question before you go to the next step.
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
