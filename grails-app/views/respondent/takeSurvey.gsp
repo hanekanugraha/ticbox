@@ -80,13 +80,14 @@
         });
 
         jQuery('#saveResponse').click(function () {
-
-            var questionItems = buildSurveyResponseMap();
-            saveResponse(questionItems, this);
-
+            if(!validateCurrentQuestion()) {
+                var questionItems = buildSurveyResponseMap();
+                saveResponse(questionItems, this);
+            }
         });
+
         jQuery('#nextQuestion').click(function () {
-            // kucing
+
             if(!validateCurrentQuestion()) {
 
                 var lastQuestion= jQuery('#question'+questionSeq).attr('hidden',true)
