@@ -253,22 +253,22 @@ class SurveyService {
         if (survey) {
             def questionItems = survey[Survey.COMPONENTS.QUESTION_ITEMS]
 
-            if (questionItems){
-
-                for(questionItem in questionItems){
-                    def seq = questionItem['seq']
-
-                    if(!result[seq]){
-                        result[seq] = [:]
-                    }
-
-                    result[seq]['questionItem'] = questionItem
-
-                }
+            if (questionItems) {
 
                 def surveyResponses = SurveyResponse.findAllBySurveyId(surveyId)
 
                 if (surveyResponses) {
+
+                    for(questionItem in questionItems){
+                        def seq = questionItem['seq']
+
+                        if(!result[seq]){
+                            result[seq] = [:]
+                        }
+
+                        result[seq]['questionItem'] = questionItem
+
+                    }
 
                     for(surveyResponse in surveyResponses) {
 
@@ -364,14 +364,13 @@ class SurveyService {
                             }
                         }
                     }
+                }else {
+                    result.error = "No Response found for this survey"
                 }
-
+            }else {
+                result.error = "No Question Items found for this survey"
             }
-
-
         }
-
-
 
         return result
 

@@ -502,14 +502,18 @@
             that.text('Loading Data..');
 
             jQuery.getJSON('${request.contextPath}/survey/getSurveyResult', {surveyId: surveyId}, function(result){
+                if(!result.error){
+                    jQuery('#displaySurveyResultModal').modal('show').find('.questionItemsContainer').empty();
 
-                jQuery('#displaySurveyResultModal').modal('show').find('.questionItemsContainer').empty();
+                    setTimeout(function() {
+                        loadResultGraph(result);
 
-                setTimeout(function() {
-                    loadResultGraph(result);
-
+                        that.text(txt);
+                    }, 500);
+                }else {
+                    alert(result.error);
                     that.text(txt);
-                }, 500);
+                }
             });
         });
 
@@ -524,14 +528,15 @@
             //that.text('Loading Data..');
             jQuery('#surveyPreviewModal .modal-body').empty();
             jQuery.getJSON('${request.contextPath}/survey/getQuestionItems', {surveyId: surveyId}, function(result){
+                if(!result.error){
+                    jQuery('#surveyPreviewModal').modal('show').find('.questionItemsContainer').empty();
 
-                jQuery('#surveyPreviewModal').modal('show').find('.questionItemsContainer').empty();
-
-                setTimeout(function() {
-                    loadQuestionGraph(result);
-
-                    //        that.text(txt);
-                }, 500);
+                    setTimeout(function() {
+                        loadQuestionGraph(result);
+                    }, 500);
+                }else {
+                    alert(result.error);
+                }
             });
         });
 
