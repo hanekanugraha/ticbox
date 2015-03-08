@@ -98,6 +98,28 @@
                     %{--</div>--}%
                 </div>
             </div>
+            <div class="row" style="margin-top: 10px; padding: 0 20%; text-align: center">
+                <form id="filterFormkucing" class="form-horizontal">
+
+                    <!-- completion filter -->
+                    <div class="profile-item-container form-group" style="position: relative" label="Completion by Time" type="DATE">
+                        <!--i class="remove-filter glyphicon glyphicon-remove clickable" style="position: absolute; top: 5px; right: 7px;"></i-->
+                        <label class="col-sm-2 control-label">Completion by Time</label>
+
+                        <div class="col-sm-9 form-inline" style="font-weight: normal">
+                            <input id="completionDateFrom" name="completionDateFrom" class="filter-value-from datePicker form-control"
+                                   type="text" placeholder="Start Date" style="width: auto"
+                                   value="${survey.completionDateFrom}">
+                            -
+                            <input id="completionDateTo" name="completionDateTo" class="filter-value-to datePicker form-control"
+                                   type="text" placeholder="End Date" style="width: auto"
+                                   value="${survey.completionDateTo}">
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
         </div>
 
         <div id="filterHeader" class="module-header">
@@ -106,23 +128,6 @@
 
         <div id="filterContent" class="module-content">
             <form id="filterForm" class="form-horizontal">
-
-                <!-- completion filter -->
-                <div class="profile-item-container form-group" style="position: relative" label="Completion by Time" type="DATE">
-                    <!--i class="remove-filter glyphicon glyphicon-remove clickable" style="position: absolute; top: 5px; right: 7px;"></i-->
-                    <label class="col-sm-2 control-label">Completion by Time</label>
-
-                    <div class="col-sm-9 form-inline" style="font-weight: normal">
-                        <input id="completionDateFrom" name="completionDateFrom" class="filter-value-from datePicker form-control"
-                               type="text" placeholder="Start Date" style="width: auto"
-                               value="${survey.completionDateFrom}">
-                        -
-                        <input id="completionDateTo" name="completionDateTo" class="filter-value-to datePicker form-control"
-                               type="text" placeholder="End Date" style="width: auto"
-                               value="${survey.completionDateTo}">
-
-                    </div>
-                </div>
 
             </form>
 
