@@ -16,7 +16,7 @@
             <div class="row" style="margin-bottom:10px">
                 <div class="col-sm-12">
                     <a id="addNewUser" href="#add-new-user-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> New User</a>
-                    <a id="delUsers" href="#delete-users-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Delete</a>
+                    <a id="btnDeleteUsers" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Delete</a>
                     <a id="dactiveUsers" href="#active-users-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Reactive/Inactive</a>
                 </div>
             </div>
@@ -112,15 +112,15 @@
                 <g:form name="deleteUsersForm" controller="admin" action="deleteUsers" role="form">
                     <input type="hidden" id="delUserIds" name="delUserIds" value=""/>
                     <div class="well">
-                        <p><b>Are you sure to delete these users?</b></p>
-                        There is no rollback for deleted users. Please make sure you know what you are doing.
+                        <p><b><span id="labelHeaderModal" name="labelHeaderModal" text=""/></b></p>
+                        <span id="labelText" name="labelText" text="Please answer the question before you go to the next step."/>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
                 <button id="deleteUsers" class="btn btn-danger" data-loading-text="Processing..">Delete</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="cancelUsers" class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
             </div>
         </div>
     </div>
@@ -187,7 +187,32 @@
             }
         });
 
-        /* Delete users */
+        /* kucingkurus function */
+        $('#btnDeleteUsers').click(function() {
+            var form = $('#deleteUsersForm');
+            var selected = [];
+
+            $('input[name=userIds]:checked').each(function(id, elmt) {
+                selected.push(elmt.value);
+            });
+
+            if(selected==null||selected==undefined||selected=="") {
+                $('#labelHeaderModal', form).text('No Users was Selected');
+                $('#labelText', form).text('Please select the users that you want to remove.');
+                jQuery('#deleteUsers').hide();
+                $("#cancelUsers").text("OK");
+                $('#delete-users-modal').modal('show');
+            } else {
+                $('#labelHeaderModal', form).text('Are you sure to delete these users?');
+                $('#labelText', form).text('There is no rollback for deleted users. Please make sure you know what you are doing. ');
+                jQuery('#deleteUsers').show();
+                $("#cancelUsers").text("Cancel");
+                $('#delete-users-modal').modal('show');
+            }
+
+        });
+
+        /* Delete users modal function */
         $('#deleteUsers').click(function() {
             $(this).button('loading');
             var selected = [];
