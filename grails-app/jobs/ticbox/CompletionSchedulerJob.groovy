@@ -7,7 +7,7 @@ class CompletionSchedulerJob {
 
     static triggers = {
       // simple repeatInterval: 5000l // execute job once in 5 seconds
-      cron name: 'MyTrigger', cronExpression: "0, 0, 0, *, *, ?"
+      //cron name: 'MyTrigger', cronExpression: "0, 0, 0, *, *, ?"
     }
 
     def List<Survey> getAllInProgressSurvey() {
@@ -16,6 +16,7 @@ class CompletionSchedulerJob {
 
     def execute() {
         // execute job
+        /*
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy")
         Date today = new Date()
 
@@ -36,5 +37,6 @@ class CompletionSchedulerJob {
 
             }
         }
+        */
     }
 }
