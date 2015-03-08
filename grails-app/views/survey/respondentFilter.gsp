@@ -271,6 +271,32 @@
 
     </div>
 
+    <!-- validate filter modal -->
+    <div id="validate-filter-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="validateFilterLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="validateFilterLabel" class="modal-title">
+                    Filter Validation
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="validateFilterForm" role="form">
+                    <div class="well">
+                        <p><b><span id="labelHeaderForm" name="labelHeaderForm" text="Are you not answering the question?"/></b></p>
+                        <span id="labelText" name="labelText" text="Please answer the question before you go to the next step."/>
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
     <script type="text/javascript">
 
         $('#freeSurveyInfo').tooltip({'placement': 'right','content':'text', 'container':'body'});
@@ -281,7 +307,7 @@
             jQuery('#surveyorProfileContent').addClass('out');
             jQuery('#surveyInfoContainer').addClass('in');
             <!-- jQuery('#surveyInfoAccordion').show(); -->
-            jQuery('#surveyInfoAccordion').hide();
+            <!-- jQuery('#surveyInfoAccordion').hide(); -->
 
             jQuery.getJSON('${request.contextPath}/survey/getSurveySummary', {}, function (data) {
                 if (data) {
@@ -329,109 +355,111 @@
                 var compDateTo   = jQuery('#completionDateTo').datepicker('getDate');
                 compDateFrom = compDateFrom ? $.datepicker.formatDate( 'mm/dd/yy', compDateFrom) : undefined;
                 compDateTo = compDateTo ? $.datepicker.formatDate( 'mm/dd/yy', compDateTo) : undefined;
-                alert('NEW DATE FILTER= ' + compDateFrom + compDateTo);
 
-                if (jQuery('#easySurveyChk').is(':checked')) {
-                    jQuery('#filterForm').find('.profile-item-container').each(function () {
+                if(validateCompletionDate(compDateFrom,compDateTo)) {
 
-                        var filterItem = {};
+                    if (jQuery('#easySurveyChk').is(':checked')) {
+                        jQuery('#filterForm').find('.profile-item-container').each(function () {
 
-                        filterItem['code'] = jQuery(this).attr('code');
-                        filterItem['type'] = jQuery(this).attr('type');
-                        filterItem['label'] = jQuery(this).attr('label');
+                            var filterItem = {};
 
-                        switch (filterItem['type']) {
+                            filterItem['code'] = jQuery(this).attr('code');
+                            filterItem['type'] = jQuery(this).attr('type');
+                            filterItem['label'] = jQuery(this).attr('label');
 
-                            case '${ProfileItem.TYPES.STRING}' :
+                            switch (filterItem['type']) {
 
-                                filterItem['val'] = jQuery('.filter-value', this).val();
+                                case '${ProfileItem.TYPES.STRING}' :
 
-                                break;
+                                    filterItem['val'] = jQuery('.filter-value', this).val();
 
-                            case '${ProfileItem.TYPES.NUMBER}' :
+                                    break;
 
-                                var valFrom = jQuery('.filter-value-from', this).val();
-                                var valTo = jQuery('.filter-value-to', this).val();
+                                case '${ProfileItem.TYPES.NUMBER}' :
 
-                                filterItem['valFrom'] = valFrom ? parseInt(valFrom) : 0;
-                                filterItem['valTo'] =  valTo ? parseInt(valTo) : 0;
+                                    var valFrom = jQuery('.filter-value-from', this).val();
+                                    var valTo = jQuery('.filter-value-to', this).val();
 
-                                break;
+                                    filterItem['valFrom'] = valFrom ? parseInt(valFrom) : 0;
+                                    filterItem['valTo'] =  valTo ? parseInt(valTo) : 0;
 
-                            case '${ProfileItem.TYPES.CHOICE}' :
-                                filterItem['checkItems'] = [];
-                                jQuery('input.check-item:checked', this).each(function () {
-                                    if (jQuery(this).attr('label')) {
+                                    break;
+
+                                case '${ProfileItem.TYPES.CHOICE}' :
+                                    filterItem['checkItems'] = [];
+                                    jQuery('input.check-item:checked', this).each(function () {
+                                        if (jQuery(this).attr('label')) {
+                                            filterItem['checkItems'].push({key: jQuery(this).val(), value: jQuery(this).attr('label')});
+                                        } else {
+                                            filterItem['checkItems'].push(jQuery(this).val());
+                                        }
+                                    });
+
+                                    break;
+
+                                case '${ProfileItem.TYPES.LOOKUP}' :
+                                    filterItem['checkItems'] = [];
+                                    jQuery('input.check-item:checked', this).each(function () {
                                         filterItem['checkItems'].push({key: jQuery(this).val(), value: jQuery(this).attr('label')});
-                                    } else {
-                                        filterItem['checkItems'].push(jQuery(this).val());
-                                    }
-                                });
+                                    });
 
-                                break;
+                                    break;
 
-                            case '${ProfileItem.TYPES.LOOKUP}' :
-                                filterItem['checkItems'] = [];
-                                jQuery('input.check-item:checked', this).each(function () {
-                                    filterItem['checkItems'].push({key: jQuery(this).val(), value: jQuery(this).attr('label')});
-                                });
+                                case '${ProfileItem.TYPES.DATE}' :
 
-                                break;
+                                    var dateFrom = jQuery('.filter-value-from', this).datepicker('getDate');
+                                    var dateTo = jQuery('.filter-value-to', this).datepicker('getDate');
 
-                            case '${ProfileItem.TYPES.DATE}' :
+                                    dateFrom = dateFrom ? $.datepicker.formatDate( 'mm/dd/yy', dateFrom) : undefined;
+                                    dateTo = dateTo ? $.datepicker.formatDate( 'mm/dd/yy', dateTo) : undefined;
 
-                                var dateFrom = jQuery('.filter-value-from', this).datepicker('getDate');
-                                var dateTo = jQuery('.filter-value-to', this).datepicker('getDate');
+                                    //filterItem['valFrom'] = dateFrom ? parseInt(dateFrom) : 0;
+                                    //filterItem['valTo'] = dateTo ? parseInt(dateTo) : 0;
+                                    filterItem['valFrom'] = dateFrom ? dateFrom : undefined;
+                                    filterItem['valTo'] = dateTo ? dateTo : undefined;
 
-                                dateFrom = dateFrom ? $.datepicker.formatDate( 'mm/dd/yy', dateFrom) : undefined;
-                                dateTo = dateTo ? $.datepicker.formatDate( 'mm/dd/yy', dateTo) : undefined;
+                                    break;
 
-                                //filterItem['valFrom'] = dateFrom ? parseInt(dateFrom) : 0;
-                                //filterItem['valTo'] = dateTo ? parseInt(dateTo) : 0;
-                                filterItem['valFrom'] = dateFrom ? dateFrom : undefined;
-                                filterItem['valTo'] = dateTo ? dateTo : undefined;
-                                alert('valFrom= ' + dateFrom + 'valTo= ' + dateTo);
-                                break;
+                                default :
 
-                            default :
+                                    break;
 
-                                break;
+                            }
 
-                        }
+                            filterItems.push(filterItem);
 
-                        filterItems.push(filterItem);
+                        });
 
+                    }
+
+                    var filterItemsJSON = JSON.stringify(filterItems);
+
+                    jQuery.getJSON('${request.contextPath}/survey/submitRespondentFilter', {filterItemsJSON: filterItemsJSON, compDateFrom: compDateFrom, compDateTo:compDateTo, surveyType: jQuery('input.surveyType:checked').val()}, function (data) {
+
+                        //alert('Submitted');
+
+                        loadRespondentFilter(data);
+                        window.location = "${request.contextPath}/survey/surveyGenerator";
                     });
-                    <%--href="${request.contextPath}/survey/surveyGenerator"--%>
-
                 }
-
-                var filterItemsJSON = JSON.stringify(filterItems);
-
-                jQuery.getJSON('${request.contextPath}/survey/submitRespondentFilter', {filterItemsJSON: filterItemsJSON, compDateFrom: compDateFrom, compDateTo:compDateTo, surveyType: jQuery('input.surveyType:checked').val()}, function (data) {
-
-                    alert('Submitted');
-
-                    loadRespondentFilter(data);
-                    window.location = "${request.contextPath}/survey/surveyGenerator";
-                });
             };
 
-            jQuery('#nextAndSubmitFilterBtn').click(submitFilterItems);
+                jQuery('#nextAndSubmitFilterBtn').click(submitFilterItems);
 
-            jQuery('#submitFilterBtn').click(submitFilterItems);
+                jQuery('#submitFilterBtn').click(submitFilterItems);
 
-            if ('${ticbox.Survey.SURVEY_TYPE.EASY}' == '${survey.type}') {
-                jQuery.getJSON('${request.contextPath}/survey/getRespondentFilter', {}, function (respondentFilter) {
+                if ('${ticbox.Survey.SURVEY_TYPE.EASY}' == '${survey.type}') {
+                    jQuery.getJSON('${request.contextPath}/survey/getRespondentFilter', {}, function (respondentFilter) {
 
-                    jQuery.each(respondentFilter, function (idx, filter) {
-                        populateFilterComponent(filter.code, filter)
+                        jQuery.each(respondentFilter, function (idx, filter) {
+                            populateFilterComponent(filter.code, filter)
+                        });
+
+                        loadRespondentFilter(respondentFilter);
+
                     });
+                }
 
-                    loadRespondentFilter(respondentFilter);
-
-                });
-            }
 
         });
 
@@ -603,7 +631,37 @@
         }
 
         function loadCity() {
-            alert("change")
+            //alert("change")
+        }
+
+        function validateCompletionDate(compDateFrom, compDateTo) {
+            var returnBoolean = true;
+            var form = $('#validateFilterForm');
+
+
+            if(compDateFrom==undefined||compDateTo==undefined) {
+                $('#labelHeaderForm', form).text('Completion Date is Mandatory');
+                $('#labelText', form).text('Please insert Start Date and End Date for your survey.');
+                $('#validate-filter-modal').modal('show');
+
+                returnBoolean =  false;
+            }
+            // endDate lebih kecil dari today
+            else if(jQuery('#completionDateTo').datepicker('getDate') < new Date()) {
+                $('#labelHeaderForm', form).text('End Date is earlier than Today');
+                $('#labelText', form).text('Please make sure that your completion End Date is not Earlier than today.');
+                $('#validate-filter-modal').modal('show');
+
+                returnBoolean =  false;
+            }
+            // endDate lebih kecil dari startdate
+            else if( jQuery('#completionDateTo').datepicker('getDate') < jQuery('#completionDateFrom').datepicker('getDate')) {
+                $('#labelHeaderForm', form).text('End Date is earlier than Start Date');
+                $('#labelText', form).text('Please make sure that your completion End Date is not Earlier than your completion Start Date.');
+                $('#validate-filter-modal').modal('show');
+                returnBoolean =  false;
+            }
+            return returnBoolean;
         }
 
     </script>
