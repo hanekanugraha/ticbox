@@ -73,10 +73,10 @@ class AdminController {
         [
                 inProgress : Survey.findAllByStatus( Survey.STATUS.IN_PROGRESS),
                 completes : Survey.findAllByStatus( Survey.STATUS.COMPLETED),
-                submitted : Survey.findAllByStatus( Survey.STATUS.SUBMITTED),
+                //submitted : Survey.findAllByStatus( Survey.STATUS.SUBMITTED),
                 admin : admin,
                 survey: survey,
-                submittedTotal : Survey.findAllByStatus( Survey.STATUS.SUBMITTED).size()
+                //submittedTotal : Survey.findAllByStatus( Survey.STATUS.SUBMITTED).size()
         ]
 
     }

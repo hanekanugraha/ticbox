@@ -8,42 +8,12 @@
 
     <style type="text/css">
 
-    /*.surveyItemContainer {*/
-    /*margin-bottom: 10px;*/
-    /*clear: right;*/
-    /*}*/
+    .dataTable {
+        margin-bottom: 5px !important;
+    }
 
-    /*.surveyItemContainer .seqNumberContainer {*/
-    /*width: 40px;*/
-    /*vertical-align: top;*/
-    /*text-align: right;*/
-    /*padding-right: 5px;*/
-    /*}*/
-
-    /*.surveyItemContainer .questionNumber {*/
-    /*font-size: 24px;*/
-    /*font-weight: bold;*/
-    /*color: #97b11a;*/
-    /*}*/
-
-    /*.chart-container {*/
-    /*margin-left: 50px;*/
-    /*}*/
-
-    /*#displaySurveyResultModal {*/
-    /*top: 5%;*/
-    /*}*/
-
-    /*#displaySurveyResultModal .modal-body {*/
-    /*max-height: 450px;*/
-    /*}*/
-
-    /*#displaySurveyResultModal .modal-footer {*/
-    /*padding: 5px 15px 5px;*/
-    /*}*/
-
-    #menuNavPanelContent {
-        width: 100%;
+    .dataTables_paginate {
+        margin-bottom: 20px;
     }
 
     .module-content .table tr.top-header th {
@@ -70,113 +40,32 @@
 </head>
 <body>
 
-%{--<div id="menuNavPanelContent">--}%
-    %{--<div class="module">--}%
-    %{--<div class="line side-panel">--}%
-    %{--<div class="line header">--}%
-    %{--Panel 1--}%
-    %{--</div>--}%
-    %{--<div class="line">--}%
-
-    %{--</div>--}%
-
-    %{--<hr>--}%
-    %{--</div>--}%
-
-    %{--<div class="line side-panel">--}%
-    %{--<div class="line header">--}%
-    %{--Panel 2--}%
-
-    %{--</div>--}%
-    %{--<div class="line">--}%
-
-    %{--</div>--}%
-
-    %{--<hr>--}%
-    %{--</div>--}%
-    %{--</div>--}%
-
-    %{--div>--}%
-    %{--</div><div class="" style="width: 100%">--}%
-    %{--<div class="line line-centered">--}%
-        %{--<button style="border-radius: 8px; width: 100%" id="createSurveyModalBtn" href="#createSurveyModal" role="button" data-toggle="modal" class="btn btn-green btn-lg" type="button"><g:message code="label.button.create" default="Create"/> Survey</button>--}%
-    %{--</--}%
-
-%{--</div>--}%
-
-
 <div class="module">
 
     <div id="surveyHeader" class="module-header">
         <div class="title">Your Survey List</div>
     </div>
     <div id="surveyList" class="module-content">
-        <div class="row" style="margin-bottom:10px">
-            <div class="col-sm-12">
-                <a id="delSubmitedSurvey" href="#delete-submitted-survey-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Delete</a>
-            </div>
-        </div>
-        <div style="width: 100%" id="surveySummitedList">
-            <table id="submittedTable" class="table table-striped table-bordered table-hover">
-                <thead>
-                <tr class="top-header">
-                    <th colspan="5">SUBMITTED</th>
-                </tr>
-                <tr class="sub-header">
-                     <th></th>
-                    <th>Name</th>
-                    <th>Total Charge</th>
-                    <th>Modified</th>
-                    <th>Point</th>
-
-                </tr>
-                </thead>
-                <tbody>
-                %{--<g:if test="${submitted.isEmpty()}">--}%
-                    %{--<tr>--}%
-                        %{--<td colspan="5" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>--}%
-                    %{--</tr>--}%
-                %{--</g:if>--}%
-                <g:each in="${submitted}" var="survey">
-                <g:form name="finalizeForm" action="finalizeAndPublishSurvey" class="form-horizontal" role="form">
-                    <input type="hidden" name="surveyId" value="${survey.surveyId}"/>
-                    <tr>
-                        <td><input type="checkbox" name="surveySubmitedIds"  value="${survey.id}" /></td>
-                        <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
-                        <td></td>
-                        <td></td>
-                        <td><g:textField name="surveyPoint" data-max="100" data-min="0" class="num form-control" style="text-align:right;min-width: 40%; width: auto;"/>
-                        </td>
-                        <td class="content-width">
-                            <g:submitButton name="submit" value="${g.message(code:'label.button.finalize')}" class="btn btn-xs btn-primary displayResultLink"/>
-
-                            %{--<a class="btn btn-xs btn-primary displayResultLink" href="${request.contextPath}/admin/finalizeAndPublishSurvey?surveyId=${survey.surveyId}&surveyPoint=$("input[name='${survey.surveyId}']").val()">--}%
-                            %{--<g:message code="label.button.finalize" default="Finalize and Publish"/></a>--}%
-                        </td>
-                    </tr>
-                </g:form>
-                </g:each>
-                </tbody>
-
-            </table>
+        <div style="width: 100%" id="surveyList">
             <div class="row" style="margin-bottom:10px">
                 <div class="col-sm-12">
                     <a id="delInprogressSurvey" href="#delete-inprogress-survey-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Delete</a>
-                    <a id="disableInprogressSurvey" href="#disable-inprogress-survey-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Disable</a>
-                    <a id="enableInprogressSurvey" href="#enable-inprogress-survey-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Enable</a>
+                    <a id="disableInprogressSurvey" href="#disable-inprogress-survey-modal" role="button" class="btn btn-warning" data-toggle="modal"><i class="icon-remove icon-white"></i> Disable</a>
+                    <a id="enableInprogressSurvey" href="#enable-inprogress-survey-modal" role="button" class="btn btn-blue-trust" data-toggle="modal"><i class="icon-remove icon-white"></i> Enable</a>
                 </div>
             </div>
             <table id="inProgressTable" class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="5">IN PROGRESS</th>
+                    <th colspan="6">IN PROGRESS</th>
                 </tr>
                 <tr class="sub-header">
                     <th></th>
                     <th>Name</th>
                     <th>Running Time</th>
                     <th>Status</th>
-                    <th></th>
+                    <th>Disabled</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -190,7 +79,15 @@
                         <td><input type="checkbox" name="surveyInprogressIds"  value="${survey.id}" /></td>
                         <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
                         <td></td>
-                        <td></td>
+                        <td>${survey.status}</td>
+                        <td>
+                            <g:if test="${survey.enableStatus=='DISABLED'}">
+                                <span style="color:red">${survey.enableStatus}</span>
+                            </g:if>
+                            <g:else>
+                                ${survey.enableStatus}
+                            </g:else>
+                        </td>
                         <td class="content-width">
                             <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display Result</a>
                         </td>
@@ -208,7 +105,7 @@
                     <th>Name</th>
                     <th>Total Respondents</th>
                     <th>Stats</th>
-                    <th></th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -419,8 +316,6 @@
 <div id="answerPreviewTemplate-multipleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">
     <div class="choice-items col-xs-11 col-xs-offset-1">
         <div class="choice-item row">
-            %{--<label class="checkbox">--}%
-            %{--<div class="col col-xs-1" style="text-align: right">--}%
             <div class="col col-xs-12">
                 <input class="item-check" type="checkbox">
                 %{--</div>--}%
@@ -431,14 +326,6 @@
         </div>
     </div>
 </div>
-
-%{--<div id="answerPreviewTemplate-singleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">--}%
-%{--<div class="col col-xs-11 col-xs-offset-1">--}%
-%{--<select class="item-select" style="min-width: 200px">--}%
-%{--<option></option>--}%
-%{--</select>--}%
-%{--</div>--}%
-%{--</div>--}%
 
 <div id="answerPreviewTemplate-singleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">
     <div class="choice-items col-xs-11 col-xs-offset-1">
@@ -517,27 +404,12 @@
 
     jQuery(function(){
 
-        $('#submittedTable').DataTable( {
-            "ordering": false,
-            "info":     false,
-            "searching": false,
-            "oLanguage": {
-                "sEmptyTable":     "No survey yet..",
-                "sLengthMenu": 'Display <select>'+
-                        '<option value="5">5</option>'+
-                        '<option value="10">10</option>'+
-                        '<option value="20">20</option>'+
-                        '<option value="-1">All</option>'+
-                        '</select> records'
-            }
-        } );
-
         $('#inProgressTable').DataTable( {
             "ordering": false,
             "info":     false,
             "searching": false,
             "oLanguage": {
-                "sEmptyTable":     "No survey yet..",
+                "sEmptyTable": "No survey yet..",
                 "sLengthMenu": 'Display <select>'+
                         '<option value="5">5</option>'+
                         '<option value="10">10</option>'+
@@ -561,17 +433,6 @@
                         '</select> records'
             }
         } );
-
-        $('#deleteSubmittedSurveys').click(function() {
-            $(this).button('loading');
-            var selected = [];
-            var form = $('#deleteSurveysForm');
-            $('input[name=surveySubmitedIds]:checked').each(function(id, elmt) {
-                selected.push(elmt.value);
-            });
-            $('#delSurveyIds', form).val(selected);
-            form.submit();
-        });
 
         $('#deleteInprogressSurveys').click(function() {
             $(this).button('loading');
