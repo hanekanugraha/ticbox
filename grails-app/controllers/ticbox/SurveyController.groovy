@@ -176,7 +176,7 @@ class SurveyController {
             }
             else {
                 survey.status = Survey.STATUS.IN_PROGRESS
-                survey.status = Survey.ENABLE_STATUS.DISABLE
+                survey.enableStatus = Survey.ENABLE_STATUS.DISABLE
             }
             if(survey)
                 surveyService.submitSurvey(params, survey)
