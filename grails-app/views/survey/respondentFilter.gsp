@@ -129,6 +129,7 @@
         <div id="filterContent" class="module-content">
             <form id="filterForm" class="form-horizontal">
 
+
             </form>
 
             <form id="filterAddForm" class="form-inline" style="text-align: center !important">
@@ -137,9 +138,9 @@
 
                     <select id="respondentFilterComponents" class="form-control" style="display: inline; width: auto">
                         <g:each in="${profileItems}" var="profileItem">
-                            <g:if test="${profileItem.code!="PI_CITY001"}" >
+                            <%--g:if test="${profileItem.code!="PI_CITY001"}" --%>
                                 <option value="${profileItem.code}">${profileItem.label}</option>
-                            </g:if>
+                            <!--/g:if-->
                         </g:each>
                     </select>
 
@@ -206,6 +207,7 @@
                                        label="${item.value}">
                             </g:each>
                         </g:elseif>
+
                         <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.CHOICE}">
                             <g:if test="${profileItem.items}">
                                 <g:each in="${profileItem.items}" var="item">
@@ -219,7 +221,7 @@
                                 </g:each>
                             </g:if>
                             <g:elseif test="${profileItem.lookupFrom}">
-                                <g:if test="${profileItem.code=="PI_PROVINCE001"}" >
+                                <%--g:if test="${profileItem.code=="PI_PROVINCE001"}" --%>
                                     <g:each in="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" var="item">
                                     %{--<label class="checkbox">
                                                 <input id="${profileItem.code}_${item.key}" class="check-item" type="checkbox" name="${profileItem.code}" value="${item.key}" label="${item.value}"> ${item.value}
@@ -227,14 +229,15 @@
 
                                         <input id="${profileItem.code}_${item.key}" class="check-item prettyChk form-control" type="checkbox"
                                                data-label="${item.value}" name="${profileItem.code}" value="${item.key}"
-                                               label="${item.value}" onchange="loadCity()">
-                                        <br/>
+                                              <%-- label="${item.value}" onchange="loadCity()"--%>
+                                               label="${item.value}">
+                                        <!--br/-->
 
                                     </g:each>
-                                    </div>
-                                    <div class="profile-item-container form-inline" code="PI_CITY001" type="CHOICE" label="City" style="position: relative">
+
+                                    <%--div class="profile-item-container form-inline" code="PI_CITY001" type="CHOICE" label="City" style="position: relative"--%>
                                     %{--<i class="remove-filter glyphicon glyphicon-remove clickable" style="position: absolute; top: 5px; right: 7px;"></i>--}%
-                                    <label class="col-sm-2 control-label" for="PI_CITY001">City</label>
+                                    <%--label class="col-sm-2 control-label" for="PI_CITY001">City</label>
                                     <div class="col-sm-9 form-inline" style="font-weight: normal">
                                         <select name="listCity" size=8 class="listCity" multiple>
                                             <option name=one value=one> one </option>
@@ -252,9 +255,9 @@
                                             <option name=four value=four> four </option>
                                         </select>
 
-                                    </div>
-                                </g:if>
-                                <g:elseif test="${profileItem.code!="PI_CITY001"}">
+                                    </div--%>
+                                <!--/g:if-->
+                                <%--g:elseif test="${profileItem.code!="PI_CITY001"}">
                                     <g:each in="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" var="item">
                                 %{--<label class="checkbox">
                                             <input id="${profileItem.code}_${item.key}" class="check-item" type="checkbox" name="${profileItem.code}" value="${item.key}" label="${item.value}"> ${item.value}
@@ -265,7 +268,7 @@
                                            label="${item.value}" >
 
                                     </g:each>
-                                </g:elseif>
+                                </g:elseif--%>
                             </g:elseif>
 
                         </g:elseif>
@@ -590,9 +593,9 @@
                                 }
                             });
 
-                            if(filter.code=='PI_PROVINCE001'){
+                            /*if(filter.code=='PI_PROVINCE001'){
                                 ;
-                            }
+                            }*/
 
                             filterContent.append(ul);
 

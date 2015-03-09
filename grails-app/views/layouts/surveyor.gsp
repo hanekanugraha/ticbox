@@ -298,14 +298,14 @@
                                             <div><strong>${countDraft}</strong></div>
                                             <div>Drafts</div>
                                         </div>
-                                        <div class="col-xs-3 stats leftBordered">
+                                        <div class="col-xs-5 stats leftBordered">
                                             <div><strong>${countInProgress}</strong></div>
                                             <div style="color: #7F9B09">In Progress</div>
                                         </div>
-                                        <div class="col-xs-3 stats leftBordered">
+                                        <%--div class="col-xs-3 stats leftBordered">
                                             <div><strong>${countSubmitted}</strong></div>
                                             <div >Submitted</div>
-                                        </div>
+                                        </div--%>
                                         <div class="col-xs-3 stats leftBordered">
                                             <div><strong>${countCompleted}</strong></div>
                                             <div class="trust">Completed</div>
