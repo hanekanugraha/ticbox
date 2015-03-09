@@ -170,11 +170,14 @@ class SurveyController {
                 if(((List)dbObject).size() > Integer.parseInt(maxQuestion.value))
                     throw new Exception()
             }
-            if(survey.type==Survey.SURVEY_TYPE.FREE)
+            if(survey.type==Survey.SURVEY_TYPE.FREE) {
                 survey.status=Survey.STATUS.IN_PROGRESS
-            else
-                survey.status = Survey.STATUS.SUBMITTED
-
+                survey.enableStatus=Survey.ENABLE_STATUS.ENABLE
+            }
+            else {
+                survey.status = Survey.STATUS.IN_PROGRESS
+                survey.status = Survey.ENABLE_STATUS.DISABLE
+            }
             if(survey)
                 surveyService.submitSurvey(params, survey)
             else
