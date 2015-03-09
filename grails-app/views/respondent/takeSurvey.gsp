@@ -97,12 +97,26 @@
                 else
                     questionSeq=nextSeq;
                 jQuery('#question'+questionSeq).attr('hidden',false)
+                jQuery('#lastQuestion').show()
                 if(questionSeq>=ttlQuestions) {
                     jQuery('#nextQuestion').hide()
                     jQuery('#saveResponse').show()
                 }
             }
 
+        });
+
+        jQuery('#lastQuestion').click(function() {
+            var currQuestion = jQuery('#question' + questionSeq).attr('hidden', true);
+            var lastSeq = jQuery('input.item-check:checked', currQuestion).attr('lastQuestion');
+            if(lastSeq!=null||lastSeq==undefined)
+                questionSeq--;
+
+            jQuery('#question' + questionSeq).attr('hidden', false)
+            jQuery('#nextQuestion').show()
+            jQuery('#saveResponse').hide()
+            if(questionSeq==1)
+                jQuery('#lastQuestion').hide()
         });
 
 
@@ -116,6 +130,7 @@
                 jQuery('#nextQuestion').hide()
             } else
                 jQuery('#saveResponse').hide()
+            jQuery('#lastQuestion').hide()
 
         });
 
@@ -479,7 +494,7 @@
         </div>
 
         <div class="" style="padding: 0 0 3em 0;">
-            <button id="cancel" class="btn btn-light-oak btn-md" href="${request.contextPath}/respondent/">Cancel</button>
+            <button id="lastQuestion" class="btn btn-light-oak btn-md" >Back</button>
             <button id="nextQuestion" class="btn btn-blue-trust btn-md">${g.message(code:'app.next.label')}</button>
             <button id="saveResponse" class="btn btn-blue-trust btn-md">${g.message(code:'app.submit.label')}
 
