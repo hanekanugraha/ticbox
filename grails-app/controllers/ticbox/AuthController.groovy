@@ -239,7 +239,9 @@ class AuthController {
             errorAction = ("surveyor".equalsIgnoreCase(params.userType)) ? "registerSurveyor" : "registerRespondent"
             String remoteAddr = request.getRemoteAddr();
             ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
-            reCaptcha.setPrivateKey("6LcX7_0SAAAAAOSBotMxA8-igpdWpclgrKhQfqGz");
+            //reCaptcha.setPrivateKey("6LcX7_0SAAAAAOSBotMxA8-igpdWpclgrKhQfqGz");
+            // new privateKey
+            reCaptcha.setPrivateKey("6LeTOgMTAAAAABCOKb8mNr2fAlm4mYoNsjtRYni5");
 
             String challenge = request.getParameter("recaptcha_challenge_field");
             String uresponse = request.getParameter("recaptcha_response_field");

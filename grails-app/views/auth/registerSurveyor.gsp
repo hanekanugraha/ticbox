@@ -37,18 +37,30 @@
 
                     <div class="form-group">
                         <div class="col-sm-10 col-sm-offset-2">
-                            <script type="text/javascript"
+                            <%--script type="text/javascript"
                                     src="https://www.google.com/recaptcha/api/challenge?k=6LcX7_0SAAAAAENhL5WPKwRbZPi7UusrWcCr_fUp">
                             </script>
 
                             <noscript>
-                                <iframe src="https://www.google.com/recaptcha/api/noscript?k=6LcX7_0SAAAAAENhL5WPKwRbZPi7UusrWcCr_fUp"
+                                <rc="https://www.google.com/recaptcha/api/noscript?k=6LcX7_0SAAAAAENhL5WPKwRbZPi7UusrWcCr_fUp"
                                         height="300" width="500" frameborder="0"></iframe><br>
                                 <textarea name="recaptcha_challenge_field" rows="3" cols="40">
                                 </textarea>
                                 <input type="hidden" name="recaptcha_response_field"
                                        value="manual_challenge">
-                            </noscript>
+                            </noscript--%>
+
+                             <script type="text/javascript"
+                                src="https://www.google.com/recaptcha/api/challenge?k=6LeTOgMTAAAAABkNJA-2KhY0qsJeyujERyQRB8it">
+                             </script>
+                             <noscript>
+                               <iframe src="https://www.google.com/recaptcha/api/noscript?k=6LeTOgMTAAAAABkNJA-2KhY0qsJeyujERyQRB8it"
+                                   height="300" width="500" frameborder="0"></iframe><br>
+                                 <textarea name="recaptcha_challenge_field" rows="3" cols="40">
+                                 </textarea>
+                                 <input type="hidden" name="recaptcha_response_field"
+                                        value="manual_challenge">
+                             </noscript>
                         </div>
                     </div>
 
