@@ -27,7 +27,7 @@ class UserService {
                 Role role
 
                 switch(params.userType){
-                    case "surveyor" :
+                    case "Surveyor" :
                         role = Role.findByName("Surveyor")
 
                         new SurveyorProfile(
@@ -37,7 +37,7 @@ class UserService {
                         ).save()
                     break
 
-                    case "respondent" :
+                    case "Respondent" :
                         role = Role.findByName("Respondent")
 
                         newUser.respondentProfile = new RespondentProfile()
@@ -48,7 +48,7 @@ class UserService {
                         respondentService.processReference(params.referrer, newUser)
                     break
 
-                    case "admin" :
+                    case "Admin" :
                         role = Role.findByName("Admin")
                     break
                 }

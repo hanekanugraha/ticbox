@@ -17,7 +17,7 @@
         <!-- Content -->
         <div class="module-content">
             <g:form name="registerForm" action="register" class="form-horizontal" role="form">
-                <g:hiddenField name="userType" value="respondent"/>
+                <g:hiddenField name="userType" value="Respondent"/>
                 <g:hiddenField name="referrer" value="${ref}"/>
 
             <fieldset>

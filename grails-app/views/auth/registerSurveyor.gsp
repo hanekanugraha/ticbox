@@ -12,7 +12,7 @@
         </div>
         <div class="module-content">
             <g:form name="registerForm" action="register" class="form-horizontal" role="form">
-                <g:hiddenField name="userType" value="surveyor"/>
+                <g:hiddenField name="userType" value="Surveyor"/>
                 <fieldset>
                     <div class="form-group">
                         <label for="username" class="col-sm-2 control-label"><g:message code="app.username.label"/></label>
