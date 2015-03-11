@@ -1,6 +1,9 @@
 package ticbox
 
 import com.gmongo.GMongo
+import com.mongodb.MongoClient
+import com.mongodb.MongoCredential
+import com.mongodb.ServerAddress
 
 import java.text.SimpleDateFormat
 
@@ -13,14 +16,27 @@ class SchedulerController {
     def index() {}
 
     def setCompletionStatus() {
-        try {
-            def mongo = new GMongo()
+        Date date = new Date()
 
+        try {
+            List<ServerAddress> seeds = new ArrayList<ServerAddress>();
+            seeds.add(new ServerAddress("kahana.mongohq.com", 10040))
+
+
+            List<MongoCredential> credentials = new ArrayList<MongoCredential>()
+            credentials.add(MongoCredential.createMongoCRCredential("ticboxnew", "ticboxnew","ticboxnew".toCharArray()));
+
+            MongoClient mongoClient = new MongoClient( seeds, credentials )
+
+
+            def mongo = new GMongo(mongoClient)
             def db = mongo.getDB("ticboxnew")
 
-            //System.out.println(formatter.format(new Date()))
 
-            db.survey.update([status:Survey.STATUS.IN_PROGRESS, completionDateTo:formatter.format(new Date())], [$set:[status:Survey.STATUS.COMPLETED]])
+
+            db.survey.update([status:Survey.STATUS.IN_PROGRESS, completionDateTo:formatter.format(date.minus(1))],
+                             [$set:[status:Survey.STATUS.COMPLETED, enableStatus:Survey.ENABLE_STATUS.DISABLE]])
+
 
             render "OK"
         }catch (e){
