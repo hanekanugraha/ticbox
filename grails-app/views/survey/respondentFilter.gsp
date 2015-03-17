@@ -114,7 +114,7 @@
                             <!--i class="remove-filter glyphicon glyphicon-remove clickable" style="position: absolute; top: 5px; right: 7px;"></i-->
                             <div class="coll-sm-1 form-inLine">
                                 <input id="completionByTimeChk" name="completionByTimeChk" class="check-item prettyChk form-control"
-                                       type="checkbox">
+                                       type="checkbox" style="width: auto">
                             </div>
                             <label class="col-sm-3 control-label">Time</label>
 
@@ -137,7 +137,7 @@
                 <!--form id="filterCompletionByTtlRespondent" class="form-horizontal"-->
                     <div class="profile-item-container form-group" style="position: relative" label="Completion by Total Respondent" type="NUMBER">
                         <div class="coll-sm-1 form-inLine">
-                            <input id="completionByTtlRespondentChk" name="completionByTtlRespondentChk" class="check-item prettyChk form-control"
+                            <input id="completionByTtlRespondentChk" name="completionByTtlRespondentChk" class="check prettyChk form-control"
                                    type="checkbox">
                         </div>
                         <label class="col-sm-3 control-label">Total Respondent</label>
@@ -354,12 +354,6 @@
         });
 
         jQuery(function () {
-            $(document).ready(function(){
-
-//                jQuery('#completionByTtlRespondentChk').attr('checked', false);
-//                $('#completionByTtlRespondentChk').prop('checked', false);
-//                jQuery('#completionByTtlRespondentChk').prop('checked', false)
-            });
 
             jQuery('#surveyorProfileContent').addClass('out');
             jQuery('#surveyInfoContainer').addClass('in');
@@ -396,32 +390,30 @@
 
             jQuery('input.surveyType[value="${survey.type}"]').prop('checked', true).trigger('change');
             // kucingkurus
-
-            if('${survey.ttlRespondent}'>0) {
-//                alert('ttlRespondent ada isinya')
-//                $('input:checkbox[name=completionByTtlRespondentChk]').attr('checked',true);
-//                jQuery('#completionByTtlRespondentChk').attr('checked', true);
-//                jQuery('#completionByTtlRespondentChk').trigger('click');
+            if('${survey.completionDateTo}'==null || '${survey.completionDateTo}'=='') {
+                jQuery('#completionDateFrom').prop('disabled', true).trigger('change');
+                jQuery('#completionDateTo').prop('disabled', true).trigger('change');
             } else {
-//                $('input:checkbox[name=completionByTtlRespondentChk]').attr('checked',false);
-//                jQuery('#completionByTtlRespondentChk').attr('checked', false);
+                jQuery('#completionByTimeChk').prop('checked', true).trigger('change');
             }
 
-            jQuery('#completionByTimeChk').prop('checked', true).trigger('change');
+            if('${survey.ttlRespondent}'>0 || '${survey.ttlRespondent}'==null) {
+                jQuery('#completionByTtlRespondentChk').prop('checked', true).trigger('change');
+            } else {
+                jQuery('#completionByTtlRespondent').prop('disabled', true).trigger('change');
+            }
+
             jQuery('#completionByTimeChk').change(function() {
                 if(jQuery(this).is(':checked')) {
-
                     $("#completionDateFrom").attr('disabled', false);
                     $("#completionDateTo").attr("disabled", false);
                 }
                 else {
-
                     $("#completionDateFrom").attr('disabled', true);
                     $("#completionDateTo").attr('disabled', true);
                 }
             });
 
-            jQuery('#completionByTtlRespondentChk').prop('checked', true).trigger('change');
             jQuery('#completionByTtlRespondentChk').change(function() {
                 if(jQuery(this).is(':checked')) {
 
