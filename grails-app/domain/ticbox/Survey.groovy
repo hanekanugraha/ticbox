@@ -38,5 +38,6 @@ class Survey {
 
     String completionDateFrom
     String completionDateTo
+    long ttlRespondent
 
 }

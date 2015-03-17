@@ -53,7 +53,10 @@ class SurveyService {
         return ProfileItem.list()?.sort{it.seq}
     }
 
-    def submitRespondentFilter(String surveyType, String compDateFrom, String compDateTo, String filterItemsJSON, Survey survey){
+    def submitRespondentFilter(String surveyType, String compDateFrom, String compDateTo, String ttlRespondent, String filterItemsJSON, Survey survey){
+
+        def ttlLong = Long.parseLong(ttlRespondent)
+
         if (survey) {
             if (Survey.SURVEY_TYPE.EASY.equals(surveyType)) {
                 DBObject dbObject = (DBObject) com.mongodb.util.JSON.parse(filterItemsJSON)
@@ -62,12 +65,14 @@ class SurveyService {
                 survey.type = surveyType
                 survey.completionDateFrom = compDateFrom
                 survey.completionDateTo = compDateTo
+                survey.ttlRespondent = ttlLong
                 survey.save()
             }
         else{
                 survey.type = surveyType
                 survey.completionDateFrom = compDateFrom
                 survey.completionDateTo = compDateTo
+                survey.ttlRespondent = ttlLong
                 survey.save()
             }
 

@@ -98,28 +98,61 @@
                     %{--</div>--}%
                 </div>
             </div>
-            <div class="row" style="margin-top: 10px; padding: 0 20%; text-align: center">
-                <form id="filterFormkucing" class="form-horizontal">
 
-                    <!-- completion filter -->
-                    <div class="profile-item-container form-group" style="position: relative" label="Completion by Time" type="DATE">
-                        <!--i class="remove-filter glyphicon glyphicon-remove clickable" style="position: absolute; top: 5px; right: 7px;"></i-->
-                        <label class="col-sm-2 control-label">Completion by Time</label>
+
+        </div>
+        <div class="module-header">
+            <div class="title">Choose Your Completion Type</div>
+        </div>
+        <div class="module-content">
+            <form id="filterCompletionByDate" class="form-horizontal">
+            <!-- completion by time -->
+                <div class="row" style="margin-top: 10px; padding: 0 20%; text-align: justify">
+
+                        <!-- completion filter -->
+                        <div class="profile-item-container form-group" style="position: relative" label="Completion by Time" type="DATE">
+                            <!--i class="remove-filter glyphicon glyphicon-remove clickable" style="position: absolute; top: 5px; right: 7px;"></i-->
+                            <div class="coll-sm-1 form-inLine">
+                                <input id="completionByTimeChk" name="completionByTimeChk" class="check-item prettyChk form-control"
+                                       type="checkbox">
+                            </div>
+                            <label class="col-sm-3 control-label">Time</label>
+
+                            <div class="col-sm-9 form-inline" style="font-weight: normal">
+                                <input id="completionDateFrom" name="completionDateFrom" class="filter-value-from datePicker form-control"
+                                       type="text" placeholder="Start Date" style="width: auto"
+                                       value="${survey.completionDateFrom}">
+                                -
+                                <input id="completionDateTo" name="completionDateTo" class="filter-value-to datePicker form-control"
+                                       type="text" placeholder="End Date" style="width: auto"
+                                       value="${survey.completionDateTo}">
+
+                            </div>
+                        </div>
+                </div>
+            <!--/form-->
+            <!--/div-->
+            <!-- Completion by respondent -->
+            <div class="row" style="margin-top: 10px; padding: 0 20%; text-align: justify">
+                <!--form id="filterCompletionByTtlRespondent" class="form-horizontal"-->
+                    <div class="profile-item-container form-group" style="position: relative" label="Completion by Total Respondent" type="NUMBER">
+                        <div class="coll-sm-1 form-inLine">
+                            <input id="completionByTtlRespondentChk" name="completionByTtlRespondentChk" class="check-item prettyChk form-control"
+                                   type="checkbox">
+                        </div>
+                        <label class="col-sm-3 control-label">Total Respondent</label>
 
                         <div class="col-sm-9 form-inline" style="font-weight: normal">
-                            <input id="completionDateFrom" name="completionDateFrom" class="filter-value-from datePicker form-control"
-                                   type="text" placeholder="Start Date" style="width: auto"
-                                   value="${survey.completionDateFrom}">
-                            -
-                            <input id="completionDateTo" name="completionDateTo" class="filter-value-to datePicker form-control"
-                                   type="text" placeholder="End Date" style="width: auto"
-                                   value="${survey.completionDateTo}">
+                            <input id="completionByTtlRespondent" name="completionByTtlRespondent" class="filter-value form-control"
+                                   type="number" placeholder="0" style="width: auto"
 
+                                   value="${survey.ttlRespondent}">
+                            <span id="errmsg" style="display: none;">Digits Only</span>
                         </div>
                     </div>
-
-                </form>
+                <!--/form-->
             </div>
+            </form>
         </div>
 
         <div id="filterHeader" class="module-header">
@@ -310,7 +343,23 @@
         $('#freeSurveyInfo').tooltip({'placement': 'right','content':'text', 'container':'body'});
         $('#easySurveyInfo').tooltip({'placement': 'right','content':'text', 'container':'body'});
 
+        //called when key is pressed in textbox
+        $("#completionByTtlRespondent").keypress(function (e) {
+            //if the letter is not digit then display error and don't type anything
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                //display error message
+                //$("#errmsg").html("Digits Only").show().fadeOut("slow");
+                return false;
+            }
+        });
+
         jQuery(function () {
+            $(document).ready(function(){
+
+//                jQuery('#completionByTtlRespondentChk').attr('checked', false);
+//                $('#completionByTtlRespondentChk').prop('checked', false);
+//                jQuery('#completionByTtlRespondentChk').prop('checked', false)
+            });
 
             jQuery('#surveyorProfileContent').addClass('out');
             jQuery('#surveyInfoContainer').addClass('in');
@@ -346,6 +395,43 @@
             });
 
             jQuery('input.surveyType[value="${survey.type}"]').prop('checked', true).trigger('change');
+            // kucingkurus
+
+            if('${survey.ttlRespondent}'>0) {
+//                alert('ttlRespondent ada isinya')
+//                $('input:checkbox[name=completionByTtlRespondentChk]').attr('checked',true);
+//                jQuery('#completionByTtlRespondentChk').attr('checked', true);
+//                jQuery('#completionByTtlRespondentChk').trigger('click');
+            } else {
+//                $('input:checkbox[name=completionByTtlRespondentChk]').attr('checked',false);
+//                jQuery('#completionByTtlRespondentChk').attr('checked', false);
+            }
+
+            jQuery('#completionByTimeChk').prop('checked', true).trigger('change');
+            jQuery('#completionByTimeChk').change(function() {
+                if(jQuery(this).is(':checked')) {
+
+                    $("#completionDateFrom").attr('disabled', false);
+                    $("#completionDateTo").attr("disabled", false);
+                }
+                else {
+
+                    $("#completionDateFrom").attr('disabled', true);
+                    $("#completionDateTo").attr('disabled', true);
+                }
+            });
+
+            jQuery('#completionByTtlRespondentChk').prop('checked', true).trigger('change');
+            jQuery('#completionByTtlRespondentChk').change(function() {
+                if(jQuery(this).is(':checked')) {
+
+                    $("#completionByTtlRespondent").attr('disabled', false);
+                }
+                else {
+
+                    $("#completionByTtlRespondent").attr('disabled', true);
+                }
+            });
 
             jQuery('#addFilterBtn').click(function () {
 
@@ -358,13 +444,51 @@
             var submitFilterItems = function() {
                 var filterItems = [];
 
+                var form = $('#validateFilterForm');
+                var isCompletionByTime = jQuery('#completionByTimeChk').is(':checked');
+                var isCompletionByTtlResp = jQuery('#completionByTtlRespondentChk').is(':checked');
+
+                if(!isCompletionByTime && !isCompletionByTtlResp) {
+                    $('#labelHeaderForm', form).text('Choose Completion');
+                    $('#labelText', form).text('Please choose completion type for your survey.');
+                    $('#validate-filter-modal').modal('show');
+
+                    return false;
+                }
+
                 <%-- completion date --%>
                 var compDateFrom = jQuery('#completionDateFrom').datepicker('getDate');
                 var compDateTo   = jQuery('#completionDateTo').datepicker('getDate');
                 compDateFrom = compDateFrom ? $.datepicker.formatDate( 'mm/dd/yy', compDateFrom) : undefined;
                 compDateTo = compDateTo ? $.datepicker.formatDate( 'mm/dd/yy', compDateTo) : undefined;
 
-                if(validateCompletionDate(compDateFrom,compDateTo)) {
+                var ttlRespondent = jQuery('#completionByTtlRespondent').val();
+
+
+
+                if(isCompletionByTime) {
+                    if(!validateCompletionDate(compDateFrom, compDateTo))
+                        return false;
+                }
+                else {
+                    compDateFrom = '';
+                    compDateTo = '';
+                }
+
+
+                if (!isCompletionByTtlResp) {
+                    ttlRespondent = 0
+                } else if(ttlRespondent<=0) {
+
+
+                    $('#labelHeaderForm', form).text('Completion By Total Respondent is Mandatory');
+                    $('#labelText', form).text('Please insert total respondent for your survey.');
+                    $('#validate-filter-modal').modal('show');
+
+                    return false;
+                }
+
+//                if(checkCompletion(compDateFrom,compDateTo)) {
 
                     if (jQuery('#easySurveyChk').is(':checked')) {
                         jQuery('#filterForm').find('.profile-item-container').each(function () {
@@ -442,14 +566,15 @@
 
                     var filterItemsJSON = JSON.stringify(filterItems);
 
-                    jQuery.getJSON('${request.contextPath}/survey/submitRespondentFilter', {filterItemsJSON: filterItemsJSON, compDateFrom: compDateFrom, compDateTo:compDateTo, surveyType: jQuery('input.surveyType:checked').val()}, function (data) {
+                    jQuery.getJSON('${request.contextPath}/survey/submitRespondentFilter', {filterItemsJSON: filterItemsJSON, compDateFrom: compDateFrom, compDateTo:compDateTo,
+                                                                                            ttlRespondent:ttlRespondent, surveyType: jQuery('input.surveyType:checked').val()}, function (data) {
 
                         //alert('Submitted');
 
                         loadRespondentFilter(data);
                         window.location = "${request.contextPath}/survey/surveyGenerator";
                     });
-                }
+//                }
             };
 
                 jQuery('#nextAndSubmitFilterBtn').click(submitFilterItems);
