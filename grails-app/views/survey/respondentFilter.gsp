@@ -404,7 +404,7 @@
             });
 
             jQuery('input.surveyType[value="${survey.type}"]').prop('checked', true).trigger('change');
-            
+
             if('${survey.completionDateTo}'==null || '${survey.completionDateTo}'=='') {
                 jQuery('#completionDateFrom').prop('disabled', true).trigger('change');
                 jQuery('#completionDateTo').prop('disabled', true).trigger('change');

@@ -79,11 +79,15 @@
             selector: "button[data-toggle=tooltip]"
         });
 
-        jQuery('#saveResponse').click(function () {
+        jQuery('#submitAnswers').click(function() {
             if(!validateCurrentQuestion()) {
-                var questionItems = buildSurveyResponseMap();
-                saveResponse(questionItems, this);
+                $('#submit-answers-modal').modal('show');
             }
+        });
+
+        jQuery('#saveResponse').click(function () {
+            var questionItems = buildSurveyResponseMap();
+            saveResponse(questionItems, this);
         });
 
         jQuery('#nextQuestion').click(function () {
@@ -100,7 +104,7 @@
                 jQuery('#lastQuestion').show()
                 if(questionSeq>=ttlQuestions) {
                     jQuery('#nextQuestion').hide()
-                    jQuery('#saveResponse').show()
+                    jQuery('#submitAnswers').show()
                 }
             }
 
@@ -114,7 +118,7 @@
 
             jQuery('#question' + questionSeq).attr('hidden', false)
             jQuery('#nextQuestion').show()
-            jQuery('#saveResponse').hide()
+            jQuery('#submitAnswers').hide()
             if(questionSeq==1)
                 jQuery('#lastQuestion').hide()
         });
@@ -129,7 +133,7 @@
             if(questionItems.length<2) {
                 jQuery('#nextQuestion').hide()
             } else
-                jQuery('#saveResponse').hide()
+                jQuery('#submitAnswers').hide()
             jQuery('#lastQuestion').hide()
 
         });
@@ -496,7 +500,7 @@
         <div class="" style="padding: 0 0 3em 0;">
             <button id="lastQuestion" class="btn btn-light-oak btn-md" >Back</button>
             <button id="nextQuestion" class="btn btn-blue-trust btn-md">${g.message(code:'app.next.label')}</button>
-            <button id="saveResponse" class="btn btn-blue-trust btn-md">${g.message(code:'app.submit.label')}
+            <button id="submitAnswers" class="btn btn-blue-trust btn-md">${g.message(code:'app.submit.label')}
 
         </div>
 
@@ -607,6 +611,32 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- submit question modal -->
+<div id="submit-answers-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="submitAnswersLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="submitAnswersLabel" class="modal-title">
+                    Submit Answers
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="submitAnswersForm" role="form">
+                    <div class="well">
+                        <p><b>Are you sure you want to submit your answer?</b></p>
+                        Please click button Submit if you are sure for your answers.
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button id="saveResponse" class="btn btn-danger" data-loading-text="Processing..">Submit</button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
             </div>
         </div>
     </div>
