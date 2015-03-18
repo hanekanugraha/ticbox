@@ -227,7 +227,7 @@
                         </g:elseif>
                         <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.NUMBER}">
                             <input class="filter-value-from form-control" id="${profileItem.code}" name="${profileItem.code}" type="text" style="width: auto"
-                                   placeholder="from"> - <input class="filter-value-to form-control" type="text" style="width: auto"
+                                   placeholder="from"> - <input class="filter-value-to form-control" type="text" style="width: auto" id="${profileItem.code}_1"
                                                                 placeholder="to"> ${profileItem.unit}
                         </g:elseif>
                         <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.LOOKUP}">
@@ -353,6 +353,21 @@
             }
         });
 
+        $("#PI_HEIGHT001").keypress(function (e) {
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {return false;}
+        });
+
+        $("#PI_HEIGHT001_1").keypress(function (e) {
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {return false;}
+        });
+        $("#PI_WEIGHT001").keypress(function (e) {
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {return false;}
+        });
+
+        $("#PI_WEIGHT001_1").keypress(function (e) {
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {return false;}
+        });
+
         jQuery(function () {
 
             jQuery('#surveyorProfileContent').addClass('out');
@@ -389,7 +404,7 @@
             });
 
             jQuery('input.surveyType[value="${survey.type}"]').prop('checked', true).trigger('change');
-            // kucingkurus
+            
             if('${survey.completionDateTo}'==null || '${survey.completionDateTo}'=='') {
                 jQuery('#completionDateFrom').prop('disabled', true).trigger('change');
                 jQuery('#completionDateTo').prop('disabled', true).trigger('change');
