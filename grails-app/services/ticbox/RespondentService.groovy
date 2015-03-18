@@ -100,7 +100,8 @@ class RespondentService {
         }
 
         sb.append(" {status:'"+Survey.STATUS.IN_PROGRESS+"'}, " )
-        sb.append(" {type:'"+Survey.SURVEY_TYPE.EASY+"'}, " )
+        sb.append(" {type  :'"+Survey.SURVEY_TYPE.EASY+"'}, " )
+        sb.append(" {enableStatus  :'"+Survey.ENABLE_STATUS.ENABLE+"'}, " )
         sb.append(" {surveyId: { ${'$nin'} :  [")
         for(valueTaken in takenSurvey){
             sb.append("'"+valueTaken+"'")
