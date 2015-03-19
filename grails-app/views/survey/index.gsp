@@ -154,12 +154,14 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="4">DRAFTS</th>
+                    <th colspan="6">DRAFTS</th>
                 </tr>
                 <tr class="sub-header">
                     <th>Name</th>
+                    <th>Type</th>
+                    <th>Running Time</th>
+                    <th>Total Respondent</th>
                     <th>Total Charge</th>
-                    <th>Modified</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -172,8 +174,10 @@
                 <g:each in="${drafts}" var="survey">
                     <tr>
                         <td><a href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}">${survey.name}</a></td>
-                        <td></td>
-                        <td></td>
+                        <td>${survey.type}</td>
+                        <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
+                        <td>${survey.ttlRespondent}</td>
+                        <td>Rp. ${survey.surveyPrice}</td>
                         <!-- Delete Draft -->
                         <td class="content-width">
                             <!-- a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="${request.contextPath}/survey/deleteSurvey?surveyId=${survey.surveyId}">Delete</a -->
@@ -226,12 +230,14 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                     <tr class="top-header">
-                        <th colspan="4">IN PROGRESS</th>
+                        <th colspan="6">IN PROGRESS</th>
                     </tr>
                     <tr class="sub-header">
                         <th>Name</th>
+                        <th>Type</th>
                         <th>Running Time</th>
-                        <th>Status</th>
+                        <th>Total Respondent</th>
+                        <th>Total Charge</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -244,8 +250,10 @@
                     <g:each in="${inProgress}" var="survey">
                         <tr>
                             <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
-                            <td></td>
-                            <td></td>
+                            <td>${survey.type}</td>
+                            <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
+                            <td>${survey.ttlRespondent}</td>
+                            <td>Rp. ${survey.surveyPrice}</td>
                             <td class="content-width">
                                 <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display Result</a>
                             </td>
@@ -257,12 +265,14 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="4">COMPLETED</th>
+                    <th colspan="6">COMPLETED</th>
                 </tr>
                 <tr class="sub-header">
                     <th>Name</th>
-                    <th>Total Respondents</th>
-                    <th>Stats</th>
+                    <th>Type</th>
+                    <th>Running Time</th>
+                    <th>Total Respondent</th>
+                    <th>Total Charge</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -275,9 +285,13 @@
                     <g:each in="${completes}" var="survey">
                         <tr>
                             <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>${survey.type}</td>
+                            <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
+                            <td>${survey.ttlRespondent}</td>
+                            <td>Rp. ${survey.surveyPrice}</td>
+                            <td class="content-width">
+                                <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display Result</a>
+                            </td>
                         </tr>
                     </g:each>
                 </tbody>
