@@ -57,14 +57,16 @@
             <table id="inProgressTable" class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="6">IN PROGRESS</th>
+                    <th colspan="8">IN PROGRESS</th>
                 </tr>
                 <tr class="sub-header">
                     <th></th>
                     <th>Name</th>
-                    <th>Running Time</th>
+                    <th>Owner</th>
+                    <th>Type</th>
+                    <th>End Date</th>
+                    <th>Price</th>
                     <th>Status</th>
-                    <th>Disabled</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -78,8 +80,10 @@
                     <tr>
                         <td><input type="checkbox" name="surveyInprogressIds"  value="${survey.id}" /></td>
                         <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
-                        <td></td>
-                        <td>${survey.status}</td>
+                        <td>${survey.surveyor.userAccount.username}</td>
+                        <td>${survey.type}</td>
+                        <td>${survey.completionDateTo}</td>
+                        <td>Rp. ${survey.surveyPrice}</td>
                         <td>
                             <g:if test="${survey.enableStatus=='DISABLED'}">
                                 <span style="color:red">${survey.enableStatus}</span>
@@ -99,12 +103,15 @@
             <table id="completedTable"  class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="5">COMPLETED</th>
+                    <th colspan="7">COMPLETED</th>
                 </tr>
                 <tr class="sub-header">
                     <th>Name</th>
-                    <th>Total Respondents</th>
-                    <th>Stats</th>
+                    <th>Owner</th>
+                    <th>Type</th>
+                    <th>Running Time</th>
+                    <th>Respondents</th>
+                    <th>Price</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -116,10 +123,17 @@
                 %{--</g:if>--}%
                 <g:each in="${completes}" var="survey">
                     <tr>
-                        <td><a href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}">${survey.name}</a></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <%--td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td--%>
+                        <!--td>${survey.name}</td-->
+                        <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
+                        <td>${survey.surveyor.userAccount.username}</td>
+                        <td>${survey.type}</td>
+                        <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
+                        <td>${survey.ttlRespondent}</td>
+                        <td>Rp. ${survey.surveyPrice}</td>
+                        <td class="content-width">
+                            <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display Result</a>
+                        </td>
                     </tr>
                 </g:each>
                 </tbody>
