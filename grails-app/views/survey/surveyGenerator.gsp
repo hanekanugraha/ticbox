@@ -430,12 +430,13 @@
         function saveAndSubmitSurvey() {
 
             var questionItems = buildQuestionItemsMap();
+            // kucing
 
             jQuery.post('${request.contextPath}/survey/submitAndFinalizeSurvey', {questionItems: JSON.stringify(questionItems), surveyTitle: jQuery('#surveyTitle').val(), logoResourceId:logoId}, function(data){
 
 
                 if('SUCCESS' == data){
-                    alert('Submission success..');
+//                    alert('Submission success..');
                     window.location = "${request.contextPath}/survey/index";
                 }else if('LIMIT' == data){
                     alert('Max Free Survey more than limit..');
@@ -787,7 +788,8 @@
             <button class="btn btn-sm btn-light-oak link" href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}"><g:message code="label.button.back" default="Back"/></button>
             <%--a class="btn btn-danger" surveyid="${survey.surveyId}" href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}">Back</a--%>
             <button id="saveSurveyBtn" class="btn btn-sm btn-green"><g:message code="label.button.save" default="Save"/></button>
-            <button id="finalizeSurveyBtn" class="btn btn-sm btn-blue-trust link" onclick="saveAndSubmitSurvey();"><g:message code="label.button.submit" default="Submit"/></button>
+            <%--button id="finalizeSurveyBtn" class="btn btn-sm btn-blue-trust link" href="#submit-confirmation-modal"><g:message code="label.button.submit" default="Submit"/></button--%>
+            <a id="finalizeSurveyBtn2" href="#submit-confirmation-modal" role="button" class="btn btn-sm btn-blue-trust link" data-toggle="modal"><i class="icon-remove icon-white"></i> Submit</a>
         </div>
     </div>
 </div>
@@ -1134,6 +1136,34 @@
             <div class="modal-footer">
                 <button class="btn btn-light-oak nextButton">Select</button>
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close" default="Close"/></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Submit Confirmation Modal -->
+<div id="submit-confirmation-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="submitConfirmationLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="enableSurveyLabel" class="modal-title">
+                    Submit Confirmation
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="enableSurveysForm" controller="admin" action="enableSurveys" role="form">
+                    <input type="hidden" id="enableSurveyIds" name="enableSurveyIds" value=""/>
+                    <div class="well">
+                        <p><b>Are you sure you want to submit these surveys?</b></p>
+                        After you submit, your survey will be proceed.
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button id="submitConfirmation" onclick="saveAndSubmitSurvey();" class="btn btn-danger" data-loading-text="Processing..">Submit</button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
             </div>
         </div>
     </div>
