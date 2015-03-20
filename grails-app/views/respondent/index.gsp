@@ -97,7 +97,7 @@
                         </div>
                         <div class="panel-body">
                             <g:link action="takeSurvey" params="[surveyId:survey.surveyId]" class="btn btn-blue-trust btn-xs" style="margin-right: 10px">Take Survey</g:link>
-                            Respondent needed: 0 &nbsp; | &nbsp; Completion: 0%
+                            Respondent needed: ${survey.ttlRespondent} &nbsp; | &nbsp; Completion: 0%
                         </div>
                         </div>
                     </g:each>
