@@ -117,7 +117,7 @@ class RespondentController {
 
     def saveResponse(){
         try {
-
+            
             def survey = surveyService.getSurveyForRespondent(params.surveyId)
             def ttlSurveyResponses = SurveyResponse.findAllBySurveyId(params.surveyId).size()
 
