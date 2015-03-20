@@ -117,12 +117,12 @@ class RespondentController {
 
     def saveResponse(){
         try {
-            
+
             def survey = surveyService.getSurveyForRespondent(params.surveyId)
             def ttlSurveyResponses = SurveyResponse.findAllBySurveyId(params.surveyId).size()
 
             if(survey.ttlRespondent>0 && survey.ttlRespondent.minus(1)==ttlSurveyResponses ) {
-                System.out.println("Set Status COMPLETED")
+                
                 survey.status = Survey.STATUS.COMPLETED
                 survey.enableStatus = Survey.ENABLE_STATUS.DISABLE
 
