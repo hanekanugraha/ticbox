@@ -86,7 +86,13 @@ class UserService {
             inList("_id", delIds)
         }
         if (users) {
-            User.deleteAll(users)
+            for(user in users){
+                if(user.respondentProfile){
+                    user.respondentProfile.delete()
+                }
+
+                user.delete()
+            }
         } else {
             throw new Exception("No user was found")
         }
