@@ -16,6 +16,7 @@ import org.apache.shiro.crypto.hash.Sha256Hash
 import org.apache.shiro.grails.ConfigUtils
 import org.apache.shiro.web.util.WebUtils
 import org.scribe.model.Token
+import org.springframework.transaction.TransactionStatus
 import org.springframework.web.servlet.support.RequestContextUtils
 
 class AuthController {
@@ -185,11 +186,12 @@ class AuthController {
     def linkAccount = {
         def cloudUserInfo
         def cloudResponse
-        def user
+        def user = null
         Token token
         String sessionKey
         def authToken = session["shiroAuthToken"]
         try {
+
             def adminRole = Role.findByName("Surveyor")
             if (authToken instanceof FacebookOAuthToken) {
                 sessionKey = oauthService.findSessionKeyForAccessToken('facebook')
@@ -198,12 +200,12 @@ class AuthController {
                 cloudUserInfo = JSON.parse(cloudResponse.body)
                 user = User.findByUsername(cloudUserInfo.username)
                 if (user == null) {
-                    user = new User(username: cloudUserInfo.username, passwordHash: new Sha256Hash(cloudUserInfo.username).toHex(), email: cloudUserInfo.email)
+                    user = userService.createUser([username: cloudUserInfo.username, password: cloudUserInfo.username, email: cloudUserInfo.email])
                 }
             } else if (authToken instanceof TwitterOAuthToken) {
                 user = User.findByUsername(authToken.principal)
                 if (user == null) {
-                    user = new User(username: authToken.principal, passwordHash: new Sha256Hash(authToken.principal).toHex())
+                    user = userService.createUser([username: authToken.principal, password: authToken.principal, email: null])
                 }
             } else if (authToken instanceof GoogleOAuthToken) {
                 sessionKey = oauthService.findSessionKeyForAccessToken('google')
@@ -212,11 +214,16 @@ class AuthController {
                 cloudUserInfo = JSON.parse(cloudResponse.body)
                 user = User.findByUsername(cloudUserInfo.name)
                 if (user == null) {
-                    user = new User(username: cloudUserInfo.name, passwordHash: new Sha256Hash(cloudUserInfo.name).toHex(), email: cloudUserInfo.email)
+                    user = userService.createUser([username: cloudUserInfo.name, password: cloudUserInfo.name, email: cloudUserInfo.email])
+
                 }
             }
-            user.addToRoles(adminRole).save()
+
+            user.addToRoles(adminRole)
+            user.save(flush: true)
+
             forward controller: "shiroOAuth", action: "linkAccount", params: [userId: user.id, targetUri: "/"]
+
         } catch (Exception e) {
             flash.error = message(code: "app.error.sso.message") + ". " + e.message
             redirect(uri: "/")

@@ -9,7 +9,7 @@ class UserService {
     def emailBlasterService
     LinkGenerator grailsLinkGenerator
 
-    def createUser(Map params) throws Exception {
+    User createUser(def params) throws Exception {
         User newUser = new User(
             username: params.username,
             passwordHash: new Sha256Hash(params.password).toHex(),
@@ -19,9 +19,9 @@ class UserService {
             status:1
         )
 
-        newUser.save()
+        newUser.save(flush: true)
 
-        if (newUser && !newUser.hasErrors()) {
+        if (newUser && !newUser.hasErrors() && params.userType) {
             try {
 
                 Role role
@@ -86,7 +86,13 @@ class UserService {
             inList("_id", delIds)
         }
         if (users) {
-            User.deleteAll(users)
+            for(user in users){
+                if(user.respondentProfile){
+                    user.respondentProfile.delete()
+                }
+
+                user.delete()
+            }
         } else {
             throw new Exception("No user was found")
         }
