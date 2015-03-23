@@ -122,7 +122,7 @@ class RespondentController {
             def ttlSurveyResponses = SurveyResponse.findAllBySurveyId(params.surveyId).size()
 
             if(survey.ttlRespondent>0 && survey.ttlRespondent.minus(1)==ttlSurveyResponses ) {
-                
+
                 survey.status = Survey.STATUS.COMPLETED
                 survey.enableStatus = Survey.ENABLE_STATUS.DISABLE
 
