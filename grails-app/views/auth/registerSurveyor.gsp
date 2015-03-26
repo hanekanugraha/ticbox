@@ -114,6 +114,15 @@
                     minlength: 5,
                     equalTo: password
                 }
+            },
+            messages: {
+                password: "Your password does not meet our requirement, use at least 5 characters.",
+                passwordconfirm: "Your password does not match"
+//                username: {
+//                    required: "Enter a username",
+//                    minlength: jQuery.format("Enter at least {0} characters"),
+//                    remote: jQuery.format("{0} is already in use")
+//                }
             }
         });
 
