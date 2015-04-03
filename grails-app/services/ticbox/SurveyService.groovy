@@ -85,7 +85,7 @@ class SurveyService {
             DBObject dbObject = (DBObject) com.mongodb.util.JSON.parse(params.questionItems)
 
             survey[Survey.COMPONENTS.QUESTION_ITEMS] = dbObject
-            survey.title = params.surveyTitle
+            survey.title = params.surveyTitle?.encodeAsHTML().replace('\n', '<br/>')
 
             if(params.logoResourceId){
                 def userResource = UserResource.findById(new ObjectId(params.logoResourceId))
