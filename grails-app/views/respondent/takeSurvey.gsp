@@ -174,16 +174,16 @@
             case '${Survey.QUESTION_TYPE.SCALE_RATING}' :
 
                 answerDetails['value'] = {};
-                jQuery('.scale-row', currQuestion).each(function () {
+                jQuery('.scale-row', container).each(function () {
                     var label = jQuery(this).find('.row-label').text();
                     var value = jQuery(this).find('input:checked').val();
-                    answerDetails['value'][label] = (value) ? value : '';
+
+                    if(!value){
+                        return false;
+                    }
                 });
-                if(answerDetails['value']==null||answerDetails['value']==undefined||answerDetails['value']=='') {
-                    $('#validate-question-modal').modal('show');
-                    returnBoolean = true;
-                }
-                return returnBoolean;
+
+                return true;
                 break;
 
             case '${Survey.QUESTION_TYPE.STAR_RATING}' :
