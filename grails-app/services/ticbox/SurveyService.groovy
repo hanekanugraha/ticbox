@@ -103,7 +103,8 @@ class SurveyService {
         switch (survey.type){
             case Survey.SURVEY_TYPE.EASY :
 
-                def filteredRespondents = getFilteredRespondents(survey)
+                def criteriaMap = ["subscribe":"true"]
+                def filteredRespondents = getFilteredRespondents(survey, criteriaMap)
 
                 def recipients = []
 
@@ -215,6 +216,66 @@ class SurveyService {
             }
         }
 
+        return profiles
+    }
+
+    def getFilteredRespondents(Survey survey, Map<String, String> criteriaMap){
+
+        def profiles = RespondentDetail.createCriteria().list {
+            criteriaMap?.each {criteria ->
+                eq criteria.key, criteria.value
+            }
+
+            survey[Survey.COMPONENTS.RESPONDENT_FILTER]?.each{filter ->
+
+                switch(filter.type){
+                    case ProfileItem.TYPES.CHOICE :
+
+                        or {
+                            filter.checkItems?.each{item ->
+                                like "profileItems.${filter.code}",  "%${item instanceof Map ? item.key : item}%"
+                            }
+                        }
+
+                        break
+
+                    case ProfileItem.TYPES.DATE :
+
+                        gte "profileItems.${filter.code}", Date.parse(helperService.getProperty('app.date.format.input', 'dd/MM/yyyy'), filter.valFrom).getTime()
+                        lte "profileItems.${filter.code}", Date.parse(helperService.getProperty('app.date.format.input', 'dd/MM/yyyy'), filter.valTo).getTime()
+
+                        break
+
+                    case ProfileItem.TYPES.LOOKUP :
+
+                        or {
+                            filter.checkItems?.each{item ->
+                                like "profileItems.${filter.code}",  "%${item.key}%"
+                            }
+                        }
+
+                        break
+
+                    case ProfileItem.TYPES.NUMBER :
+
+                        gte "profileItems.${filter.code}", Double.valueOf(filter.valFrom)
+                        lte "profileItems.${filter.code}", Double.valueOf(filter.valTo)
+                        break
+
+                    case ProfileItem.TYPES.STRING :
+
+                        like "profileItems.${filter.code}", "%${filter.val}%"
+
+                        break
+
+                    default :
+
+                        break
+
+                }
+
+            }
+        }
         return profiles
     }
 
@@ -438,6 +499,63 @@ class SurveyService {
             }
 
             Survey.saveAll(surveys)
+        } else {
+            throw new Exception("No user was found")
+        }
+    }
+
+    def enableSurveys(String[] ids, String enableBlast){
+        List<String> enableIds = HelperService.getListOfString(ids)
+        def surveys = Survey.findAll{
+            inList("_id", enableIds)
+        }
+        if (surveys) {
+            for(i in surveys){
+                i.enableStatus=Survey.ENABLE_STATUS.ENABLE;
+            }
+
+            Survey.saveAll(surveys)
+
+            //on successful enable, optionally blast to subscribers
+            if (enableBlast){
+                def criteriaMap = ["subscribe":"true"]
+
+                for(j in surveys) {
+                    def filteredRespondents = getFilteredRespondents(surveys, criteriaMap)
+
+                    def recipients = []
+
+                    if (filteredRespondents) {
+
+                        String notifCode = "ps_${j.id}"
+
+                        //TODO find a way for bulky insert
+                        for (RespondentDetail profile : filteredRespondents) {
+                            UserNotification userNotification = new UserNotification(
+                                    title: "New survey : ${survey.name}",
+                                    code: notifCode,
+                                    username: profile['username'],
+                                    actionLink: "/respondent/takeSurvey?surveyId=${survey.surveyId}"
+                            )
+
+                            userNotification['SERVICE_ID'] = survey.id
+
+                            userNotification.save()
+
+                            recipients << [
+                                    email   : profile['email'],
+                                    fullname: profile['username'] //TODO RespondentProfile should consists full name
+                            ]
+                        }
+                        //sending emails to subscribers
+                        try {
+                            emailBlasterService.blastEmail(recipients, 'takeSurvey', 'Take a survey', [link: link, surveyName: survey.name])
+                        } catch (Exception e) {
+                            log.error(e.printStackTrace())
+                        }
+                    }
+                }
+            }
         } else {
             throw new Exception("No user was found")
         }

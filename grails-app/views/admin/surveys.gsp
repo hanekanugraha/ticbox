@@ -296,8 +296,9 @@
                 <g:form name="enableSurveysForm" controller="admin" action="enableSurveys" role="form">
                     <input type="hidden" id="enableSurveyIds" name="enableSurveyIds" value=""/>
                     <div class="well">
-                        <p><b>Are you sure to enable these surveys?</b></p>
-                        There is no rollback for deleted surveys. Please make sure you know what you are doing.
+                        <p><b>${g.message(code: "app.admin.enable.confirmation")}</b></p>
+                        <g:checkBox name="blast" id="blast" value="${enableBlast}"/>
+                        ${g.message(code: "app.admin.enable.blast")}
                     </div>
 
                 </g:form>

@@ -124,6 +124,14 @@
                     <a href="#change-password-modal" role="button" class="btn btn-sm btn-light-oak" data-toggle="modal">Change</a>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">&nbsp;</label>
+                <div class="col-sm-8">
+                    <g:checkBox name="subscribe" id="subscribe" value="${respondent.subscribe}" checked="${respondent.subscribe}"/>
+                    ${g.message(code: "app.respondent.subscribe")}
+                </div>
+            </div>
+
 
             <hr />
 

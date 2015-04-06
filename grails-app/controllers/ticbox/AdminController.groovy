@@ -131,12 +131,12 @@ class AdminController {
             if (params.disableSurveyIds) {
                 def disableSurveyIds = ((String) params.disableSurveyIds).split(",")
                 surveyService.disableSurveys(disableSurveyIds)
-                flash.message = message(code: "general.disable.success.message")
+                flash.message = message(code: "app.admin.disable.success.message")
             } else {
                 throw Exception("No Surveys was found")
             }
         } catch (Exception e) {
-            flash.error = message(code: "general.disable.failed.message") + " : " + e.message
+            flash.error = message(code: "app.admin.disable.failed.message") + " : " + e.message
             log.error(e.message, e)
         }
         redirect(controller: "admin", action: "surveys")
@@ -146,13 +146,14 @@ class AdminController {
         try {
             if (params.enableSurveyIds) {
                 def enableSurveyIds = ((String) params.enableSurveyIds).split(",")
-                surveyService.enableSurveys(enableSurveyIds)
-                flash.message = message(code: "general.enable.success.message")
+                surveyService.enableSurveys(enableSurveyIds, (String)params.enableBlast)
+                flash.message = message(code: "app.admin.enable.success.message")
             } else {
-                throw Exception("No Surveys was found")
+                //throw Exception("No Surveys was found")
+                flash.error = message(code: "app.admin.enable.failed.message") + " : No surveys found"
             }
         } catch (Exception e) {
-            flash.error = message(code: "general.enable.failed.message") + " : " + e.message
+            flash.error = message(code: "app.admin.enable.failed.message") + " : " + e.message
             log.error(e.message, e)
         }
         redirect(controller: "admin", action: "surveys")
