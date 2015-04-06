@@ -417,7 +417,7 @@
             jQuery.post('${request.contextPath}/survey/submitSurvey', {questionItems: JSON.stringify(questionItems), surveyTitle: jQuery('#surveyTitle').val(), logoResourceId:logoId}, function(data){
 
                 if('SUCCESS' == data){
-                    alert('Submission success..');
+                    alert('save draft success..');
                 }else if('LIMIT' == data){
                     alert('Max Free Survey more than limit..');
                 }else{

@@ -80,8 +80,10 @@
         });
 
         jQuery('#submitAnswers').click(function() {
-            if(!validateCurrentQuestion()) {
+            if(validateCurrentQuestion()) {
                 $('#submit-answers-modal').modal('show');
+            }else {
+                $('#validate-question-modal').modal('show');
             }
         });
 
@@ -92,7 +94,7 @@
 
         jQuery('#nextQuestion').click(function () {
 
-            if(!validateCurrentQuestion()) {
+            if(validateCurrentQuestion()) {
 
                 var lastQuestion= jQuery('#question'+questionSeq).attr('hidden',true)
                 var nextSeq = jQuery('input.item-check:checked',lastQuestion).attr('nextQuestion');
@@ -106,6 +108,8 @@
                     jQuery('#nextQuestion').hide()
                     jQuery('#submitAnswers').show()
                 }
+            }else {
+                $('#validate-question-modal').modal('show');
             }
 
         });
@@ -143,8 +147,8 @@
     function validateCurrentQuestion() {
         var currQuestion = jQuery('#question'+questionSeq);
         var type = jQuery('.answerTemplate', currQuestion).attr('type');
-        var answerDetails = {}
-        var returnBoolean = false;
+        var answerDetails = {};
+        var returnBoolean = true;
 
         switch (type) {
             case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
@@ -156,43 +160,42 @@
 
                 if(answerDetails['value']==null||answerDetails['value']==undefined||answerDetails['value']=='') {
 
-                    $('#validate-question-modal').modal('show');
-                    returnBoolean = true;
+                    return false;
                 }
-                return returnBoolean;
+                return true;
                 break;
             case '${Survey.QUESTION_TYPE.FREE_TEXT}' :
 
                 answerDetails['value'] = jQuery('textarea', currQuestion).val();
                 if(answerDetails['value']==null||answerDetails['value']==undefined||answerDetails['value']=='') {
-                    $('#validate-question-modal').modal('show');
-                    returnBoolean = true;
+                    return false;
                 }
-                return returnBoolean;
+                return true;
                 break;
 
             case '${Survey.QUESTION_TYPE.SCALE_RATING}' :
 
                 answerDetails['value'] = {};
+                var isValid = true;
                 jQuery('.scale-row', currQuestion).each(function () {
                     var label = jQuery(this).find('.row-label').text();
                     var value = jQuery(this).find('input:checked').val();
-                    answerDetails['value'][label] = (value) ? value : '';
+
+                    if(!value){
+                        isValid = false;
+                        return false;
+                    }
                 });
-                if(answerDetails['value']==null||answerDetails['value']==undefined||answerDetails['value']=='') {
-                    $('#validate-question-modal').modal('show');
-                    returnBoolean = true;
-                }
-                return returnBoolean;
+
+                return isValid;
                 break;
 
             case '${Survey.QUESTION_TYPE.STAR_RATING}' :
                 answerDetails['value'] = jQuery('.stars .star.active', currQuestion).length;
                 if(answerDetails['value']==null||answerDetails['value']==undefined||answerDetails['value']=='') {
-                    $('#validate-question-modal').modal('show');
-                    returnBoolean = true;
+                    return false
                 }
-                return returnBoolean;
+                return true;
                 break;
         }
     }
