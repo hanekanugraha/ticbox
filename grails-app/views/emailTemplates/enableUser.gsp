@@ -31,7 +31,7 @@
                 Hi ${fullname?:'User'},
 
 
-                Your Ticbox account status is now enabled.
+                Blablablahhhh
                 Reason : ${reason?: ' - '}
 
 

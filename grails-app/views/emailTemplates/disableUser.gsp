@@ -32,7 +32,7 @@
                 Hi ${fullname?:'User'},
 
 
-                Your Ticbox account status is now disabled.
+                ${message}
                 Reason : ${reason?: ' - '}
 
 

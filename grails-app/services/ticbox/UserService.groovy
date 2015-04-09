@@ -123,7 +123,7 @@ class UserService {
                                     fullname : user.username //TODO RespondentProfile should consists full name
                             ]
 
-                            emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Account is Inactive',[message: 'message',reason:reason])
+                            emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Account is Inactive',[message: 'Your Ticbox account is now disabled.',reason:reason])
 
                         }
                         User.saveAll(users);
@@ -137,7 +137,7 @@ class UserService {
                                     fullname: user.username
                             ]
 
-                            emailBlasterService.blastEmail(recipients, 'enableUser', 'Your Ticbox Account is Active', [message: 'message', reason:reason])
+                            emailBlasterService.blastEmail(recipients, 'disableUser', 'Your Ticbox Account is Active', [message: 'Your Ticbox account is now enabled.', reason:reason])
                         }
                         User.saveAll(users)
                     } else {
@@ -151,7 +151,7 @@ class UserService {
                                    fullname : user.username //TODO RespondentProfile should consists full name
                            ]
 
-                           emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Account is Inactive',[message: 'message',reason:reason])
+                           emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Account is Inactive',[message: 'Your Ticbox account is now disabled.',reason:reason])
                        }
                         User.saveAll(users);
 
