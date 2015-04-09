@@ -334,7 +334,14 @@
 
                 var container = jQuery(this);
                 var type = jQuery('.answerTemplate', container).attr('type');
+
+//                var textStr = jQuery('.questionTextContainer > textarea', container).val()
+//                alert(textStr)
+//                var textStrEncode = jQuery('<div/>').text(textStr).html()
+//                alert(textStrEncode)
+                alert('break')
                 var questionStr = jQuery('.questionTextContainer > textarea', container).val();
+//                var questionStr = textStrEncode
                 var answerDetails = {};
                 answerDetails['type'] = type;
 
