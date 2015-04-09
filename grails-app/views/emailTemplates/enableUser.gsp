@@ -1,17 +1,16 @@
 <%--
   Created by IntelliJ IDEA.
-  User: acing
-  Date: 7/21/13
-  Time: 1:56 AM
-  To change this template use File | Settings | File Templates.
+  User: firmanagustian
+  Date: 4/9/15
+  Time: 17:05
 --%>
 
-<%@ page contentType="text/html" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title></title>
-
 </head>
+
 <body>
 
 <table>
@@ -32,7 +31,7 @@
                 Hi ${fullname?:'User'},
 
 
-                Your Ticbox account status is now disabled.
+                Your Ticbox account status is now enabled.
                 Reason : ${reason?: ' - '}
 
 
