@@ -139,6 +139,7 @@ class UserService {
 
                             emailBlasterService.blastEmail(recipients, 'enableUser', 'Your Ticbox Account is Active', [message: 'message', reason:reason])
                         }
+                        User.saveAll(users)
                     } else {
                        for(user in users) {
                            // other status
