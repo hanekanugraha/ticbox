@@ -431,7 +431,7 @@ class SurveyService {
                 ]
 
                 try {
-                    emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Account is Inactive',[message: message, reason:reason])
+                    emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Survey is Inactive',[message: message, reason:reason])
                 }catch (Exception e){
                     log.error(e.printStackTrace())
                 }
@@ -463,7 +463,7 @@ class SurveyService {
                 ]
 
                 try {
-                    emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Account is Active',[message: message, reason:reason])
+                    emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Survey is Active',[message: message, reason:reason])
                 }catch (Exception e){
                     log.error(e.printStackTrace())
                 }
