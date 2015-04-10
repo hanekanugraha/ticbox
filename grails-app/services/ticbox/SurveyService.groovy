@@ -420,6 +420,21 @@ class SurveyService {
             for(i in surveys){
                 i.enableStatus=Survey.ENABLE_STATUS.DISABLE;
 
+                def message = 'Your Ticbox Survey with subject ' + i.name + ' is now Inactive.'
+                def reason  = ' - '
+
+                System.out.println(message)
+                def recipients = []
+                recipients << [
+                        email : i.surveyor.email,
+                        fullname : i.surveyor.userAccount.username
+                ]
+
+                try {
+                    emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Account is Inactive',[message: message, reason:reason])
+                }catch (Exception e){
+                    log.error(e.printStackTrace())
+                }
             }
 
             Survey.saveAll(surveys)
@@ -437,12 +452,10 @@ class SurveyService {
         if (surveys) {
             for(i in surveys){
                 i.enableStatus=Survey.ENABLE_STATUS.ENABLE;
-                System.out.println('params= ' + ' ' + i.name + ' ' + i.surveyor.userAccount.username + ' ' + i.surveyor.email)
 
                 def message = 'Your Ticbox Survey with subject ' + i.name + ' is now Active.'
                 def reason  = ' - '
 
-                System.out.println(message)
                 def recipients = []
                 recipients << [
                         email : i.surveyor.email,
@@ -450,7 +463,7 @@ class SurveyService {
                 ]
 
                 try {
-                    emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Account is Inactive',[message: message, reason:reason])
+                    emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Account is Active',[message: message, reason:reason])
                 }catch (Exception e){
                     log.error(e.printStackTrace())
                 }
