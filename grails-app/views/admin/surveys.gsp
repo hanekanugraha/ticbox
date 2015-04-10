@@ -570,7 +570,7 @@
                         var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
                         jQuery('input.item-check', choiceItemContainer).attr('name', idx);
                         jQuery('input.item-check', choiceItemContainer).val(choiceItem);
-                        jQuery('.item-label', choiceItemContainer).html(choiceItem);
+                        jQuery('.item-label', choiceItemContainer).html(choiceItem.label);
 //                                    answerTemplate.append(choiceItemContainer);
                         jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
                     });
