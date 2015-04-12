@@ -3,6 +3,7 @@ package ticbox
 import com.mongodb.DBCollection
 import com.mongodb.DBObject
 import org.bson.types.ObjectId
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.codehaus.groovy.grails.web.util.WebUtils
 
 class SurveyService {
@@ -11,6 +12,7 @@ class SurveyService {
     def helperService
     def emailBlasterService
     def servletContext
+    LinkGenerator grailsLinkGenerator
 
     def surveyList(){
 
@@ -98,13 +100,12 @@ class SurveyService {
         }
     }
 
-    def finalizeAndPublishSurvey(def params, Survey survey){
+    def finalizeAndPublishSurvey(def params, Survey survey) throws Exception {
 
         switch (survey.type){
             case Survey.SURVEY_TYPE.EASY :
 
-                def criteriaMap = ["subscribe":"true"]
-                def filteredRespondents = getFilteredRespondents(survey, criteriaMap)
+                def filteredRespondents = getFilteredRespondents(survey)
 
                 def recipients = []
 
@@ -125,24 +126,30 @@ class SurveyService {
 
                         userNotification.save()
 
-                        recipients << [
-                            email : profile['email'],
-                            fullname : profile['username'] //TODO RespondentProfile should consists full name
-                        ]
+                        def isNotSubscriber = profile.noSubscribe ? (profile.noSubscribe == 'true' ? true : false) : false
+
+                        if (!isNotSubscriber) {
+                            recipients << [
+                                    email   : profile['email'],
+                                    fullname: profile['username'] //TODO RespondentProfile should consists full name
+                            ]
+                        }
                     }
 
-                    String link = "${servletContext.contextPath}/userNotification?code=${notifCode}"
-
-                    //TODO should be sending bulk emails personally
-                    try{
-                        emailBlasterService.blastEmail(recipients, 'takeSurvey', 'Take a survey', [link:link, surveyName: survey.name])
-                    }catch (Exception e){
-                        log.error(e.printStackTrace())
+                    //sending emails to subscribers
+                    if (enableBlast == "on") {
+                        String serverURL = grailsLinkGenerator.getServerBaseURL()
+                        String link = serverURL+"/userNotification?code=${notifCode}"
+                        try {
+                            emailBlasterService.blastEmail(recipients, 'takeSurvey', 'Take a survey', [link: link, surveyName: survey.name, serverURL: serverURL])
+                        } catch (Exception e) {
+                            log.error(e.printStackTrace())
+                            throw new Exception("Successfully enabled survey(s), but failed to blast emails..")
+                        }
                     }
                 }
-
-
                 break
+
             case Survey.SURVEY_TYPE.FREE :
 
                 break
@@ -219,11 +226,14 @@ class SurveyService {
         return profiles
     }
 
-    def getFilteredRespondents(Survey survey, Map<String, String> criteriaMap){
+    def getFilteredRespondents(Survey survey, Map criteriaMap){
 
         def profiles = RespondentDetail.createCriteria().list {
             criteriaMap?.each {criteria ->
-                eq criteria.key, criteria.value
+                or {
+                    isNull(criteria.key)
+                    eq criteria.key, criteria.value
+                }
             }
 
             survey[Survey.COMPONENTS.RESPONDENT_FILTER]?.each{filter ->
@@ -504,60 +514,66 @@ class SurveyService {
         }
     }
 
-    def enableSurveys(String[] ids, String enableBlast){
+    def enableSurveys(String[] ids, String enableBlast) throws Exception {
         List<String> enableIds = HelperService.getListOfString(ids)
         def surveys = Survey.findAll{
             inList("_id", enableIds)
         }
         if (surveys) {
-            for(i in surveys){
-                i.enableStatus=Survey.ENABLE_STATUS.ENABLE;
+            for (i in surveys) {
+                i.enableStatus = Survey.ENABLE_STATUS.ENABLE;
             }
 
             Survey.saveAll(surveys)
 
-            //on successful enable, optionally blast to subscribers
-            if (enableBlast){
-                def criteriaMap = ["subscribe":"true"]
+            for (survey in surveys) {
+//                    def filteredRespondents = getFilteredRespondents(survey, criteriaMap)
+                def filteredRespondents = getFilteredRespondents(survey)
 
-                for(j in surveys) {
-                    def filteredRespondents = getFilteredRespondents(surveys, criteriaMap)
+                def recipients = []
 
-                    def recipients = []
+                if (filteredRespondents) {
 
-                    if (filteredRespondents) {
+                    String notifCode = "ps_${survey.id}"
 
-                        String notifCode = "ps_${j.id}"
+                    //TODO find a way for bulky insert
+                    for (RespondentDetail profile : filteredRespondents) {
+                        UserNotification userNotification = new UserNotification(
+                                title: "New survey : ${survey.name}",
+                                code: notifCode,
+                                username: profile['username'],
+                                actionLink: "/respondent/takeSurvey?surveyId=${survey.surveyId}"
+                        )
 
-                        //TODO find a way for bulky insert
-                        for (RespondentDetail profile : filteredRespondents) {
-                            UserNotification userNotification = new UserNotification(
-                                    title: "New survey : ${survey.name}",
-                                    code: notifCode,
-                                    username: profile['username'],
-                                    actionLink: "/respondent/takeSurvey?surveyId=${survey.surveyId}"
-                            )
+                        userNotification['SERVICE_ID'] = survey.id
 
-                            userNotification['SERVICE_ID'] = survey.id
+                        userNotification.save()
 
-                            userNotification.save()
+                        def isNotSubscriber = profile.noSubscribe ? (profile.noSubscribe == 'true' ? true : false) : false
 
+                        if (!isNotSubscriber) {
                             recipients << [
                                     email   : profile['email'],
                                     fullname: profile['username'] //TODO RespondentProfile should consists full name
                             ]
                         }
-                        //sending emails to subscribers
+                    }
+                    //sending emails to subscribers
+                    if (enableBlast == "on") {
+                        String serverURL = grailsLinkGenerator.getServerBaseURL()
+                        String link = serverURL+"/userNotification?code=${notifCode}"
                         try {
-                            emailBlasterService.blastEmail(recipients, 'takeSurvey', 'Take a survey', [link: link, surveyName: survey.name])
+                            emailBlasterService.blastEmail(recipients, 'takeSurvey', 'Take a survey', [link: link, surveyName: survey.name, serverURL: serverURL])
                         } catch (Exception e) {
                             log.error(e.printStackTrace())
+                            throw new Exception("Successfully enabled survey(s), but failed to blast emails..")
                         }
                     }
                 }
             }
+
         } else {
-            throw new Exception("No user was found")
+            throw new Exception("No survey was found")
         }
     }
 

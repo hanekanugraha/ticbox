@@ -127,8 +127,8 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">&nbsp;</label>
                 <div class="col-sm-8">
-                    <g:checkBox name="subscribe" id="subscribe" value="${respondent.subscribe}" checked="${respondent.subscribe}"/>
-                    ${g.message(code: "app.respondent.subscribe")}
+                    <g:checkBox name="noSubscribe" id="noSubscribe" value="${respondentDetail.noSubscribe}" checked="${respondentDetail.noSubscribe}"/>
+                    ${g.message(code: 'app.respondent.nosubscribe')}
                 </div>
             </div>
 

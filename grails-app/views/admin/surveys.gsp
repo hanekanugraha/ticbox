@@ -242,8 +242,8 @@
                 <g:form name="deleteSurveysForm" controller="admin" action="deleteSurveys" role="form">
                     <input type="hidden" id="delSurveyIds" name="delSurveyIds" value=""/>
                     <div class="well">
-                        <p><b>Are you sure to delete these surveys?</b></p>
-                        There is no rollback for deleted surveys. Please make sure you know what you are doing.
+                        <p><b>${g.message(code: "app.admin.survey.delete.confirmation")}</b></p>
+                        ${g.message(code: "app.admin.survey.delete.warning")}
                     </div>
 
                 </g:form>
@@ -269,8 +269,7 @@
                 <g:form name="disableSurveysForm" controller="admin" action="disableSurveys" role="form">
                     <input type="hidden" id="disableSurveyIds" name="disableSurveyIds" value=""/>
                     <div class="well">
-                        <p><b>Are you sure to disable these surveys?</b></p>
-                        There is no rollback for deleted surveys. Please make sure you know what you are doing.
+                        <p><b>${g.message(code: "app.admin.survey.disable.confirmation")}</b></p>
                     </div>
 
                 </g:form>
@@ -296,9 +295,9 @@
                 <g:form name="enableSurveysForm" controller="admin" action="enableSurveys" role="form">
                     <input type="hidden" id="enableSurveyIds" name="enableSurveyIds" value=""/>
                     <div class="well">
-                        <p><b>${g.message(code: "app.admin.enable.confirmation")}</b></p>
-                        <g:checkBox name="blast" id="blast" value="${enableBlast}"/>
-                        ${g.message(code: "app.admin.enable.blast")}
+                        <p><b>${g.message(code: "app.admin.survey.enable.confirmation")}</b></p>
+                        <g:checkBox name="enableBlast" id="enableBlast"/>
+                        ${g.message(code: "app.admin.survey.enable.blast")}
                     </div>
 
                 </g:form>
