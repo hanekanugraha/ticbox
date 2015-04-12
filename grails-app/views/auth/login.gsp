@@ -55,7 +55,7 @@
                                         <span class="glyphicon glyphicon-log-in"></span> Sign In
                                     </button>
                                     <a style="margin:0 0 5px 0" id="forgotPassword" class="btn btn-default btn-coffee" href="${request.contextPath}/home/forgotPassword">
-                                        <span class="glyphicon glyphicon-log-in" ></span> Forgot Password
+                                        <span class="glyphicon glyphicon-question-sign" ></span> Forgot Password
                                     </a>
                                 </div>
                             </div>

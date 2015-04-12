@@ -260,11 +260,28 @@
 
                     answerComp = jQuery('#answerTemplate-scale').clone().removeAttr('id');
 
+                    jQuery('.remove-row', answerComp).click(function() {
+                        jQuery('.scale-row:last', answerComp).remove();
+                    });
+
                     jQuery('.add-row', answerComp).click(function(){
                         var row = jQuery('.scale-row:first', answerComp).clone();
                         jQuery('.row-label', row).val('');
                         jQuery('table', answerComp).append(row);
                         jQuery('.rating-weight > input', row).attr('name', 'rd-'+jQuery('.scale-row',answerComp).size());
+                    });
+
+                    jQuery('.remove-rating', answerComp).click(function() {
+                        var totalRating = jQuery('.rating-label', answerComp).length;
+
+                        if(totalRating > 1) {
+                            jQuery('.rating-label:last', answerComp).remove();
+
+                            jQuery('.scale-row', answerComp).each(function(idx){
+                                jQuery('.rating-weight:last', jQuery(this)).remove();
+
+                            });
+                        }
                     });
 
                     jQuery('.add-rating', answerComp).click(function(){
@@ -334,6 +351,7 @@
 
                 var container = jQuery(this);
                 var type = jQuery('.answerTemplate', container).attr('type');
+
                 var questionStr = jQuery('.questionTextContainer > textarea', container).val();
                 var answerDetails = {};
                 answerDetails['type'] = type;
@@ -430,7 +448,6 @@
         function saveAndSubmitSurvey() {
 
             var questionItems = buildQuestionItemsMap();
-            // kucing
 
             jQuery.post('${request.contextPath}/survey/submitAndFinalizeSurvey', {questionItems: JSON.stringify(questionItems), surveyTitle: jQuery('#surveyTitle').val(), logoResourceId:logoId}, function(data){
 
@@ -479,7 +496,7 @@
                                     choiceItemCont.remove();
                                 });
                                 jQuery('.question-next',choiceItemCont).click(function(){
-//                                    alert(this.getAttribute('answerid'));
+
                                     jQuery('#singleQuestionNextModal .modal-body').empty();
 
                                     jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
@@ -782,7 +799,36 @@
         %{--<div class="line line-centered">--}%
 
     </div>
+        <div id="menuQuestionType">
 
+            %{--<div id="questionTypesMenuContainer" class="side-panel">--}%
+            <div id="questionTypesMenuContainer" >
+                <div id="questionTypesItemContainer">
+                    <ul>
+                        <li class="surveyItemTypeAdd single-choice clickable" type="${Survey.QUESTION_TYPE.CHOICE_SINGLE}" subtype="single"></li>
+                        <li class="surveyItemTypeAdd multiple-choice clickable" type="${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}" subtype="multiple"></li>
+                        <li class="surveyItemTypeAdd single-text clickable" type="${Survey.QUESTION_TYPE.FREE_TEXT}"></li>
+                        <li class="surveyItemTypeAdd scale clickable" type="${Survey.QUESTION_TYPE.SCALE_RATING}"></li>
+                        <li class="surveyItemTypeAdd star-rating clickable" type="${Survey.QUESTION_TYPE.STAR_RATING}"></li>
+
+                        %{--<li id="questionTypesTitleContainer"></li>--}%
+                        <li id="questionTypesDynamicTitleContainer">
+                            <span id="question-type-title">Question Type</span>
+                            <span id="single-choice-title">Single Choice</span>
+                            <span id="multiple-choice-title" style="font-size: 1em !important;">Multiple Choice</span>
+                            <span id="free-text-title">Free Text</span>
+                            <span id="scale-title">Scale Rating</span>
+                            <span id="star-rating-title">Star Rating</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="" style="width: 100%">
+                <div class="line line-centered">
+                    <button style="border-radius: 8px; width: 100%;" href="#surveyPreviewModal" role="button" data-toggle="modal" class="btn btn-lg btn-blue-trust" type="button"><g:message code="label.button.preview" default="Quick Preview"/> Survey</button>
+                </div>
+            </div>
+        </div>
     <div id="buttonBarHeader" class="module-header"></div>
         <div id="buttonBarContent" class="module-content">
             <button class="btn btn-sm btn-light-oak link" href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}"><g:message code="label.button.back" default="Back"/></button>
@@ -796,33 +842,6 @@
 
 <div id="menuNavPanelContent">
 
-    <div id="questionTypesMenuContainer" class="side-panel">
-        <div id="questionTypesItemContainer">
-            <ul>
-                <li class="surveyItemTypeAdd single-choice clickable" type="${Survey.QUESTION_TYPE.CHOICE_SINGLE}" subtype="single"></li>
-                <li class="surveyItemTypeAdd multiple-choice clickable" type="${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}" subtype="multiple"></li>
-                <li class="surveyItemTypeAdd single-text clickable" type="${Survey.QUESTION_TYPE.FREE_TEXT}"></li>
-                <li class="surveyItemTypeAdd scale clickable" type="${Survey.QUESTION_TYPE.SCALE_RATING}"></li>
-                <li class="surveyItemTypeAdd star-rating clickable" type="${Survey.QUESTION_TYPE.STAR_RATING}"></li>
-
-                %{--<li id="questionTypesTitleContainer"></li>--}%
-                <li id="questionTypesDynamicTitleContainer">
-                    <span id="question-type-title">Question Type</span>
-                    <span id="single-choice-title">Single Choice</span>
-                    <span id="multiple-choice-title" style="font-size: 1em !important;">Multiple Choice</span>
-                    <span id="free-text-title">Free Text</span>
-                    <span id="scale-title">Scale Rating</span>
-                    <span id="star-rating-title">Star Rating</span>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="" style="width: 100%">
-        <div class="line line-centered">
-            <button style="border-radius: 8px; width: 100%;" href="#surveyPreviewModal" role="button" data-toggle="modal" class="btn btn-lg btn-blue-trust" type="button"><g:message code="label.button.preview" default="Quick Preview"/> Survey</button>
-        </div>
-    </div>
 
 </div>
 
@@ -928,17 +947,18 @@
                 <table class="survey-generator-table table scale-table table-responsive" style="width: auto">
                     <thead>
                         <tr class="scale-head">
-                            <th style="text-align: left; width: 100px;">
-                                <button class="btn btn-default btn-info add-row">
-                                    <i class="glyphicon glyphicon-plus"></i> Add Row
-                                </button>
+                            <th class="col-sm-3 form-inline" style="text-align: left; width: 100px; display: inline">
                             </th>
                             <th class="rating-label" style="text-align: left">
                                 <input type="text" class="input-small form-control" placeholder="Rating label.." style="width: 100px;">
                             </th>
                             <th>
+                                <button class="btn btn-default btn-info remove-rating">
+                                    <i class="glyphicon glyphicon-minus"></i>
+                                </button>
+
                                 <button class="btn btn-default btn-info add-rating">
-                                    <i class="glyphicon glyphicon-plus"></i> Add Rating
+                                    <i class="glyphicon glyphicon-plus"></i> Rating
                                 </button>
                             </th>
                         </tr>
@@ -954,6 +974,18 @@
                             <td></td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td style="max-width: 500px;">
+                                <button class="btn btn-default btn-info remove-row">
+                                    <i class="glyphicon glyphicon-minus"></i>
+                                </button>
+                                <button class="btn btn-default btn-info add-row">
+                                    <i class="glyphicon glyphicon-plus"></i> Row
+                                </button>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

@@ -113,6 +113,8 @@ class UserService {
                 try {
 
                     if (users.get(0).getStatus().equals("1")) {
+                        // deactivate user
+                        System.out.println('acc enable to disable')
                         for(user in users){
                             user.setStatus("0");
                             def recipients = []
@@ -121,12 +123,27 @@ class UserService {
                                     fullname : user.username //TODO RespondentProfile should consists full name
                             ]
 
-                            emailBlasterService.blastEmail(recipients,'disableUser','Disable User',[message: 'message',reason:reason])
+                            emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Account is Inactive',[message: 'Your Ticbox account is now disabled.',reason:reason])
 
                         }
                         User.saveAll(users);
+                    } else if(users.get(0).getStatus().equals("0")) {
+                        // activate user
+                        for(user in users) {
+                            user.setStatus("1");
+                            def recipients = []
+                            recipients << [
+                                    email : user.email,
+                                    fullname: user.username
+                            ]
+
+                            emailBlasterService.blastEmail(recipients, 'disableUser', 'Your Ticbox Account is Active', [message: 'Your Ticbox account is now enabled.', reason:reason])
+                        }
+                        User.saveAll(users)
                     } else {
                        for(user in users) {
+                           // other status
+                           System.out.println('status yang gak terdaftar')
                            user.status = "1"
                            def recipients = []
                            recipients << [
@@ -134,7 +151,7 @@ class UserService {
                                    fullname : user.username //TODO RespondentProfile should consists full name
                            ]
 
-                           emailBlasterService.blastEmail(recipients,'disableUser','Disable User',[message: 'message',reason:reason])
+                           emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Account is Inactive',[message: 'Your Ticbox account is now disabled.',reason:reason])
                        }
                         User.saveAll(users);
 

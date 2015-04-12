@@ -17,14 +17,26 @@
                     <div class="form-group">
                         <label for="username" class="col-sm-2 control-label"><g:message code="app.username.label"/></label>
                         <div class="col-sm-4"><g:textField name="username" value="${username}" class="form-control"/></div>
+                        <div >
+                            <i id='usernameInfo' class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
+                               title="You'll use this when you log in."></i>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="email" class="col-sm-2 control-label"><g:message code="app.email.label"/></label>
                         <div class="col-sm-4"><g:textField name="email" value="${email}" class="form-control"/></div>
+                        <div >
+                            <i id='emailInfo' class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
+                               title="You'll use this to receive notification and if you ever need to reset your password."></i>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="password" class="col-sm-2 control-label"><g:message code="app.password.label"/></label>
                         <div class="col-sm-4"><g:passwordField name="password" class="form-control"/></div>
+                        <div >
+                            <i id='passwordInfo' class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
+                               title="You'll use this as a credential to log in."></i>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="passwordconfirm" class="col-sm-2 control-label"><g:message code="app.passwordconfirm.label"/></label>
@@ -33,6 +45,10 @@
                     <div class="form-group">
                         <label for="company" class="col-sm-2 control-label"><g:message code="app.company.label"/></label>
                         <div class="col-sm-4"><g:textField name="company" value="${company}" class="form-control"/></div>
+                        <div >
+                            <i id='companyInfo' class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
+                               title="You'll use this as an information of your company / organization."></i>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -92,6 +108,12 @@
 <g:javascript src="jquery.validate.min.js"/>
 <g:javascript src="additional-methods.min.js"/>
 <script type="text/javascript">
+
+    $('#usernameInfo').tooltip({'placement': 'right','content':'text', 'container':'body'});
+    $('#emailInfo').tooltip({'placement': 'right','content':'text', 'container':'body'});
+    $('#passwordInfo').tooltip({'placement': 'right','content':'text', 'container':'body'});
+    $('#companyInfo').tooltip({'placement': 'right','content':'text', 'container':'body'});
+
     $(document).ready(function() {
 
         $('#registerForm').validate({

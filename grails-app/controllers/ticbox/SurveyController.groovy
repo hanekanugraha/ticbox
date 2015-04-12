@@ -157,6 +157,14 @@ class SurveyController {
 
     def submitAndFinalizeSurvey(){
         try {
+            params.surveyTitle = params.surveyTitle?.encodeAsHTML().replace('\n', '<br/>')
+
+            def obj = JSON.parse(params.questionItems)
+            obj.each {
+                it.questionStr = it.questionStr?.encodeAsHTML().replace('\n', '<br/>')
+            }
+            params.questionItems = obj
+
             def count=surveyService.getCountFreeSurvey()
             def limit=Integer.parseInt(Parameter.findByCode("MAX_FREE_SURVEY_PER_SURVEYOR").value)
             if(count>limit) {
