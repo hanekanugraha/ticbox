@@ -188,6 +188,7 @@ class RespondentService {
         respondentDetail.profileItems = profileItems
         respondentDetail['username'] = respondent.username
         respondentDetail['email'] = respondent.email
+        respondentDetail.noSubscribe = params.noSubscribe ? 'true' : 'false'
 
         respondentDetail.save()
 

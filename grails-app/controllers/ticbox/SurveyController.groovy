@@ -244,8 +244,11 @@ class SurveyController {
     }
 
     def finalizeAndPublishSurvey(){
-        surveyService.finalizeAndPublishSurvey(params, surveyService.getCurrentEditedSurvey())
-
+        try {
+            surveyService.finalizeAndPublishSurvey(params, surveyService.getCurrentEditedSurvey())
+        }catch (Exception e){
+            flash.message = e.message
+        }
         redirect action: 'index'
     }
 

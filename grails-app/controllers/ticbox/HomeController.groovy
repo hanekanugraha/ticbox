@@ -81,9 +81,13 @@ class HomeController {
         params.put("email",user.email)
 
         user.verifyCode = userService.generator( (('A'..'Z')+('0'..'9')).join(), 9 )
-        userService.sendVerifyCode(params,user.verifyCode)
+        try {
+            userService.sendVerifyCode(params, user.verifyCode)
+        }catch(ConnectException ce){
+            flash.error = message(code: "general.error.connection")
+        }
         userService.updateUser(user)
-        flash.message = message(code: "general.create.success.message")
+        flash.message = message(code: "auth.verify.resend")
         redirect(controller: "home", action: "verifyUser",params:[username: params.username])
     }
 
