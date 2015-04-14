@@ -38,7 +38,7 @@ class BootStrap {
 //        surveyorRole.addToPermissions("survey:*")
 //                .addToPermissions("ajaxUpload:*")
 //                .addToPermissions("ticboxUtil:*")
-//   //             .addToPermissions("home:*")
+////              .addToPermissions("home:*")
 //                .save()
 //
 //        def respondentRole = new Role(name: "Respondent")
@@ -47,7 +47,7 @@ class BootStrap {
 //                .addToPermissions("ajaxUpload:*")
 //                .addToPermissions("userNotification:*")
 //                .addToPermissions("ticboxUtil:*")
-////               .addToPermissions("home:*")
+////              .addToPermissions("home:*")
 //                .save()
 //
 //

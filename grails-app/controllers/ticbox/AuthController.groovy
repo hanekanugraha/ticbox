@@ -28,7 +28,7 @@ class AuthController {
         redirect(action: "login", params: params) }
 
     def login = {
-        return [username: params.username, rememberMe: (params.rememberMe != null), targetUri: params.targetUri]
+        return [username: params.username, rememberMe: (params.rememberMe != null), targetUri : params.targetUri]
     }
 
     def verifyUser = {
@@ -240,7 +240,7 @@ class AuthController {
         [ref: params.ref, username: params.username, email: params.email]
     }
 
-    def register = {
+    def register =  {
         def errorAction
         try {
             errorAction = ("surveyor".equalsIgnoreCase(params.userType)) ? "registerSurveyor" : "registerRespondent"
