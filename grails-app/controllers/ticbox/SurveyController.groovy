@@ -163,7 +163,7 @@ class SurveyController {
             obj.each {
                 it.questionStr = it.questionStr?.encodeAsHTML().replace('\n', '<br/>')
             }
-            params.questionItems = obj
+            params.questionItems = obj.toString()
 
             def count=surveyService.getCountFreeSurvey()
             def limit=Integer.parseInt(Parameter.findByCode("MAX_FREE_SURVEY_PER_SURVEYOR").value)
