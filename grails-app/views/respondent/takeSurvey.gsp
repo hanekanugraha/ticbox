@@ -96,17 +96,17 @@
 
             if(validateCurrentQuestion()) {
 
-                var lastQuestion= jQuery('#question'+questionSeq).attr('hidden',true)
+                var lastQuestion= jQuery('#question'+questionSeq).attr('hidden',true);
                 var nextSeq = jQuery('input.item-check:checked',lastQuestion).attr('nextQuestion');
                 if(nextSeq!=null||nextSeq==undefined)
                     questionSeq++;
                 else
                     questionSeq=nextSeq;
-                jQuery('#question'+questionSeq).attr('hidden',false)
-                jQuery('#lastQuestion').show()
+                jQuery('#question'+questionSeq).attr('hidden',false);
+                jQuery('#lastQuestion').show();
                 if(questionSeq>=ttlQuestions) {
-                    jQuery('#nextQuestion').hide()
-                    jQuery('#submitAnswers').show()
+                    jQuery('#nextQuestion').hide();
+                    jQuery('#submitAnswers').show();
                 }
             }else {
                 $('#validate-question-modal').modal('show');
@@ -120,11 +120,11 @@
             if(lastSeq!=null||lastSeq==undefined)
                 questionSeq--;
 
-            jQuery('#question' + questionSeq).attr('hidden', false)
-            jQuery('#nextQuestion').show()
-            jQuery('#submitAnswers').hide()
+            jQuery('#question' + questionSeq).attr('hidden', false);
+            jQuery('#nextQuestion').show();
+            jQuery('#submitAnswers').hide();
             if(questionSeq==1)
-                jQuery('#lastQuestion').hide()
+                jQuery('#lastQuestion').hide();
         });
 
 
@@ -135,10 +135,12 @@
 
             loadSurvey(questionItems);
             if(questionItems.length<2) {
-                jQuery('#nextQuestion').hide()
-            } else
-                jQuery('#submitAnswers').hide()
-            jQuery('#lastQuestion').hide()
+                jQuery('#nextQuestion').hide();
+            } else{
+                jQuery('#submitAnswers').hide();
+            }
+
+            jQuery('#lastQuestion').hide();
 
         });
 
