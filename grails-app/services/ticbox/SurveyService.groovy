@@ -452,6 +452,96 @@ class SurveyService {
 
     }
 
+	def getSurveyRawResult(String surveyId){
+
+        Survey survey = getSurvey(surveyId)
+
+        def result = []
+
+        if (survey) {
+            def questionItems = survey[Survey.COMPONENTS.QUESTION_ITEMS]
+
+            if (questionItems) {
+                def questions = []
+				for(questionItem in questionItems){
+					if (questionItem['answerDetails']['type'] == Survey.QUESTION_TYPE.SCALE_RATING ){
+						def questionHeader = questionItem['questionStr']
+						questionItem['answerDetails']['rowLabels'].each{ String label ->
+                           		questions.add(questionHeader + " - "+ label)
+                        }
+					}else{
+	                    questions.add(questionItem['questionStr'])
+					}
+                }
+				result.add(questions);
+                def surveyResponses = SurveyResponse.findAllBySurveyId(surveyId)
+                if (surveyResponses) {
+                    for(surveyResponse in surveyResponses) {
+                        if (surveyResponse['response']){
+							def responses = [];
+                            for(response in surveyResponse['response']){
+                                def answerDetails = response['answerDetails']
+
+                                if (answerDetails && answerDetails['value']) {
+                                    def value = answerDetails['value']
+                                    def seq = response['seq']
+
+                                    switch (answerDetails['type']){
+                                        case Survey.QUESTION_TYPE.CHOICE_SINGLE :
+										   def valueChoice = ""
+ 										   value.each{ String choice ->
+                                           		valueChoice = valueChoice + choice +","
+                                            }
+											responses.add (valueChoice.substring(0, valueChoice.length() - 1))
+                                            break
+
+                                        case Survey.QUESTION_TYPE.CHOICE_MULTIPLE :
+										   def valueChoice = ""
+                                            value.each{ String choice ->
+		                                         valueChoice = valueChoice + choice +","
+                                            }
+											responses.add (valueChoice.substring(0, valueChoice.length() - 1))
+                                            break
+
+                                        case Survey.QUESTION_TYPE.FREE_TEXT :
+											responses.add(value)
+
+                                            break
+
+                                        case Survey.QUESTION_TYPE.SCALE_RATING :
+                                            for(row in value){	
+												responses.add(row.value)
+                                            }
+
+                                            break
+
+                                        case Survey.QUESTION_TYPE.STAR_RATING :
+
+
+                                            responses.add(value)
+
+                                            break
+
+                                        default :
+
+                                            break
+                                    }
+
+                                }
+                            }
+                        	result.add(responses);
+						}
+                    }
+                }
+            }else {
+                result.error = "No Question Items found for this survey"
+            }
+        }
+
+        return result
+
+    }
+
     def saveResponse(String responseJSON, String surveyId, String respondentId){
         SurveyResponse surveyResponse = SurveyResponse.findBySurveyIdAndRespondentId(surveyId, respondentId) ?: new SurveyResponse(surveyId: surveyId, respondentId: respondentId).save()
         DBObject dbObject = (DBObject) com.mongodb.util.JSON.parse(responseJSON)

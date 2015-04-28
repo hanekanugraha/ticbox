@@ -94,6 +94,7 @@
                         </td>
                         <td class="content-width">
                             <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display Result</a>
+	                        <a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download Result</a>
                         </td>
                     </tr>
                 </g:each>
@@ -133,6 +134,7 @@
                         <td>Rp. ${survey.surveyPrice}</td>
                         <td class="content-width">
                             <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display Result</a>
+	                        <a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download Result</a>
                         </td>
                     </tr>
                 </g:each>
@@ -498,6 +500,14 @@
                     that.text(txt);
                 }, 500);
             });
+        });
+		jQuery('.downloadResultLink').click(function(e){
+	        var that = jQuery(this);
+            var surveyId = that.attr('surveyid');
+           	e.preventDefault();  //stop the browser from following
+			var url =  '${request.contextPath}/survey/downloadSurveyResult?surveyId='+surveyId;
+			alert(url);
+			window.location.href =url;
         });
 
         jQuery('#surveyorProfileContent').addClass('in');

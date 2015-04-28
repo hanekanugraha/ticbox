@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.multipart.MultipartHttpServletRequest
 import org.apache.shiro.SecurityUtils
 import uk.co.desirableobjects.ajaxuploader.exception.FileUploadException
+import pl.touk.excel.export.WebXlsxExporter
 
 class SurveyController {
 
@@ -65,8 +66,10 @@ class SurveyController {
 
     def getRespondentFilter() {
         Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
-
-        def jsonStr = com.mongodb.util.JSON.serialize(survey[Survey.COMPONENTS.RESPONDENT_FILTER])
+		
+        def jsonStr = {}
+		if(survey)
+			jsonStr = com.mongodb.util.JSON.serialize(survey[Survey.COMPONENTS.RESPONDENT_FILTER])
 
         render jsonStr
     }
@@ -318,6 +321,20 @@ class SurveyController {
 
         render result as JSON
     }
+
+	def downloadSurveyResult(){	
+	   def result = surveyService.getSurveyRawResult(params.surveyId)
+		log.debug(result)
+		new WebXlsxExporter().with {
+		    setResponseHeaders(response)
+			if(result){
+				result.eachWithIndex { item,index ,indexPlusOne = index + 1->
+				    fillRow(item, indexPlusOne)
+				}
+			}
+		    save(response.outputStream)
+		}
+	}
 
     def deleteSurvey(){
         surveyService.deleteSurvey(params)

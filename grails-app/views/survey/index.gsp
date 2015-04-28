@@ -256,6 +256,7 @@
                             <td>Rp. ${survey.surveyPrice}</td>
                             <td class="content-width">
                                 <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display Result</a>
+								<a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download Result</a>
                             </td>
                         </tr>
                     </g:each>
@@ -291,7 +292,8 @@
                             <td>Rp. ${survey.surveyPrice}</td>
                             <td class="content-width">
                                 <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display Result</a>
-                            </td>
+                            	<a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download Result</a>
+							</td>
                         </tr>
                     </g:each>
                 </tbody>
@@ -524,11 +526,22 @@
 
                         that.text(txt);
                     }, 500);
+					jQuery('.displayResultLink').text('Display Result');
                 }else {
                     alert(result.error);
                     that.text(txt);
                 }
             });
+            //that.text('Display Result');
+        });
+		jQuery('.downloadResultLink').click(function(e){
+	        var that = jQuery(this);
+            var surveyId = that.attr('surveyid');
+            //that.text('Loading Data..');
+           	e.preventDefault();  //stop the browser from following
+			var url =  '${request.contextPath}/survey/downloadSurveyResult?surveyId='+surveyId;
+			window.location.href =url;
+            //that.text('Download Result');
         });
 
         jQuery('#surveyorProfileContent').addClass('in');
