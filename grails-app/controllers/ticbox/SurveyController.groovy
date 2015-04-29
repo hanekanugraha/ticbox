@@ -315,7 +315,10 @@ class SurveyController {
 
     def getSurveyResult(){
         def result = surveyService.getSurveyResult(params.surveyId)
-
+        if (result==null)
+            System.out.println('result null!')
+        else
+            System.out.println(result as JSON)
         render result as JSON
     }
 
@@ -350,7 +353,7 @@ class SurveyController {
         forward(action: "index")
     }
 
-
+    // kucingkurus
     def uploadImage = {
         def message
         try {
