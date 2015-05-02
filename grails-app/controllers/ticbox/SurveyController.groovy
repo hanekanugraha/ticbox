@@ -157,7 +157,7 @@ class SurveyController {
 
     def submitAndFinalizeSurvey(){
         try {
-            params.surveyTitle = params.surveyTitle?.encodeAsHTML().replace('\n', '<br/>')
+//            params.surveyTitle = params.surveyTitle?.encodeAsHTML().replace('\n', '<br/>')
 
             def obj = JSON.parse(params.questionItems)
             obj.each {
