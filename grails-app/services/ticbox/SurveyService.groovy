@@ -597,8 +597,9 @@ class SurveyService {
                     if (enableBlast == "on") {
                         String serverURL = grailsLinkGenerator.getServerBaseURL()
                         String link = serverURL+"/userNotification?code=${notifCode}"
+                        actionLink: serverURL+"/respondent/takeSurvey?surveyId=${survey.surveyId}"
                         try {
-                            emailBlasterService.blastEmail(recipients, 'takeSurvey', 'Take a survey', [link: link, surveyName: survey.name, serverURL: serverURL])
+                            emailBlasterService.blastEmail(recipients, 'takeSurvey', 'Ticbox: New Survey detected!', [link: link, actionLink: actionLink, surveyName: survey.name, serverURL: serverURL])
                         } catch (Exception e) {
                             log.error(e.printStackTrace())
                             throw new Exception("Successfully enabled survey(s), but failed to blast emails..")

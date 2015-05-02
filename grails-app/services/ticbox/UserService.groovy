@@ -106,12 +106,12 @@ class UserService {
 
     def activeUsers(String[] ids,String reason) throws Exception {
         List<Long> activeIds = HelperService.getListOfLong(ids)
-            def users = User.findAll{
+            def users = User.findAll {
                 inList("_id", activeIds)
             }
             if (users) {
+                String serverURL = grailsLinkGenerator.getServerBaseURL()
                 try {
-
                     if (users.get(0).getStatus().equals("1")) {
                         // deactivate user
                         System.out.println('acc enable to disable')
@@ -123,7 +123,7 @@ class UserService {
                                     fullname : user.username //TODO RespondentProfile should consists full name
                             ]
 
-                            emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Account is Inactive',[message: 'Your Ticbox account is now disabled.',reason:reason])
+                            emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Account is Inactive',[message: 'Your Ticbox account is now disabled.',reason:reason, serverURL:serverURL])
 
                         }
                         User.saveAll(users);
@@ -137,7 +137,7 @@ class UserService {
                                     fullname: user.username
                             ]
 
-                            emailBlasterService.blastEmail(recipients, 'disableUser', 'Your Ticbox Account is Active', [message: 'Your Ticbox account is now enabled.', reason:reason])
+                            emailBlasterService.blastEmail(recipients, 'disableUser', 'Your Ticbox Account is Active', [message: 'Your Ticbox account is now enabled.', reason:reason, serverURL:serverURL])
                         }
                         User.saveAll(users)
                     } else {
@@ -151,7 +151,7 @@ class UserService {
                                    fullname : user.username //TODO RespondentProfile should consists full name
                            ]
 
-                           emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Account is Inactive',[message: 'Your Ticbox account is now disabled.',reason:reason])
+                           emailBlasterService.blastEmail(recipients,'disableUser','Your Ticbox Account is Inactive',[message: 'Your Ticbox account is now disabled.',reason:reason, serverURL:serverURL])
                        }
                         User.saveAll(users);
 
@@ -179,10 +179,13 @@ class UserService {
                     fullname: user.username //TODO RespondentProfile should consists full name
             ]
 
-            String link = grailsLinkGenerator.getServerBaseURL()+"/home/resetPassword?email="+email+"&resetPassword="+resetPassword;
+            String serverURL = grailsLinkGenerator.getServerBaseURL()
+            String link = serverURL+"/home/resetPassword?email="+email+"&resetPassword="+resetPassword;
 
-            emailBlasterService.blastEmail(recipients, 'forgotPassword', 'Reset Ticbox Password', [link: link])
+            emailBlasterService.blastEmail(recipients, 'forgotPassword', 'Ticbox: Reset Password', [link: link, serverURL: serverURL])
             user.save()
+        } else {
+            return false;
         }
         return true
     }
@@ -198,9 +201,11 @@ class UserService {
                 email : params.email,
                 fullname : params.username //TODO RespondentProfile should consists full name
         ]
+
+        String serverURL = grailsLinkGenerator.getServerBaseURL()
         String link = grailsLinkGenerator.getServerBaseURL()+"/home/verifyUserByEmail?username="+params.username+"&verifyCode="+verifyCode;
 
-        emailBlasterService.blastEmail(recipients,'verifyMail','Verify Code',[verifyCode: verifyCode,verifyLink : link])
+        emailBlasterService.blastEmail(recipients,'verifyMail','Ticbox: Email Verification',[verifyCode: verifyCode, verifyLink : link, serverURL: serverURL])
 
     }
 
