@@ -23,7 +23,7 @@
     <tr>
         <td width="200px">
             <div>
-                <img src="http://ticboxnew.herokuapp.com/static/images/ticbox/ticbox-logo-6b.png" width="200px" style="margin:35px 10px 0 0; width: 200px; min-height: 80px;" alt="&lt;TICBOX LOGO&gt;"/>
+                <img src="${serverURL}/static/images/ticbox/ticbox-logo-6b.png" width="200px" style="margin:35px 10px 0 0; width: 200px; min-height: 80px;" alt="&lt;TICBOX LOGO&gt;"/>
             </div>
         </td>
         <td style="font-size:12px; padding: 36px 0 35px 0; vertical-align:bottom; font-weight:bold; color:#736357">Online Do-It-Yourself Market Research</td>
@@ -41,7 +41,7 @@
                     <br/><br/><br/>
                     Kami telah menerima permintaan reset password atas akun Ticbox anda.
                     <br/><br/>
-                    Untuk melanjutkan proses reset password, klik <a href="${link}">disini</a>.
+                    Untuk melanjutkan proses reset password, klik <b><a href="${link}">disini</a></b>.
                     <br/><br/>
                     Setelah melakukan log in dengan password baru diatas, harap segera mengubah password sesuai yang anda inginkan.
                     <br/><br/>
@@ -56,7 +56,7 @@
                     <br/>
                     You are receiving this email because a reset password action was requested for your Ticbox account.
                     <br/><br/>
-                    To reset your password, click <a href="${link}">here</a>.
+                    To reset your password, click <b><a href="${link}">here</a></b>.
                     <br/><br/>
                     After logging in, please immediately change your password.
                     <br/><br/>

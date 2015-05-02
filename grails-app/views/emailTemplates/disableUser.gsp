@@ -20,32 +20,14 @@
         background-repeat: repeat-x;">
 
 <table width="700" style="width:700px" border="0" cellpadding="0" cellspacing="0" align="center">
-    %{--<thead>--}%
     <tr>
         <td width="200px">
             <div>
-                <img src="http://ticbox-kucing.herokuapp.com/static/images/ticbox/ticbox-logo-6b.png" width="200px" style="margin:35px 10px 0 0; width: 200px; min-height: 80px;" alt="&lt;TICBOX LOGO&gt;"/>
+                <img src="${serverURL}/static/images/ticbox/ticbox-logo-6b.png" width="200px" style="margin:35px 10px 0 0; width: 200px; min-height: 80px;" alt="&lt;TICBOX LOGO&gt;"/>
             </div>
         </td>
         <td style="font-size:12px; padding: 36px 0 35px 0; vertical-align:bottom; font-weight:bold; color:#736357">Online Do-It-Yourself Market Research</td>
     </tr>
-    %{--</thead>--}%
-    %{--<tbody>--}%
-    %{--<tr>--}%
-        %{--<td>--}%
-            %{--<pre style="font-size: larger;">--}%
-
-                %{--Hi ${fullname?:'User'},--}%
-
-
-                %{--${message}--}%
-                %{--Reason : ${reason?: ' - '}--}%
-
-
-            %{--</pre>--}%
-        %{--</td>--}%
-    %{--</tr>--}%
-    %{--</tbody>--}%
     <tr>
         <td colspan="2">
             <div style="border: 1px solid rgba(0, 0, 0, 0.1);
@@ -55,14 +37,11 @@
             color: #333333;
             padding: 12px;">
                 <div style="padding: 12px; font-size:12px">
-                    <span style="font-size:14px">Halo <b>${fullname?:'User'}</b>,</span>
-                    <br/><br/><br/>
-
+                    <span style="font-size:14px">Hi <b>${fullname?:'User'}</b>,</span>
+                    <br/><br/>
                     ${message}
                     <br/><br/>
                     ${reason?: ' - '}
-
-                    <br/><br/>
                     <br/><br/>
                     Thanks,
                     <br/>

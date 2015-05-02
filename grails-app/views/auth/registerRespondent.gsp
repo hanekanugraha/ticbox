@@ -49,7 +49,7 @@
                     <label for="passwordconfirm" class="col-sm-3 control-label"><g:message code="app.passwordconfirm.label"/></label>
                     <div class="col-sm-4"><g:passwordField name="passwordconfirm" class="form-control"/></div>
                 </div>
-                <div class="form-group">
+                <!--div class="form-group">
                     <label for="noSubscribe" class="col-sm-3 control-label">&nbsp;</label>
                     <div class="col-sm-4">
                         <div class="checkbox">
@@ -59,7 +59,7 @@
                             </label>
                         </div>
                     </div>
-                </div>
+                </div-->
 
                 <!-- Captcha -->
                 <div class="form-group">

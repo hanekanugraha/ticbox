@@ -40,7 +40,7 @@ background-repeat: repeat-x;">
                         <br/><br/><br/>
                         Ada survey baru dimana Anda dapat berpartisipasi: <b>'${surveyName}'</b>.
                         <br/>
-                        Untuk mengikuti survey, klik <a href="${link}">disini</a>.
+                        Untuk mengikuti survey, klik <b><a href="${link}">disini</a></b>.
                         <br/><br/>
                         Berpartisipasilah dalam survey dan kumpulkan terus poinnya!
                         <br/><br/><br/>
@@ -52,7 +52,7 @@ background-repeat: repeat-x;">
                         <br/>
                         We have a new survey for you to participate: <b>'${surveyName}'</b>.
                         <br/>
-                        Please take the survey <a href="${link}">here</a>.
+                        Please take the survey <b><a href="${link}">here</a></b>.
                         <br/><br/>
                         Join more surveys and collect the points!
                         <br/><br/><br/>
