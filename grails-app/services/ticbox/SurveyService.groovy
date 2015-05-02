@@ -68,6 +68,7 @@ class SurveyService {
                 survey.completionDateFrom = compDateFrom
                 survey.completionDateTo = compDateTo
                 survey.ttlRespondent = ttlLong
+                survey.createdDate = ''
                 survey.save()
             }
         else{
@@ -75,6 +76,7 @@ class SurveyService {
                 survey.completionDateFrom = compDateFrom
                 survey.completionDateTo = compDateTo
                 survey.ttlRespondent = ttlLong
+                survey.createdDate = ''
                 survey.save()
             }
 

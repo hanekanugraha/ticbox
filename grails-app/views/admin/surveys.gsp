@@ -57,13 +57,14 @@
             <table id="inProgressTable" class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="8">IN PROGRESS</th>
+                    <th colspan="9">IN PROGRESS</th>
                 </tr>
                 <tr class="sub-header">
                     <th></th>
                     <th>Name</th>
                     <th>Owner</th>
                     <th>Type</th>
+                    <th>Created Date</th>
                     <th>End Date</th>
                     <th>Price</th>
                     <th>Status</th>
@@ -82,6 +83,7 @@
                         <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
                         <td>${survey.surveyor.userAccount.username}</td>
                         <td>${survey.type}</td>
+                        <td>${survey.createdDate}</td>
                         <td>${survey.completionDateTo}</td>
                         <td>Rp. ${survey.surveyPrice}</td>
                         <td>
@@ -103,12 +105,13 @@
             <table id="completedTable"  class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="7">COMPLETED</th>
+                    <th colspan="8">COMPLETED</th>
                 </tr>
                 <tr class="sub-header">
                     <th>Name</th>
                     <th>Owner</th>
                     <th>Type</th>
+                    <th>Created Date</th>
                     <th>Running Time</th>
                     <th>Respondents</th>
                     <th>Price</th>
@@ -128,6 +131,7 @@
                         <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
                         <td>${survey.surveyor.userAccount.username}</td>
                         <td>${survey.type}</td>
+                        <td>${survey.createdDate}</td>
                         <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                         <td>${survey.ttlRespondent}</td>
                         <td>Rp. ${survey.surveyPrice}</td>

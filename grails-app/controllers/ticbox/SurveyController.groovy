@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.multipart.MultipartHttpServletRequest
 import org.apache.shiro.SecurityUtils
 import uk.co.desirableobjects.ajaxuploader.exception.FileUploadException
+import java.text.SimpleDateFormat
 
 class SurveyController {
 
@@ -186,6 +187,11 @@ class SurveyController {
                 survey.status = Survey.STATUS.IN_PROGRESS
                 survey.enableStatus = Survey.ENABLE_STATUS.DISABLE
             }
+
+            def date = new Date()
+            def sdf = new SimpleDateFormat("MM/dd/yyyy")
+            survey.createdDate = sdf.format(date)
+
             if(survey)
                 surveyService.submitSurvey(params, survey)
             else
