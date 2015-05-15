@@ -159,7 +159,7 @@
                                 <g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
                                     <g:each in="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false)}" var="notification">
                                         <li role="presentation">
-                                            <g:link controller="userNotification" title="${notification.title}" params="[code: notification.code]">${notification.title}</g:link>
+                                            <g:link controller="userNotification" title="${notification.title}" params="[code: notification.code, notif_id: notification.id]">${notification.title}</g:link>
                                         </li>
                                     </g:each>
                                 </g:if>
