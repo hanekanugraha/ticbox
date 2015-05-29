@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.multipart.MultipartHttpServletRequest
 import org.apache.shiro.SecurityUtils
 import uk.co.desirableobjects.ajaxuploader.exception.FileUploadException
+import java.text.SimpleDateFormat
 import pl.touk.excel.export.WebXlsxExporter
 
 class SurveyController {
@@ -160,7 +161,7 @@ class SurveyController {
 
     def submitAndFinalizeSurvey(){
         try {
-            params.surveyTitle = params.surveyTitle?.encodeAsHTML().replace('\n', '<br/>')
+//            params.surveyTitle = params.surveyTitle?.encodeAsHTML().replace('\n', '<br/>')
 
             def obj = JSON.parse(params.questionItems)
             obj.each {
@@ -189,6 +190,11 @@ class SurveyController {
                 survey.status = Survey.STATUS.IN_PROGRESS
                 survey.enableStatus = Survey.ENABLE_STATUS.DISABLE
             }
+
+            def date = new Date()
+            def sdf = new SimpleDateFormat("MM/dd/yyyy")
+            survey.createdDate = sdf.format(date)
+
             if(survey)
                 surveyService.submitSurvey(params, survey)
             else
@@ -318,7 +324,10 @@ class SurveyController {
 
     def getSurveyResult(){
         def result = surveyService.getSurveyResult(params.surveyId)
-
+        if (result==null)
+            System.out.println('result null!')
+        else
+            System.out.println(result as JSON)
         render result as JSON
     }
 
@@ -367,7 +376,7 @@ class SurveyController {
         forward(action: "index")
     }
 
-
+    // kucingkurus
     def uploadImage = {
         def message
         try {

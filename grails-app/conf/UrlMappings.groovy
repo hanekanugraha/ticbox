@@ -11,6 +11,8 @@ class UrlMappings {
         "/oauth/callback/$provider"(controller: "oauth", action: "callback")
         "/"(controller: "home", action: "index")
         "500"(view:'/error')
+        "404"(view:'/404')
+        "403"(view:'/403')
 
         "/policies/termsOfUse"(controller: "policies",action: "termsOfUse")
         "/policies/privacy"(controller: "policies",action: "privacy")

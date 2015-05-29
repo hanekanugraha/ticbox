@@ -261,7 +261,10 @@
                     answerComp = jQuery('#answerTemplate-scale').clone().removeAttr('id');
 
                     jQuery('.remove-row', answerComp).click(function() {
-                        jQuery('.scale-row:last', answerComp).remove();
+                        var totalRow = jQuery('.scale-row', answerComp).length;
+
+                        if(totalRow > 1)
+                            jQuery('.scale-row:last', answerComp).remove();
                     });
 
                     jQuery('.add-row', answerComp).click(function(){

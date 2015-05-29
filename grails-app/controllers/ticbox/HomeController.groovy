@@ -17,13 +17,18 @@ class HomeController {
 
     }
     def blastForgotPassword(){
-//        try {
-            userService.resetPassword(params.email)
-            flash.message = message(code: "general.resetpassword.success.message")
-//        }catch (Exception e) {
-//            flash.error = message(code: "general.resetpassword.nouser.message")
-//        }
-        redirect (controller: "auth", action: "index")
+        try {
+            if(userService.resetPassword(params.email)) {
+                flash.message = message(code: "general.resetpassword.request.success.message")
+                redirect(uri: "/auth/login")
+            }else{
+                flash.error = message(code: "general.resetpassword.request.emailnotfound.message")
+                redirect(uri: "/home/forgotPassword")
+            }
+        }catch (Exception e) {
+            flash.error = message(code: "general.resetpassword.request.failed.message")
+            redirect(uri: "/auth/login")
+        }
     }
 
     def verifyUser = {

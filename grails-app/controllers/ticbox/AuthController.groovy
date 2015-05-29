@@ -67,12 +67,13 @@ class AuthController {
                 e.printStackTrace()
             }
 
+            flash.message = message(code: "auth.verify.success.default")
             log.info "Redirecting to '${targetUri}'."
-            redirect(controller: "auth",action:"login",params:[username: user.username])
+            redirect(controller: "auth",action:"login",params:[username: user.username, targetUri: targetUri])
         }
         else{
-            flash.error = message(code: "verify.failed")
-            redirect(controller: "home",action:"verifyUser",params:[username: user.username])
+            flash.error = message(code: "auth.verify.failed")
+            redirect(controller: "home",action:"verifyUser",params:[username: user.username, targetUri: targetUri])
         }
     }
 
@@ -86,24 +87,26 @@ class AuthController {
 
         try {
             // Perform the actual login. An AuthenticationException
-            // will be thrown if the username is unrecognised or the
-            // password is incorrect.
+            // will be thrown if the username is unrecognised or the password is incorrect.
             SecurityUtils.subject.login(authToken)
 
-            // If a controller redirected to this page, redirect back
-            // to it. Otherwise redirect depends on role
+            // If a controller redirected to this page, redirect back to it. Otherwise redirect depends on role
             def targetUri = params.targetUri
+
+            def user = User.findByUsername(SecurityUtils.subject.principal)
+            if (user.verify == "0") {
+                SecurityUtils.subject.logout()
+                redirect(controller: "home",action:"verifyUser",params:[username: user.username, targetUri: targetUri])
+                return
+            }
+            else if (user.status == "0") {
+                SecurityUtils.subject.logout()
+                redirect(uri:"/home/disableUser",params:[username: user.username])
+                return
+            }
+            def role = user?.roles?.first()
+            session.putAt('role', role.name)
             if (!targetUri) {
-                def user = User.findByUsername(SecurityUtils.subject.principal)
-                if (user.verify == "0") {
-                    SecurityUtils.subject.logout()
-                    redirect(controller: "home",action:"verifyUser",params:[username: user.username])
-                }
-                else if (user.status == "0") {
-                    SecurityUtils.subject.logout()
-                    redirect(uri:"/home/disableUser",params:[username: user.username])
-                } else {
-                    def role = user?.roles?.first()
                     switch (role.name) {
                         case Role.ROLE.ADMIN:
                             targetUri = "/admin/index"
@@ -117,7 +120,6 @@ class AuthController {
                         default:
                             targetUri = "/"
                     }
-                    session.putAt('role', role.name)
 
                     // Handle requests saved by Shiro filters.
                     def savedRequest = WebUtils.getSavedRequest(request)
@@ -125,21 +127,17 @@ class AuthController {
                         targetUri = savedRequest.requestURI - request.contextPath
                         if (savedRequest.queryString) targetUri = targetUri + '?' + savedRequest.queryString
                     }
-
-                    log.info "Redirecting to '${targetUri}'."
-                    redirect(uri: targetUri)
-                }
             }
 
-        }
-        catch (AuthenticationException ex) {
-            // Authentication failed, so display the appropriate message
-            // on the login page.
+            log.info "Redirecting to '${targetUri}'."
+            redirect(uri: targetUri)
+
+        } catch (AuthenticationException ex) {
+            // Authentication failed, so display the appropriate message on the login page.
             log.info "Authentication failure for user '${params.username}'."
             flash.error = message(code: "login.failed")
 
-            // Keep the username and "remember me" setting so that the
-            // user doesn't have to enter them again.
+            // Keep the username and "remember me" setting so that the user doesn't have to enter them again.
             def m = [username: params.username]
             if (params.rememberMe) {
                 m["rememberMe"] = true
@@ -152,8 +150,7 @@ class AuthController {
 
             // Now redirect back to the login page.
             redirect(uri: "/auth/login", params: m)
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             // Just to make sure, log the user out of the application.
             SecurityUtils.subject.logout()
 
