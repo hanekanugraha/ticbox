@@ -174,7 +174,6 @@
                     answerId++;
 
                     jQuery('.question-next',answerComp).click(function(){
-//                            alert(this.getAttribute('answerid'))
                         jQuery('#singleQuestionNextModal .modal-body').empty();
 
                         jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
@@ -206,7 +205,6 @@
 //                        jQuery('.item-seq',newItem).val(answerId++);
 
                         jQuery('.question-next',newItem).click(function(){
-//                            alert(this.getAttribute('answerid'))
                             jQuery('#singleQuestionNextModal .modal-body').empty();
 
                             jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
@@ -334,10 +332,29 @@
             });
 
             jQuery('.surveyItemActions .remove', questionComp).click(function(){
-                jQuery(this).parents('.surveyItemContainer').remove();
-                jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
+                var ok = confirm ('Are you sure to delete this question? Delete action is not reversible.');
+                if (ok == true) {
+                    jQuery(this).parents('.surveyItemContainer').remove();
+                    jQuery('.surveyItemsContainer > .surveyItemContainer').each(function (idx) {
+                        jQuery('.questionNumber', jQuery(this)).html(idx + 1 + '.');
+                        jQuery(this).attr('seq', idx + 1);
+                    });
+                }
+            });
+
+            jQuery('.surveyItemActions .up', questionComp).click(function(){
+                jQuery(this).parents('.surveyItemContainer').insertBefore(jQuery(this).parents('.surveyItemContainer').prev());
+                jQuery('.surveyItemsContainer > .surveyItemContainer').each(function (idx) {
                     jQuery('.questionNumber', jQuery(this)).html(idx + 1 + '.');
-                    jQuery(this).attr('seq',idx+1);
+                    jQuery(this).attr('seq', idx + 1);
+                });
+            });
+
+            jQuery('.surveyItemActions .down', questionComp).click(function(){
+                jQuery(this).parents('.surveyItemContainer').insertAfter(jQuery(this).parents('.surveyItemContainer').next());
+                jQuery('.surveyItemsContainer > .surveyItemContainer').each(function (idx) {
+                    jQuery('.questionNumber', jQuery(this)).html(idx + 1 + '.');
+                    jQuery(this).attr('seq', idx + 1);
                 });
             });
 
@@ -431,6 +448,14 @@
             });
 
             return questionItems
+        }
+
+        function deleteQuestion(){
+            jQuery(this).parents('.surveyItemContainer').remove();
+            jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
+                jQuery('.questionNumber', jQuery(this)).html(idx + 1 + '.');
+                jQuery(this).attr('seq',idx+1);
+            });
         }
 
         function submitSurvey(questionItems){
@@ -875,7 +900,9 @@
                 </div>
             </div>
             <div class="surveyItemActions" style="position: absolute; right: 10px;top: 0;">
-                <div class="remove question-action-btn delete-question-icon clickable"></div>
+                <div class="remove question-action-btn delete-question-icon clickable"><a href="#delete-question-confirmation-modal"/></div>
+                <div class="up question-action-btn up-question-icon clickable" style="margin-right: 0px"></div>
+                <div class="down question-action-btn down-question-icon clickable" style="margin-right: 0px"></div>
             </div>
         </div>
 
