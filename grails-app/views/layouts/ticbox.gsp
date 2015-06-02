@@ -53,31 +53,36 @@
                         <li>
                             <a href="${request.contextPath}/">Home</a>
                         </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">How It Works <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <g:link controller="howItsWork" action="solutionForAgencies">Solution fo Agencies</g:link>
-                                </li>
-                                <li>
-                                    <g:link controller="howItsWork" action="solutionForBrands">Solution for Brands</g:link>
-                                </li>
-                                <li>
-                                    <g:link controller="howItsWork" action="solutionForYou">Solution for You</g:link>
-                                </li>
-
-                            </ul>
+                        <li>
+                            <a href="${request.contextPath}/howItsWork/">How It Works</a>
                         </li>
-                        <li><a>Pricing</a></li>
+                        %{--<li class="dropdown">--}%
+                            %{--<a href="#" class="dropdown-toggle" data-toggle="dropdown">How It Works <b class="caret"></b></a>--}%
+                            %{--<ul class="dropdown-menu">--}%
+                                %{--<li>--}%
+                                    %{--<g:link controller="howItsWork" action="solutionForAgencies">Solution fo Agencies</g:link>--}%
+                                %{--</li>--}%
+                                %{--<li>--}%
+                                    %{--<g:link controller="howItsWork" action="solutionForBrands">Solution for Brands</g:link>--}%
+                                %{--</li>--}%
+                                %{--<li>--}%
+                                    %{--<g:link controller="howItsWork" action="solutionForYou">Solution for You</g:link>--}%
+                                %{--</li>--}%
+
+                            %{--</ul>--}%
+                        %{--</li>--}%
+                        <li>
+                            <a href="${request.contextPath}/pricing/">Pricing</a>
+                        </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Get To Know Us <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <g:link controller="knowUs" action="ourStory">Our Story</g:link>
                                 </li>
-                                <li>
-                                    <g:link controller="knowUs" action="ourTeam">Our Team</g:link>
-                                </li>
+                                %{--<li>--}%
+                                    %{--<g:link controller="knowUs" action="ourTeam">Our Team</g:link>--}%
+                                %{--</li>--}%
                                 <li>
                                     <a href="#">Our Communities</a>
                                 </li>

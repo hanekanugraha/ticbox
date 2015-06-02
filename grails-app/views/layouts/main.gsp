@@ -54,9 +54,9 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Get To Know Us <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li>
-                                <a href="#">Our Team</a>
-                            </li>
+                            %{--<li>--}%
+                                %{--<a href="#">Our Team</a>--}%
+                            %{--</li>--}%
                             <li>
                                 <a href="#">Our Communities</a>
                             </li>
