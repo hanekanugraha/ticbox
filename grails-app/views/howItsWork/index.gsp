@@ -61,12 +61,12 @@
                 It is not a charity. You will get <b>Paid</b>.
             </div>
             <div class="col-sm-2">
-                <span class="glyphicon glyphicon-eye-close features-icon"></span>
-                Your credential data is <b>save</b>.
-            </div>
-            <div class="col-sm-2">
                 <span class="glyphicon glyphicon-phone features-icon"></span>
                 You can do it <b>anywhere</b> and <b>everywhere</b>.
+            </div>
+            <div class="col-sm-2">
+                <span class="glyphicon glyphicon-eye-close features-icon"></span>
+                Your credential data is <b>save</b>.
             </div>
             <div class="col-sm-2">
                 <span class="glyphicon glyphicon-refresh features-icon"></span>
