@@ -79,25 +79,52 @@
             selector: "button[data-toggle=tooltip]"
         });
 
-        jQuery('#saveResponse').click(function () {
+        jQuery('#submitAnswers').click(function() {
+            if(validateCurrentQuestion()) {
+                $('#submit-answers-modal').modal('show');
+            }else {
+                $('#validate-question-modal').modal('show');
+            }
+        });
 
+        jQuery('#saveResponse').click(function () {
             var questionItems = buildSurveyResponseMap();
             saveResponse(questionItems, this);
-
         });
+
         jQuery('#nextQuestion').click(function () {
-            var lastQuestion= jQuery('#question'+questionSeq).attr('hidden',true)
-            var nextSeq = jQuery('input.item-check:checked',lastQuestion).attr('nextQuestion');
-            if(nextSeq!=null||nextSeq==undefined)
-                questionSeq++;
-            else
-                questionSeq=nextSeq;
-            jQuery('#question'+questionSeq).attr('hidden',false)
-            if(questionSeq>=ttlQuestions)
-                jQuery('#nextQuestion').hide()
+
+            if(validateCurrentQuestion()) {
+                var lastQuestion= jQuery('#question'+questionSeq).attr('hidden',true)
+                var nextSeq = jQuery('input.item-check:checked',lastQuestion).attr('nextQuestion');
+                if(nextSeq!=null||nextSeq==undefined)
+                    questionSeq++;
+                else
+                    questionSeq=nextSeq;
+                jQuery('#question'+questionSeq).attr('hidden',false)
+                jQuery('#lastQuestion').show();
+                if(questionSeq>=ttlQuestions) {
+                    jQuery('#nextQuestion').hide()
+                    jQuery('#submitAnswers').show();
+                }
+            } else {
+                $('#validate-question-modal').modal('show');
+            }
 
         });
 
+        jQuery('#lastQuestion').click(function() {
+            var currQuestion = jQuery('#question' + questionSeq).attr('hidden', true);
+            var lastSeq = jQuery('input.item-check:checked', currQuestion).attr('lastQuestion');
+            if(lastSeq!=null||lastSeq==undefined)
+                questionSeq--;
+
+            jQuery('#question' + questionSeq).attr('hidden', false);
+            jQuery('#nextQuestion').show();
+            jQuery('#submitAnswers').hide();
+            if(questionSeq==1)
+                jQuery('#lastQuestion').hide();
+        });
 
         jQuery('#surveyName').text('${survey.name}');
         jQuery('#surveyTitle').text('${survey.title}');
@@ -105,11 +132,73 @@
         jQuery.getJSON('${request.contextPath}/home/getSurvey', {surveyId: '${survey.surveyId}'}, function (questionItems) {
 
             loadSurvey(questionItems);
-            if(questionItems.length<2)
+            if(questionItems.length<2) {
                 jQuery('#nextQuestion').hide()
+            } else {
+                jQuery('#submitAnswers').hide();
+            }
+
+            jQuery('#lastQuestion').hide();
+
         });
 
     });
+
+    function validateCurrentQuestion() {
+        var currQuestion = jQuery('#question'+questionSeq);
+        var type = jQuery('.answerTemplate', currQuestion).attr('type');
+        var answerDetails = {};
+        var returnBoolean = true;
+
+        switch (type) {
+            case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
+            case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
+                answerDetails['value'] = [];
+                jQuery('.item-check:checked', currQuestion).each(function () {
+                    answerDetails['value'].push(jQuery(this).val());
+                });
+
+                if(answerDetails['value']==null||answerDetails['value']==undefined||answerDetails['value']=='') {
+
+                    return false;
+                }
+                return true;
+                break;
+            case '${Survey.QUESTION_TYPE.FREE_TEXT}' :
+
+                answerDetails['value'] = jQuery('textarea', currQuestion).val();
+                if(answerDetails['value']==null||answerDetails['value']==undefined||answerDetails['value']=='') {
+                    return false;
+                }
+                return true;
+                break;
+
+            case '${Survey.QUESTION_TYPE.SCALE_RATING}' :
+
+                answerDetails['value'] = {};
+                var isValid = true;
+                jQuery('.scale-row', currQuestion).each(function () {
+                    var label = jQuery(this).find('.row-label').text();
+                    var value = jQuery(this).find('input:checked').val();
+
+                    if(!value){
+                        isValid = false;
+                        return false;
+                    }
+                });
+
+                return isValid;
+                break;
+
+            case '${Survey.QUESTION_TYPE.STAR_RATING}' :
+                answerDetails['value'] = jQuery('.stars .star.active', currQuestion).length;
+                if(answerDetails['value']==null||answerDetails['value']==undefined||answerDetails['value']=='') {
+                    return false
+                }
+                return true;
+                break;
+        }
+    }
 
     function constructQuestionItem(type, subtype) {
         var answerComp = null;
@@ -234,7 +323,7 @@
         jQuery.post('${request.contextPath}/home/saveResponse', {surveyResponse: JSON.stringify(questionItems), surveyId: '${survey.surveyId}'}, function (data) {
 
             if ('SUCCESS' == data) {
-                alert('Submission success..');
+//                alert('Submission success..');
                 window.location.replace('${request.contextPath}/home/successTakeFreeSurvey');
             } else {
                 alert('Submission failure');
@@ -411,8 +500,11 @@
     </div>
 
     <div class="" style="padding: 0 0 3em 0;">
+        <button id="lastQuestion" class="btn btn-light-oak btn-md" >Back</button>
         <button id="nextQuestion" class="btn btn-blue-trust btn-md">${g.message(code:'app.next.label')}</button>
-        <button id="saveResponse" class="btn btn-blue-trust btn-md">${g.message(code:'app.submit.label')}</button>
+        <button id="submitAnswers" class="btn btn-blue-trust btn-md">${g.message(code:'app.submit.label')}
+        %{--<button id="saveResponse" class="btn btn-blue-trust btn-md">${g.message(code:'app.submit.label')}</button>--}%
+        %{--kucing--}%
         <button id="cancel" class="btn btn-light-oak btn-md" href="${request.contextPath}/home/">Cancel</button>
     </div>
 
@@ -499,6 +591,58 @@
             </div>
         </div>
 
+    </div>
+</div>
+
+<!-- validate question modal -->
+<div id="validate-question-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="validateQuestionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="validateQuestionLabel" class="modal-title">
+                    Answer Validation
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="validateQuestionForm" role="form">
+                    <div class="well">
+                        <p><b>Are you not answering the question?</b></p>
+                        Please answer the question before you go to the next step.
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- submit question modal -->
+<div id="submit-answers-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="submitAnswersLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="submitAnswersLabel" class="modal-title">
+                    Submit Answers
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="submitAnswersForm" role="form">
+                    <div class="well">
+                        <p><b>Are you sure you want to submit your answer?</b></p>
+                        Please click button Submit if you are sure for your answers.
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button id="saveResponse" class="btn btn-danger" data-loading-text="Processing..">Submit</button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            </div>
+        </div>
     </div>
 </div>
 
