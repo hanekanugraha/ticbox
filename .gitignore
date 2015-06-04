@@ -20,3 +20,5 @@ web-app/WEB-INF/tld/fmt.tld
 /.idea
 .idea
 .DS_STORE
+
+grails-app/conf/DataSource.groovy

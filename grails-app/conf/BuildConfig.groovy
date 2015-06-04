@@ -16,6 +16,7 @@ grails.project.dependency.resolution = {
     inherits("global") {
         // specify dependency exclusions here; for example, uncomment this to disable ehcache:
         // excludes 'ehcache'
+		excludes 'xercesImpl'
     }
     log "error" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     checksums true // Whether to verify checksums on resolve
@@ -63,6 +64,7 @@ grails.project.dependency.resolution = {
 
         //App plugins
         runtime ":mongodb:3.0.1" // User runtime to solve exception
+ 		runtime (":excel-export:0.2.1")  
         compile ":webxml:1.4.1" // Heroku deployment requirement
         compile ":oauth:2.1.0"
         //compile ":shiro:1.1.4"
