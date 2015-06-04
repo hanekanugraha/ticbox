@@ -486,7 +486,7 @@
                 }else if('LIMIT' == data){
                     alert('Max Free Survey more than limit..');
                 }else{
-                    alert('Submission failure');
+                    window.location = data;
                 }
             });
 

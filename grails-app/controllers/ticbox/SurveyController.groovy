@@ -197,6 +197,12 @@ class SurveyController {
             else
                 surveyService.submitSurvey(params, surveyService.getCurrentEditedSurvey())
 
+            if(survey.type==Survey.SURVEY_TYPE.FREE) {
+                def freeLink = createLink(controller:'Home',action: 'takeFreeSurvey',params: [surveyId:survey.surveyId] )
+                def freeSurveyPage = createLink(action: 'freeSurveyLink', params: [freeLink: freeLink])
+
+                render freeSurveyPage
+            } else
             render 'SUCCESS'
         } catch (Exception e) {
             e.printStackTrace()
@@ -359,7 +365,6 @@ class SurveyController {
         forward(action: "index")
     }
 
-    // kucingkurus
     def uploadImage = {
         def message
         try {
