@@ -112,9 +112,9 @@
                             <li>
                                 <g:link controller="knowUs" action="ourStory">Our Story</g:link>
                             </li>
-                            <li>
-                                <g:link controller="knowUs" action="ourTeam">Our Team</g:link>
-                            </li>
+                            %{--<li>--}%
+                                %{--<g:link controller="knowUs" action="ourTeam">Our Team</g:link>--}%
+                            %{--</li>--}%
                             <li>
                                 <a href="#">Our Communities</a>
                             </li>

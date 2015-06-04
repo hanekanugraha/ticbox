@@ -1333,6 +1333,16 @@ footer ul li {
     background: transparent url("../images/ticbox/07_Question_Delete.png") no-repeat center;
 }
 
+.up-question-icon {
+    background: transparent url("../images/ticbox/08_Question_Up.png") no-repeat center;
+
+}
+
+.down-question-icon {
+    background: transparent url("../images/ticbox/09_Question_Down.png") no-repeat center;
+
+}
+
 .single-choice-icon {
     background: transparent url("../images/ticbox/01b_SingleChoice.png") no-repeat center;
 }
