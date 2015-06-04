@@ -1,4 +1,5 @@
 import org.apache.shiro.crypto.hash.Sha256Hash
+import ticbox.Coupon
 import ticbox.LookupMaster
 import ticbox.Parameter
 import ticbox.RedemptionRequest
