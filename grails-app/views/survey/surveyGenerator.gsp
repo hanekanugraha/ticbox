@@ -34,6 +34,14 @@
                         .trigger('click');
             });
 
+            jQuery('#finalizeSurveyBtn').click(function(){
+                var questionItems = buildQuestionItemsMap();
+                if(validateQuestionItems(questionItems)) {
+                    jQuery('#submit-confirmation-modal').modal('show');
+                } else {
+                    jQuery('#validate-question-items-modal').modal('show');
+                }
+            });
 
             jQuery('#pickLogoBtn').click(function(){
                 logoId = jQuery('input.logoResourceId:checked').val();
@@ -473,22 +481,50 @@
             });
         }
 
+        function validateQuestionItems(questionItems) {
+            var isValid = true
+            if(questionItems) {
+                jQuery.each(questionItems, function(idx, item) {
+                    var answerDetails = item.answerDetails;
+
+                    if(answerDetails.type == '${Survey.QUESTION_TYPE.SCALE_RATING}') {
+                        var ratingLabels = answerDetails.ratingLabels;
+                        var rowLabels = answerDetails.rowLabels;
+
+                        for(var i = 0; i < ratingLabels.length; i++) {
+                            if(ratingLabels[i].length<=0 || ratingLabels[i]==' ') 
+                                isValid = false
+                        }
+
+                        for(var j = 0; j<rowLabels.length; j++) {
+                            if(rowLabels[j].length<=0 || rowLabels[j]==' ')
+                                isValid = false
+                        }
+
+                    }
+
+                })
+            }
+
+            return isValid;
+        }
+
         function saveAndSubmitSurvey() {
 
             var questionItems = buildQuestionItemsMap();
 
-            jQuery.post('${request.contextPath}/survey/submitAndFinalizeSurvey', {questionItems: JSON.stringify(questionItems), surveyTitle: jQuery('#surveyTitle').val(), logoResourceId:logoId}, function(data){
+                jQuery.post('${request.contextPath}/survey/submitAndFinalizeSurvey', {questionItems: JSON.stringify(questionItems), surveyTitle: jQuery('#surveyTitle').val(), logoResourceId:logoId}, function(data){
 
 
-                if('SUCCESS' == data){
+                    if('SUCCESS' == data){
 //                    alert('Submission success..');
-                    window.location = "${request.contextPath}/survey/index";
-                }else if('LIMIT' == data){
-                    alert('Max Free Survey more than limit..');
-                }else{
-                    window.location = data;
-                }
-            });
+                        window.location = "${request.contextPath}/survey/index";
+                    }else if('LIMIT' == data){
+                        alert('Max Free Survey more than limit..');
+                    }else{
+                        window.location = data;
+                    }
+                });
 
         }
 
@@ -863,7 +899,9 @@
             <%--a class="btn btn-danger" surveyid="${survey.surveyId}" href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}">Back</a--%>
             <button id="saveSurveyBtn" class="btn btn-sm btn-green"><g:message code="label.button.save" default="Save"/></button>
             <%--button id="finalizeSurveyBtn" class="btn btn-sm btn-blue-trust link" href="#submit-confirmation-modal"><g:message code="label.button.submit" default="Submit"/></button--%>
-            <a id="finalizeSurveyBtn2" href="#submit-confirmation-modal" role="button" class="btn btn-sm btn-blue-trust link" data-toggle="modal"><i class="icon-remove icon-white"></i> Submit</a>
+            %{--<a id="finalizeSurveyBtn2" href="#submit-confirmation-modal" role="button" class="btn btn-sm btn-blue-trust link" data-toggle="modal"><i class="icon-remove icon-white"></i> Submit</a>--}%
+            %{--kucing--}%
+            <a id="finalizeSurveyBtn" role="button" class="btn btn-sm btn-blue-trust link" data-toggle="modal"><i class="icon-remove icon-white"></i> Submit</a>
         </div>
     </div>
 </div>
@@ -1226,6 +1264,32 @@
             <div class="modal-footer">
                 <button id="submitConfirmation" onclick="saveAndSubmitSurvey();" class="btn btn-danger" data-loading-text="Processing..">Submit</button>
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Validate Question Items modal -->
+<div id="validate-question-items-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="validateQuestionItemsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="validateQuestionItemsLabel" class="modal-title">
+                    Validate Questions
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="validateQuestionItemsForm" role="form">
+                    <div class="well">
+                        <p><b>Validated Failed</b></p>
+                        Please makes sure that all question is labeled.
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button id="validateQuestionItemsBtn" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Ok</button>
             </div>
         </div>
     </div>
