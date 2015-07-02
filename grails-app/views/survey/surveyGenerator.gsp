@@ -68,10 +68,10 @@
                         console.log('~ surveyItemTypeAdd.clicked');
                         var type = addItemComponent.attr('type');
                         var subtype = addItemComponent.attr('subtype');
-                        if("${survey.type}"=="${Survey.SURVEY_TYPE.FREE}"&&type=="SCALE_RATING") {
-                            alert('Free Survey not support scale');
-                        }
-                        else
+                        %{--if("${survey.type}"=="${Survey.SURVEY_TYPE.FREE}"&&type=="SCALE_RATING") {--}% // demo testing
+                            %{--alert('Free Survey not support scale');--}%
+                        %{--}--}%
+                        %{--else--}%
                             constructQuestionItem(type, subtype);
                     }
                     else{
