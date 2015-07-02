@@ -64,19 +64,19 @@
                     jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
                         questions++;
                     });
-                    if(maxFeeQuestion>questions||"${survey.type}"=="${Survey.SURVEY_TYPE.EASY}") {
-                        console.log('~ surveyItemTypeAdd.clicked');
-                        var type = addItemComponent.attr('type');
-                        var subtype = addItemComponent.attr('subtype');
-                        if("${survey.type}"=="${Survey.SURVEY_TYPE.FREE}"&&type=="SCALE_RATING") {
-                            alert('Free Survey not support scale');
-                        }
-                        else
-                            constructQuestionItem(type, subtype);
-                    }
-                    else{
-                        alert('Question max = '+maxFeeQuestion);
-                    }
+                    %{--if(maxFeeQuestion>questions||"${survey.type}"=="${Survey.SURVEY_TYPE.EASY}") {--}%
+                        %{--console.log('~ surveyItemTypeAdd.clicked');--}%
+                        %{--var type = addItemComponent.attr('type');--}%
+                        %{--var subtype = addItemComponent.attr('subtype');--}%
+                        %{--if("${survey.type}"=="${Survey.SURVEY_TYPE.FREE}"&&type=="SCALE_RATING") {--}%
+                            %{--alert('Free Survey not support scale');--}%
+                        %{--}--}%
+                        %{--else--}%
+                            %{--constructQuestionItem(type, subtype);--}%
+                    %{--}--}%
+                    %{--else{--}%
+                        %{--alert('Question max = '+maxFeeQuestion);--}%
+                    %{--}--}%
                 });
 
             });

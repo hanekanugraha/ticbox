@@ -66,7 +66,7 @@
                                        value="manual_challenge">
                             </noscript--%>
 
-                            
+
                              <script type="text/javascript"
                                 src="https://www.google.com/recaptcha/api/challenge?k=6LeTOgMTAAAAABkNJA-2KhY0qsJeyujERyQRB8it">
                              </script>
