@@ -194,6 +194,31 @@ a:focus {
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+.panel-dashboard {
+    border: none !important;
+}
+
+.panel-dashboard .dashboard-title {
+    border-bottom: 1px solid #ddd;
+    border: 1px solid rgba(134, 137, 122, 1);
+    font-size: 16px;color:white;
+    border-radius: 12px 12px 0 0
+}
+
+.panel-dashboard .dashboard-body {
+    background-color: rgba(134, 137, 122, 1);
+    border-radius: 10px 10px 0 0;
+    padding: 8px 15px !important;
+}
+
+.panel-dashboard .dashboard-heading {
+    padding-bottom: 7px;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-radius: 0 !important;
+    border-bottom: 1px solid #ddd;
+}
+
 .col { /*.col & .line mostly used to display survey pages*/
     float: left;
     min-height: 1px;

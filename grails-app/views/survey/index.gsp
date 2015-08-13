@@ -103,10 +103,21 @@
         %{--</div>--}%
     %{--</div>--}%
 
-    <div class="" style="width: 100%">
-        <div class="line line-centered">
-            <button style="border-radius: 8px; width: 100%" id="createSurveyModalBtn" href="#createSurveyModal" role="button" data-toggle="modal" class="btn btn-green btn-lg" type="button"><g:message code="label.button.create" default="Create"/> Survey</button>
-            <!--a id="addNewUser" href="#add-new-user-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> New User</a-->
+    <div class="container-fluid" style="width: 100%">
+        <!--div class="line" style="padding: 10px 1px">
+            Start your success with a survey!
+        </div-->
+        <div class="panel-group">
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            Start now >> <button style="border-radius: 8px;" id="createSurveyModalBtn" href="#createSurveyModal" role="button" data-toggle="modal" class="btn btn-green btn-sm" type="button"><g:message code="label.button.create" default="Create"/> Survey</button>
+                        </div>
+                        <!--a id="addNewUser" href="#add-new-user-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> New User</a-->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -323,7 +334,7 @@
                 <!--button href="${request.contextPath}/survey/createSurvey" id="createSurveyBtn" class="btn btn-green submit-redirect">
                     <!--g:message code="label.button.create" default="Create"/-->
                 <!--/button-->
-                <button id="createNewSurvey" class="btn btn-green" data-loading-text="Processing..">Create New Survey</button>
+                <button id="createNewSurvey" class="btn btn-green" data-loading-text="Processing..">Next</button>
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close" default="Close"/></button>
             </div>
         </div>

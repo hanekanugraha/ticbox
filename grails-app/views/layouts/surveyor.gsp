@@ -91,38 +91,10 @@
                     <li>
                         <a href="${request.contextPath}/">Home</a>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">How It Works <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <g:link controller="howItsWork" action="solutionForAgencies">Solution fo Agencies</g:link>
-                            </li>
-                            <li>
-                                <g:link controller="howItsWork" action="solutionForBrands">Solution for Brands</g:link>
-                            </li>
-                            <li>
-                                <g:link controller="howItsWork" action="solutionForYou">Solution for You</g:link>
-                            </li>
-                        </ul>
+                    <li>
+                        <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-star"></span> Dashboard</a>
                     </li>
-                    <li><a>Pricing</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Get To Know Us <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <g:link controller="knowUs" action="ourStory">Our Story</g:link>
-                            </li>
-                            %{--<li>--}%
-                                %{--<g:link controller="knowUs" action="ourTeam">Our Team</g:link>--}%
-                            %{--</li>--}%
-                            <li>
-                                <a href="#">Our Communities</a>
-                            </li>
-                            <li>
-                                <a href="#">Blog</a>
-                            </li>
-                        </ul>
-                    </li>
+
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -221,7 +193,7 @@
                             </g:link>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                 <li role="presentation">
-                                    <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
+                                    <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-star"></span> Dashboard</a>
                                 </li>
                                 <li role="presentation" class="divider"></li>
                                 <li role="presentation">
@@ -269,10 +241,18 @@
         <div id="wrapper-effect" class="">
             <div class="row">
                 <div id="menuNavPanel" class="col-sm-3" style="margin-bottom: 10px;">
-
                     <div id="surveyorProfileAccordion" class="panel-group" style="margin-bottom: 10px;">
-                        <div class="panel panel-default">
-                            <div class="panel-heading" style="padding-bottom: 7px">
+                        <div class="panel panel-default panel-dashboard">
+                            <div id="dashboardTitle" class="dashboard-title">
+                                <div class="panel-body dashboard-body">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <strong style="display: inline"></span> DASHBOARD</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-heading dashboard-heading">
                                 <div class="media">
                                     <div class="col-xs-5" style="padding-left: 0">
                                         <g:if test="${surveyor.pic}">
@@ -291,8 +271,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="surveyorProfileContainer" class="panel-collapse collapse in">
-                                <div class="panel-body" style="padding: 0 12px;">
+                            <div id="surveyorProfileContainer" class="panel-collapse collapse in" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-left: 1px solid #ddd; border-bottom: 1px solid #ddd; border-radius: 0 0 6px 6px">
+                                <div class="panel-body" style="padding: 0 12px; border-top: 0 !important">
                                     <div class="row profileStats">
                                         <div class="col-xs-3 stats">
                                             <div><strong>${countDraft}</strong></div>

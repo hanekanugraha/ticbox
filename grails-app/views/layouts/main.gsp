@@ -165,13 +165,13 @@
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                 <li role="presentation">
                                     <g:if test="${request.getSession().getAttribute("role") == Role.ROLE.ADMIN}">
-                                        <a href="${request.contextPath}/admin/surveys"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
+                                        <a href="${request.contextPath}/admin/surveys"><span class="glyphicon glyphicon-star"></span> Dashboard</a>
                                     </g:if>
                                     <g:elseif test="${request.getSession().getAttribute("role") == Role.ROLE.SURVEYOR}">
-                                        <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
+                                        <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-star"></span> Dashboard</a>
                                     </g:elseif>
                                     <g:elseif test="${request.getSession().getAttribute("role") == Role.ROLE.RESPONDENT}">
-                                        <a href="${request.contextPath}/respondent"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
+                                        <a href="${request.contextPath}/respondent"><span class="glyphicon glyphicon-star"></span> Dashboard</a>
                                     </g:elseif>
 
                                 </li>
