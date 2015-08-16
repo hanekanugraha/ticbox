@@ -197,7 +197,7 @@
                                     %{--</li>--}%
                                 %{--</g:else>--}%
                                 <li role="presentation">
-                                    <a href="${request.contextPath}/respondent"><span class="glyphicon glyphicon-home"></span> Dashboard</a>
+                                    <a href="${request.contextPath}/respondent"><span class="glyphicon glyphicon-star"></span> Dashboard</a>
                                 </li>
 
                                 <li role="presentation" class="divider"></li>

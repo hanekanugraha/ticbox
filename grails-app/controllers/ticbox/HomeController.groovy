@@ -88,8 +88,9 @@ class HomeController {
         user.verifyCode = userService.generator( (('A'..'Z')+('0'..'9')).join(), 9 )
         try {
             userService.sendVerifyCode(params, user.verifyCode)
-        }catch(ConnectException ce){
+        }catch(Exception ce){
             flash.error = message(code: "general.error.connection")
+            ce.printStackTrace()
         }
         userService.updateUser(user)
         flash.message = message(code: "auth.verify.resend")

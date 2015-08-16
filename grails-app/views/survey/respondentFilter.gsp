@@ -52,7 +52,45 @@
     </div>
 
     <div class="module">
-        %{--<div class="line line-centered">--}%
+        <!--div class="module-header">
+            <div class="title">Survey Info</div>
+        </div>
+
+        <div class="module-content">
+            <div class="row">
+                <div class="col-xs-12">
+                        Name : ${survey?.name}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                        Num of Respondents : 100
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    Itinerary Details :
+                    <div>
+                        <ul style="font-size: 12px; margin-bottom: 0">
+                            <li>100 x $0 = $0</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <form class="form-horizontal" role="form" style="border-top: 1px dotted lightgrey">
+                        <div class="form-group" style="margin-bottom: 0">
+                            <label for="total" class="col-sm-2 control-label">Total</label>
+                            <div class="col-sm-10">
+                                <input id="total" class="form-control" type="text" value="$ 0" readonly="true" style="width: auto; background-color: #d4dcb4; margin: 0; border-radius: 20px; font-weight: bold; color: darkgoldenrod">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div-->
+
         <div class="module-header">
             <div class="title">Choose Your Survey Type</div>
         </div>
