@@ -90,7 +90,7 @@ class UserService {
                 if(user.respondentProfile){
                     user.respondentProfile.delete()
                 }
-
+                user.roles.clear()
                 user.delete()
             }
         } else {
