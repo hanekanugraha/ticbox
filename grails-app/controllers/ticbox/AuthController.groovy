@@ -288,22 +288,29 @@ class AuthController {
         def message
         if (params.id) {
             if (params.oldPassword && params.newPassword && params.confirmPassword) {
-                if (params.newPassword == params.confirmPassword) {
-                    def oldPasswordHash = new Sha256Hash(params.oldPassword).toHex()
-                    def newPasswordHash = new Sha256Hash(params.newPassword).toHex()
-                    def user = User.findByIdAndPasswordHash(params.id, oldPasswordHash)
-                    if (user) {
-                        user.passwordHash = newPasswordHash
+                if((params.newPassword).length()>5 || (params.confirmPassword).length()>5) {
 
-                        user.save()
-                        success = true
-                        message = "Password successfully changed"
+                    if (params.newPassword == params.confirmPassword) {
+                        def oldPasswordHash = new Sha256Hash(params.oldPassword).toHex()
+                        def newPasswordHash = new Sha256Hash(params.newPassword).toHex()
+                        def user = User.findByIdAndPasswordHash(params.id, oldPasswordHash)
+                        if (user) {
+                            user.passwordHash = newPasswordHash
+
+                            user.save()
+                            success = true
+                            message = "Password successfully changed"
+                        } else {
+                            message = "Invalid password"
+                        }
                     } else {
-                        message = "Invalid password"
+                        message = "New password mismatch"
                     }
+
                 } else {
-                    message = "New password mismatch"
+                    message = "Your password does not meet our requirement, use at least 5 characters."
                 }
+
             } else {
                 message = "Please provide all details"
             }
