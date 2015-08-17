@@ -182,7 +182,7 @@
 
                         <div class="col-sm-9 form-inline" style="font-weight: normal">
                             <input id="completionByTtlRespondent" name="completionByTtlRespondent" class="filter-value form-control"
-                                   type="number" placeholder="0" style="width: auto"
+                                   type="number" placeholder="0" min="0" style="width: auto"
 
                                    value="${survey.ttlRespondent}">
                             <span id="errmsg" style="display: none;">Digits Only</span>
