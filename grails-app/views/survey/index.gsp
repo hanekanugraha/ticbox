@@ -194,7 +194,7 @@
                             <!-- a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="${request.contextPath}/survey/deleteSurvey?surveyId=${survey.surveyId}">Delete</a -->
                             <!--a class="btn btn-xs btn-primary displayResultLink" id="delDraft" href="#delete-drafts-modal" role="button"  data-toggle="modal">Delete</a-->
                             <button id="delDraft" href="#delete-drafts-modal"
-                                    role="button" data-toggle="modal" class="btn btn-danger">Delete</button>
+                                    role="button" data-toggle="modal" class="btn btn-danger btn-xs">Delete</button>
                         </td>
 
 
@@ -325,7 +325,7 @@
             </div>
             <div class="modal-body" style="overflow: auto">
                 <g:form name="createSurveyForm" controller="survey" action="createSurvey" class="form-horizontal" role="form">
-                    <label for="surveyName">Please name your survey</label>
+                    <label for="surveyName">Give a unique name to help you identify this survey :</label>
                     <!--input type="text" class="form-control" id="surveyName" name="surveyName" param-of="createSurveyBtn"-->
                     <g:textField name="surveyName" class="form-control"/>
                 </g:form>
