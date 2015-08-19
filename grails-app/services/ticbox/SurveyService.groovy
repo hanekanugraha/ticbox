@@ -323,139 +323,128 @@ class SurveyService {
 
     }
 
-    def getSurveyResult(String surveyId){
-
-        Survey survey = getSurvey(surveyId)
-
+    def getSurveyResult(String surveyId) {
         def result = [:]
 
-        if (survey) {
-            def questionItems = survey[Survey.COMPONENTS.QUESTION_ITEMS]
-
-            if (questionItems) {
-
-                def surveyResponses = SurveyResponse.findAllBySurveyId(surveyId)
-
-                if (surveyResponses) {
-
-                    for(questionItem in questionItems){
-                        def seq = questionItem['seq']
-
-                        if(!result[seq]){
-                            result[seq] = [:]
-                        }
-
-                        result[seq]['questionItem'] = questionItem
-
-                    }
-
-                    for(surveyResponse in surveyResponses) {
-
-                        if (surveyResponse['response']){
-
-                            for(response in surveyResponse['response']){
-                                def answerDetails = response['answerDetails']
-
-                                if (answerDetails && answerDetails['value']) {
-                                    def value = answerDetails['value']
-                                    def seq = response['seq']
-                                    def summary = null
-
-                                    switch (answerDetails['type']){
-                                        case Survey.QUESTION_TYPE.CHOICE_SINGLE :
-
-                                            if(!result[seq]['summary']){
-                                                summary = [:]
-                                            }
-                                            else{
-                                                summary=result[seq]['summary']
-                                            }
-
-                                            value.each{ String choice ->
-                                                summary[choice] = summary[choice] ? summary[choice] + 1 : 1
-                                            }
-
-                                            break
-
-                                        case Survey.QUESTION_TYPE.CHOICE_MULTIPLE :
-
-                                            if(!result[seq]['summary']){
-                                                summary = [:]
-                                            }
-                                            else{
-                                                summary=result[seq]['summary']
-                                            }
-
-                                            value.each{ String choice ->
-                                                summary[choice] = summary[choice] ? summary[choice] + 1 : 1
-                                            }
-
-                                            break
-
-                                        case Survey.QUESTION_TYPE.FREE_TEXT :
-
-                                            if(!result[seq]['summary']){
-                                                summary = []
-                                            }else{
-                                                summary=result[seq]['summary']
-                                            }
-
-                                            summary << value
-
-                                            break
-
-                                        case Survey.QUESTION_TYPE.SCALE_RATING :
-
-                                            if(!result[seq]['summary']){
-                                                summary = [:]
-                                            }else{
-                                                summary=result[seq]['summary']
-                                            }
-                                            for(row in value){
-                                                if(!summary[row.key]){
-                                                    summary[row.key] = [:]
-                                                }
-
-                                                summary[row.key][row.value] = summary[row.key][row.value] ? summary[row.key][row.value] + 1 : 1
-                                            }
-
-                                            break
-
-                                        case Survey.QUESTION_TYPE.STAR_RATING :
-
-                                            if(!result[seq]['summary']){
-                                                summary = [:]
-                                            }else{
-                                                summary=result[seq]['summary']
-                                            }
-
-                                            summary[value] = summary[value] ? summary[row.key][row.value] + 1 : 1
-
-                                            break
-
-                                        default :
-
-                                            break
-                                    }
-
-                                    result[seq]['summary'] = summary
-                                }
-                            }
-                        }
-                    }
-                }else {
-                    result.error = "No Response found for this survey"
-                }
-            }else {
-                result.error = "No Question Items found for this survey"
-            }
+        Survey survey = getSurvey(surveyId)
+        if (!survey) {
+            return result
         }
+
+        def questionItems = survey[Survey.COMPONENTS.QUESTION_ITEMS]
+        if (!questionItems) {
+            result.error = "No Question Items found for this survey"
+            return result
+        }
+
+        def surveyResponses = SurveyResponse.findAllBySurveyId(surveyId)
+        if (!surveyResponses) {
+            result.error = "No Response found for this survey"
+            return result
+        }
+
+        for (questionItem in questionItems) {
+            def seq = questionItem['seq']
+
+            if (!result[seq]) {
+                result[seq] = [:]
+            }
+
+            result[seq]['questionItem'] = questionItem
+        }
+
+        // For each personal response
+        for (surveyResponse in surveyResponses) {
+            if (!surveyResponse['response']) {
+                continue
+            }
+
+            for (answer in surveyResponse['response']) {
+                def answerDetails = answer['answerDetails']
+
+                if (!(answerDetails && answerDetails['value'])) {
+                    continue
+                }
+
+                def value = answerDetails['value']
+                def seq = answer['seq']
+                def summary = result[seq]['summary']
+
+                switch (answerDetails['type']) {
+                    case Survey.QUESTION_TYPE.CHOICE_SINGLE:
+                    case Survey.QUESTION_TYPE.CHOICE_MULTIPLE:
+                        summary = summaryForSingleChoice(summary, value)
+                        break
+
+                    case Survey.QUESTION_TYPE.FREE_TEXT:
+                        if (!summary) {
+                            summary = []
+                        }
+                        summary << value
+                        break
+
+                    case Survey.QUESTION_TYPE.SCALE_RATING:
+                        summary = summaryForScaleRating(summary, value)
+                        break
+
+                    case Survey.QUESTION_TYPE.STAR_RATING:
+                        summary = summaryForStarRating(summary, value)
+                        break
+
+                    default:
+
+                        break
+                }
+
+                result[seq]['summary'] = summary
+            }
+
+        }
+
+
+
 
         return result
 
     }
 
-	def getSurveyRawResult(String surveyId){
+    private java.util.Map summaryForStarRating(summary, value) {
+        if (!summary) {
+            summary = [:]
+        }
+        summary[value] = summary[value] ? summary[value] + 1 : 1
+        summary
+    }
+
+    private java.util.Map summaryForScaleRating(summary, value) {
+        if (!summary) {
+            summary = [:]
+        }
+
+        for (row in value) {
+            if (!summary[row.key]) {
+                summary[row.key] = [:]
+            }
+
+            summary[row.key][row.value] = summary[row.key][row.value] ? summary[row.key][row.value] + 1 : 1
+        }
+
+        summary
+    }
+
+    private java.util.Map summaryForSingleChoice(summary, value) {
+        if (!summary) {
+            summary = [:]
+        }
+
+        value.each { String choice ->
+            summary[choice] = summary[choice] ? summary[choice] + 1 : 1
+        }
+
+        summary
+    }
+
+    def getSurveyRawResult(String surveyId){
 
         Survey survey = getSurvey(surveyId)
 
