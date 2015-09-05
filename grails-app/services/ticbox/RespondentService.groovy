@@ -186,6 +186,8 @@ class RespondentService {
         }
 
         respondentDetail.profileItems = profileItems
+        /* below fields is intentionally redundant in User & RespondentDetail to minimize query when blasting new Survey
+        *  notification emails to filtered subscribers*/
         respondentDetail['username'] = respondent.username
         respondentDetail['email'] = respondent.email
         respondentDetail.noSubscribe = params.noSubscribe ? 'true' : 'false'

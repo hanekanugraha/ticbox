@@ -90,6 +90,41 @@ class UserService {
                 if(user.respondentProfile){
                     user.respondentProfile.delete()
                 }
+                def notifications = UserNotification.findAllByUsername(user.username)
+                UserNotification.deleteAll(notifications)
+
+                def messages = UserMessage.findAllByFromUsernameOrToUsername(user.username, user.username)
+                UserMessage.deleteAll(messages)
+
+                def role = user?.roles?.first()
+                switch(role.name){
+                    case Role.ROLE.ADMIN:
+                        break
+                    case Role.ROLE.RESPONDENT:
+                        def respondentDetails = RespondentDetail.findAllByRespondentId(user.id)
+                        RespondentDetail.deleteAll(respondentDetails)
+
+                        def goldHists = RespondentGoldHistory.findAllByRespondentId(user.id)
+                        RespondentGoldHistory.deleteAll(goldHists)
+
+                        def redemptionItemRequests = RedemptionItemRequest.findAllByRespondentId(user.id)
+                        RedemptionItemRequest.deleteAll(redemptionItemRequests)
+
+                        def redemptionRequests = RedemptionRequest.findAllByRespondentId(user.id)
+                        RedemptionRequest.deleteAll(redemptionRequests)
+                        break
+                    case Role.ROLE.SURVEYOR:
+                        def surveyorDetails = SurveyorDetail.findAllBySurveyorId(user.id)
+                        SurveyorDetail.deleteAll(surveyorDetails)
+
+                        def surveyorProfiles = SurveyorProfile.findAllByUserAccount(user)
+                        SurveyorProfile.deleteAll(surveyorProfiles)
+                        //surveys & surveyresults?
+                        break
+                    default:
+                        break
+                }
+
                 user.roles.clear()
                 user.delete()
             }

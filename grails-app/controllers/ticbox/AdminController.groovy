@@ -106,6 +106,7 @@ class AdminController {
         } catch (Exception e) {
             flash.error = message(code: "general.active.failed.message") + " : " + e.message
             log.error(e.message, e)
+            e.printStackTrace()
         }
         redirect(controller: "admin", action: "index")
     }

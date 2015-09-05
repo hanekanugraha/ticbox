@@ -141,7 +141,8 @@
                     <input type="hidden" id="activeUserIds" name="activeUserIds" value=""/>
                     <div class="well">
                         <p><b>Are you sure to inactive/reactive these users?</b></p>
-                        There is no rollback for inactive/reactive users. Please make sure you know what you are doing.
+                        User will receive email upon activation/inactivation. Please consider a proper reason,
+                        your explanation will be included in the email.
                     </div>
                     <label for="dactiveReason">Please input the reason</label>
                     <input type="text" class="form-control" id="dactiveReason" name="dactiveReason" param-of="activeUsers">
