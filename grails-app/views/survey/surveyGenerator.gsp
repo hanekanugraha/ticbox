@@ -36,8 +36,14 @@
 
             jQuery('#finalizeSurveyBtn').click(function(){
                 var questionItems = buildQuestionItemsMap();
-                if(validateQuestionItems(questionItems)) {
+                if(validateQuestionItems(questionItems)=='success') {
                     jQuery('#submit-confirmation-modal').modal('show');
+                } else if(validateQuestionItems(questionItems)=='singleChoiceNotValid') {
+                    jQuery('#validate-choice-question-items-modal').modal('show');
+                } else if(validateQuestionItems(questionItems)=='multipleChoiceNotValid') {
+                    jQuery('#validate-choice-question-items-modal').modal('show');
+                } else if(validateQuestionItems(questionItems)=='scaleRatingNotValid') {
+                    jQuery('#validate-choice-question-items-modal').modal('show');
                 } else {
                     jQuery('#validate-question-items-modal').modal('show');
                 }
@@ -482,25 +488,63 @@
         }
 
         function validateQuestionItems(questionItems) {
-            var isValid = true
+//            var isValid = true
+            var isValid = 'success'
             if(questionItems) {
                 jQuery.each(questionItems, function(idx, item) {
                     var answerDetails = item.answerDetails;
 
-                    if(answerDetails.type == '${Survey.QUESTION_TYPE.SCALE_RATING}') {
-                        var ratingLabels = answerDetails.ratingLabels;
-                        var rowLabels = answerDetails.rowLabels;
+                    if(item.questionStr.length>0) {
 
-                        for(var i = 0; i < ratingLabels.length; i++) {
-                            if(ratingLabels[i].length<=0 || ratingLabels[i]==' ') 
-                                isValid = false
+
+                        switch (answerDetails.type) {
+
+                            case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
+                                var ChoiceItems = answerDetails.choiceItems;
+                                if (ChoiceItems.length <= 1) {
+                                    isValid = 'singleChoiceNotValid'
+                                    return isValid
+                                }
+                                break;
+
+                            case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
+                                var ChoiceItems = answerDetails.choiceItems;
+                                if (ChoiceItems.length <= 1) {
+                                    isValid = 'multipleChoiceNotValid'
+                                    return isValid
+                                }
+                                break;
+
+                            case '${Survey.QUESTION_TYPE.FREE_TEXT}' :
+                                break;
+
+                            case '${Survey.QUESTION_TYPE.SCALE_RATING}' :
+                                var ratingLabels = answerDetails.ratingLabels;
+                                var rowLabels = answerDetails.rowLabels;
+
+                                for (var i = 0; i < ratingLabels.length; i++) {
+                                    if (ratingLabels[i].length <= 0 || ratingLabels[i] == ' ') {
+                                        isValid = 'scaleRatingNotValid'
+                                        return isValid
+                                    }
+                                    break;
+                                }
+
+                                for (var j = 0; j < rowLabels.length; j++) {
+                                    if (rowLabels[j].length <= 0 || rowLabels[j] == ' ') {
+                                        isValid = 'scaleRatingNotValid'
+                                        return isValid
+                                    }
+                                    break;
+                                }
+                                break;
+
+                            case '${Survey.QUESTION_TYPE.STAR_RATING}' :
+
+                                break;
                         }
-
-                        for(var j = 0; j<rowLabels.length; j++) {
-                            if(rowLabels[j].length<=0 || rowLabels[j]==' ')
-                                isValid = false
-                        }
-
+                    } else {
+                        isValid = 'failed'
                     }
 
                 })
@@ -900,7 +944,6 @@
             <button id="saveSurveyBtn" class="btn btn-sm btn-green"><g:message code="label.button.save" default="Save"/></button>
             <%--button id="finalizeSurveyBtn" class="btn btn-sm btn-blue-trust link" href="#submit-confirmation-modal"><g:message code="label.button.submit" default="Submit"/></button--%>
             %{--<a id="finalizeSurveyBtn2" href="#submit-confirmation-modal" role="button" class="btn btn-sm btn-blue-trust link" data-toggle="modal"><i class="icon-remove icon-white"></i> Submit</a>--}%
-            %{--kucing--}%
             <a id="finalizeSurveyBtn" role="button" class="btn btn-sm btn-blue-trust link" data-toggle="modal"><i class="icon-remove icon-white"></i> Submit</a>
         </div>
     </div>
@@ -1290,6 +1333,56 @@
             </div>
             <div class="modal-footer">
                 <button id="validateQuestionItemsBtn" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Validate Choice Question Items modal -->
+<div id="validate-choice-question-items-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="validateChoiceQuestionItemsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="validateChoiceQuestionItemsLabel" class="modal-title">
+                    Validate Choice Questions
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="validateQuestionItemsForm" role="form">
+                    <div class="well">
+                        <p><b>Validated Choice Questions Failed</b></p>
+                        Please makes sure that all single / multiple questions is more than one options and labeled.
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button id="validateChoiceQuestionItemsBtn" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Validate Scale Rating Question Items modal -->
+<div id="validate-choice-question-items-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="validateScaleQuestionItemsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="validateScaleQuestionItemsLabel" class="modal-title">
+                    Validate Choice Questions
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="validateScaleQuestionItemsForm" role="form">
+                    <div class="well">
+                        <p><b>Validated Scale Rating Questions Failed</b></p>
+                        Please makes sure that all Rating and Row are labeled.
+                    </div>
+
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button id="validateScaleQuestionItemsBtn" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Ok</button>
             </div>
         </div>
     </div>
