@@ -87,7 +87,7 @@ class RespondentService {
                     sb.append("{ ${'$or'}: [ {RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', val: '$val'} } } ,{RESPONDENT_FILTER.code:{${'$exists'}:false } }]}")
                     break
                 case [ProfileItem.TYPES.NUMBER, ProfileItem.TYPES.DATE] :
-                    sb.append("{ ${'$or'}: [ {RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', valFrom: {${'$lte'}: $val }, valTo: {${'$gte'}: $val } } } ,{RESPONDENT_FILTER.code:{${'$exists'}:false } }]}")
+                    sb.append("{ ${'$or'}: [ {RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', valFrom: {${'$lte'}: $val }, valTo: {${'$gte'}: $val } } } } ,{RESPONDENT_FILTER.code:{${'$exists'}:false } }]}")
                     break
                 case [ProfileItem.TYPES.CHOICE, ProfileItem.TYPES.LOOKUP] :
                     sb.append("{ ${'$or'}: [ {RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', checkItems: { ${'$elemMatch'}: { key: '$val' } } } } } ,{RESPONDENT_FILTER.code:{${'$exists'}:false } }]}")
@@ -113,6 +113,8 @@ class RespondentService {
         sb.append(" ]} }" )
 
         sb.append(']}')
+
+        log.error(sb.toString())
 
         DBCollection coll = Survey.collection
         def found = coll.find(com.mongodb.util.JSON.parse(sb.toString()))
