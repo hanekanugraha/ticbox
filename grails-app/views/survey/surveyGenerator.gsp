@@ -494,25 +494,40 @@
                 jQuery.each(questionItems, function(idx, item) {
                     var answerDetails = item.answerDetails;
 
+                    // kucingkurus
                     if(item.questionStr.length>0) {
 
 
                         switch (answerDetails.type) {
 
                             case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
-                                var ChoiceItems = answerDetails.choiceItems;
-                                if (ChoiceItems.length <= 1) {
+                                var singleChoiceItems = answerDetails.choiceItems;
+                                if (singleChoiceItems.length <= 1) {
                                     isValid = 'singleChoiceNotValid'
                                     return isValid
                                 }
+                                jQuery.each(singleChoiceItems, function(idx, singleChoiceItem){
+                                    if(singleChoiceItem.label == ' ' || singleChoiceItem.label.length <=0) {
+                                        isValid = 'singleChoiceNotValid'
+                                        return isValid
+                                    }
+                                });
                                 break;
 
                             case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
-                                var ChoiceItems = answerDetails.choiceItems;
-                                if (ChoiceItems.length <= 1) {
+                                var multipleChoiceItems = answerDetails.choiceItems;
+                                if (multipleChoiceItems.length <= 1) {
                                     isValid = 'multipleChoiceNotValid'
                                     return isValid
                                 }
+
+//                                jQuery.each(multipleChoiceItems, function(idx, multipleChoiceItem) {
+//                                    alert('hula = ' + multipleChoiceItem.label + ' jumlah str = ' + multipleChoiceItem.label.length)
+//                                    if(multipleChoiceItem.label == ' ' || multipleChoiceItem.label.length <=0) {
+//                                        isValid = 'multipleChoiceNotValid'
+//                                        return isValid
+//                                    }
+//                                });
                                 break;
 
                             case '${Survey.QUESTION_TYPE.FREE_TEXT}' :
