@@ -504,7 +504,6 @@
         <button id="nextQuestion" class="btn btn-blue-trust btn-md">${g.message(code:'app.next.label')}</button>
         <button id="submitAnswers" class="btn btn-blue-trust btn-md">${g.message(code:'app.submit.label')}
         %{--<button id="saveResponse" class="btn btn-blue-trust btn-md">${g.message(code:'app.submit.label')}</button>--}%
-        %{--kucing--}%
         <button id="cancel" class="btn btn-light-oak btn-md" href="${request.contextPath}/home/">Cancel</button>
     </div>
 

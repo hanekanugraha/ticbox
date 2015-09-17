@@ -494,7 +494,6 @@
                 jQuery.each(questionItems, function(idx, item) {
                     var answerDetails = item.answerDetails;
 
-                    // kucingkurus
                     if(item.questionStr.length>0) {
 
 
