@@ -10,6 +10,7 @@ class HomeController {
     def surveyService
 
     def index() {}
+
     def ticbox(){
 
     }
@@ -163,6 +164,18 @@ class HomeController {
         }
         else{
             redirect(uri: "/auth/login")
+        }
+    }
+
+    def redirectWithParam() {
+        if(params.pageID == 'home') {
+            redirect(uri: "/")
+        } else if(params.pageID == 'howItsWork') {
+            redirect(uri: "/howItsWork/")
+        } else if(params.pageID == 'pricing') {
+            redirect(uri: "/pricing/")
+        } else {
+            redirect(uri: "/")
         }
     }
 }

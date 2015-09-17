@@ -3,6 +3,12 @@ package ticbox
 class KnowUsController {
 
     def index() {}
-    def ourStory(){}
+
+    def ourStory(){
+        if(params.pageID == 'ourStory') {
+            redirect(uri: "/knowUs/ourStory/")
+        }
+    }
+
     def ourTeam(){}
 }
