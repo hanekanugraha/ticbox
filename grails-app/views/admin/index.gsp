@@ -162,9 +162,9 @@
     $(document).ready(function() {
 
         $('#userTable').DataTable( {
-            "ordering": false,
+            "ordering": true,
             "info":     false,
-            "searching": false,
+            "searching": true,
             "oLanguage": {
                 "sEmptyTable":     "No User found..",
                 "sLengthMenu": 'Display <select>'+
