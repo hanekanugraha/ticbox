@@ -43,7 +43,7 @@
                 } else if(validateQuestionItems(questionItems)=='multipleChoiceNotValid') {
                     jQuery('#validate-choice-question-items-modal').modal('show');
                 } else if(validateQuestionItems(questionItems)=='scaleRatingNotValid') {
-                    jQuery('#validate-choice-question-items-modal').modal('show');
+                    jQuery('#validate-matrix-question-items-modal').modal('show');
                 } else {
                     jQuery('#validate-question-items-modal').modal('show');
                 }
@@ -494,8 +494,8 @@
                 jQuery.each(questionItems, function(idx, item) {
                     var answerDetails = item.answerDetails;
 
+                    // kucingkurus
                     if(item.questionStr.length>0) {
-
 
                         switch (answerDetails.type) {
 
@@ -536,21 +536,30 @@
                                 var ratingLabels = answerDetails.ratingLabels;
                                 var rowLabels = answerDetails.rowLabels;
 
-                                for (var i = 0; i < ratingLabels.length; i++) {
-                                    if (ratingLabels[i].length <= 0 || ratingLabels[i] == ' ') {
-                                        isValid = 'scaleRatingNotValid'
-                                        return isValid
-                                    }
+
+                                // check total ratings
+                                if(ratingLabels.length <=1) {
+                                    isValid = 'scaleRatingNotValid'
                                     break;
+                                } else if(ratingLabels.length > 1) {
+                                    // check empty label
+                                    for (var i = 0; i < ratingLabels.length; i++) {
+
+                                        if (ratingLabels[i].length <= 0 || ratingLabels[i] == ' ') {
+                                            isValid = 'scaleRatingNotValid'
+                                        }
+
+                                    }
+
+                                    for (var j = 0; j < rowLabels.length; j++) {
+                                        if (rowLabels[j].length <= 0 || rowLabels[j] == ' ') {
+                                            isValid = 'scaleRatingNotValid'
+                                        }
+                                    }
                                 }
 
-                                for (var j = 0; j < rowLabels.length; j++) {
-                                    if (rowLabels[j].length <= 0 || rowLabels[j] == ' ') {
-                                        isValid = 'scaleRatingNotValid'
-                                        return isValid
-                                    }
-                                    break;
-                                }
+
+
                                 break;
 
                             case '${Survey.QUESTION_TYPE.STAR_RATING}' :
@@ -1377,7 +1386,7 @@
     </div>
 </div>
 <!-- Validate Scale Rating Question Items modal -->
-<div id="validate-choice-question-items-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="validateScaleQuestionItemsLabel" aria-hidden="true">
+<div id="validate-matrix-question-items-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="validateScaleQuestionItemsLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -1390,7 +1399,7 @@
                 <g:form name="validateScaleQuestionItemsForm" role="form">
                     <div class="well">
                         <p><b>Validated Scale Rating Questions Failed</b></p>
-                        Please makes sure that all Rating and Row are labeled.
+                        Please makes sure that all Rating questions is more than one options and labeled.
                     </div>
 
                 </g:form>
