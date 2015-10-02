@@ -194,7 +194,7 @@
                             <!-- a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="${request.contextPath}/survey/deleteSurvey?surveyId=${survey.surveyId}">Delete</a -->
                             <!--a class="btn btn-xs btn-primary displayResultLink" id="delDraft" href="#delete-drafts-modal" role="button"  data-toggle="modal">Delete</a-->
                             <button id="delDraft" href="#delete-drafts-modal"
-                                    role="button" data-toggle="modal" class="btn btn-danger btn-xs">Delete</button>
+                                    role="button" data-toggle="modal" class="btn btn-danger btn-xs"><g:message code="default.button.delete.label"/></button>
                         </td>
 
 

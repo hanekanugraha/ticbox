@@ -52,11 +52,11 @@
                     <ul class="nav navbar-nav">
                         <li>
                             %{--<a href="${request.contextPath}/">Home</a>--}%
-                            <g:link controller="home" action="redirectWithParam" params="['pageID': 'home']">Home</g:link>
+                            <g:link controller="home" action="redirectWithParam" params="['pageID': 'home']"><g:message code="default.home.label"/></g:link>
                         </li>
                         <li>
                             %{--<a href="${request.contextPath}/howItsWork/">How It Works</a>--}%
-                            <g:link controller="home" action="redirectWithParam" params="['pageID': 'howItsWork']">How It Works</g:link>
+                            <g:link controller="home" action="redirectWithParam" params="['pageID': 'howItsWork']"><g:message code="default.howitworks.label"/></g:link>
                         </li>
                         %{--<li class="dropdown">--}%
                             %{--<a href="#" class="dropdown-toggle" data-toggle="dropdown">How It Works <b class="caret"></b></a>--}%
@@ -75,22 +75,22 @@
                         %{--</li>--}%
                         <li>
                             %{--<a href="${request.contextPath}/pricing/">Pricing</a>--}%
-                        <g:link controller="home" action="redirectWithParam" params="['pageID': 'pricing']">Pricing</g:link>
+                        <g:link controller="home" action="redirectWithParam" params="['pageID': 'pricing']"><g:message code="default.pricing.label"/></g:link>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Get To Know Us <b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><g:message code="default.gettoknowus.label"/><b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <g:link controller="knowUs" action="ourStory" params="['pageID': 'ourStory']">Our Story</g:link>
+                                    <g:link controller="knowUs" action="ourStory" params="['pageID': 'ourStory']"><g:message code="default.ourstory.label"/></g:link>
                                 </li>
                                 %{--<li>--}%
                                     %{--<g:link controller="knowUs" action="ourTeam">Our Team</g:link>--}%
                                 %{--</li>--}%
                                 <li>
-                                    <a href="#">Our Communities</a>
+                                    <a href="#"><g:message code="default.ourcommunities.label"/></a>
                                 </li>
                                 <li>
-                                    <a href="#">Blog</a>
+                                    <a href="#"><g:message code="default.blog.label"/></a>
                                 </li>
                             </ul>
                         </li>
