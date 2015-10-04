@@ -89,17 +89,17 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="${request.contextPath}/">Home</a>
+                        <a href="${request.contextPath}/"><g:message code="default.home.label"/></a>
                     </li>
                     <li>
-                        <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-star"></span> Dashboard</a>
+                        <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-star"></span><g:message code="default.dashboard.label"/></a>
                     </li>
 
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
                     <shiro:notAuthenticated>
-                        <li><g:link controller="auth" action="login">Register | Login</g:link></li>
+                        <li><g:link controller="auth" action="login"><g:message code="default.registerlogin.label"/></g:link></li>
                         <li>
                             <g:link class="dropdown-toggle" data-toggle="dropdown">
                                 <span>
@@ -121,7 +121,7 @@
                         %{--INBOX--}%
                         <li class="dropdown">
                             <g:link class="dropdown-toggle" data-toggle="dropdown">
-                                <span id="inbox" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title="Inbox">
+                                <span id="inbox" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title=<g:message code="default.inbox.label"/>
                                 </span>
                                 <g:if test="${ticbox.UserMessage.findAllByUsernameAndIsRead(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
                                     <span class="badge">
@@ -131,7 +131,7 @@
                             </g:link>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                 <li role="presentation">
-                                    <b style="padding: 0 20px">Inbox</b>
+                                    <b style="padding: 0 20px"><g:message code="default.inbox.label"/></b>
                                 </li>
                                 <li role="presentation" class="divider" style="margin: 3px 0 5px"></li>
                                 <g:if test="${ticbox.UserMessage.findAllByToUsernameAndIsRead(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
@@ -143,21 +143,21 @@
                                 </g:if>
                                 <g:else>
                                     <li role="presentation">
-                                        <a style="color:grey;">You have ... Inbox</a>
+                                        <a style="color:grey;"><g:message code="default.youhave.label"/> ... <g:message code="default.inbox.label"/></a>
                                     </li>
                                 </g:else>
                                 <li role="presentation">
-                                    <g:link controller="userMessage" action="createMessage" title="Create Message" >Create Message</g:link>
+                                    <g:link controller="userMessage" action="createMessage" title="Create Message" ><g:message code="default.createmessage.label"/></g:link>
                                 </li>
                                 <li role="presentation">
-                                    <g:link controller="userMessage" action="oldMessage" title="Old Message" >Old Message</g:link>
+                                    <g:link controller="userMessage" action="oldMessage" title="Old Message" ><g:message code="default.oldmessage.label"/></g:link>
                                 </li>
                             </ul>
                         </li>
                         %{--NOTIFICATION--}%
                         <li class="dropdown">
                             <g:link class="dropdown-toggle" data-toggle="dropdown">
-                                <span id="notif" class="glyphicon glyphicon-bullhorn" data-toggle="tooltip" title="Notification"></span>
+                                <span id="notif" class="glyphicon glyphicon-bullhorn" data-toggle="tooltip" title=<g:message code="default.notifications.label"/>></span>
                                 <g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
                                     <span class="badge">
                                         ${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()}
@@ -166,7 +166,7 @@
                             </g:link>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                 <li role="presentation">
-                                    <b style="padding: 0 20px">Notifications</b>
+                                    <b style="padding: 0 20px"><g:message code="default.notifications.label"/></b>
                                 </li>
                                 <li role="presentation" class="divider" style="margin: 3px 0 5px"></li>
                                 <g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
@@ -178,7 +178,7 @@
                                 </g:if>
                                 <g:else>
                                     <li role="presentation">
-                                        <a style="color:grey;">You have ${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()} Notifications</a>
+                                        <a style="color:grey;"><g:message code="default.youhave.label"/> ${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()} <g:message code="default.notifications.label"/></a>
                                     </li>
                                 </g:else>
                             </ul>
@@ -193,14 +193,14 @@
                             </g:link>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                 <li role="presentation">
-                                    <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-star"></span> Dashboard</a>
+                                    <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-star"></span> <g:message code="default.dashboard.label"/></a>
                                 </li>
                                 <li role="presentation" class="divider"></li>
                                 <li role="presentation">
-                                    <a>Help</a>
+                                    <a><g:message code="default.help.label"/></a>
                                 </li>
                                 <li role="presentation">
-                                    <a>Report a Problem</a>
+                                    <a><g:message code="default.reportproblem.label"/></a>
                                 </li>
                             </ul>
                         </li>
@@ -224,7 +224,7 @@
                         <li>
                             <g:link controller="auth" action="signOut">
                                 <span id="log-out-btn" class="glyphicon glyphicon-log-out" data-toggle="tooltip"
-                                      title="Logout">
+                                      title=<g:message code="app.signout.label"/>>
                                 </span>
                             </g:link>
                         </li>
@@ -247,7 +247,7 @@
                                 <div class="panel-body dashboard-body">
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <strong style="display: inline"></span> DASHBOARD</strong>
+                                            <strong style="display: inline"></span> <g:message code="app.dashboard.title"/></strong>
                                         </div>
                                     </div>
                                 </div>
@@ -267,7 +267,7 @@
                                             <b class="fullName">${surveyor?.username}</b>
                                         </a>
                                         <div style="color: grey; font-size: 12px; text-transform: uppercase">${surveyorProfile?.companyName}</div>
-                                        <g:link class="metadata" action="profileForm">View profile page</g:link>
+                                        <g:link class="metadata" action="profileForm"><g:message code="app.viewprofile.title"/></g:link>
                                     </div>
                                 </div>
                             </div>
@@ -276,11 +276,11 @@
                                     <div class="row profileStats">
                                         <div class="col-xs-3 stats">
                                             <div><strong>${countDraft}</strong></div>
-                                            <div>Drafts</div>
+                                            <div><g:message code="app.draft.status"/></div>
                                         </div>
                                         <div class="col-xs-5 stats leftBordered">
                                             <div><strong>${countInProgress}</strong></div>
-                                            <div style="color: #7F9B09">In Progress</div>
+                                            <div style="color: #7F9B09"><g:message code="app.inprogress.status"/></div>
                                         </div>
                                         <%--div class="col-xs-3 stats leftBordered">
                                             <div><strong>${countSubmitted}</strong></div>
@@ -288,7 +288,7 @@
                                         </div--%>
                                         <div class="col-xs-3 stats leftBordered">
                                             <div><strong>${countCompleted}</strong></div>
-                                            <div class="trust">Completed</div>
+                                            <div class="trust"><g:message code="app.completed.status"/></div>
                                         </div>
                                     </div>
                                 </div>
@@ -296,7 +296,7 @@
                                     <div class="row profileStats">
                                         <div class="col-xs-12 stats">
                                             <strong style="display: inline">3,500,000</strong>
-                                            <span class="gold" style="margin-left: 5px">Credits Available</span>
+                                            <span class="gold" style="margin-left: 5px"><g:message code="app.creditsavailable.title"/></span>
                                         </div>
                                     </div>
                                 </div>
@@ -310,7 +310,7 @@
                             <div class="panel-heading">
                                 <div class="panel-title">
                                     <a data-toggle="collapse" data-parent="#surveyInfoAccordion" href="#surveyInfoContainer">
-                                        Survey Info <b class="caret"></b>
+                                        <g:message code="app.surveyinfo.title"/> <b class="caret"></b>
                                     </a>
                                 </div>
                             </div>
@@ -319,20 +319,20 @@
                                     <div class="row" style="line-height: 20px;">
                                         <div class="col-xs-12">
                                             <div style="border-bottom: 1px dotted lightgrey; border-top: 1px dotted lightgrey">
-                                                Name : ${survey?.name}
+                                                <g:message code="app.name.title"/> : ${survey?.name}
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row" style="line-height: 20px;">
                                         <div class="col-xs-12">
                                             <div style="border-bottom: 1px dotted lightgrey">
-                                                Num of Respondents : 100
+                                                <g:message code="app.numrespondent.title"/> : 100
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row" style="line-height: 20px">
                                         <div class="col-xs-12">
-                                            Itinerary Details :
+                                            <g:message code="app.itinerarydetails.title"/> :
                                             <div style="border-bottom: 1px dotted lightgrey; border-top: 1px dotted lightgrey">
                                                     <ul style="font-size: 12px; margin-bottom: 0">
                                                     <li>100 x $0 = $0</li>
@@ -346,7 +346,7 @@
                                         <div class="col-xs-12">
                                             <form class="form-horizontal" role="form">
                                                 <div class="form-group" style="margin-bottom: 0">
-                                                    <label for="total" class="col-sm-2 control-label">Total</label>
+                                                    <label for="total" class="col-sm-2 control-label"><g:message code="app.total.title"/></label>
                                                     <div class="col-sm-10">
                                                         <input id="total" class="form-control" type="text" value="$ 0" readonly="true" style="width: auto; background-color: #d4dcb4; margin: 0; border-radius: 20px; font-weight: bold; color: darkgoldenrod">
                                                     </div>

@@ -56,18 +56,18 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav tick">
                     <li>
-                        <a href="${request.contextPath}/">Home</a>
+                        <a href="${request.contextPath}/"><g:message code="default.home.label"/></a>
                     </li>
-                    <li><a>How It Works</a></li>
-                    <li><a>Pricing</a></li>
+                    <li><a href="${request.contextPath}/howItsWork/"><g:message code="default.howitworks.label"/></a>
+                    <li><a href="${request.contextPath}/pricing/"><g:message code="default.pricing.label"/></a>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><g:message code="default.gettoknowus.label"/><b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="#">About Us</a>
+                                <a href="#"><g:message code="default.ourcommunities.label"/></a>
                             </li>
                             <li>
-                                <a href="#">Blog</a>
+                                <a href="#"><g:message code="default.blog.label"/></a>
                             </li>
                         </ul>
                     </li>
@@ -75,7 +75,7 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <shiro:notAuthenticated>
-                        <li><g:link controller="auth" action="login">Register | Login</g:link></li>
+                        <li><g:link controller="auth" action="login"><g:message code="default.registerlogin.label"/></g:link></li>
                         <li>
                             <g:link class="dropdown-toggle" data-toggle="dropdown">
                                 <span>
@@ -97,7 +97,7 @@
                     %{--INBOX--}%
                         <li class="dropdown">
                             <g:link class="dropdown-toggle" data-toggle="dropdown">
-                                <span id="inbox" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title="Inbox">
+                                <span id="inbox" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title=<g:message code="default.inbox.label"/>>
                                 </span>
                                 <g:if test="${ticbox.UserMessage.findAllByToUsernameAndIsRead(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
                                     <span class="badge">
@@ -107,7 +107,7 @@
                             </g:link>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                 <li role="presentation">
-                                    <b style="padding: 0 20px">Inbox</b>
+                                    <b style="padding: 0 20px"><g:message code="default.inbox.label"/></b>
                                 </li>
                                 <li role="presentation" class="divider" style="margin: 3px 0 5px"></li>
                                 <g:if test="${ticbox.UserMessage.findAllByToUsernameAndIsRead(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
@@ -119,21 +119,21 @@
                                 </g:if>
                                 <g:else>
                                     <li role="presentation">
-                                        <a style="color:grey;">You have ... Inbox</a>
+                                        <a style="color:grey;"><g:message code="default.youhave.label"/> ... <g:message code="default.inbox.label"/></a>
                                     </li>
                                 </g:else>
                                 <li role="presentation">
-                                    <g:link controller="userMessage" action="createMessage" title="Create Message" >Create Message</g:link>
+                                    <g:link controller="userMessage" action="createMessage" title="Create Message" ><g:message code="default.createmessage.label"/></g:link>
                                 </li>
                                 <li role="presentation">
-                                    <g:link controller="userMessage" action="oldMessage" title="Old Message" >Old Message</g:link>
+                                    <g:link controller="userMessage" action="oldMessage" title="Old Message" ><g:message code="default.oldmessage.label"/></g:link>
                                 </li>
                             </ul>
                         </li>
                     %{--NOTIFICATION--}%
                         <li class="dropdown">
                             <g:link class="dropdown-toggle" data-toggle="dropdown" style="padding-right: 5px">
-                                <span id="notif" class="glyphicon glyphicon-bullhorn" data-toggle="tooltip" title="Notification"></span>
+                                <span id="notif" class="glyphicon glyphicon-bullhorn" data-toggle="tooltip" title=<g:message code="default.notifications.label"/>></span>
                                 <g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
                                     <span class="badge">
                                         ${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()}
@@ -142,7 +142,7 @@
                             </g:link>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                 <li role="presentation">
-                                    <b style="padding: 0 20px">Notifications</b>
+                                    <b style="padding: 0 20px"><g:message code="default.notifications.label"/></b>
                                 </li>
                                 <li role="presentation" class="divider" style="margin: 3px 0 5px"></li>
                                 <g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
@@ -154,7 +154,7 @@
                                 </g:if>
                                 <g:else>
                                     <li role="presentation">
-                                        <a style="color:grey;">You have ${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()} Notifications</a>
+                                        <a style="color:grey;"><g:message code="default.youhave.label"/> ${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()} <g:message code="default.notifications.label"/></a>
                                     </li>
                                 </g:else>
                             </ul>
@@ -167,7 +167,7 @@
                             </g:link>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                 <li role="presentation">
-                                    <a href="${request.contextPath}/admin/surveys"><span class="glyphicon glyphicon-star"></span> Admin Dashboard</a>
+                                    <a href="${request.contextPath}/admin/surveys"><span class="glyphicon glyphicon-star"></span> <g:message code="default.admindashboard.label"/></a>
                                 </li>
                                 <li role="presentation" class="divider"></li>
                                 %{--<li role="presentation">--}%
@@ -190,10 +190,10 @@
                                 %{--</li>--}%
                                 %{--<li role="presentation" class="divider"></li>--}%
                                 <li role="presentation">
-                                    <a>Help</a>
+                                    <a><g:message code="default.help.label"/></a>
                                 </li>
                                 <li role="presentation">
-                                    <a>Report a Problem</a>
+                                    <a><g:message code="default.reportproblem.label"/></a>
                                 </li>
                             </ul>
                         </li>
@@ -217,7 +217,7 @@
                         <li>
                             <g:link controller="auth" action="signOut">
                                 <span id="log-out-btn" class="glyphicon glyphicon-log-out" data-toggle="tooltip"
-                                      title="Logout">
+                                      title=<g:message code="app.signout.label"/>>
                                 </span>
                             </g:link>
                         </li>
@@ -251,7 +251,7 @@
                             <div class="panel-heading">
                                 <div class="panel-title">
                                     <a data-toggle="collapse" data-parent="#adminNavAccordion" href="#adminNavContainer">
-                                        DASHBOARD
+                                        <g:message code="app.dashboard.title"/>
                                     </a>
                                 </div>
                             </div>
@@ -259,25 +259,25 @@
                                 <div class="panel-body" style="padding-left: 12px;">
                                     <ul class="nav nav-pills nav-stacked">
                                         <li class="adminsurveys">
-                                            <g:link controller="admin" action="surveys">Surveys</g:link>
+                                            <g:link controller="admin" action="surveys"><g:message code="admin.surveys.label"/></g:link>
                                         </li>
                                         <li class="adminindex">
-                                            <g:link controller="admin" action="index">User List</g:link>
+                                            <g:link controller="admin" action="index"><g:message code="admin.userlist.label"/></g:link>
                                         </li>
                                         <li class="emailindex">
-                                            <g:link controller="email" action="index">Emails</g:link>
+                                            <g:link controller="email" action="index"><g:message code="admin.emails.label"/></g:link>
                                         </li>
                                         <li class="parameterindex">
-                                            <g:link controller="parameter" action="index">Parameters</g:link>
+                                            <g:link controller="parameter" action="index"><g:message code="admin.parameters.label"/></g:link>
                                         </li>
                                         <li class="lookupMasterindex">
-                                            <g:link controller="lookupMaster" action="index">Lookup Master</g:link>
+                                            <g:link controller="lookupMaster" action="index"><g:message code="admin.lookupmaster.label"/></g:link>
                                         </li>
                                         <li class="adminredemptions">
-                                            <g:link controller="admin" action="redemptions">Redemptions</g:link>
+                                            <g:link controller="admin" action="redemptions"><g:message code="admin.redemptions.label"/></g:link>
                                         </li>
                                         <li class="adminlistItems">
-                                            <g:link controller="admin" action="listItems">Items</g:link>
+                                            <g:link controller="admin" action="listItems"><g:message code="admin.items.label"/></g:link>
                                         </li>
                                     </ul>
                                 </div>

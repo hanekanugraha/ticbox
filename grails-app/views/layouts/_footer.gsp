@@ -44,19 +44,19 @@
                         <div class="col-md-12">
                             <ul class="hr-list text-center">
                                 <li>
-                                    <a href="${request.contextPath}/policies/termsOfUse">Terms Of Use</a>
+                                    <a href="${request.contextPath}/policies/termsOfUse"><g:message code="app.termsofuse.label"/></a>
                                 </li>
                                 <li>
-                                    <a href="${request.contextPath}/policies/surveyContent">Survey Content Policy</a>
+                                    <a href="${request.contextPath}/policies/surveyContent"><g:message code="app.surveycontentpolicy.label"/></a>
                                 </li>
                                 <li>
-                                    <a href="${request.contextPath}/policies/surveyTermsOfService">Survey Terms Of Service</a>
+                                    <a href="${request.contextPath}/policies/surveyTermsOfService"><g:message code="app.surveytermsofservice.label"/></a>
                                 </li>
                                 <li>
-                                    <a href="${request.contextPath}/policies/privacy">Privacy Policy</a>
+                                    <a href="${request.contextPath}/policies/privacy"><g:message code="app.privacypolicy.label"/></a>
                                 </li>
                                 <li class="hr-list-end">
-                                    <a href="${request.contextPath}/policies/antiSpam">Anti Spam Policy</a>
+                                    <a href="${request.contextPath}/policies/antiSpam"><g:message code="app.antispampolicy.label"/></a>
                                 </li>
                             </ul>
                         </div>

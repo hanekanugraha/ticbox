@@ -58,21 +58,6 @@
                             %{--<a href="${request.contextPath}/howItsWork/">How It Works</a>--}%
                             <g:link controller="home" action="redirectWithParam" params="['pageID': 'howItsWork']"><g:message code="default.howitworks.label"/></g:link>
                         </li>
-                        %{--<li class="dropdown">--}%
-                            %{--<a href="#" class="dropdown-toggle" data-toggle="dropdown">How It Works <b class="caret"></b></a>--}%
-                            %{--<ul class="dropdown-menu">--}%
-                                %{--<li>--}%
-                                    %{--<g:link controller="howItsWork" action="solutionForAgencies">Solution fo Agencies</g:link>--}%
-                                %{--</li>--}%
-                                %{--<li>--}%
-                                    %{--<g:link controller="howItsWork" action="solutionForBrands">Solution for Brands</g:link>--}%
-                                %{--</li>--}%
-                                %{--<li>--}%
-                                    %{--<g:link controller="howItsWork" action="solutionForYou">Solution for You</g:link>--}%
-                                %{--</li>--}%
-
-                            %{--</ul>--}%
-                        %{--</li>--}%
                         <li>
                             %{--<a href="${request.contextPath}/pricing/">Pricing</a>--}%
                         <g:link controller="home" action="redirectWithParam" params="['pageID': 'pricing']"><g:message code="default.pricing.label"/></g:link>
@@ -99,7 +84,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <shiro:notAuthenticated>
                             %{--<li><g:link controller="auth" action="login" style="padding-right: 0">Register | Login</g:link></li>--}%
-                            <li><g:link controller="auth" action="login">Register | Login</g:link></li>
+                            <li><g:link controller="auth" action="login"><g:message code="default.registerlogin.label"/></g:link></li>
                             <li>
                                 <g:link class="dropdown-toggle" data-toggle="dropdown">
                                     <span>
@@ -121,7 +106,7 @@
                         %{--INBOX--}%
                             <li class="dropdown">
                                 <g:link class="dropdown-toggle" data-toggle="dropdown">
-                                    <span id="inbox" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title="Inbox">
+                                    <span id="inbox" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title=<g:message code="default.inbox.label"/>>
                                     </span>
                                     <g:if test="${ticbox.UserMessage.findAllByToUsernameAndIsRead(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
                                         <span class="badge">
@@ -131,7 +116,7 @@
                                 </g:link>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                     <li role="presentation">
-                                        <b style="padding: 0 20px">Inbox</b>
+                                        <b style="padding: 0 20px"><g:message code="default.inbox.label"/></b>
                                     </li>
                                     <li role="presentation" class="divider" style="margin: 3px 0 5px"></li>
                                     <g:if test="${ticbox.UserMessage.findAllByToUsernameAndIsRead(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
@@ -143,21 +128,21 @@
                                     </g:if>
                                     <g:else>
                                         <li role="presentation">
-                                            <a style="color:grey;">You have ... Inbox</a>
+                                            <a style="color:grey;"><g:message code="default.youhave.label"/> ... <g:message code="default.inbox.label"/></a>
                                         </li>
                                     </g:else>
                                     <li role="presentation">
-                                        <g:link controller="userMessage" action="createMessage" title="Create Message" >Create Message</g:link>
+                                        <g:link controller="userMessage" action="createMessage" title="Create Message" ><g:message code="default.createmessage.label"/></g:link>
                                     </li>
                                     <li role="presentation">
-                                        <g:link controller="userMessage" action="oldMessage" title="Old Message" >Old Message</g:link>
+                                        <g:link controller="userMessage" action="oldMessage" title="Old Message" ><g:message code="default.oldmessage.label"/></g:link>
                                     </li>
                                 </ul>
                             </li>
                         %{--NOTIFICATION--}%
                             <li class="dropdown">
                                 <g:link class="dropdown-toggle" data-toggle="dropdown">
-                                    <span id="notif" class="glyphicon glyphicon-bullhorn" data-toggle="tooltip" title="Notification"></span>
+                                    <span id="notif" class="glyphicon glyphicon-bullhorn" data-toggle="tooltip" title=<g:message code="default.notifications.label"/>></span>
                                     <g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
                                         <span class="badge">
                                             ${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()}
@@ -166,7 +151,7 @@
                                 </g:link>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                     <li role="presentation">
-                                        <b style="padding: 0 20px">Notifications</b>
+                                        <b style="padding: 0 20px"><g:message code="default.notifications.label"/></b>
                                     </li>
                                     <li role="presentation" class="divider" style="margin: 3px 0 5px"></li>
                                     <g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
@@ -178,7 +163,7 @@
                                     </g:if>
                                     <g:else>
                                         <li role="presentation">
-                                            <a style="color:grey;">You have ${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()} Notifications</a>
+                                            <a style="color:grey;"><g:message code="default.youhave.label"/> ${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()} <g:message code="default.notifications.label"/></a>
                                         </li>
                                     </g:else>
                                 </ul>
@@ -211,22 +196,22 @@
                                     %{--</g:else>--}%
                                     <li role="presentation">
                                         <g:if test="${request.getSession().getAttribute("role") == Role.ROLE.ADMIN}">
-                                            <a href="${request.contextPath}/admin/surveys"><span class="glyphicon glyphicon-star"></span> Dashboard</a>
+                                            <a href="${request.contextPath}/admin/surveys"><span class="glyphicon glyphicon-star"></span> <g:message code="default.dashboard.label"/></a>
                                         </g:if>
                                         <g:elseif test="${request.getSession().getAttribute("role") == Role.ROLE.SURVEYOR}">
-                                            <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-star"></span> Dashboard</a>
+                                            <a href="${request.contextPath}/survey"><span class="glyphicon glyphicon-star"></span> <g:message code="default.dashboard.label"/></a>
                                         </g:elseif>
                                     <g:elseif test="${request.getSession().getAttribute("role") == Role.ROLE.RESPONDENT}">
-                                        <a href="${request.contextPath}/respondent"><span class="glyphicon glyphicon-star"></span> Dashboard</a>
+                                        <a href="${request.contextPath}/respondent"><span class="glyphicon glyphicon-star"></span> <g:message code="default.dashboard.label"/></a>
                                     </g:elseif>
 
                                     </li>
                                     <li role="presentation" class="divider"></li>
                                     <li role="presentation">
-                                        <a>Help</a>
+                                        <a><g:message code="default.help.label"/></a>
                                     </li>
                                     <li role="presentation">
-                                        <a>Report a Problem</a>
+                                        <a><g:message code="default.reportproblem.label"/></a>
                                     </li>
                                 </ul>
                             </li>
@@ -250,7 +235,7 @@
                             <li>
                                 <g:link controller="auth" action="signOut">
                                     <span id="log-out-btn" class="glyphicon glyphicon-log-out" data-toggle="tooltip"
-                                          title="Logout">
+                                          title=<g:message code="app.signout.label"/>>
                                     </span>
                                 </g:link>
                             </li>
