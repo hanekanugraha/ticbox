@@ -1,18 +1,15 @@
 <html>
     <head>
         <meta name="layout" content="ticbox">
-        <title>Welcome</title>
+        <title><g:message code="app.welcome.message"/></title>
 
     </head>
     <body>
 
         <div class="jumbotron" style="padding: 15px 20px 28px 28px; margin-bottom: 20px;">
-            <h1 style="color:#525252; font-size: 46px">Do It Yourself Market Research</h1>
+            <h1 style="color:#525252; font-size: 46px"><g:message code="homepage.title1.label"/></h1>
             <p style="font-size: 14px">
-                There's an awesome way to make sure you don't invest a lot of time, effort & money into something that
-                won't sell.
-                Know your market before you leap, it's as easy as Create - Publish - Display Result.
-                Market Research has never been this fun!
+                <g:message code="homepage.content1.label"/>
             </p>
             <p>
                 <button class="btn btn-green btn-lg"><g:message code="label.button.watch.video"/></button>
@@ -21,7 +18,8 @@
 
         <div class="clearfix home-content module features" style="padding-bottom: 40px">
             <div style="padding-left: 12px">
-                <h3>A <span class="marroon">Solution</span> For You.</h3>
+                <g:message code="homepage.title2.label"/>
+                %{--<h3>A <span class="marroon">Solution</span> For You.</h3>--}%
                 <p class="nowrap" style="font-size: 14px; padding-bottom: 10px">
                     Ticbox is an online market research tool with a built-in, on-demand, online panel to design your survey,
                     launch it to a target audience, and display your results.
@@ -79,11 +77,11 @@
             to create a better understanding between business <br>and it's market.
         </p>
         <br>
-        <button class="btn btn-blue-trust btn-lg center">Learn More About Our Communities</button>
+        <button class="btn btn-blue-trust btn-lg center"><g:message code="label.button.learncommunities"/> </button>
     </div>
 
                 <script type="text/javascript">
-                    $('#aboutUs').tooltip({'placement': 'right','content':'html'});
+                    $('#aboutUs').tooltip({'placement': 'right','content':'html'});                                 
                 </script>
     </body>
 </html>
