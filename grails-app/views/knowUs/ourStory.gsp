@@ -47,7 +47,7 @@
         <div class="nowrap" style="font-size: 14px; padding-bottom: 10px">
             %{--<p><g:message code="ticbox.knowus.ourstory.about.content"/>>--}%
 
-            <p><g:message code="ticbox.knowus.ourteam.firman.paragraph1"/>
+            %{--<p><g:message code="ticbox.knowus.ourteam.firman.paragraph1"/>--}%
             %{--<p><g:message code="ticbox.knowus.ourteam.firman.paragraph2"/>--}%
             <p><g:message code="ticbox.knowus.ourteam.firman.paragraph3"/>
         </div>
