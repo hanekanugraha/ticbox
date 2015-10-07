@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta name="layout" content="ticbox"/>
-    <title><g:message code="ticbox.howItWorks.title"/></title>
+    <title><g:message code="ticbox.pricing.title"/></title>
 </head>
 <body>
 
@@ -18,34 +18,23 @@
     <div class="clearfix home-content">
         %{--<img src="images/ticbox/collaterals/polaroid.png" class="left img-responsive" style="margin-right: 53px" width="546" height="302" alt="Solution For Agencies"/>--}%
         <div class="col-sm-6" style="padding-left: 0">
-            <h3><span class="marroon">Free</span> ain't just a myth</h3>
+            <h3><g:message code="ticbox.pricing.notjustmyth.label"/></h3>
             <p class="nowrap" style="font-size: 14px">
-                Yes there's free option and it really works. Use the <b>FREE SURVEY</b> tool to send surveys to all
-            of Ticbox active respondents, your own list or post on your blog, website or Facebook page. Get responses
-            as soon as you publish!
+                <g:message code="ticbox.pricing.notjustmyth.content1"/>
                 <br><br>
-                No charge for a subscription, no limit to the quantity or functionality of our tool when you use it
-                for free, the only thing that you get will be just a home to millions of different communities and
-                qualified respondents ready to take your surveys and give you the feedback you need to make better
-                decisions.
+                <g:message code="ticbox.pricing.notjustmyth.content2"/>
                 <br><br>
-                Ticbox got B2B, B2C and every niece of respondents available.
+                <g:message code="ticbox.pricing.notjustmyth.content3"/>
             </p>
         </div>
         <div class="col-sm-6" style="padding-right: 0">
-            <h3>When things are getting serious</h3>
+            <h3><g:message code="ticbox.pricing.whenthingsgettingserous.label"/></h3>
             <p class="nowrap" style="font-size: 14px">
-                Looking for the right people to fill out your survey?
-                Well just narrow them down to the <span class="marroon"><b>targeted audience</b></span>!
+                <g:message code="ticbox.pricing.whenthingsgettingserous.content1"/>
                 <br><br>
-                Use the <b>EASY SURVEY</b> tool then combine the demographic traits such as
-            gender, age, household income, race/ethnicity, education, relationship status, number of children,
-            employment status, career, country, and local geography.
-            For example you can focus your interviews to single moms who have 3 children, earn Rp. 100,000,000,-
-            a year, have a college degree, live in Jakarta, own an iPhone and love sushi.
+                <g:message code="ticbox.pricing.whenthingsgettingserous.content2"/>
                 <br><br>
-                It's too easy while it's very affordable!
-                Responses start for as little as Rp. 10,000,- per respondent for a 15 long survey.
+                <g:message code="ticbox.pricing.whenthingsgettingserous.content3"/>
             </p>
         </div>
     </div>
