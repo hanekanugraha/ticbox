@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="admin"/>
-    <title>Administrator Page : Emails</title>
+    <title><g:message code="ticbox.admin.emails.label"/></title>
     <style type="text/css">
 
     </style>
@@ -10,13 +10,13 @@
 <body>
     <div class="module">
         <div id="adminHeader" class="module-header">
-            <div class="title">Emails</div>
+            <div class="title"><g:message code="admin.emails.label"/></div>
         </div>
         <div id="userList" class="module-content">
             <div class="row" style="margin-bottom:10px">
                 <div class="col-sm-12">
-                    <a id="addEmail" href="#add-new-email-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> New Email</a>
-                    <a id="delEmails" href="#delete-email-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Delete</a>
+                    <a id="addEmail" href="#add-new-email-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> <g:message code="admin.newemail.label"/></a>
+                    <a id="delEmails" href="#delete-email-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> <g:message code="default.button.delete.label"/></a>
 
                 </div>
             </div>
@@ -26,9 +26,9 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Subject</th>
-                                <th>Send On</th>
-                                <th>Send By</th>
+                                <th><g:message code="app.subject.label"/></th>
+                                <th><g:message code="app.sendon.label"/></th>
+                                <th><g:message code="app.sendby.label"/></th>
 
                             </tr>
                         </thead>
@@ -57,7 +57,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="addNewEmailLabel" class="modal-title">
-                    Add New Email
+                    <g:message code="admin.newemail.title"/>
                 </span>
             </div>
             <div class="modal-body" style="overflow: auto">
@@ -65,24 +65,24 @@
                     <div class="form-group">
                         <label for="sendInto" class="col-xs-4 control-label"><g:message code="app.sendTarget.label"/></label>
                         <div class="col" >
-                            <input class="item-check" type="checkbox" checked style="height: 34px" name="sendInto" value="${Email.SEND_TARGET.INBOX}"/>User Inbox
-                            <input class="item-check" type="checkbox" checked style="height: 34px" name="sendInto" value="${Email.SEND_TARGET.EMAIL}"/>User Email
+                            <input class="item-check" type="checkbox" checked style="height: 34px" name="sendInto" value="${Email.SEND_TARGET.INBOX}"/><g:message code="admin.emails.userinbox.label"/>
+                            <input class="item-check" type="checkbox" checked style="height: 34px" name="sendInto" value="${Email.SEND_TARGET.EMAIL}"/><g:message code="admin.emails.useremail.label"/>
 
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="userStatus" class="col-xs-4 control-label"><g:message code="app.userStatus.label"/></label>
                         <div class="col" >
-                            <input class="item-check" type="checkbox" checked style="height: 34px" name="userStatus" value="${User.USER_STATUS.ENABLE}"/>Active
-                            <input class="item-check" type="checkbox" checked style="height: 34px" name="userStatus" value="${User.USER_STATUS.DISABLE}"/>Inactive
+                            <input class="item-check" type="checkbox" checked style="height: 34px" name="userStatus" value="${User.USER_STATUS.ENABLE}"/><g:message code="app.active.label"/>
+                            <input class="item-check" type="checkbox" checked style="height: 34px" name="userStatus" value="${User.USER_STATUS.DISABLE}"/><g:message code="app.inactive.label"/>
 
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="userRole" class="col-xs-4 control-label"><g:message code="app.userRole.label"/></label>
+                        <label for="userRole" class="col-xs-4 control-label"><g:message code="app.roles.label"/></label>
                         <div class="col" >
-                            <input class="item-check" type="checkbox" checked style="height: 34px" name="userRole" value="${Role.ROLE.SURVEYOR}"/>Surveyor
-                            <input class="item-check" type="checkbox" checked style="height: 34px" name="userRole" value="${Role.ROLE.RESPONDENT}"/>Respondent
+                            <input class="item-check" type="checkbox" checked style="height: 34px" name="userRole" value="${Role.ROLE.SURVEYOR}"/><g:message code="app.surveyor.label"/>
+                            <input class="item-check" type="checkbox" checked style="height: 34px" name="userRole" value="${Role.ROLE.RESPONDENT}"/><g:message code="app.respondents.label"/>
 
                         </div>
                     </div>
@@ -103,8 +103,8 @@
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="createNewEmail" class="btn btn-green" data-loading-text="Processing..">Send</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="createNewEmail" class="btn btn-green" data-loading-text="Processing.."><g:message code="app.send.label"/></button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>
@@ -117,22 +117,22 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="deleteEmailLabel" class="modal-title">
-                    Delete Email
+                    <g:message code="admin.emails.delete.label"/>
                 </span>
             </div>
             <div class="modal-body">
                 <g:form name="deleteEmailForm" controller="email" action="deleteEmails" role="form">
                     <input type="hidden" id="delEmailIds" name="delEmailIds" value=""/>
                     <div class="well">
-                        <p><b>Are you sure to delete these emails?</b></p>
-                        There is no rollback for deleted emails. Please make sure you know what you are doing.
+                        <p><b><g:message code="admin.emails.validatedelete.title"/></b></p>
+                        <g:message code="admin.emails.validatedelete.content"/>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="deleteEmails" class="btn btn-danger" data-loading-text="Processing..">Delete</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="deleteEmails" class="btn btn-danger" data-loading-text="Processing.."><g:message code="default.button.delete.label"/></button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>

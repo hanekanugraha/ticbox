@@ -2,13 +2,13 @@
 <html>
 <head>
     <meta name="layout" content="admin"/>
-    <title>Administrator Page : Redemptions</title>
+    <title><g:message code="ticbox.admin.redeemtions.label"/></title>
     <style type="text/css">
 
     </style>
 </head>
 <body>
-    <h3>Gold Redemptions</h3>
+    <h3><g:message code="admin.redeemtions.money.label"/></h3>
 
     %{--<div class="row-fluid">--}%
         %{--<div class="span2">--}%
@@ -20,8 +20,8 @@
     %{--</div>--}%
     <div class="row" style="margin-bottom:10px">
         <div class="col-sm-12">
-            <a id="approveRedemps" href="#approve-submitted-redemp-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> Approve</a>
-            <a id="rejectRedemps" href="#reject-submitted-redemp-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Reject</a>
+            <a id="approveRedemps" href="#approve-submitted-redemp-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> <g:message code="label.button.approve"/></a>
+            <a id="rejectRedemps" href="#reject-submitted-redemp-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> <g:message code="label.button.reject"/></a>
         </div>
     </div>
     <br />
@@ -30,14 +30,14 @@
         <thead>
             <tr>
                 <th></th>
-                <th>Date Created</th>
-                <th>Respondent ID</th>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Bank Name</th>
-                <th>Account No</th>
-                <th>Account Name</th>
-                <th>Status</th>
+                <th><g:message code="app.createddate.label"/></th>
+                <th><g:message code="app.respondentid.label"/></th>
+                <th><g:message code="app.name.title"/></th>
+                <th><g:message code="app.amount.label"/></th>
+                <th><g:message code="app.bankname.label"/></th>
+                <th><g:message code="app.accountno.label"/></th>
+                <th><g:message code="app.accountname.label"/></th>
+                <th><g:message code="app.status.label"/></th>
             </tr>
         </thead>
         <tbody>
@@ -57,13 +57,13 @@
         </tbody>
     </table>
 
-    <h3>Item Redemptions</h3>
+    <h3><g:message code="admin.redeemtions.items.label"/></h3>
 
 
     <div class="row" style="margin-bottom:10px">
         <div class="col-sm-12">
-            <a id="approveItemRedemps" href="#approve-submitted-redemp-item-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> Approve</a>
-            <a id="rejectItemRedemps" href="#reject-submitted-redemp-item-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Reject</a>
+            <a id="approveItemRedemps" href="#approve-submitted-redemp-item-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> <g:message code="label.button.approve"/></a>
+            <a id="rejectItemRedemps" href="#reject-submitted-redemp-item-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> <g:message code="label.button.reject"/></a>
         </div>
     </div>
     <br />
@@ -72,12 +72,12 @@
     <thead>
     <tr>
         <th></th>
-        <th>Date Created</th>
-        <th>Respondent ID</th>
-        <th>Name</th>
-        <th>Gold Amount</th>
-        <th>Item</th>
-        <th>Status</th>
+        <th><g:message code="app.createddate.label"/></th>
+        <th><g:message code="app.respondentid.label"/></th>
+        <th><g:message code="app.name.title"/></th>
+        <th><g:message code="app.goldamount.label"/></th>
+        <th><g:message code="admin.items.label"/></th>
+        <th><g:message code="app.status.label"/></th>
     </tr>
     </thead>
     <tbody>
@@ -106,22 +106,22 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="approveRedempLabel" class="modal-title">
-                    Approve Redemptions
+                    <g:message code="admin.approveredeem.label"/>
                 </span>
             </div>
             <div class="modal-body">
                 <g:form name="approveRedempsForm" controller="admin" action="approveRedemps" role="form">
                     <input type="hidden" id="approveRedempIds" name="approveRedempIds" value=""/>
                     <div class="well">
-                        <p><b>Are you sure to approve these redemption?</b></p>
-                        There is no rollback for approve these redemption. Please make sure you know what you are doing.
+                        <p><b><g:message code="admin.approveredeem.title"/></b></p>
+                        <g:message code="admin.approveredeem.content"/>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="approveRedemp" class="btn btn-danger" data-loading-text="Processing..">Approve</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="approveRedemp" class="btn btn-danger" data-loading-text="Processing.."><g:message code="label.button.approve"/></button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>
@@ -133,22 +133,22 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="rejectRedempLabel" class="modal-title">
-                    Reject Redemptions
+                    <g:message code="admin.rejectredeem.label"/>
                 </span>
             </div>
             <div class="modal-body">
                 <g:form name="rejectRedempsForm" controller="admin" action="rejectRedemps" role="form">
                     <input type="hidden" id="rejectRedempIds" name="rejectRedempIds" value=""/>
                     <div class="well">
-                        <p><b>Are you sure to reject these redemption?</b></p>
-                        There is no rollback for reject these redemption. Please make sure you know what you are doing.
+                        <p><b><g:message code="admin.rejectredeem.title"/></b></p>
+                        <g:message code="admin.rejectredeem.content"/>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="rejectRedemp" class="btn btn-danger" data-loading-text="Processing..">Reject</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="rejectRedemp" class="btn btn-danger" data-loading-text="Processing.."><g:message code="label.button.reject"/></button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>
@@ -160,22 +160,22 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="approveRedempLabel" class="modal-title">
-                    Approve Item Redemptions
+                    <g:message code="admin.approveredeem.label"/>
                 </span>
             </div>
             <div class="modal-body">
                 <g:form name="approveRedempsItemForm" controller="admin" action="approveRedempsItem" role="form">
                     <input type="hidden" id="approveRedempItemIds" name="approveRedempItemIds" value=""/>
                     <div class="well">
-                        <p><b>Are you sure to approve these item redemption?</b></p>
-                        There is no rollback for approve these redemption. Please make sure you know what you are doing.
+                        <p><b><g:message code="admin.approveredeem.title"/></b></p>
+                        <g:message code="admin.approveredeem.content"/>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="approveRedempItem" class="btn btn-danger" data-loading-text="Processing..">Approve</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="approveRedempItem" class="btn btn-danger" data-loading-text="Processing.."><g:message code="label.button.approve"/></button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>
@@ -187,22 +187,22 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="rejectRedempItemLabel" class="modal-title">
-                    Reject Item Redemptions
+                    <g:message code="admin.rejectredeem.label"/>
                 </span>
             </div>
             <div class="modal-body">
                 <g:form name="rejectRedempsItemForm" controller="admin" action="rejectRedempsItem" role="form">
                     <input type="hidden" id="rejectRedempItemIds" name="rejectRedempItemIds" value=""/>
                     <div class="well">
-                        <p><b>Are you sure to reject these redemption?</b></p>
-                        There is no rollback for reject these redemption. Please make sure you know what you are doing.
+                        <p><b><g:message code="admin.rejectredeem.title"/></b></p>
+                        <g:message code="admin.rejectredeem.content"/>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="rejectRedempItem" class="btn btn-danger" data-loading-text="Processing..">Reject</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="rejectRedempItem" class="btn btn-danger" data-loading-text="Processing.."><g:message code="label.button.reject"/></button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>

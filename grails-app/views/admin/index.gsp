@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="admin"/>
-    <title>Administrator Page : Users</title>
+    <title><g:message code="ticbox.admin.users.title"/></title>
     <style type="text/css">
 
     </style>
@@ -10,14 +10,14 @@
 <body>
     <div class="module">
         <div id="adminHeader" class="module-header">
-            <div class="title">Users</div>
+            <div class="title"><g:message code="app.users.label"/></div>
         </div>
         <div id="userList" class="module-content">
             <div class="row" style="margin-bottom:10px">
                 <div class="col-sm-12">
-                    <a id="addNewUser" href="#add-new-user-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> New User</a>
-                    <a id="btnDeleteUsers" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Delete</a>
-                    <a id="dactiveUsers" href="#active-users-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Reactive/Inactive</a>
+                    <a id="addNewUser" href="#add-new-user-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> <g:message code="default.button.newusers.label"/></a>
+                    <a id="btnDeleteUsers" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> <g:message code="default.button.delete.label"/></a>
+                    <a id="dactiveUsers" href="#active-users-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> <g:message code="default.button.activeatereactivate.label"/></a>
                 </div>
             </div>
             <div class="row">
@@ -26,10 +26,10 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Role(s)</th>
-                                <th>Status</th>
+                                <th><g:message code="app.username.label"/></th>
+                                <th><g:message code="app.email.label"/></th>
+                                <th><g:message code="app.roles.label"/></th>
+                                <th><g:message code="app.status.label"/></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,7 +59,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="addNewUserLabel" class="modal-title">
-                    Add New User
+                    <g:message code="label.button.createnewuser"/>
                 </span>
             </div>
             <div class="modal-body" style="overflow: auto">
@@ -91,8 +91,8 @@
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="createNewUser" class="btn btn-green" data-loading-text="Processing..">Create New User</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="createNewUser" class="btn btn-green" data-loading-text="Processing.."><g:message code="label.button.createnewuser"/></button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>
@@ -105,7 +105,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="deleteUsersLabel" class="modal-title">
-                    Delete Users
+                    <g:message code="admin.validate.deleteuser.header"/>
                 </span>
             </div>
             <div class="modal-body">
@@ -119,8 +119,8 @@
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="deleteUsers" class="btn btn-danger" data-loading-text="Processing..">Delete</button>
-                <button id="cancelUsers" class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="deleteUsers" class="btn btn-danger" data-loading-text="Processing.."><g:message code="default.button.delete.label"/></button>
+                <button id="cancelUsers" class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>
@@ -133,24 +133,23 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="ActiveUsersLabel" class="modal-title">
-                    Active Users
+                    <g:message code="admin.validate.activateuser.header"/>
                 </span>
             </div>
             <div class="modal-body">
                 <g:form name="activeUsersForm" controller="admin" action="activeUsers" role="form">
                     <input type="hidden" id="activeUserIds" name="activeUserIds" value=""/>
                     <div class="well">
-                        <p><b>Are you sure to inactive/reactive these users?</b></p>
-                        User will receive email upon activation/inactivation. Please consider a proper reason,
-                        your explanation will be included in the email.
+                        <p><b><g:message code="admin.validate.activateuser.title"/></b></p>
+                        <g:message code="admin.validate.activateuser.content"/>
                     </div>
-                    <label for="dactiveReason">Please input the reason</label>
+                    <label for="dactiveReason"><g:message code="admin.validate.activateuser.reason"/></label>
                     <input type="text" class="form-control" id="dactiveReason" name="dactiveReason" param-of="activeUsers">
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="activeUsers" class="btn btn-danger" data-loading-text="Processing..">Active</button>
-                <button id="cancelActiveUsers" class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="activeUsers" class="btn btn-danger" data-loading-text="Processing.."><g:message code="default.button.activeatereactivate.label"/></button>
+                <button id="cancelActiveUsers" class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>
@@ -198,16 +197,16 @@
             });
 
             if(selected==null||selected==undefined||selected=="") {
-                $('#labelHeaderModal', form).text('No Users was Selected');
-                $('#labelText', form).text('Please select the users that you want to remove.');
+                $('#labelHeaderModal', form).text('<g:message code="admin.validate.nouser.title"/>');
+                $('#labelText', form).text('<g:message code="admin.validate.nouser.content"/>');
                 jQuery('#deleteUsers').hide();
-                $("#cancelUsers").text("OK");
+                $("#cancelUsers").text("<g:message code="app.ok.label"/>");
                 $('#delete-users-modal').modal('show');
             } else {
-                $('#labelHeaderModal', form).text('Are you sure to delete these users?');
-                $('#labelText', form).text('There is no rollback for deleted users. Please make sure you know what you are doing. ');
+                $('#labelHeaderModal', form).text('<g:message code="admin.validate.deleteuser.title"/>');
+                $('#labelText', form).text('<g:message code="admin.validate.deleteuser.content"/>');
                 jQuery('#deleteUsers').show();
-                $("#cancelUsers").text("Cancel");
+                $("#cancelUsers").text("<g:message code="label.button.cancel"/>");
                 $('#delete-users-modal').modal('show');
             }
 

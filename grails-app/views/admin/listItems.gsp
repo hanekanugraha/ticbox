@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="admin"/>
-    <title>Administrator Page : Items</title>
+    <title><g:message code="ticbox.admin.items.label"/></title>
     <style type="text/css">
 
     </style>
@@ -10,13 +10,13 @@
 <body>
 <div class="module">
     <div id="adminHeader" class="module-header">
-        <div class="title">Items</div>
+        <div class="title"><g:message code="admin.items.header"/></div>
     </div>
     <div id="itemList" class="module-content">
         <div class="row" style="margin-bottom:10px">
             <div class="col-sm-12">
-                <a id="addNewItems" href="#add-new-item-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> New Item</a>
-                <a id="delItems" href="#delete-items-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Delete</a>
+                <a id="addNewItems" href="#add-new-item-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> <g:message code="admin.items.newitems.label"/></a>
+                <a id="delItems" href="#delete-items-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> <g:message code="default.button.delete.label"/></a>
 
             </div>
         </div>
@@ -26,8 +26,8 @@
                     <thead>
                     <tr>
                         <th></th>
-                        <th>Item Name</th>
-                        <th>Gold</th>
+                        <th><g:message code="admin.items.itemname.label"/></th>
+                        <th><g:message code="admin.items.gold.label"/></th>
 
                     </tr>
                     </thead>
@@ -55,26 +55,26 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="addNewItemLabel" class="modal-title">
-                    Add New Item
+                    <g:message code="admin.items.createnew.label"/>
                 </span>
             </div>
             <div class="modal-body" style="overflow: auto">
                 <g:form name="addNewItemForm" controller="admin" action="createItem" class="form-horizontal" role="form">
 
                     <div class="form-group">
-                        <label for="itemName" class="col-xs-4 control-label"><g:message code="app.itemname.label"/></label>
+                        <label for="itemName" class="col-xs-4 control-label"><th><g:message code="admin.items.itemname.label"/></th></label>
                         <div class="col-xs-8"><g:textField name="itemName" class="form-control" style="min-width: 70%; width: auto;"/></div>
                     </div>
                     <div class="form-group">
-                        <label for="gold" class="col-xs-4 control-label"><g:message code="app.gold.label"/></label>
+                        <label for="gold" class="col-xs-4 control-label"><th><g:message code="admin.items.gold.label"/></th></label>
                         <div class="col-xs-8"><g:textField name="gold" class="form-control" style="min-width: 70%; width: auto;"/></div>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="createNewItem" class="btn btn-green" data-loading-text="Processing..">Create New Item</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="createNewItem" class="btn btn-green" data-loading-text="Processing.."><g:message code="admin.items.createnew.label"/></button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>
@@ -87,22 +87,22 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="deleteItemsLabel" class="modal-title">
-                    Delete Items
+                    <g:message code="admin.items.deleteitems.label"/>
                 </span>
             </div>
             <div class="modal-body">
                 <g:form name="deleteItemsForm" controller="admin" action="deleteItems" role="form">
                     <input type="hidden" id="delItemIds" name="delItemIds" value=""/>
                     <div class="well">
-                        <p><b>Are you sure to delete these items?</b></p>
-                        There is no rollback for deleted items. Please make sure you know what you are doing.
+                        <p><b><g:message code="admin.items.validate.title"/></b></p>
+                        <g:message code="admin.items.validate.content"/>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="deleteItems" class="btn btn-danger" data-loading-text="Processing..">Delete</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="deleteItems" class="btn btn-danger" data-loading-text="Processing.."><g:message code="default.button.delete.label"/></button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>

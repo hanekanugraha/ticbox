@@ -20,7 +20,7 @@ environments {
                 username = "ticboxnew"
                 password = "ticboxnew"
                 databaseName = "ticboxnew"
-                
+
             }
         }
     }

@@ -43,32 +43,32 @@
 <div class="module">
 
     <div id="surveyHeader" class="module-header">
-        <div class="title">Your Survey List</div>
+        <div class="title"><g:message code="ticbox.admin.survey.header"/></div>
     </div>
     <div id="surveyList" class="module-content">
         <div style="width: 100%" id="surveyList">
             <div class="row" style="margin-bottom:10px">
                 <div class="col-sm-12">
-                    <a id="delInprogressSurvey" href="#delete-inprogress-survey-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Delete</a>
-                    <a id="disableInprogressSurvey" href="#disable-inprogress-survey-modal" role="button" class="btn btn-warning" data-toggle="modal"><i class="icon-remove icon-white"></i> Disable</a>
-                    <a id="enableInprogressSurvey" href="#enable-inprogress-survey-modal" role="button" class="btn btn-blue-trust" data-toggle="modal"><i class="icon-remove icon-white"></i> Enable</a>
+                    <a id="delInprogressSurvey" href="#delete-inprogress-survey-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> <g:message code="default.button.delete.label"/></a>
+                    <a id="disableInprogressSurvey" href="#disable-inprogress-survey-modal" role="button" class="btn btn-warning" data-toggle="modal"><i class="icon-remove icon-white"></i> <g:message code="default.button.disable.label"/></a>
+                    <a id="enableInprogressSurvey" href="#enable-inprogress-survey-modal" role="button" class="btn btn-blue-trust" data-toggle="modal"><i class="icon-remove icon-white"></i> <g:message code="default.button.enable.label"/></a>
                 </div>
             </div>
             <table id="inProgressTable" class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="9">IN PROGRESS</th>
+                    <th colspan="9"><g:message code="app.inprogress.status"/></th>
                 </tr>
                 <tr class="sub-header">
                     <th></th>
-                    <th>Name</th>
-                    <th>Owner</th>
-                    <th>Type</th>
-                    <th>Created Date</th>
-                    <th>End Date</th>
-                    <th>Price</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    <th><g:message code="app.name.title"/></th>
+                    <th><g:message code="app.owner.label"/></th>
+                    <th><g:message code="app.type.label"/></th>
+                    <th><g:message code="app.createddate.label"/></th>
+                    <th><g:message code="app.enddate.label"/></th>
+                    <th><g:message code="app.price.label"/></th>
+                    <th><g:message code="app.status.label"/></th>
+                    <th><g:message code="app.action.label"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -106,17 +106,17 @@
             <table id="completedTable"  class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="8">COMPLETED</th>
+                    <th colspan="8"><g:message code="app.completed.status"/></th>
                 </tr>
                 <tr class="sub-header">
-                    <th>Name</th>
-                    <th>Owner</th>
-                    <th>Type</th>
-                    <th>Created Date</th>
-                    <th>Running Time</th>
-                    <th>Respondents</th>
-                    <th>Price</th>
-                    <th>Action</th>
+                    <th><g:message code="app.name.title"/></th>
+                    <th><g:message code="app.owner.label"/></th>
+                    <th><g:message code="app.type.label"/></th>
+                    <th><g:message code="app.createddate.label"/></th>
+                    <th><g:message code="app.runningtime.label"/></th>
+                    <th><g:message code="app.respondents.label"/></th>
+                    <th><g:message code="app.price.label"/></th>
+                    <th><g:message code="app.action.label"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -214,7 +214,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="deleteSubmittedSurveyLabel" class="modal-title">
-                    Delete Surveys
+                    <g:message code="default.deletesurveys.label"/>
                 </span>
             </div>
             <div class="modal-body">
@@ -228,8 +228,8 @@
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="deleteSubmittedSurveys" class="btn btn-danger" data-loading-text="Processing..">Delete</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="deleteSubmittedSurveys" class="btn btn-danger" data-loading-text="Processing.."><g:message code="default.button.delete.label"/></button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>
@@ -241,7 +241,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="deleteInprogressSurveyLabel" class="modal-title">
-                    Delete Surveys
+                    <g:message code="default.deletesurveys.label"/>
                 </span>
             </div>
             <div class="modal-body">
@@ -255,8 +255,8 @@
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="deleteInprogressSurveys" class="btn btn-danger" data-loading-text="Processing..">Delete</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="deleteInprogressSurveys" class="btn btn-danger" data-loading-text="Processing.."><g:message code="default.button.delete.label"/></button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>
@@ -268,7 +268,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="disableSurveyLabel" class="modal-title">
-                    Disable Surveys
+                    <g:message code="default.disablesurveys.label"/>
                 </span>
             </div>
             <div class="modal-body">
@@ -281,8 +281,8 @@
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="disableSurveys" class="btn btn-danger" data-loading-text="Processing..">Disable</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="disableSurveys" class="btn btn-danger" data-loading-text="Processing.."><g:message code="default.button.disable.label"/></button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>
@@ -294,7 +294,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="enableSurveyLabel" class="modal-title">
-                    Enable Surveys
+                    <g:message code="default.enablesurveys.label"/>
                 </span>
             </div>
             <div class="modal-body">
@@ -309,8 +309,8 @@
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="enableSurveys" class="btn btn-danger" data-loading-text="Processing..">Enable</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="enableSurveys" class="btn btn-danger" data-loading-text="Processing.."><g:message code="default.button.enable.label"/></button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>

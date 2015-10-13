@@ -2,7 +2,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="ticbox"/>
-    <title>Forgot Password</title>
+    <title><g:message code="label.forgotpassword.title"/></title>
 </head>
 
 <body>
@@ -10,12 +10,12 @@
     <div class="col-md-12">
         <div class="module">
             <div class="module-header">
-                <div class="title">Forgot Password</div>
+                <div class="title"><g:message code="label.forgotpassword.title"/></div>
             </div>
 
             <div class="module-content">
 
-                <div style="font-weight: bold; margin-top: 10px;">Please input email</div>
+                <div style="font-weight: bold; margin-top: 10px;"><g:message code="app.inputemail.label"/></div>
 
                 <g:if test="${flash.message}">
                     <div class="alert alert-success" style="display: block">${flash.message}</div>
@@ -36,7 +36,7 @@
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-3">
                             <button id="submit" class="btn btn-default btn-green">
-                                <span class="glyphicon glyphicon-log-in"></span> Reset
+                                <span class="glyphicon glyphicon-log-in"></span> <g:message code="app.reset.label"/>
                             </button>
                         </div>
                     </div>
