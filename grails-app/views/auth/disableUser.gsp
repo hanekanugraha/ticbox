@@ -2,7 +2,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="ticbox"/>
-    <title>Verify User</title>
+    <title><g:message code="ticbox.verify.title"/></title>
 </head>
 
 <body>
@@ -10,12 +10,12 @@
     <div class="col-md-12">
         <div class="module">
             <div class="module-header">
-                <div class="title">Disable User</div>
+                <div class="title"><g:message code="label.disableuser.title"/></div>
             </div>
 
             <div class="module-content">
 
-                <div style="font-weight: bold; margin-top: 10px;">User Disable. Please contact admin</div>
+                <div style="font-weight: bold; margin-top: 10px;"><g:message code="label.disableuser.title"/></div>
 
                 <g:if test="${flash.message}">
                     <div class="alert alert-success" style="display: block">${flash.message}</div>

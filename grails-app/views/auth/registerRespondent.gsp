@@ -26,7 +26,7 @@
                     <div class="col-sm-4"><g:textField name="username" value="${username}" class="form-control"/></div>
                     <div >
                         <i id='usernameInfo' class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
-                           title="You'll use this when you log in."></i>
+                           title="<g:message code="message.tooltip.username"/>"></i>
                     </div>
                 </div>
                 <div class="form-group">
@@ -34,7 +34,7 @@
                     <div class="col-sm-4"><g:textField name="email" value="${email}" class="form-control"/></div>
                     <div >
                         <i id='emailInfo' class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
-                           title="You'll use this to receive notification and if you ever need to reset your password."></i>
+                           title="<g:message code="message.tooltip.email"/>"></i>
                     </div>
                 </div>
                 <div class="form-group">
@@ -42,7 +42,7 @@
                     <div class="col-sm-4"><g:passwordField name="password" class="form-control"/></div>
                     <div >
                         <i id='passwordInfo' class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
-                           title="You'll use this as a credential to log in."></i>
+                           title="<g:message code="message.tooltip.password"/>"></i>
                     </div>
                 </div>
                 <div class="form-group">
@@ -143,8 +143,8 @@
                     }
                 },
                 messages: {
-                    password: "Your password does not meet our requirement, use at least 5 characters.",
-                    passwordconfirm: "Your password does not match"
+                    password: "<g:message code="message.password.failed"/>",
+                    passwordconfirm: "<g:message code="message.password.notmatch"/>"
 //                username: {
 //                    required: "Enter a username",
 //                    minlength: jQuery.format("Enter at least {0} characters"),
