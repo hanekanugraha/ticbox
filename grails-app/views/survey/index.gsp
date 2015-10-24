@@ -481,6 +481,7 @@
     </div>
 </div>
 
+<script type="text/javascript" src="${resource(dir: 'js', file: 'chart-helper.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot', file: 'jquery.jqplot.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.pieRenderer.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.barRenderer.min.js')}"></script>
@@ -723,6 +724,7 @@
     function loadResultGraph(result){
 
         var questionItemsContainer = jQuery('#displaySurveyResultModal').find('.questionItemsContainer');
+        var renderer = new SurveyChartRenderer();
 
         if (result) {
 
@@ -741,16 +743,30 @@
                 switch(answerDetails.type){
 
                     case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
-                    case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
+                        var labels = [];
+                        var counts = [];
 
-                        var data = [];
-
-                        if(summary){
-                            jQuery.each(summary, function (label, count) {
-                                data.push([label, count]);
+                        if (summary){
+                            jQuery.each(answerDetails.choiceItems, function (i, choiceItem) {
+                                var label = choiceItem.label;
+                                labels.push(label);
+                                counts.push(label in summary ? summary[label] : 0);
                             });
 
-                            constructPieChart(target, data, 'Answer Type - Choice');
+                            renderer.forChoice(labels, counts, target, 'Answer Type - Single Choice');
+                        }
+                        break;
+                    case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
+                        var labels = [];
+                        var counts = [];
+
+                        if (summary){
+                            jQuery.each(answerDetails.choiceItems, function (i, label) {
+                                labels.push(label);
+                                counts.push(label in summary ? summary[label] : 0);
+                            });
+
+                            renderer.forChoice(labels, counts, target, 'Answer Type - Multiple Choice');
                         }
                         break;
 
@@ -784,7 +800,7 @@
 
                     case '${Survey.QUESTION_TYPE.SCALE_RATING}' :
 
-                        if(summary) {
+                        if(false && summary) { // TODO: sementara aja
                             var ticks =[];
                             var series =[];
                             var dataAll=[];
@@ -819,14 +835,18 @@
                         break;
 
                     case '${Survey.QUESTION_TYPE.STAR_RATING}' :
+                        var amounts = [];
+                        if (summary) {
+                            var i = 0;
+                            for (i = 0; i < answerDetails.nofStars; i++) {
+                                amounts[i] = 0;
+                            }
 
-                        var data = [];
-                        if(summary) {
-                            jQuery.each(summary, function (label, count) {
-                                data.push([label, count]);
+                            jQuery.each(summary, function (star, count) {
+                                amounts[star - 1] = count;
                             });
 
-                            constructPieChart(target, data, 'Answer Type - Star Rating');
+                            renderer.forStar(amounts, target, 'Answer Type - Star Rating');
                         }
                         break;
 
