@@ -800,37 +800,19 @@
 
                     case '${Survey.QUESTION_TYPE.SCALE_RATING}' :
 
-                        if(false && summary) { // TODO: sementara aja
-                            var ticks =[];
-                            var series =[];
-                            var dataAll=[];
-                            var len= summary.length;
-                            var last;
+                        if (summary) {
+                            var itemValuesRows = [];
 
-                            jQuery.each(summary, function (rowLabel, rowSummary) {
-
-                                var data = [];
-                                last=rowSummary;
-                                ticks.push(rowLabel);
-                                jQuery.first
-                                jQuery.each(rowSummary, function (colLabel, count) {
-                                    data.push(count);
+                            jQuery.each(answerDetails.rowLabels, function (i, rowLabel) {
+                                var values = [];
+                                jQuery.each(answerDetails.ratingLabels, function (j, colLabel) {
+                                    values[j] = summary[rowLabel][colLabel] ? summary[rowLabel][colLabel] : 0;
                                 });
-                                dataAll.push(data);
-
-                            });
-                            jQuery.each(last, function (colLabel, count) {
-                                series.push({label:colLabel});
+                                itemValuesRows.push({'label': rowLabel, 'values': values});
                             });
 
-//                            var targetCopy = target.clone();
+                            renderer.forScale(answerDetails.ratingLabels, itemValuesRows, target, 'Answer Type - Scale');
 
-                            jQuery('.chart-container .col', container).append(target);
-
-
-                            constructMultipleChart(target, dataAll, 'Scale Rating',ticks,series);
-
-//                            target.remove();
                         }
                         break;
 
