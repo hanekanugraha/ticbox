@@ -407,6 +407,7 @@
     </div>
 </div>
 
+<script type="text/javascript" src="${resource(dir: 'js', file: 'chart-helper.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot', file: 'jquery.jqplot.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.pieRenderer.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.highlighter.min.js')}"></script>

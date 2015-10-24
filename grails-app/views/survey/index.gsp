@@ -481,6 +481,7 @@
     </div>
 </div>
 
+<script type="text/javascript" src="${resource(dir: 'js', file: 'chart-helper.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot', file: 'jquery.jqplot.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.pieRenderer.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.barRenderer.min.js')}"></script>
@@ -723,6 +724,7 @@
     function loadResultGraph(result){
 
         var questionItemsContainer = jQuery('#displaySurveyResultModal').find('.questionItemsContainer');
+        var renderer = new SurveyChartRenderer();
 
         if (result) {
 
@@ -741,16 +743,30 @@
                 switch(answerDetails.type){
 
                     case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
-                    case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
+                        var labels = [];
+                        var counts = [];
 
-                        var data = [];
-
-                        if(summary){
-                            jQuery.each(summary, function (label, count) {
-                                data.push([label, count]);
+                        if (summary){
+                            jQuery.each(answerDetails.choiceItems, function (i, choiceItem) {
+                                var label = choiceItem.label;
+                                labels.push(label);
+                                counts.push(label in summary ? summary[label] : 0);
                             });
 
-                            constructPieChart(target, data, 'Answer Type - Choice');
+                            renderer.forChoice(labels, counts, target, 'Answer Type - Single Choice');
+                        }
+                        break;
+                    case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
+                        var labels = [];
+                        var counts = [];
+
+                        if (summary){
+                            jQuery.each(answerDetails.choiceItems, function (i, label) {
+                                labels.push(label);
+                                counts.push(label in summary ? summary[label] : 0);
+                            });
+
+                            renderer.forChoice(labels, counts, target, 'Answer Type - Multiple Choice');
                         }
                         break;
 
@@ -784,49 +800,35 @@
 
                     case '${Survey.QUESTION_TYPE.SCALE_RATING}' :
 
-                        if(summary) {
-                            var ticks =[];
-                            var series =[];
-                            var dataAll=[];
-                            var len= summary.length;
-                            var last;
+                        if (summary) {
+                            var itemValuesRows = [];
 
-                            jQuery.each(summary, function (rowLabel, rowSummary) {
-
-                                var data = [];
-                                last=rowSummary;
-                                ticks.push(rowLabel);
-                                jQuery.first
-                                jQuery.each(rowSummary, function (colLabel, count) {
-                                    data.push(count);
+                            jQuery.each(answerDetails.rowLabels, function (i, rowLabel) {
+                                var values = [];
+                                jQuery.each(answerDetails.ratingLabels, function (j, colLabel) {
+                                    values[j] = summary[rowLabel][colLabel] ? summary[rowLabel][colLabel] : 0;
                                 });
-                                dataAll.push(data);
-
-                            });
-                            jQuery.each(last, function (colLabel, count) {
-                                series.push({label:colLabel});
+                                itemValuesRows.push({'label': rowLabel, 'values': values});
                             });
 
-//                            var targetCopy = target.clone();
+                            renderer.forScale(answerDetails.ratingLabels, itemValuesRows, target, 'Answer Type - Scale');
 
-                            jQuery('.chart-container .col', container).append(target);
-
-
-                            constructMultipleChart(target, dataAll, 'Scale Rating',ticks,series);
-
-//                            target.remove();
                         }
                         break;
 
                     case '${Survey.QUESTION_TYPE.STAR_RATING}' :
+                        var amounts = [];
+                        if (summary) {
+                            var i = 0;
+                            for (i = 0; i < answerDetails.nofStars; i++) {
+                                amounts[i] = 0;
+                            }
 
-                        var data = [];
-                        if(summary) {
-                            jQuery.each(summary, function (label, count) {
-                                data.push([label, count]);
+                            jQuery.each(summary, function (star, count) {
+                                amounts[star - 1] = count;
                             });
 
-                            constructPieChart(target, data, 'Answer Type - Star Rating');
+                            renderer.forStar(amounts, target, 'Answer Type - Star Rating');
                         }
                         break;
 

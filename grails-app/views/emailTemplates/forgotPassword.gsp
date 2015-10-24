@@ -43,9 +43,9 @@
                     <br/><br/>
                     Untuk melanjutkan proses reset password, klik <b><a href="${link}">disini</a></b>.
                     <br/><br/>
-                    Setelah melakukan log in dengan password baru diatas, harap segera mengubah password sesuai yang anda inginkan.
+                    Setelah melakukan log in dengan password baru diatas, harap segera mengubah password sesuai yang Anda inginkan.
                     <br/><br/>
-                    Jika anda tidak merasa mengirimkan permintaan reset password, jangan kawatir - akun anda tetap aman dan kami tidak memberikan akses kepada orang lain.
+                    Jika Anda tidak merasa mengirimkan permintaan reset password, jangan kawatir - akun Anda tetap aman dan kami tidak memberikan akses kepada orang lain.
                     <br/><br/><br/>
                     Terimakasih,
                     <br/>

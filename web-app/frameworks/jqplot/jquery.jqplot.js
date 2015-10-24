@@ -6,11 +6,11 @@
  * About: Version
  * 
  * version: 1.0.8 
- * revision: 1250
+ * revision: 059556187a54a01972a7faa03f18261334ac7c71
  * 
  * About: Copyright & License
  * 
- * Copyright (c) 2009-2013 Chris Leonello
+ * Copyright (c) 2009-2015 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
  * under both the MIT and GPL version 2.0 licenses. This means that you can 
  * choose the license that best suits your project and use it accordingly.
@@ -215,9 +215,8 @@
 
         var plot = new jqPlot();
         // remove any error class that may be stuck on target.
-        //$('#'+target).removeClass('jqplot-error');
-        target.removeClass('jqplot-error');
-
+        $('#'+target).removeClass('jqplot-error');
+        
         if ($.jqplot.config.catchErrors) {
             try {
                 plot.init(target, _data, _options);
@@ -227,14 +226,14 @@
             }
             catch(e) {
                 var msg = $.jqplot.config.errorMessage || e.message;
-                target.append('<div class="jqplot-error-message">'+msg+'</div>');
-                target.addClass('jqplot-error');
-                document.getElementById(target.attr('id')).style.background = $.jqplot.config.errorBackground;
-                document.getElementById(target.attr('id')).style.border = $.jqplot.config.errorBorder;
-                document.getElementById(target.attr('id')).style.fontFamily = $.jqplot.config.errorFontFamily;
-                document.getElementById(target.attr('id')).style.fontSize = $.jqplot.config.errorFontSize;
-                document.getElementById(target.attr('id')).style.fontStyle = $.jqplot.config.errorFontStyle;
-                document.getElementById(target.attr('id')).style.fontWeight = $.jqplot.config.errorFontWeight;
+                $('#'+target).append('<div class="jqplot-error-message">'+msg+'</div>');
+                $('#'+target).addClass('jqplot-error');
+                document.getElementById(target).style.background = $.jqplot.config.errorBackground;
+                document.getElementById(target).style.border = $.jqplot.config.errorBorder;
+                document.getElementById(target).style.fontFamily = $.jqplot.config.errorFontFamily;
+                document.getElementById(target).style.fontSize = $.jqplot.config.errorFontSize;
+                document.getElementById(target).style.fontStyle = $.jqplot.config.errorFontStyle;
+                document.getElementById(target).style.fontWeight = $.jqplot.config.errorFontWeight;
             }
         }
         else {        
@@ -246,7 +245,7 @@
     };
 
     $.jqplot.version = "1.0.8";
-    $.jqplot.revision = "1250";
+    $.jqplot.revision = "059556187a54a01972a7faa03f18261334ac7c71";
 
     $.jqplot.targetCounter = 1;
 
@@ -1955,8 +1954,8 @@
                 this.preInitHooks.hooks[i].call(this, target, data, options);
             }
             
-            this.targetId = target.attr('id');
-            this.target = target;
+            this.targetId = '#'+target;
+            this.target = $('#'+target);
 
             //////
             // Add a reference to plot
@@ -3244,7 +3243,7 @@
                         for (j=0; j<s._barPoints.length; j++) {
                             points = s._barPoints[j];
                             p = s.gridData[j];
-                            if (x>points[0][0] && x<points[2][0] && y>points[2][1] && y<points[0][1]) {
+                            if (x>points[0][0] && x<points[2][0] && (y>points[2][1] && y<points[0][1] || y<points[2][1] && y>points[0][1])) {
                                 return {seriesIndex:s.index, pointIndex:j, gridData:p, data:s.data[j], points:s._barPoints[j]};
                             }
                         }
@@ -9140,7 +9139,7 @@
 
             for (var i=0; i<wl; i++) {
                 w += words[i];
-                if (context.measureText(w).width > tagwidth) {
+                if (context.measureText(w).width > tagwidth && w.length > words[i].length) {
                     breaks.push(i);
                     w = '';
                     i--;
@@ -9328,7 +9327,7 @@
      * @author Chris Leonello
      * @date #date#
      * @version #VERSION#
-     * @copyright (c) 2010-2013 Chris Leonello
+     * @copyright (c) 2010-2015 Chris Leonello
      * jsDate is currently available for use in all personal or commercial projects 
      * under both the MIT and GPL version 2.0 licenses. This means that you can 
      * choose the license that best suits your project and use it accordingly.
