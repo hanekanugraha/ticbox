@@ -140,7 +140,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-sm-12">
-                            Start now >> <button style="border-radius: 8px;" id="createSurveyModalBtn" href="#createSurveyModal" role="button" data-toggle="modal" class="btn btn-green btn-sm" type="button"><g:message code="label.button.create" default="Create"/> Survey</button>
+                            Start now >> <button style="border-radius: 8px;" id="createSurveyModalBtn" href="#createSurveyModal" role="button" data-toggle="modal" class="btn btn-green btn-sm" type="button"><g:message code="label.button.create" default="Create"/> <g:message code="app.survey.label"/></button>
                         </div>
                         <!--a id="addNewUser" href="#add-new-user-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> New User</a-->
                     </div>
@@ -155,7 +155,7 @@
 <div class="module">
 
     <div id="surveyHeader" class="module-header">
-        <div class="title">Your Survey List</div>
+        <div class="title"><g:message code="ticbox.admin.survey.header"/></div>
     </div>
     <div id="surveyList" class="module-content">
         <div style="width: 100%">
@@ -163,19 +163,19 @@
                 <table class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr class="top-header">
-                        <th colspan="4">SUBMITTED</th>
+                        <th colspan="4"><g:message code="app.submitted.status"/></th>
                     </tr>
                     <tr class="sub-header">
-                        <th>Name</th>
-                        <th>Total Charge</th>
-                        <th>Modified</th>
+                        <th><g:message code="app.user.name.label"/></th>
+                        <th><g:message code="app.price.label"/></th>
+                        <th><g:message code="app.modified.label"/></th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     <g:if test="${submitted.isEmpty()}">
                         <tr>
-                            <td colspan="4" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>
+                            <td colspan="4" style="font-style: italic; font-size: 12px; color: #9f7032;"><g:message code="survey.nosurvey.label"/></td>
                         </tr>
                     </g:if>
                     <g:each in="${submitted}" var="survey">
@@ -193,21 +193,21 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="6">DRAFTS</th>
+                    <th colspan="6"><g:message code="app.draft.status"/></th>
                 </tr>
                 <tr class="sub-header">
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Running Time</th>
-                    <th>Total Respondent</th>
-                    <th>Total Charge</th>
+                    <th><g:message code="app.user.name.label"/></th>
+                    <th><g:message code="app.type.label"/></th>
+                    <th><g:message code="app.runningtime.label"/></th>
+                    <th><g:message code="app.totalrespondent.label"/></th>
+                    <th><g:message code="app.totalcharge.label"/></th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <g:if test="${drafts.isEmpty()}">
                     <tr>
-                        <td colspan="4" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>
+                        <td colspan="4" style="font-style: italic; font-size: 12px; color: #9f7032;"><g:message code="survey.nosurvey.label"/></td>
                     </tr>
                 </g:if>
                 <g:each in="${drafts}" var="survey">
@@ -232,21 +232,21 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                        <span id="deleteDraftsLabel" class="modal-title">Delete Drafts</span>
+                                        <span id="deleteDraftsLabel" class="modal-title"><g:message code="default.button.delete.label"/></span>
                                     </div>
                                     <div class="modal-body">
                                         <g:form name="deleteDraftsForm" controller="admin" action="deleteDrafts" role="form">
                                             <input type="hidden" id="delDraftIds" name="delDraftIds" value=""/>
                                             <div class="well">
-                                                <p><b>Are you sure to delete this draft?</b></p>
-                                                There is no rollback for deleted draft. Please make sure you know what you are doing.
+                                                <p><b><g:message code="app.admin.survey.delete.confirmation"/></b></p>
+                                                <g:message code="app.admin.survey.delete.warning"/>
                                             </div>
                                         </g:form>
                                     </div>
                                     <div class="modal-footer">
                                         <!--button id="deleteDraft" class="btn btn-danger" data-loading-text="Processing..">Delete</button-->
-                                        <a class="btn btn-danger" surveyid="${survey.surveyId}" href="${request.contextPath}/survey/deleteSurvey?surveyId=${survey.surveyId}">Delete</a>
-                                        <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                        <a class="btn btn-danger" surveyid="${survey.surveyId}" href="${request.contextPath}/survey/deleteSurvey?surveyId=${survey.surveyId}"><g:message code="common.label.delete"/></a>
+                                        <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
                                     </div>
                                 </div>
                             </div>
@@ -269,21 +269,21 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                     <tr class="top-header">
-                        <th colspan="6">IN PROGRESS</th>
+                        <th colspan="6"><g:message code="app.inprogress.status"/></th>
                     </tr>
                     <tr class="sub-header">
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Running Time</th>
-                        <th>Total Respondent</th>
-                        <th>Total Charge</th>
+                        <th><g:message code="app.user.name.label"/></th>
+                        <th><g:message code="app.type.label"/></th>
+                        <th><g:message code="app.runningtime.label"/></th>
+                        <th><g:message code="app.totalrespondent.label"/></th>
+                        <th><g:message code="app.totalcharge.label"/></th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <g:if test="${inProgress.isEmpty()}">
                         <tr>
-                            <td colspan="4" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>
+                            <td colspan="4" style="font-style: italic; font-size: 12px; color: #9f7032;"><g:message code="survey.nosurvey.label"/></td>
                         </tr>
                     </g:if>
                     <g:each in="${inProgress}" var="survey">
@@ -294,8 +294,8 @@
                             <td>${survey.ttlRespondent}</td>
                             <td>Rp. ${survey.surveyPrice}</td>
                             <td class="content-width">
-                                <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display Result</a>
-								<a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download Result</a>
+                                <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>
+								<a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.downloadresult"/></a>
                             </td>
                         </tr>
                     </g:each>
@@ -305,21 +305,21 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="6">COMPLETED</th>
+                    <th colspan="6"><g:message code="app.completed.status"/></th>
                 </tr>
                 <tr class="sub-header">
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Running Time</th>
-                    <th>Total Respondent</th>
-                    <th>Total Charge</th>
+                    <th><g:message code="app.user.name.label"/></th>
+                    <th><g:message code="app.type.label"/></th>
+                    <th><g:message code="app.runningtime.label"/></th>
+                    <th><g:message code="app.totalrespondent.label"/></th>
+                    <th><g:message code="app.totalcharge.label"/></th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                     <g:if test="${completes.isEmpty()}">
                         <tr>
-                            <td colspan="4" style="font-style: italic; font-size: 12px; color: #9f7032;">No survey yet..</td>
+                            <td colspan="4" style="font-style: italic; font-size: 12px; color: #9f7032;"><g:message code="survey.nosurvey.label"/></td>
                         </tr>
                     </g:if>
                     <g:each in="${completes}" var="survey">
@@ -330,8 +330,8 @@
                             <td>${survey.ttlRespondent}</td>
                             <td>Rp. ${survey.surveyPrice}</td>
                             <td class="content-width">
-                                <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display Result</a>
-                            	<a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download Result</a>
+                                <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>
+                            	<a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.downloadresult"/></a>
 							</td>
                         </tr>
                     </g:each>
@@ -348,12 +348,12 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="createSurveyModalLabel" class="modal-title">
-                    Create Survey
+                    <g:message code="app.createsurvey.label"/>
                 </span>
             </div>
             <div class="modal-body" style="overflow: auto">
                 <g:form name="createSurveyForm" controller="survey" action="createSurvey" class="form-horizontal" role="form">
-                    <label for="surveyName">Give a unique name to help you identify this survey :</label>
+                    <label for="surveyName"><g:message code="survey.uniquename.label"/></label>
                     <!--input type="text" class="form-control" id="surveyName" name="surveyName" param-of="createSurveyBtn"-->
                     <g:textField name="surveyName" class="form-control"/>
                 </g:form>
@@ -362,7 +362,7 @@
                 <!--button href="${request.contextPath}/survey/createSurvey" id="createSurveyBtn" class="btn btn-green submit-redirect">
                     <!--g:message code="label.button.create" default="Create"/-->
                 <!--/button-->
-                <button id="createNewSurvey" class="btn btn-green" data-loading-text="Processing..">Next</button>
+                <button id="createNewSurvey" class="btn btn-green" data-loading-text="Processing.."><g:message code="label.button.next"/></button>
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close" default="Close"/></button>
             </div>
         </div>
