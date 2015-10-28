@@ -74,6 +74,34 @@
 
     </style>
 
+    <style type="text/css">
+        .paging-nav {
+          text-align: right;
+          padding-top: 2px;
+        }
+
+        .paging-nav a {
+          margin: auto 1px;
+          text-decoration: none;
+          display: inline-block;
+          padding: 1px 7px;
+          background: #91b9e6;
+          color: white;
+          border-radius: 3px;
+        }
+
+        .paging-nav .selected-page {
+          background: #187ed5;
+          font-weight: bold;
+        }
+
+        .paging-nav,
+        #tableData {
+          width: 400px;
+          margin: 0 auto;
+          font-family: Arial, sans-serif;
+        }
+    </style>
 </head>
 <body>
 
@@ -492,6 +520,9 @@
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.cursor.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'frameworks/jqplot/plugins', file: 'jqplot.dateAxisRenderer.min.js')}"></script>
 
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+<script src="${resource(dir: 'js', file: 'paging.js')}"></script>
+
 <g:javascript src="jquery.validate.min.js"/>
 <g:javascript src="additional-methods.min.js"/>
 <script type="text/javascript">
@@ -772,29 +803,21 @@
 
                     case '${Survey.QUESTION_TYPE.FREE_TEXT}' :
 
-                        if(summary) {
-                            var line1 = [
-                                ['23-May-08', 578.55],
-                                ['20-Jun-08', 566.5],
-                                ['25-Jul-08', 480.88],
-                                ['22-Aug-08', 509.84],
-                                ['26-Sep-08', 454.13],
-                                ['24-Oct-08', 379.75],
-                                ['21-Nov-08', 303],
-                                ['26-Dec-08', 308.56],
-                                ['23-Jan-09', 299.14],
-                                ['20-Feb-09', 346.51],
-                                ['20-Mar-09', 325.99],
-                                ['24-Apr-09', 386.15]
-                            ];
-                            var tab = jQuery("<table></table>");
-                            jQuery.each(summary, function (index, val) {
+                        if (summary) {
+                            var MAX_NUM_OF_ANSWERS = 10;
+                            // var answers = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ultricies commodo enim, eu euismod tortor porta ac. Sed in leo vulputate, aliquam eros tincidunt, condimentum ante. Nullam sed justo sit amet dolor feugiat commodo sed sed orci. Nullam tincidunt quis nunc eu lobortis. Pellentesque dolor diam, hendrerit quis imperdiet vel, aliquam in nibh. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nec suscipit massa. Phasellus lorem eros, tincidunt ac interdum et, efficitur sed neque. Aenean bibendum mi libero, vitae porta nunc placerat pretium. Integer fermentum, purus quis molestie elementum, orci est dictum diam, nec tristique odio tellus a turpis. Sed non nibh vestibulum, varius sem sed, tristique nisi. Aenean velit ligula, eleifend eget tincidunt ac, sagittis et tellus. Integer ac purus in diam cursus placerat ac a tellus. Sed rutrum est et aliquet tincidunt. In id sapien condimentum, euismod elit vel, congue lectus. Nullam lacus augue, viverra quis ex in, finibus malesuada dolor'.split(".");
+                            var answerss = summary;
+
+                            var tab = jQuery('<table class="table table-bordered table-striped"></table>');
+                            var tbody = jQuery('<tbody sytle="height: 100px; overflow-y: auto; overflow-x: hidden;"></tbody>');
+                            jQuery.each(answers, function (index, val) {
                                 var row = jQuery('<tr><td>' + (index+1)+". " +  val + '</td></tr>');
-                                tab.append(row);
+                                tbody.append(row);
                             });
+                            tab.append(tbody);
                             target.append(tab);
 
-//                            constructLineChart(target, line1, 'Answer Type - Free Text');
+                            tab.paging({limit: MAX_NUM_OF_ANSWERS});
                         }
                         break;
 
@@ -838,96 +861,6 @@
 
         }
 
-    }
-
-    function constructPieChart(target, data, title){
-
-        return jQuery.jqplot (target, [data],
-                {
-                    seriesDefaults: {
-                        // Make this a pie chart.
-                        renderer: jQuery.jqplot.PieRenderer,
-                        rendererOptions: {
-                            // Put data labels on the pie slices.
-                            // By default, labels show the percentage of the slice.
-                            showDataLabels: true
-                        }
-                    },
-                    legend: { show:true, location: 'e' },
-                    title: {
-                        text: title?title:'',
-                        show: title != null
-                    }
-                }
-        );
-
-    }
-
-    function constructMultipleChart(target, data, title,ticks,series){
-
-        return jQuery.jqplot (target, data,
-                {
-                    stackSeries: true,
-//                    captureRightClick: true,
-                    seriesDefaults:{
-                        renderer:$.jqplot.BarRenderer,
-                        rendererOptions: {
-                            // Put a 30 pixel margin between bars.
-//                            barMargin: 30,
-                            // Highlight bars when mouse button pressed.
-                            // Disables default highlighting on mouse over.
-//                            highlightMouseDown: true
-                            barDirection: 'horizontal'
-                        },
-                        pointLabels: {show: true}
-                    },series:series,
-
-                    axes: {
-                        yaxis: {
-                            renderer: $.jqplot.CategoryAxisRenderer,
-                            ticks:ticks
-                        }
-                    },
-                    legend: { show:true, location: 'e' },
-                    title: {
-                        text: title?title:'',
-                        show: title != null
-                    }
-
-                }
-        );
-
-    }
-
-    function constructLineChart(target, data, title){
-
-        return jQuery.jqplot(target, [data], {
-            title:'Data Point Highlighting',
-            axes:{
-                xaxis:{
-                    renderer:jQuery.jqplot.DateAxisRenderer,
-                    tickOptions:{
-                        formatString:'%b&nbsp;%#d'
-                    }
-                },
-                yaxis:{
-                    tickOptions:{
-                        formatString:'$%.2f'
-                    }
-                }
-            },
-            highlighter: {
-                show: true,
-                sizeAdjust: 7.5
-            },
-            cursor: {
-                show: false
-            },
-            title: {
-                text: title?title:'',
-                show: title != null
-            }
-        });
     }
 
 </script>
