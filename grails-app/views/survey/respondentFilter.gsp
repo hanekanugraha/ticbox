@@ -92,7 +92,7 @@
         </div-->
 
         <div class="module-header">
-            <div class="title">Choose Your Survey Type</div>
+            <div class="title"><g:message code="app.username.label"/></div>
         </div>
 
         <div class="module-content">
@@ -106,11 +106,7 @@
                             <img src="../images/ticbox/free_survey_140.png" class="img-circle img-responsive">
                             <div>
                                 <span class="img-label"><g:message code="survey.type.free.label"/></span>
-                                <i class="glyphicon glyphicon-question-sign" style="text-align: left" data-toggle="tooltip" title="
-                                    Write surveys with various question types such as single or multiple choices, star rating, scale rating and free text.
-                                    Upload images into any Q or A or link a youtube video. Once published, this survey will be accessible
-                                    by anyone from our reliable communities.
-                                    For a more focused respondents, please use Easy Survey."
+                                <i class="glyphicon glyphicon-question-sign" style="text-align: left" data-toggle="tooltip" title="<g:message code="survey.free.tooltip"/>"
                                    id='freeSurveyInfo'></i>
                             </div>
                         </label>
@@ -126,10 +122,7 @@
                             <img src="../images/ticbox/easy_survey_140.png" class="img-circle img-responsive">
                             <div>
                                 <span class="img-label"><g:message code="survey.type.easy.label"/></span>
-                                <i class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="
-                            Have a survey where you need a specific, targeted audience to respond?
-                            You can do this just easily by using our various choices of filter.
-                            Once published, your survey will be accessible only by respondents suitable with your target market."
+                                <i class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="<g:message code="survey.easy.tooltip"/>"
                                    id='easySurveyInfo'></i>
                             </div>
                         </label>
@@ -140,7 +133,7 @@
 
         </div>
         <div class="module-header">
-            <div class="title">Choose Your Completion Type</div>
+            <div class="title"><g:message code="survey.choosecompletion.label"/></div>
         </div>
         <div class="module-content">
             <form id="filterCompletionByDate" class="form-horizontal">
@@ -148,13 +141,13 @@
                 <div class="row" style="margin-top: 10px; padding: 0 20%; text-align: justify">
 
                         <!-- completion filter -->
-                        <div class="profile-item-container form-group" style="position: relative" label="Completion by Time" type="DATE">
+                        <div class="profile-item-container form-group" style="position: relative" label="<g:message code="survey.completionbytime.label"/>" type="DATE">
                             <!--i class="remove-filter glyphicon glyphicon-remove clickable" style="position: absolute; top: 5px; right: 7px;"></i-->
                             <div class="coll-sm-1 form-inLine">
                                 <input id="completionByTimeChk" name="completionByTimeChk" class="check-item prettyChk form-control"
                                        type="checkbox" style="width: auto">
                             </div>
-                            <label class="col-sm-3 control-label">Time</label>
+                            <label class="col-sm-3 control-label"><g:message code="app.time.label"/></label>
 
                             <div class="col-sm-9 form-inline" style="font-weight: normal">
                                 <input id="completionDateFrom" name="completionDateFrom" class="filter-value-from datePicker form-control"
@@ -173,19 +166,19 @@
             <!-- Completion by respondent -->
             <div class="row" style="margin-top: 10px; padding: 0 20%; text-align: justify">
                 <!--form id="filterCompletionByTtlRespondent" class="form-horizontal"-->
-                    <div class="profile-item-container form-group" style="position: relative" label="Completion by Total Respondent" type="NUMBER">
+                    <div class="profile-item-container form-group" style="position: relative" label="<g:message code="survey.completionbytotalrespondent.label"/>" type="NUMBER">
                         <div class="coll-sm-1 form-inLine">
                             <input id="completionByTtlRespondentChk" name="completionByTtlRespondentChk" class="check prettyChk form-control"
                                    type="checkbox">
                         </div>
-                        <label class="col-sm-3 control-label">Total Respondent</label>
+                        <label class="col-sm-3 control-label"><g:message code="app.totalrespondent.label"/></label>
 
                         <div class="col-sm-9 form-inline" style="font-weight: normal">
                             <input id="completionByTtlRespondent" name="completionByTtlRespondent" class="filter-value form-control"
                                    type="number" placeholder="0" min="0" style="width: auto"
 
                                    value="${survey.ttlRespondent}">
-                            <span id="errmsg" style="display: none;">Digits Only</span>
+                            <span id="errmsg" style="display: none;"><g:message code="app.digitonly.label"/></span>
                         </div>
                     </div>
                 <!--/form-->
@@ -194,7 +187,7 @@
         </div>
 
         <div id="filterHeader" class="module-header">
-            <div class="title">Define Respondent Filter</div>
+            <div class="title"><g:message code="survey.definerespondentfilter.label"/></div>
         </div>
 
         <div id="filterContent" class="module-content">
@@ -205,7 +198,7 @@
 
             <form id="filterAddForm" class="form-inline" style="text-align: center !important">
                 <div class="form-group" style="margin: 10px 0 15px 0">
-                    <label class="" for="respondentFilterComponents">Add Filter</label>
+                    <label class="" for="respondentFilterComponents"><g:message code="survey.addfilter.label"/></label>
 
                     <select id="respondentFilterComponents" class="form-control" style="display: inline; width: auto">
                         <g:each in="${profileItems}" var="profileItem">
@@ -357,20 +350,20 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="validateFilterLabel" class="modal-title">
-                    Filter Validation
+                    <g:message code="survey.filtervalidation.label"/>
                 </span>
             </div>
             <div class="modal-body">
                 <g:form name="validateFilterForm" role="form">
                     <div class="well">
-                        <p><b><span id="labelHeaderForm" name="labelHeaderForm" text="Are you not answering the question?"/></b></p>
-                        <span id="labelText" name="labelText" text="Please answer the question before you go to the next step."/>
+                        <p><b><span id="labelHeaderForm" name="labelHeaderForm" text="<g:message code="survey.questionvalidation.label"/>"/></b></p>
+                        <span id="labelText" name="labelText" text="<g:message code="survey.questionvalidation.content"/>"/>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">OK</button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="app.ok.label"/></button>
             </div>
         </div>
     </div>
@@ -494,8 +487,8 @@
                 var isCompletionByTtlResp = jQuery('#completionByTtlRespondentChk').is(':checked');
 
                 if(!isCompletionByTime && !isCompletionByTtlResp) {
-                    $('#labelHeaderForm', form).text('Choose Completion');
-                    $('#labelText', form).text('Please choose completion type for your survey.');
+                    $('#labelHeaderForm', form).text('<g:message code="survey.completevalidation.label"/>');
+                    $('#labelText', form).text('<g:message code="survey.completevalidation.content"/>');
                     $('#validate-filter-modal').modal('show');
 
                     return false;
@@ -526,8 +519,8 @@
                 } else if(ttlRespondent<=0) {
 
 
-                    $('#labelHeaderForm', form).text('Completion By Total Respondent is Mandatory');
-                    $('#labelText', form).text('Please insert total respondent for your survey.');
+                    $('#labelHeaderForm', form).text('<g:message code="survey.ttlrespondentmandatory.label"/>');
+                    $('#labelText', form).text('<g:message code="survey.ttlrespondentmandatory.content"/>');
                     $('#validate-filter-modal').modal('show');
 
                     return false;
@@ -818,24 +811,24 @@
 
 
             if(compDateFrom==undefined||compDateTo==undefined) {
-                $('#labelHeaderForm', form).text('Completion Date is Mandatory');
-                $('#labelText', form).text('Please insert Start Date and End Date for your survey.');
+                $('#labelHeaderForm', form).text('<g:message code="survey.datevalidation.label"/>');
+                $('#labelText', form).text('<g:message code="survey.datevalidation.content"/>');
                 $('#validate-filter-modal').modal('show');
 
                 returnBoolean =  false;
             }
             // endDate lebih kecil dari today
             else if(jQuery('#completionDateTo').datepicker('getDate') < new Date()) {
-                $('#labelHeaderForm', form).text('End Date is earlier than Today');
-                $('#labelText', form).text('Please make sure that your completion End Date is not Earlier than today.');
+                $('#labelHeaderForm', form).text('<g:message code="survey.datevalidation.today.label"/>');
+                $('#labelText', form).text('<g:message code="survey.datevalidation.today.content"/>');
                 $('#validate-filter-modal').modal('show');
 
                 returnBoolean =  false;
             }
             // endDate lebih kecil dari startdate
             else if( jQuery('#completionDateTo').datepicker('getDate') < jQuery('#completionDateFrom').datepicker('getDate')) {
-                $('#labelHeaderForm', form).text('End Date is earlier than Start Date');
-                $('#labelText', form).text('Please make sure that your completion End Date is not Earlier than your completion Start Date.');
+                $('#labelHeaderForm', form).text('<g:message code="survey.datevalidation.startdate.label"/>');
+                $('#labelText', form).text('<g:message code="survey.datevalidation.startdate.content"/>');
                 $('#validate-filter-modal').modal('show');
                 returnBoolean =  false;
             }
