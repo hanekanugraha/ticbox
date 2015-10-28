@@ -346,7 +346,7 @@
             });
 
             jQuery('.surveyItemActions .remove', questionComp).click(function(){
-                var ok = confirm ('Are you sure to delete this question? Delete action is not reversible.');
+                var ok = confirm ('<g:message code="survey.deletequestion.label"/>');
                 if (ok == true) {
                     jQuery(this).parents('.surveyItemContainer').remove();
                     jQuery('.surveyItemsContainer > .surveyItemContainer').each(function (idx) {
@@ -944,7 +944,7 @@
 
                         %{--<li id="questionTypesTitleContainer"></li>--}%
                         <li id="questionTypesDynamicTitleContainer">
-                            <span id="question-type-title">Question Type</span>
+                            <span id="question-type-title"><g:message code="survey.choose-question-type"/></span>
                             <span id="single-choice-title">Single Choice</span>
                             <span id="multiple-choice-title" style="font-size: 1em !important;">Multiple Choice</span>
                             <span id="free-text-title">Free Text</span>
@@ -967,7 +967,7 @@
             <button id="saveSurveyBtn" class="btn btn-sm btn-green"><g:message code="label.button.save" default="Save"/></button>
             <%--button id="finalizeSurveyBtn" class="btn btn-sm btn-blue-trust link" href="#submit-confirmation-modal"><g:message code="label.button.submit" default="Submit"/></button--%>
             %{--<a id="finalizeSurveyBtn2" href="#submit-confirmation-modal" role="button" class="btn btn-sm btn-blue-trust link" data-toggle="modal"><i class="icon-remove icon-white"></i> Submit</a>--}%
-            <a id="finalizeSurveyBtn" role="button" class="btn btn-sm btn-blue-trust link" data-toggle="modal"><i class="icon-remove icon-white"></i> Submit</a>
+            <a id="finalizeSurveyBtn" role="button" class="btn btn-sm btn-blue-trust link" data-toggle="modal"><i class="icon-remove icon-white"></i> <g:message code="label.button.submit" /></a>
         </div>
     </div>
 </div>
@@ -1084,7 +1084,7 @@
                             <th class="col-sm-3 form-inline" style="text-align: left; width: 100px; display: inline">
                             </th>
                             <th class="rating-label" style="text-align: left">
-                                <input type="text" class="input-small form-control" placeholder="Rating label.." style="width: 100px;">
+                                <input type="text" class="input-small form-control" placeholder="<g:message code="message.rating-to-set-label"/>" style="width: 100px;">
                             </th>
                             <th>
                                 <button class="btn btn-default btn-info remove-rating">
@@ -1100,7 +1100,7 @@
                     <tbody>
                         <tr class="scale-row">
                             <td style="max-width: 100px;">
-                                <input type="text" class="row-label input-small form-control" placeholder="Row label.." style="width: 100%;">
+                                <input type="text" class="row-label input-small form-control" placeholder="<g:message code="message.row-to-set-label"/>" style="width: 100%;">
                             </td>
                             <td class="rating-weight" style="text-align: center">
                                 <input type="radio" name="rd-1">
@@ -1273,14 +1273,14 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="chooseLogoModalLabel" class="modal-title">
-                    Choose your logo or upload a new one
+                    <g:message code="survey.logo.label"/>
                 </span>
             </div>
             <div class="modal-body" style="overflow: auto">
             </div>
             <div class="modal-footer">
-                <button id="pickLogoBtn" class="btn btn-light-oak">Pick</button>
-                <button id="uploadLogoBtn" class="btn btn-green">Upload</button>
+                <button id="pickLogoBtn" class="btn btn-light-oak"><g:message code="app.pick.label"/></button>
+                <button id="uploadLogoBtn" class="btn btn-green"><g:message code="app.upload.label"/></button>
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close" default="Close"/></button>
             </div>
         </div>
@@ -1293,14 +1293,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <span id="singleQuestionNextModalLabel" class="modal-title" >Next Question</span>
+                <span id="singleQuestionNextModalLabel" class="modal-title" ><g:message code="app.nextquestion.label"/></span>
             </div>
             <div class="modal-body" style="overflow: auto;">
                 <span>hello world</span>
 
             </div>
             <div class="modal-footer">
-                <button class="btn btn-light-oak nextButton">Select</button>
+                <button class="btn btn-light-oak nextButton"><g:message code="app.select.label"/></button>
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close" default="Close"/></button>
             </div>
         </div>
@@ -1321,15 +1321,15 @@
                 <g:form name="enableSurveysForm" controller="admin" action="enableSurveys" role="form">
                     <input type="hidden" id="enableSurveyIds" name="enableSurveyIds" value=""/>
                     <div class="well">
-                        <p><b>Are you sure you want to submit these surveys?</b></p>
-                        After you submit, your survey will be proceed.
+                        <p><b><g:message code="survey.submitsurvey.label"/></b></p>
+                        <g:message code="survey.submitsurvey.content"/>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="submitConfirmation" onclick="saveAndSubmitSurvey();" class="btn btn-danger" data-loading-text="Processing..">Submit</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="submitConfirmation" onclick="saveAndSubmitSurvey();" class="btn btn-danger" data-loading-text="Processing.."><g:message code="app.submit.label"/></button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>
@@ -1342,20 +1342,20 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="validateQuestionItemsLabel" class="modal-title">
-                    Validate Questions
+                    <g:message code="survey.question.validate.label"/>
                 </span>
             </div>
             <div class="modal-body">
                 <g:form name="validateQuestionItemsForm" role="form">
                     <div class="well">
-                        <p><b>Validated Failed</b></p>
-                        Please makes sure that all question is labeled.
+                        <p><b><g:message code="survey.validate.failed.label"/></b></p>
+                        <g:message code="survey.validate.failed.content"/>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="validateQuestionItemsBtn" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Ok</button>
+                <button id="validateQuestionItemsBtn" class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><g:message code="app.ok.label"/></button>
             </div>
         </div>
     </div>
@@ -1367,20 +1367,20 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="validateChoiceQuestionItemsLabel" class="modal-title">
-                    Validate Choice Questions
+                    <g:message code="survey.validate.choice.label"/>
                 </span>
             </div>
             <div class="modal-body">
                 <g:form name="validateQuestionItemsForm" role="form">
                     <div class="well">
-                        <p><b>Validated Choice Questions Failed</b></p>
-                        Please makes sure that all single / multiple questions is more than one options and labeled.
+                        <p><b><g:message code="survey.validate.choice.failed.label"/></b></p>
+                        <g:message code="survey.validate.choice.failed.content"/>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="validateChoiceQuestionItemsBtn" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Ok</button>
+                <button id="validateChoiceQuestionItemsBtn" class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><g:message code="app.ok.label"/></button>
             </div>
         </div>
     </div>
@@ -1392,20 +1392,20 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="validateScaleQuestionItemsLabel" class="modal-title">
-                    Validate Choice Questions
+                    <g:message code="survey.validate.rating.label"/>
                 </span>
             </div>
             <div class="modal-body">
                 <g:form name="validateScaleQuestionItemsForm" role="form">
                     <div class="well">
-                        <p><b>Validated Scale Rating Questions Failed</b></p>
-                        Please makes sure that all Rating questions is more than one options and labeled.
+                        <p><b><g:message code="survey.validate.rating.failed.label"/></b></p>
+                        <g:message code="survey.validate.rating.failed.content"/>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="validateScaleQuestionItemsBtn" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Ok</button>
+                <button id="validateScaleQuestionItemsBtn" class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><g:message code="app.ok.label"/></button>
             </div>
         </div>
     </div>
