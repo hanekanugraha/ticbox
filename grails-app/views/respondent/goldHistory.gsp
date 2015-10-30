@@ -2,24 +2,24 @@
 <html>
 <head>
     <meta name="layout" content="respondent"/>
-    <title>Gold History</title>
+    <title><g:message code="goldhistory.title"/></title>
     <style type="text/css">
     </style>
 </head>
 <body>
     <div id="goldHistoryHeader" class="module-header">
-        <div class="title">Gold History</div>
+        <div class="title"><g:message code="goldhistory.title"/></div>
     </div>
     <div id="goldHistory" class="module-content">
         <g:if test="${goldHistory != null && goldHistory.size() > 0}">
             <table class="table table-bordered">
                <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Type</th>
-                        <th>Description</th>
-                        <th>Amount</th>
-                        <th>Status</th>
+                        <th><g:message code="app.date.label"/></th>
+                        <th><g:message code="app.type.label"/></th>
+                        <th><g:message code="app.description.label"/></th>
+                        <th><g:message code="app.amount.label"/></th>
+                        <th><g:message code="app.status.label"/></th>
                     </tr>
                </thead>
                <tbody>
@@ -36,7 +36,7 @@
             </table>
         </g:if>
         <g:else>
-            <div class="module-message">No history yet</div>
+            <div class="module-message"><g:message code="goldhistory.nohistory.label"/> </div>
         </g:else>
     </div>
 </body>

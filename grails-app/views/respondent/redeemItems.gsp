@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta name="layout" content="respondent"/>
-    <title>Redeem Items</title>
+    <title><g:message code="redeemitems.title"/> </title>
     <style type="text/css">
     </style>
 
@@ -11,7 +11,7 @@
 
 <body>
 <div id="inviteFriendsHeader" class="module-header">
-    <div class="title">Redeem Items</div>
+    <div class="title"><g:message code="redeemitems.title"/></div>
 </div>
 <div id="redeemItemForm" class="module-content">
 
@@ -23,9 +23,9 @@
                     <thead>
                     <tr>
                         <th></th>
-                        <th>Pic</th>
-                        <th>Item Name</th>
-                        <th>Gold</th>
+                        <th><g:message code="app.picture.label"/> </th>
+                        <th><g:message code="app.itemname.label"/> </th>
+                        <th><g:message code="point.gold.label"/> </th>
 
                     </tr>
                     </thead>
@@ -47,25 +47,25 @@
     </div>
 
     <div id="buttonBarHeader" class="module-header"></div>
-    <a id="redeem" href="#redeem-item-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> Redeem</a>
+    <a id="redeem" href="#redeem-item-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> <g:message code="app.redeem.label"/> </a>
 
 
 
 <p>
-    Cart: <span class="simpleCart_total"></span> (<span id="simpleCart_quantity" class="simpleCart_quantity"></span> items)
+    <g:message code="app.cart.label"/> : <span class="simpleCart_total"></span> (<span id="simpleCart_quantity" class="simpleCart_quantity"></span> <g:message code="admin.items.label"/> )
     <br />
-    <a href="javascript:;" class="simpleCart_empty">empty cart</a>
+    <a href="javascript:;" class="simpleCart_empty"><g:message code="redeemitems.empty-cart.label"/> </a>
     <br />
 </p>
-<table id="itemTable" class="table table-bordered table-striped table-hover">
+<table id="itemTable2" class="table table-bordered table-striped table-hover">
     <thead>
     <tr>
         %{--<th></th>--}%
-        <th>Pic</th>
-        <th>Item Name</th>
-        <th>Quantity</th>
-        <th>Gold</th>
-        <th>Action</th>
+        <th><g:message code="app.picture.label"/> </th>
+        <th><g:message code="app.itemname.label"/> </th>
+        <th><g:message code="app.quantity.label"/> </th>
+        <th><g:message code="point.gold.label"/> </th>
+        <th><g:message code="app.action.label"/> </th>
 
     </tr>
     </thead>
@@ -77,7 +77,7 @@
             <td class="item_name">${item.itemName}</td>
             <td><input type="text" value="1" class="item_quantity"></td>
             <td class="item_price">${item.gold}</td>
-            <td><a class="item_add" href="javascript:;"> Add to Cart </a></td>
+            <td><a class="item_add" href="javascript:;"> <g:message code="redeemitems.add-to-cart.label"/> </a></td>
             <td hidden="true" class="item_code">${item.id}</td>
         </tr>
     </g:each>
@@ -87,9 +87,9 @@
     <div class="simpleCart_items" >
     </div>
 
-    Final Total: <span id="simpleCart_grandTotal" class="simpleCart_grandTotal"></span> <br />
+    <g:message code="app.finaltotal.label"/> : <span id="simpleCart_grandTotal" class="simpleCart_grandTotal"></span> <br />
 
-    <a href="javascript:;simpleCart.empty();" class="simpleCart_checkout">checkout</a>
+    <a href="javascript:;simpleCart.empty();" class="simpleCart_checkout"><g:message code="app.checkout.label"/> </a>
 
 
 
@@ -101,22 +101,22 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="redeemItemsLabel" class="modal-title">
-                    Redeem Items
+                    <g:message code="redeemitems.title"/>
                 </span>
             </div>
             <div class="modal-body">
                 <g:form name="redeemItemsForm" controller="respondent" action="requestItemsRedemption" role="form">
                     <input type="hidden" id="redeemItemIds" name="redeemItemIds" value=""/>
                     <div class="well">
-                        <p><b>Are you sure to redeem these items?</b></p>
-                        There is no rollback for redeem items. Please make sure you know what you are doing.
+                        <p><b><g:message code="redeemitems.validation.label"/> </b></p>
+                        <g:message code="redeemitems.validation.content"/>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="redeemItems" class="btn btn-danger" data-loading-text="Processing..">Redeem</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="redeemItems" class="btn btn-danger" data-loading-text="Processing.."><g:message code="app.redeem.label"/> </button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/> </button>
             </div>
         </div>
     </div>

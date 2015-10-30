@@ -466,7 +466,7 @@
 
 <body>
 <div class="module-header">
-    <div class="title">Take Survey</div>
+    <div class="title"><g:message code="takesurvey.title"/> </div>
 </div>
 <div class="module-content">
     <div class="panel panel-default">

@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta name="layout" content="respondent"/>
-    <title>Invite Friends</title>
+    <title><g:message code="invitefriends.title"/></title>
     <style type="text/css">
 
 
@@ -10,50 +10,50 @@
 
 <body>
     <div id="inviteFriendsHeader" class="module-header">
-        <div class="title">Invite Friends</div>
-        <div style="font-weight: normal; font-size: 12px">Invite Friends and Earn Extra Gold!</div>
+        <div class="title"><g:message code="invitefriends.title"/></div>
+        <div style="font-weight: normal; font-size: 12px"><g:message code="invitefriends.label"/></div>
     </div>
     <div id="inviteFriendsForm" class="module-content">
         <div class="message-box">
             <div class="module-message">
-                Also receive 1 Gold for each completed survey done by a friend.
+                <g:message code="invitefriends.1gold.label"/>
             </div>
         </div>
 
         <div class="row" style="margin: 20px 0 30px; padding-bottom: 20px; border-bottom: 1px solid #E8E8E8;">
-            <div style="color: #6daac9; font-weight: bold">You have refer
+            <div style="color: #6daac9; font-weight: bold"><g:message code="invitefriends.refer.label"/>
                 <span style="font-weight: bold; font-size: 16px; color: black;">${respondent.respondentProfile.references.size()}</span>
-                friend(s) so far.
+                <g:message code="invitefriends.totalfriends.label"/>
             </div>
         </div>
 
-        <h4>Reference Link</h4>
+        <h4><g:message code="invitefriends.referencelink.label"/> </h4>
         <div class="row">
             <div class="col-xs-10">
                 <div class="input-append">
                     <input id="refLink" class="form-control input-xxlarge" type="text" value="${refLink}" disabled="disabled" style="display: inline-block;"/>
-                    <button id="copyRefLink" class="btn btn-lg btn-light-oak" style="border-top-right-radius: 15px; border-bottom-right-radius: 15px; padding: 3px 15px 5px 12px; box-shadow: 0 10px 2px 0 rgba(255, 255, 255, 0.2) inset;"><i class="glyphicon glyphicon-book"></i> Copy</button>
+                    <button id="copyRefLink" class="btn btn-lg btn-light-oak" style="border-top-right-radius: 15px; border-bottom-right-radius: 15px; padding: 3px 15px 5px 12px; box-shadow: 0 10px 2px 0 rgba(255, 255, 255, 0.2) inset;"><i class="glyphicon glyphicon-book"></i> <g:message code="app.copy.label"/> </button>
                 </div>
             </div>
         </div>
 
-        <h4>Invite friends by email</h4>
+        <h4><g:message code="invitefriends.email.label"/> </h4>
         <g:form name="inviteForm" class="form-horizontal">
             <textarea id="friendEmails" name="friendEmails" rows="4" class="form-control input-xxlarge"></textarea>
-            <label style="color:#a0a0a0">Separate valid emails by comma ","</label>
+            <label style="color:#a0a0a0"><g:message code="invitefriends.separator.label"/> </label>
         </g:form>
 
         <button id="submitRequest" class="btn btn-default btn-green">${g.message(code: 'app.submit.label')}</button>
 
         <br /><br />
 
-        <h4>Invite friends by social media</h4>
+        <h4><g:message code="invitefriends.socialmedia.label"/> </h4>
         <div class="row">
             <div class="col-xs-12">
-                <button id="inviteByFacebookWall" class="btn btn-default btn-sm"><i class="icon-fb"></i> Post Wall</button>
-                <a id="inviteByFacebookDM" class="btn btn-default btn-sm"><i class="icon-fb"></i> Send Message</a>
-                <a id="inviteByTwitterTweet" class="btn btn-default btn-sm"><i class="icon-tw"></i> Send Tweet</a>
-                <a id="inviteByTwitterDM" class="btn btn-default btn-sm"><i class="icon-tw"></i> Direct Message</a>
+                <button id="inviteByFacebookWall" class="btn btn-default btn-sm"><i class="icon-fb"></i> <g:message code="invitefriends.socialmedia.postwall.label"/></button>
+                <a id="inviteByFacebookDM" class="btn btn-default btn-sm"><i class="icon-fb"></i> <g:message code="invitefriends.socialmedia.sendmessage.label"/></a>
+                <a id="inviteByTwitterTweet" class="btn btn-default btn-sm"><i class="icon-tw"></i> <g:message code="invitefriends.socialmedia.sendtweet.label"/></a>
+                <a id="inviteByTwitterDM" class="btn btn-default btn-sm"><i class="icon-tw"></i> <g:message code="invitefriends.socialmedia.directmessage.label"/></a>
             </div>
         </div>
     </div>

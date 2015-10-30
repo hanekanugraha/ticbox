@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta name="layout" content="respondent"/>
-    <title>Respondent Profile Form</title>
+    <title><g:message code="respprofile.title"/></title>
     <r:require module="fileuploader" />
     <style type="text/css">
         .profile-card {
@@ -68,7 +68,7 @@
 </head>
 <body>
 <div id="profileHeader" class="module-header">
-    <div class="title">Respondent Profile</div>
+    <div class="title"><g:message code="respprofile.title"/></div>
 </div>
 <div id="profileForm" class="module-content" >
     <g:form class="form-horizontal" action="modify" name="respProfileForm">
@@ -107,21 +107,21 @@
         <div style="padding: 20px; background-color: #eeeeed; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;" >
 
             <div class="form-group">
-                <label class="col-sm-3 control-label" for="username">Username</label>
+                <label class="col-sm-3 control-label" for="username"><g:message code="app.username.label"/> </label>
                 <div class="col-sm-8">
                     <g:textField class="form-control" name="username" value="${respondent.username}" disabled="disabled"/>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label" for="email">E-Mail</label>
+                <label class="col-sm-3 control-label" for="email"><g:message code="app.email.label"/> </label>
                 <div class="col-sm-8">
                     <g:textField class="form-control" name="email" value="${respondent.email}"/>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Password</label>
+                <label class="col-sm-3 control-label"><g:message code="app.password.label"/> </label>
                 <div class="col-sm-8">
-                    <a href="#change-password-modal" role="button" class="btn btn-sm btn-light-oak" data-toggle="modal">Change</a>
+                    <a href="#change-password-modal" role="button" class="btn btn-sm btn-light-oak" data-toggle="modal"><g:message code="app.change.label"/> </a>
                 </div>
             </div>
             <div class="form-group">
@@ -244,32 +244,32 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <span id="myModalLabel" class="modal-title" >Change Password</span>
+                <span id="myModalLabel" class="modal-title" ><g:message code="app.changepassword.label"/> </span>
             </div>
             <div class="modal-body form-horizontal">
                 <div class="form-group">
-                    <label class="col-xs-4 control-label">Old Password</label>
+                    <label class="col-xs-4 control-label"><g:message code="app.oldpassword.label"/> </label>
                     <div class="col-xs-7">
                         <g:hiddenField name="id" value="${respondent.id}"/>
                         <g:passwordField class="form-control" name="oldPassword" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-xs-4 control-label">New Password</label>
+                    <label class="col-xs-4 control-label"><g:message code="app.newpassword.label"/> </label>
                     <div class="col-xs-7">
                         <g:passwordField class="form-control" name="newPassword" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-xs-4 control-label">Confirm Password</label>
+                    <label class="col-xs-4 control-label"><g:message code="app.confirmpassword.label"/> </label>
                     <div class="col-xs-7">
                         <g:passwordField class="form-control" name="confirmPassword" />
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default btn-light-oak" data-dismiss="modal" aria-hidden="true">Close</button>
-                <button id="change-password-button" class="btn btn-default btn-green">Save changes</button>
+                <button class="btn btn-default btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close"/> </button>
+                <button id="change-password-button" class="btn btn-default btn-green"><g:message code="app.savechanges.label"/> </button>
             </div>
         </div>
     </div>

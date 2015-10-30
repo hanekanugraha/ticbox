@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta name="layout" content="respondent"/>
-    <title>Survey List</title>
+    <title><g:message code="resp.surveylist.label"/> </title>
     <style type="text/css">
         /*.survey-row {*/
             /*margin: 1em 0em;*/
@@ -61,7 +61,7 @@
 </head>
 <body>
         <div id="surveyHeader" class="module-header">
-            <div class="title">Survey List</div>
+            <div class="title"><g:message code="resp.surveylist.label"/></div>
         </div>
         <div id="surveyList" class="module-content">
             <g:if test="${surveyList}">
@@ -89,15 +89,15 @@
                                             ${survey.title}
                                         </g:if>
                                         <g:else>
-                                            <div class="module-message" style="font-size: inherit">no description available</div>
+                                            <div class="module-message" style="font-size: inherit"><g:message code="surveylist.nodesc.label"/> </div>
                                         </g:else>
                                     </p>
                                 </div>
                             </div>
                         </div>
                         <div class="panel-body">
-                            <g:link action="takeSurvey" params="[surveyId:survey.surveyId]" class="btn btn-blue-trust btn-xs" style="margin-right: 10px">Take Survey</g:link>
-                            Respondent needed: ${survey.ttlRespondent} &nbsp; | &nbsp; Completion: 0%
+                            <g:link action="takeSurvey" params="[surveyId:survey.surveyId]" class="btn btn-blue-trust btn-xs" style="margin-right: 10px"><g:message code="surveylist.takesurvey.label"/> </g:link>
+                            <g:message code="surveylist.respneeded.label"/>: ${survey.ttlRespondent} &nbsp; | &nbsp; <g:message code="app.completion.label"/> : 0%
                         </div>
                         </div>
                     </g:each>
@@ -151,7 +151,7 @@
                 %{--</g:each>--}%
             </g:if>
             <g:else>
-                <div class="module-message">There is no survey at the moment..</div>
+                <div class="module-message"><g:message code="surveylist.nosurvey.label"/> </div>
             </g:else>
         </div>
 </body>

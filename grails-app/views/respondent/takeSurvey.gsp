@@ -467,7 +467,7 @@
 
 <body>
     <div class="module-header">
-        <div class="title">Take Survey</div>
+        <div class="title"><g:message code="takesurvey.title"/> </div>
     </div>
     <div class="module-content">
         <div class="panel panel-default">
@@ -487,13 +487,11 @@
                                 ${survey.title}
                             </g:if>
                             <g:else>
-                                <div class="module-message" style="font-size: inherit">no description available</div>
+                                <div class="module-message" style="font-size: inherit"><g:message code="surveylist.nodesc.label"/> </div>
                             </g:else>
                         </p>
                         <div class="alert alert-info" style="margin-bottom: 0; font-size: 8px; width: 100%">
-                            We appreciate your contribution to this survey. By submitting your responds you signify your agreement to our Terms & Conditions.
-                            To understand how we treat your data please read the Privacy Policy.
-                            Good luck on completing the survey!
+                            <g:message code="takesurvey.appreciation.label"/>
                         </div>
                     </div>
                 </div>
@@ -602,20 +600,20 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="validateQuestionLabel" class="modal-title">
-                    Answer Validation
+                    <g:message code="takesurvey.answer-validation.label"/>
                 </span>
             </div>
             <div class="modal-body">
                 <g:form name="validateQuestionForm" role="form">
                     <div class="well">
-                        <p><b>Are you not answering the question?</b></p>
-                        Please answer the question before you go to the next step.
+                        <p><b><g:message code="takesurvey.validation.no-answer.label"/> </b></p>
+                        <g:message code="takesurvey.validation.no-answer.content"/>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">OK</button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="app.ok.label"/> </button>
             </div>
         </div>
     </div>
@@ -627,21 +625,21 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="submitAnswersLabel" class="modal-title">
-                    Submit Answers
+                    <g:message code="takesurvey.answer-submit.label"/>
                 </span>
             </div>
             <div class="modal-body">
                 <g:form name="submitAnswersForm" role="form">
                     <div class="well">
-                        <p><b>Are you sure you want to submit your answer?</b></p>
-                        Please click button Submit if you are sure for your answers.
+                        <p><b><g:message code="takesurvey.validation.submit.label"/> </b></p>
+                        <g:message code="takesurvey.validation.submit.content"/>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="saveResponse" class="btn btn-danger" data-loading-text="Processing..">Submit</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="saveResponse" class="btn btn-danger" data-loading-text="Processing.."><g:message code="label.button.submit"/> </button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/> </button>
             </div>
         </div>
     </div>

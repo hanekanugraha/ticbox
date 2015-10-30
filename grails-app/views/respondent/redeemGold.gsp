@@ -1,14 +1,14 @@
 <html>
 <head>
     <meta name="layout" content="respondent"/>
-    <title>Redeem Gold</title>
+    <title><g:message code="redeemgold.title"/> </title>
     <style type="text/css">
     </style>
 </head>
 
 <body>
 <div id="inviteFriendsHeader" class="module-header">
-    <div class="title">Redeem Gold</div>
+    <div class="title"><g:message code="redeemgold.title"/></div>
 </div>
 <div id="redeemGoldForm" class="module-content">
     <div class="message-box">
@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="row" style="margin: 20px 0 30px; padding-bottom: 20px; border-bottom: 1px solid #E8E8E8;">
-        <div style="color: #6daac9; font-weight: bold">Your balance is
+        <div style="color: #6daac9; font-weight: bold"><g:message code="redeemgold.your-balance-is"/>
             <span style="font-weight: bold; font-size: 16px; color: black;">${balance}</span>
         </div>
     </div>
@@ -26,7 +26,7 @@
     <g:form name="redeemForm" class="form-horizontal">
         <div class="form-group">
             <label class="col-xs-4 control-label">
-                <g:message code="app.respondent.redeemAmount.label" default="Redeem Amount"/> (min ${g.formatNumber(number: minRedemption, formatName: 'app.currency.format')})
+                <g:message code="redeemgold.redeemamount.label" default="Redeem Amount"/> (min ${g.formatNumber(number: minRedemption, formatName: 'app.currency.format')})
             </label>
 
             <div class="col-xs-6">
@@ -36,7 +36,7 @@
 
         <div class="form-group">
             <label class="col-xs-4 control-label">
-                <g:message code="app.respondent.bankName.label" default="Bank Name"/>
+                <g:message code="app.bankname.label" default="Bank Name"/>
             </label>
 
             <div class="col-xs-6">
@@ -46,7 +46,7 @@
 
         <div class="form-group">
             <label class="col-xs-4 control-label">
-                <g:message code="app.respondent.bankBranchName.label" default="Bank Branch Name"/>
+                <g:message code="app.bankbranchname.label" default="Bank Branch Name"/>
             </label>
 
             <div class="col-xs-6">
@@ -56,7 +56,7 @@
 
         <div class="form-group">
             <label class="col-xs-4 control-label">
-                <g:message code="app.respondent.bankAccountNumber.label" default="Bank Account Number"/>
+                <g:message code="app.bankaccnumber.label" default="Bank Account Number"/>
             </label>
 
             <div class="col-xs-6">
@@ -66,7 +66,7 @@
 
         <div class="form-group">
             <label class="col-xs-4 control-label">
-                <g:message code="app.respondent.bankAccountName.label" default="Bank Account Name"/>
+                <g:message code="app.bankaccname.label" default="Bank Account Name"/>
             </label>
 
             <div class="col-xs-6">
