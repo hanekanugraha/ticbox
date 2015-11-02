@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="admin"/>
-    <title>Administrator Page : Lookup</title>
+    <title><g:message code="masterlookup.header"/> </title>
     <style type="text/css">
 
     </style>
@@ -10,7 +10,7 @@
 <body>
     <div class="module">
         <div id="adminHeader" class="module-header">
-            <div class="title">Lookup</div>
+            <div class="title"><g:message code="masterlookup.title"/> </div>
         </div>
         <div id="userList" class="module-content">
             <div class="row" style="margin-bottom:10px">
@@ -26,8 +26,8 @@
                         <thead>
                             <tr>
                                 %{--<th></th>--}%
-                                <th>Lookup Code</th>
-                                <th>Label</th>
+                                <th><g:message code="masterlookup.lookup-code.label"/> </th>
+                                <th><g:message code="masterlookup.lookup-label.label"/> </th>
 
 
                             </tr>

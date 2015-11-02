@@ -2,7 +2,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="ticbox"/>
-    <title>Edit Lookup</title>
+    <title><g:message code="masterlookup.editlookup.title"/> </title>
 </head>
 
 <body>
@@ -10,12 +10,12 @@
     <div class="col-md-12">
         <div class="module">
             <div class="module-header">
-                <div class="title">Edit Lookup</div>
+                <div class="title"><g:message code="masterlookup.editlookup.title"/></div>
             </div>
 
             <div class="module-content">
 
-                <div style="font-weight: bold; margin-top: 10px;">Edit Lookup</div>
+                <div style="font-weight: bold; margin-top: 10px;"><g:message code="masterlookup.editlookup.title"/></div>
 
                 <g:if test="${flash.message}">
                     <div class="alert alert-success" style="display: block">${flash.message}</div>
@@ -25,13 +25,13 @@
                     <input type="hidden" id="lookupCode" value="${lookupMaster.code}"/>
 
                     <div class="form-group">
-                        <label  class="col-sm-2 control-label">Lookup Code</label>
+                        <label  class="col-sm-2 control-label"><g:message code="masterlookup.lookup-code.label"/> </label>
                         <label  class="col-sm-3 control-label">${lookupMaster.code}</label>
 
 
                     </div>
                     <div class="form-group">
-                        <label  class="col-sm-2 control-label">Lookup Label</label>
+                        <label  class="col-sm-2 control-label"><g:message code="masterlookup.lookup-label.label"/> </label>
                         <label  class="col-sm-3 control-label">${lookupMaster.label}</label>
 
 
@@ -39,8 +39,8 @@
 
                     <div class="row" style="margin-bottom:10px">
                         <div class="col-sm-12">
-                            <a id="addValue" href="#add-new-value-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> Add</a>
-                            <a id="delValue" href="#delete-value-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> Delete</a>
+                            <a id="addValue" href="#add-new-value-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> <g:message code="app.add.label"/> </a>
+                            <a id="delValue" href="#delete-value-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> <g:message code="common.label.delete"/> </a>
 
                         </div>
                     </div>
@@ -50,8 +50,8 @@
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>Lookup Value Code</th>
-                                    <th>Lookup Value Description</th>
+                                    <th><g:message code="masterlookup.lookup-value-code.label"/> </th>
+                                    <th><g:message code="masterlookup.lookup-value-desc.label"/> </th>
 
                                 </tr>
                             </thead>
@@ -73,9 +73,9 @@
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-3">
                             <button id="submit" class="btn btn-default btn-green">
-                                <span class="glyphicon glyphicon-log-in"></span> Save
+                                <span class="glyphicon glyphicon-log-in"></span> <g:message code="label.button.save"/>
                             </button>
-                            <button id="cancel" class="btn btn-light-oak btn-md" href="${request.contextPath}/lookupMaster/">Cancel</button>
+                            <button id="cancel" class="btn btn-light-oak btn-md" href="${request.contextPath}/lookupMaster/"><g:message code="label.button.cancel"/> </button>
 
                         </div>
 
@@ -95,26 +95,26 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="addNewValueLabel" class="modal-title">
-                    Add New Value
+                    <g:message code="masterlookup.add-lookup.header"/>
                 </span>
             </div>
             <div class="modal-body" style="overflow: auto">
                 <g:form name="addNewValueForm"  class="form-horizontal" role="form">
 
                     <div class="form-group">
-                        <label for="mapKey" class="col-xs-4 control-label"><g:message code="app.mapkey.label"/></label>
+                        <label for="mapKey" class="col-xs-4 control-label"><g:message code="masterlookup.lookup-value-code.label"/></label>
                         <div class="col-xs-8"><g:textField name="mapKey" class="form-control" style="min-width: 70%; width: auto;"/></div>
                     </div>
                     <div class="form-group">
-                        <label for="mapValue" class="col-xs-4 control-label"><g:message code="app.mapValue.label"/></label>
+                        <label for="mapValue" class="col-xs-4 control-label"><g:message code="masterlookup.lookup-value-desc.label"/></label>
                         <div class="col-xs-8"><g:textField name="mapValue" class="form-control" style="min-width: 70%; width: auto;"/></div>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="createNewValue" class="btn btn-green" data-loading-text="Processing..">Add</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="createNewValue" class="btn btn-green" data-loading-text="Processing.."><g:message code="app.add.label"/> </button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/> </button>
             </div>
         </div>
     </div>
@@ -134,15 +134,15 @@
                 <g:form name="deleteValueForm" role="form">
                     <input type="hidden" id="delValueIds" name="delValueIds" value=""/>
                     <div class="well">
-                        <p><b>Are you sure to delete these value?</b></p>
-                        There is no rollback for deleted values. Please make sure you know what you are doing.
+                        <p><b><g:message code="masterlookup.validate.add-lookup.header"/> </b></p>
+                        <g:message code="masterlookup.validate.add-lookup.content"/>
                     </div>
 
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="deleteValues" class="btn btn-danger" data-loading-text="Processing..">Delete</button>
-                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button id="deleteValues" class="btn btn-danger" data-loading-text="Processing.."><g:message code="common.label.delete"/> </button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/> </button>
             </div>
         </div>
     </div>
