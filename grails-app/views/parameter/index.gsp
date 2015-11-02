@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="admin"/>
-    <title>Administrator Page : Parameters</title>
+    <title><g:message code="editparameters.header"/> </title>
     <style type="text/css">
 
     </style>
@@ -10,7 +10,7 @@
 <body>
     <div class="module">
         <div id="adminHeader" class="module-header">
-            <div class="title">Parameters</div>
+            <div class="title"><g:message code="app.parameters.label"/> </div>
         </div>
         <div id="userList" class="module-content">
             <div class="row" style="margin-bottom:10px">
@@ -26,8 +26,8 @@
                         <thead>
                             <tr>
                                 %{--<th></th>--}%
-                                <th>Parameter</th>
-                                <th>Value</th>
+                                <th><g:message code="app.parameters.label"/> </th>
+                                <th><g:message code="app.value.label"/> </th>
 
 
                             </tr>
