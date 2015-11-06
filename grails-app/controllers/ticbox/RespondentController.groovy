@@ -23,7 +23,7 @@ class RespondentController {
 //        def surveyList = Survey.findByStatus(Survey.STATUS.IN_PROGRESS)
         def surveyList = respondentService.getSurveyList(detail)
 
-        [surveyList:surveyList, respondent: respondent,surveyJoined:SurveyResponse.countByRespondentId(respondent.id)]
+        [surveyList:surveyList, respondent: respondent,surveyJoined:SurveyResponse.countByRespondentId(respondent.id), profileRespondent:detail.getProfileItems().isEmpty()]
     }
 
     def profileForm() {

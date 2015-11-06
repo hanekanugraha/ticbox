@@ -301,21 +301,21 @@ class AuthController {
                             success = true
                             message = "Password successfully changed"
                         } else {
-                            message = "Invalid password"
+                            message = message(code: "message.password.notmatch")
                         }
                     } else {
-                        message = "New password mismatch"
+                        message = message(code: "message.new-password.missmatch")
                     }
 
                 } else {
-                    message = "Your password does not meet our requirement, use at least 5 characters."
+                    message = message(code: "message.password.failed")
                 }
 
             } else {
-                message = "Please provide all details"
+                message = message(code: "message.details.invalid")
             }
         } else {
-            message = "invalid user"
+            message = message(code: "message.user.invalid")
         }
         result = [success: success, message: message]
         render result as JSON
@@ -340,18 +340,18 @@ class AuthController {
                         flash.message = message(code: "general.resetpassword.success.message")
 
                     } else {
-                        flash.error = message("Invalid password")
+                        flash.error = message(code: "message.password.invalid")
 
                     }
                 } else {
-                    flash.error = message("New password mismatch")
+                    flash.error = message(code: "message.new-password.missmatch")
                 }
             } else {
-                flash.error = message("Please provide all details")
+                flash.error = message(code: "message.details.invalid")
 
             }
         } else {
-            flash.error = message("invalid user")
+            flash.error = message(code: "message.user.invalid")
         }
         redirect(uri: "/auth/login")
 

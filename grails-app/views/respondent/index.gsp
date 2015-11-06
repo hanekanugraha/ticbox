@@ -64,7 +64,11 @@
             <div class="title"><g:message code="resp.surveylist.label"/></div>
         </div>
         <div id="surveyList" class="module-content">
-            <g:if test="${surveyList}">
+
+            <g:if test="${profileRespondent}">
+                <div class="module-message"><g:message code="surveylist.please-update-profile.label"/> </div>
+            </g:if>
+            <g:elseif test="${surveyList}">
                 <g:each in="${surveyList}" var="survey">
                     <div class="panel panel-default" style="position: relative">
                         <g:if test="${ticbox.Survey.POINT_TYPE.GOLD.equalsIgnoreCase(survey.pointType)}">
@@ -149,7 +153,7 @@
                         %{--</div>--}%
                     %{--</div>--}%
                 %{--</g:each>--}%
-            </g:if>
+            </g:elseif>
             <g:else>
                 <div class="module-message"><g:message code="surveylist.nosurvey.label"/> </div>
             </g:else>
