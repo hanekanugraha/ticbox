@@ -52,7 +52,7 @@ class SurveyService {
     }
 
     def getProfileItemsForRespondentFilter(){
-        return ProfileItem.list()?.sort{it.seq}
+        return ProfileItem.findAllByRole(ProfileItem.ROLES.RESPONDENT)?.sort{it.seq}
     }
 
     def submitRespondentFilter(String surveyType, String compDateFrom, String compDateTo, String ttlRespondent, String filterItemsJSON, Survey survey){

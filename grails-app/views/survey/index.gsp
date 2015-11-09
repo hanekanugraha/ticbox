@@ -140,7 +140,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-sm-12">
-                            Start now >> <button style="border-radius: 8px;" id="createSurveyModalBtn" href="#createSurveyModal" role="button" data-toggle="modal" class="btn btn-green btn-sm" type="button"><g:message code="label.button.create" default="Create"/> <g:message code="app.survey.label"/></button>
+                            <g:message code="app.startnow.label"/> >> <button style="border-radius: 8px;" id="createSurveyModalBtn" href="#createSurveyModal" role="button" data-toggle="modal" class="btn btn-green btn-sm" type="button"><g:message code="label.button.create" default="Create"/> <g:message code="app.survey.label"/></button>
                         </div>
                         <!--a id="addNewUser" href="#add-new-user-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> New User</a-->
                     </div>
