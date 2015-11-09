@@ -149,7 +149,7 @@
                         <g:elseif test="${profileItem.code == 'PI_RELIGION001'}"><g:message code="app.religion.label"/> </g:elseif>
                         <g:elseif test="${profileItem.code == 'PI_EMP_STATUS001'}"><g:message code="app.employeestatus.label"/> </g:elseif>
                         <g:elseif test="${profileItem.code == 'PI_CAREER001'}"><g:message code="app.career.label"/> </g:elseif>
-                        <g:elseif test="${profileItem.code == 'PI_RELASIONSHIP001'}"><g:message code="app.relationshipstatus.label"/> </g:elseif>
+                        <g:elseif test="${profileItem.code == 'PI_RELATIONSHIP001'}"><g:message code="app.relationshipstatus.label"/> </g:elseif>
                         <g:elseif test="${profileItem.code == 'PI_PARENTAL_STATUS001'}"><g:message code="app.children.label"/> </g:elseif>
                         <g:elseif test="${profileItem.code == 'PI_PROVINCE001'}"><g:message code="app.region.label"/> </g:elseif>
                         <g:elseif test="${profileItem.code == 'PI_CITY001'}"><g:message code="app.city.label"/> </g:elseif>
@@ -176,7 +176,7 @@
                             <input name="${profileItem.code}" type="text" placeholder="${profileItem.min && profileItem.max ? "${profileItem.min} - ${profileItem.max}" : ''}" value="${respondentDetail?.profileItems[profileItem.code]}" class="num form-control" data-max="${profileItem.max}" data-min="${profileItem.min}" style="text-align:right">
                         </g:elseif>
                         <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.LOOKUP}">
-                            <g:select name="${profileItem.code}" class="form-control" style="width: auto" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" value="${respondentDetail?.profileItems[profileItem.code]}"/>
+                            <g:select name="${profileItem.code}" class="form-control" style="width: auto" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" value="${respondentDetail?.profileItems[profileItem.code]}" noSelection="${['null':'Select One...']}"/>
                         </g:elseif>
                         <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.CHOICE}">
 
@@ -200,15 +200,15 @@
                             <g:elseif test="${profileItem.componentType == ticbox.ProfileItem.COMPONENT_TYPES.SELECT}">
                                 <g:if test="${profileItem.items}">
                                     <g:if test="${profileItem.multiple}">
-                                        <g:select class="form-control" style="width: auto" name="${profileItem.code}" from="${profileItem.items}"  multiple="true"  value="${respondentDetail?.profileItems[profileItem.code]?.toList()}" />
+                                        <g:select class="form-control" style="width: auto" name="${profileItem.code}" from="${profileItem.items}"  multiple="true"  value="${respondentDetail?.profileItems[profileItem.code]?.toList()}" noSelection="${['null':'Select One...']}"/>
                                     </g:if>
                                     <g:else> %{--this is stupid!!!!--}%
-                                        <g:select class="form-control" style="width: auto" name="${profileItem.code}" from="${profileItem.items}" value="${respondentDetail?.profileItems[profileItem.code]}" />
+                                        <g:select class="form-control" style="width: auto" name="${profileItem.code}" from="${profileItem.items}" value="${respondentDetail?.profileItems[profileItem.code]}" noSelection="${['null':'Select One...']}"/>
                                     </g:else>
                                 </g:if>
                                 <g:elseif test="${profileItem.lookupFrom}">
                                     <g:if test="${profileItem.multiple}">
-                                        <g:select class="form-control" style="width: auto" name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" multiple="true" value="${respondentDetail?.profileItems[profileItem.code]?.toList()}"/>
+                                        <g:select class="form-control" style="width: auto" name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" multiple="true" value="${respondentDetail?.profileItems[profileItem.code]?.toList()}" noSelection="${['null':'Select One...']}"/>
                                     </g:if>
                                     <g:else> %{--this is stupid!!!!--}%
                                         <g:if test="${profileItem.code=="PI_PROVINCE001"}" >
