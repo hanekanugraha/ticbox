@@ -139,10 +139,26 @@
             <g:each in="${profileItems}" var="profileItem">
                 <div class="form-group">
                     <label class="col-sm-3 control-label">
-                        ${profileItem.label}
-                        <g:if test="${profileItem.unit}">
+                        %{--${profileItem.label}--}%
+                        %{--alert(${profileItem.code})--}%
+                        <g:if test="${profileItem.code == 'PI_GENDER001'}"><g:message code="app.gender.label"/> </g:if>
+                        <g:elseif test="${profileItem.code == 'PI_COUNTRY001'}"><g:message code="app.country.label"/> </g:elseif>
+                        <g:elseif test="${profileItem.code == 'PI_DOB001'}"><g:message code="app.dob.label"/> </g:elseif>
+                        <g:elseif test="${profileItem.code == 'PI_EDU001'}"><g:message code="app.lasteducation.label"/> </g:elseif>
+                        <g:elseif test="${profileItem.code == 'PI_HOBBY001'}"><g:message code="app.hobby.label"/> </g:elseif>
+                        <g:elseif test="${profileItem.code == 'PI_RELIGION001'}"><g:message code="app.religion.label"/> </g:elseif>
+                        <g:elseif test="${profileItem.code == 'PI_EMP_STATUS001'}"><g:message code="app.employeestatus.label"/> </g:elseif>
+                        <g:elseif test="${profileItem.code == 'PI_CAREER001'}"><g:message code="app.career.label"/> </g:elseif>
+                        <g:elseif test="${profileItem.code == 'PI_RELASIONSHIP001'}"><g:message code="app.relationshipstatus.label"/> </g:elseif>
+                        <g:elseif test="${profileItem.code == 'PI_PARENTAL_STATUS001'}"><g:message code="app.children.label"/> </g:elseif>
+                        <g:elseif test="${profileItem.code == 'PI_PROVINCE001'}"><g:message code="app.region.label"/> </g:elseif>
+                        <g:elseif test="${profileItem.code == 'PI_CITY001'}"><g:message code="app.city.label"/> </g:elseif>
+                        <g:elseif test="${profileItem.unit}">
                             (${profileItem.unit})
-                        </g:if>
+                        </g:elseif>
+                        <g:else>
+                            ${profileItem.label}
+                        </g:else>
                     </label>
                     <div class="col-sm-8">
                         <g:if test="${profileItem.type == ticbox.ProfileItem.TYPES.STRING}">
@@ -196,13 +212,16 @@
                                     </g:if>
                                     <g:else> %{--this is stupid!!!!--}%
                                         <g:if test="${profileItem.code=="PI_PROVINCE001"}" >
-                                            <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;" onchange="changeIt(this)" value="${respondentDetail?.profileItems[profileItem.code]}"/>
+                                            <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;" onchange="changeIt(this)" value="${respondentDetail?.profileItems[profileItem.code]}" noSelection="${['null':'Select One...']}"/>
                                         </g:if>
                                         <g:elseif test="${profileItem.code=="PI_CITY001"}" >
                                             <g:select name="${profileItem.code}" from="${City.findAllByParent(respondentDetail.getProfileItems().get('PI_PROVINCE001'))}" optionKey="code" optionValue="label" class="form-control" style="min-width: 40%; width: auto;" value="${respondentDetail?.profileItems[profileItem.code]}"/>
                                         </g:elseif>
                                         <g:else>
-                                            <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;" value="${respondentDetail?.profileItems[profileItem.code]}"/>
+                                            <g:select name="${profileItem.code}" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}"
+                                                      optionKey="key" optionValue="value" class="form-control" style="min-width: 40%; width: auto;"
+                                                      value="${respondentDetail?.profileItems[profileItem.code]}"
+                                                      noSelection="${['null':'Select One...']}"/>
                                         </g:else>
                                     </g:else>
                                 </g:elseif>
