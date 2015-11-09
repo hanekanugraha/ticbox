@@ -9,23 +9,23 @@
 <html>
 <head>
     <meta name="layout" content="ticbox"/>
-    <title>Ticbox | Ooops...!</title>
+    <title><g:message code="404.header"/> </title>
 </head>
 <body>
 <div id="container" class="module">
     <div id="tou-header" class="module-header">
-        <div class="title">404 PAGE NOT FOUND</div>
+        <div class="title"><g:message code="404.title"/> </div>
     </div>
     <div id="tou-content" class="module-content">
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="span12">
                     <div class="module-header" style="margin: 22px 0 10px 0">
-                        <div class="trust" style="font-size: 16px; font-weight: normal">Sooorrryy...!</div>
+                        <div class="trust" style="font-size: 16px; font-weight: normal"><g:message code="404.content"/> </div>
                     </div>
                     <div style="background-color: #EAEAE8; padding: 10px 12px 4px 12px; margin: 22px 0; font-size: 14px">
                         <p>
-                            Wrong road.. please take a turn..
+                            <g:message code="404.content2"/>
                         </p>
                     </div>
                 </div>
