@@ -38,14 +38,29 @@ class RespondentController {
     def modify = {
         def respondent = User.findById(params.id)
         respondent.email = params.email
-        respondent.save()
-        try {
-            respondentService.updateRespondentDetail(respondent,params)
-            flash.message = message(code: "general.create.success.message")
-        } catch (Exception e) {
-            flash.message = message(code: "general.create.failed.message")
-            log.error(e.message)
+        boolean isFalid = true
+
+        def profileItems = respondentService.getRespondentProfileItems()
+        for(String profileItemCode : profileItems.code) {
+
+            if(params.get(profileItemCode) == "null" || params.get(profileItemCode) =='') {
+                flash.error = message(code: "respondent.updateprofile.failed.message")
+                isFalid = false;
+                break;
+            }
         }
+
+        if(isFalid) {
+            respondent.save()
+            try {
+                respondentService.updateRespondentDetail(respondent,params)
+                flash.message = message(code: "respondent.updateprofile.success.message")
+            } catch (Exception e) {
+                flash.error = message(code: "general.update.failed.message")
+                log.error(e.message)
+            }
+        }
+
         forward(action: "profileForm")
     }
 
