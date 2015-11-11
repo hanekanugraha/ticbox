@@ -256,10 +256,10 @@
                                 <div class="media">
                                     <div class="col-xs-5" style="padding-left: 0">
                                         <g:if test="${surveyor.pic}">
-                                            <img id="sidebarPic" class="img-thumbnail img-responsive" src="${g.createLink(action: 'viewImage', params: [surveyorId: surveyor.id])}"/>
+                                            <img id="sidebarPic" class="img-thumbnail img-responsive profile-pic" src="data:image;base64,${surveyor.pic}"/>
                                         </g:if>
                                         <g:else>
-                                            <img id="sidebarPic" class="img-thumbnail img-responsive" src="${g.resource(dir: 'images/ticbox', file: 'anonymous.png')}"/>
+                                            <img id="sidebarPic" class="img-thumbnail img-responsive profile-pic" src="${g.resource(dir: 'images/ticbox', file: 'anonymous.png')}"/>
                                         </g:else>
                                     </div>
                                     <div class="media-body col-xs-7" style="padding-left: 0;">

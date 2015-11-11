@@ -83,19 +83,22 @@
                     <div class="profile-picture">
                         <g:if test="${surveyor.pic}">
                             <a class="media-thumbnail" target="_blank" data-url="${g.createLink(action: 'viewImage', params: [surveyorId: surveyor.id])}" data-resolved-url-large="${g.createLink(action: 'viewImage', params: [surveyorId: surveyor.id])}" href="${g.createLink(action: 'viewImage', params: [surveyorId: surveyor.id])}" loaded="true">
-                                <img id="profilePic" class="img-polaroid img-rounded" src="${g.createLink(action: 'viewImage', params: [surveyorId: surveyor.id])}"/>
+                                %{--<img id="profilePic" class="img-polaroid img-rounded" src="${g.createLink(action: 'viewImage', params: [surveyorId: surveyor.id])}"/>--}%
+                                <img id="profilePic" class="img-polaroid img-rounded profile-pic" src="data:image;base64,${surveyor.pic}"/>
                             </a>
                         </g:if>
                         <g:else>
                             <span class="media-thumbnail">
-                                <img id="profilePic" class="img-polaroid img-rounded" src="${g.resource(dir: 'images/ticbox', file: 'anonymous.png')}"/>
+                                <img id="profilePic" class="img-polaroid img-rounded profile-pic" src="${g.resource(dir: 'images/ticbox', file: 'anonymous.png')}"/>
                             </span>
                         </g:else>
                     </div>
                     <div class="uploader-button">
                         <uploader:uploader id="imageUploader" url="${[controller:'survey', action:'uploadImage']}" params="${[surveyorId: surveyor.id]}">
                             <uploader:onComplete>
-                                $('#profilePic').attr('src', '${g.createLink(action: "viewImage", params: [surveyorId: surveyor.id])}&u='+new Date().getTime());
+                                %{--$('#profilePic').attr('src', '${g.createLink(action: "viewImage", params: [surveyorId: surveyor.id])}&u='+new Date().getTime());--}%
+                                $('.profile-pic').attr('src', 'data:image;base64,' + responseJSON.img);
+                                $('.qq-upload-list').empty()
                             </uploader:onComplete>
                         </uploader:uploader>
                     </div>
