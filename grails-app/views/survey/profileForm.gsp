@@ -110,7 +110,7 @@
         <div style="padding: 20px; background-color: #eeeeed; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;" >
 
             <div class="form-group">
-                <label class="col-sm-3 control-label" for="username"><g:message code="survey.choosesurvey.label"/></label>
+                <label class="col-sm-3 control-label" for="username"><g:message code="app.username.label"/></label>
                 <div class="col-sm-8">
                     <g:textField class="form-control" name="username" value="${surveyor.username}" disabled="disabled"/>
                 </div>
