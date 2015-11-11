@@ -87,15 +87,15 @@
                             </a>
                         </g:if>
                         <g:else>
-                            <a class="media-thumbnail" target="_blank" data-url="${g.createLink(action: 'viewImage', params: [surveyorId: surveyor.id])}" data-resolved-url-large="${g.createLink(action: 'viewImage', params: [surveyorId: surveyor.id])}" href="${g.createLink(action: 'viewImage', params: [surveyorId: surveyor.id])}" loaded="true">
-                                <img id="profilePicAnonymous" class="img-polaroid img-rounded" src="${g.resource(dir: 'images/ticbox', file: 'anonymous.png')}"/>
-                            </a>
+                            <span class="media-thumbnail">
+                                <img id="profilePic" class="img-polaroid img-rounded" src="${g.resource(dir: 'images/ticbox', file: 'anonymous.png')}"/>
+                            </span>
                         </g:else>
                     </div>
                     <div class="uploader-button">
                         <uploader:uploader id="imageUploader" url="${[controller:'survey', action:'uploadImage']}" params="${[surveyorId: surveyor.id]}">
                             <uploader:onComplete>
-                                $('.profilePic').attr('src', '${g.createLink(action: "viewImage", params: [surveyorId: surveyor.id])}&u='+new Date().getTime());
+                                $('#profilePic').attr('src', '${g.createLink(action: "viewImage", params: [surveyorId: surveyor.id])}&u='+new Date().getTime());
                             </uploader:onComplete>
                         </uploader:uploader>
                     </div>
