@@ -78,7 +78,7 @@ class RespondentService {
         StringBuilder sb = new StringBuilder('{ $and: [');
 
         respondentDetail.profileItems.each {key, val ->
-
+            
             def profileItem = ProfileItem.findByCode(key)
 
             switch (profileItem.type){
