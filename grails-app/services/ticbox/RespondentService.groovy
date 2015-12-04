@@ -84,13 +84,13 @@ class RespondentService {
             switch (profileItem.type){
 
                 case ProfileItem.TYPES.STRING :
-                    sb.append("{ ${'$or'}: [ {RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', val: '$val'} } } ,{RESPONDENT_FILTER.code:{${'$exists'}:false } }]}")
+                    sb.append("{ ${'$or'}: [ {RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', val: '$val'} } } ,{RESPONDENT_FILTER : { ${'$not'}: { ${'$elemMatch'}: { code: '$key' } } } }]}")
                     break
                 case [ProfileItem.TYPES.NUMBER, ProfileItem.TYPES.DATE] :
-                    sb.append("{ ${'$or'}: [ {RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', valFrom: {${'$lte'}: $val }, valTo: {${'$gte'}: $val } } } } ,{RESPONDENT_FILTER.code:{${'$exists'}:false } }]}")
+                    sb.append("{ ${'$or'}: [ {RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', valFrom: {${'$lte'}: $val }, valTo: {${'$gte'}: $val } } } } ,{RESPONDENT_FILTER : { ${'$not'}: { ${'$elemMatch'}: { code: '$key'}} } }]}")
                     break
                 case [ProfileItem.TYPES.CHOICE, ProfileItem.TYPES.LOOKUP] :
-                    sb.append("{ ${'$or'}: [ {RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', checkItems: { ${'$elemMatch'}: { key: '$val' } } } } } ,{RESPONDENT_FILTER.code:{${'$exists'}:false } }]}")
+                    sb.append("{ ${'$or'}: [ {RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', checkItems: { ${'$elemMatch'}: { key: '$val' } } } } } ,{RESPONDENT_FILTER : { ${'$not'}: { ${'$elemMatch'}: { code: '$key'}} } }]}")
                     break
 
             }
