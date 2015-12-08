@@ -537,7 +537,8 @@
 
         /* Add new survey submit button */
         $('#createNewSurvey').click(function() {
-            $(this).button('loading');
+//            alert('masuk sini')
+//            $(this).button('loading');
             var form = $('#createSurveyForm');
 
             if (form.valid()) {
