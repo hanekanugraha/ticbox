@@ -359,9 +359,6 @@
                 </g:form>
             </div>
             <div class="modal-footer">
-                <!--button href="${request.contextPath}/survey/createSurvey" id="createSurveyBtn" class="btn btn-green submit-redirect">
-                    <!--g:message code="label.button.create" default="Create"/-->
-                <!--/button-->
                 <button id="createNewSurvey" class="btn btn-green" data-loading-text="Processing.."><g:message code="label.button.next"/></button>
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close" default="Close"/></button>
             </div>
@@ -542,6 +539,7 @@
         $('#createNewSurvey').click(function() {
             $(this).button('loading');
             var form = $('#createSurveyForm');
+
             if (form.valid()) {
                 form.submit();
 

@@ -21,12 +21,16 @@ class SchedulerController {
         try {
             List<ServerAddress> seeds = new ArrayList<ServerAddress>();
             seeds.add(new ServerAddress("kahana.mongohq.com", 10040))
+            // local
+//            seeds.add(new ServerAddress("localhost", 27017))
 
 
             List<MongoCredential> credentials = new ArrayList<MongoCredential>()
             credentials.add(MongoCredential.createMongoCRCredential("ticboxnew", "ticboxnew","ticboxnew".toCharArray()));
 
             MongoClient mongoClient = new MongoClient( seeds, credentials )
+            // local
+            // new MongoClient(seeds)
 
 
             def mongo = new GMongo(mongoClient)
