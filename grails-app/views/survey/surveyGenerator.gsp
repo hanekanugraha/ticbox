@@ -473,16 +473,19 @@
         }
 
         function submitSurvey(questionItems){
+            show_loader();
 
             jQuery.post('${request.contextPath}/survey/submitSurvey', {questionItems: JSON.stringify(questionItems), surveyTitle: jQuery('#surveyTitle').val(), logoResourceId:logoId}, function(data){
 
                 if('SUCCESS' == data){
-                    alert('save draft success..');
+                    alert('Your survey has been saved');
                 }else if('LIMIT' == data){
                     alert('Max Free Survey more than limit..');
                 }else{
                     alert('Submission failure');
                 }
+
+                hide_loader();
 
             });
         }
@@ -577,6 +580,8 @@
         }
 
         function saveAndSubmitSurvey() {
+            jQuery('#validate-choice-question-items-modal').modal('hide');
+            show_loader();
 
             var questionItems = buildQuestionItemsMap();
 
@@ -591,6 +596,8 @@
                     }else{
                         window.location = data;
                     }
+
+                    hide_loader();
                 });
 
         }

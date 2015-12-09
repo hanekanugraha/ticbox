@@ -480,6 +480,7 @@
             });
 
             var submitFilterItems = function() {
+
                 var filterItems = [];
 
                 var form = $('#validateFilterForm');
@@ -613,11 +614,23 @@
                         window.location = "${request.contextPath}/survey/surveyGenerator";
                     });
 //                }
+
+                return true;
             };
 
-                jQuery('#nextAndSubmitFilterBtn').click(submitFilterItems);
+                jQuery('#nextAndSubmitFilterBtn').click(function(){
+                    show_loader();
 
-                jQuery('#submitFilterBtn').click(submitFilterItems);
+                    if(!submitFilterItems())
+                        hide_loader();
+                });
+
+                jQuery('#submitFilterBtn').click(function(){
+                    show_loader();
+
+                    if(!submitFilterItems())
+                        hide_loader();
+                });
 
                 if ('${ticbox.Survey.SURVEY_TYPE.EASY}' == '${survey.type}') {
                     jQuery.getJSON('${request.contextPath}/survey/getRespondentFilter', {}, function (respondentFilter) {
