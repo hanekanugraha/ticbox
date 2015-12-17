@@ -397,7 +397,7 @@
         </div>
         <div class="chart-container row" style="padding-top: 10px;">
             <div class="col col-xs-11 col-xs-offset-1">
-                <div class="chart" style="height:300px;width:500px;"></div>
+                <div class="chart" style="height:300px;"></div><!-- width diremove untuk teks panjang -->
             </div>
         </div>
 
@@ -780,6 +780,7 @@
                             jQuery.each(answerDetails.choiceItems, function (i, choiceItem) {
                                 var label = choiceItem.label;
                                 labels.push(label);
+                                //labels.push(label.substring(0, 40));
                                 counts.push(label in summary ? summary[label] : 0);
                             });
 

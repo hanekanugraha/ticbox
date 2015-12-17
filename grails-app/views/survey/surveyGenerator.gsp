@@ -991,7 +991,7 @@
             <div class="seqNumberContainer questionNumber col-xs-1"></div>
             <div class="col-xs-11">
                 <div class="questionTextContainer">
-                    <textarea class="form-control" style="padding: 6px 12px; word-wrap: break-word" rows="3" placeholder="${message([code: 'message.type-to-set-question', default: 'Type your question here..'])}" ></textarea>
+                    <textarea class="form-control" style="padding: 6px 12px; word-wrap: break-word" rows="3" placeholder="${message([code: 'message.type-to-set-question', default: 'Type your question here..'])}" maxlength="1500"></textarea>
                     <div class="question-action-btn change-question-type-btn" style="position: absolute;right: 10px;top: 8px;"></div>
                 </div>
                 <div class="surveyItemActions" style="float: left; padding: 1px 0 0 5px">
@@ -1030,7 +1030,7 @@
         <div class="choice-items col col-xs-11 col-xs-offset-1">
             <div class="choice-item row" style="margin-bottom: 3px">
                     <input class="item-check" type="checkbox" checked style="height: 34px">
-                    <input class="item-label form-control" type="text" placeholder="${message([code: 'message.type-to-set-label', default: 'Type here to set label..'])}">
+                    <input class="item-label form-control" type="text" placeholder="${message([code: 'message.type-to-set-label', default: 'Type here to set label..'])}" maxlength="100">
                     <div class="col" style="float: left; padding: 1px 0 0 5px">
                         %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
                         %{--<div style="width: 20px; height: 100%; cursor: pointer; background: transparent url('../images/ticbox/06_Question_UploadIcon_Picture.png') no-repeat center"></div>--}%
@@ -1059,7 +1059,7 @@
         <div class="choice-items col col-xs-11 col-xs-offset-1">
             <div class="choice-item row" style="margin-bottom: 3px">
                 <input class="item-check" type="checkbox" checked style="height: 34px">
-                <input class="item-label form-control" type="text" placeholder="${message([code: 'message.type-to-set-label', default: 'Type here to set label..'])}">
+                <input class="item-label form-control" type="text" placeholder="${message([code: 'message.type-to-set-label', default: 'Type here to set label..'])}" maxlength="100">
                 <div class="col" style="float: left; padding: 1px 0 0 5px">
                     %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
                     %{--<div style="width: 20px; height: 100%; cursor: pointer; background: transparent url('../images/ticbox/06_Question_UploadIcon_Picture.png') no-repeat center"></div>--}%
@@ -1091,7 +1091,7 @@
                             <th class="col-sm-3 form-inline" style="text-align: left; width: 100px; display: inline">
                             </th>
                             <th class="rating-label" style="text-align: left">
-                                <input type="text" class="input-small form-control" placeholder="<g:message code="message.rating-to-set-label"/>" style="width: 100px;">
+                                <input type="text" class="input-small form-control" placeholder="<g:message code="message.rating-to-set-label"/>" style="width: 100px;" maxlength="10">
                             </th>
                             <th>
                                 <button class="btn btn-default btn-info remove-rating">
@@ -1107,7 +1107,7 @@
                     <tbody>
                         <tr class="scale-row">
                             <td style="max-width: 100px;">
-                                <input type="text" class="row-label input-small form-control" placeholder="<g:message code="message.row-to-set-label"/>" style="width: 100%;">
+                                <input type="text" class="row-label input-small form-control" placeholder="<g:message code="message.row-to-set-label"/>" style="width: 100%;" maxlength="50">
                             </td>
                             <td class="rating-weight" style="text-align: center">
                                 <input type="radio" name="rd-1">
@@ -1167,7 +1167,7 @@
 
     <div id="answerPreviewTemplate-singleText" class="answerTemplate row" type="${Survey.QUESTION_TYPE.FREE_TEXT}">
         <div class="col col-xs-11 col-xs-offset-1">
-            <textarea class="form-control" rows="3" placeholder="" style="width: 100% !important;"></textarea>
+            <textarea class="form-control" rows="3" placeholder="" style="width: 100% !important;" maxlength="1500"></textarea>
         </div>
     </div>
 

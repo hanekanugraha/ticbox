@@ -521,7 +521,7 @@
 
             <div id="answerTemplate-singleText" class="row answerTemplate" type="${Survey.QUESTION_TYPE.FREE_TEXT}">
                 <div class="col col-xs-11 col-xs-offset-1">
-                    <textarea class="place-holder-text form-control" rows="3" placeholder="${message([code: 'message.type-to-replace-place-holder', default: 'Type here to change this placeholder..'])}"></textarea>
+                    <textarea class="place-holder-text form-control" rows="3" placeholder="${message([code: 'message.type-to-replace-place-holder', default: 'Type here to change this placeholder..'])}" maxlength="400"></textarea>
                 </div>
             </div>
 
