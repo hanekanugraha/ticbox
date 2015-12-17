@@ -65,6 +65,8 @@ SurveyChartRenderer.prototype.forStar = function(amounts, canvasObj, title) {
 
 // Requires jqplot.barRenderer.js plugin
 SurveyChartRenderer.prototype.forChoice = function(ticks, amounts, canvasObj, title) {
+  this.adjustChoiceCanvas(canvasObj, ticks);
+  
   var s1 = amounts;
  
   // Create labels with percentage
@@ -102,6 +104,8 @@ SurveyChartRenderer.prototype.forChoice = function(ticks, amounts, canvasObj, ti
 }
 
 SurveyChartRenderer.prototype.forScale = function(scaleLabels, itemValuesRows, canvasObj, title) {
+  this.adjustScaleCanvas(canvasObj, scaleLabels, itemValuesRows);
+
   var numOfRows = itemValuesRows.length;
   var length = itemValuesRows[0].values.length;
 
@@ -171,3 +175,22 @@ SurveyChartRenderer.prototype.forScale = function(scaleLabels, itemValuesRows, c
   canvasObj.get(0).appendChild(tbl);
 }
 
+SurveyChartRenderer.prototype.adjustChoiceCanvas = function(target, labels) {
+  var maxCharLen = 0; 
+  jQuery.each(labels, function(i, v) {
+    if (v.length > maxCharLen) maxCharLen = v.length;
+  });
+
+  target.css('width', maxCharLen * 5 + 300);
+  target.css('height', labels.length * 75);
+}
+
+SurveyChartRenderer.prototype.adjustScaleCanvas = function(target, scaleLabels, itemValuesRows) {
+  var maxCharLen = 0; 
+  jQuery.each(scaleLabels, function(i, v) {
+    if (v.length > maxCharLen) maxCharLen = v.length;
+  });
+
+  target.css('width', maxCharLen * 5 + 300);
+  target.css('height', itemValuesRows.length * 40 + maxCharLen * 3);
+}

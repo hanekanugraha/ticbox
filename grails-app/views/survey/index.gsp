@@ -397,7 +397,7 @@
         </div>
         <div class="chart-container row" style="padding-top: 10px;">
             <div class="col col-xs-11 col-xs-offset-1">
-                <div class="chart" style="height:300px;"></div><!-- width diremove untuk teks panjang -->
+                <div class="chart" style="height:300px;width:500px;"></div><!-- width diremove untuk teks panjang -->
             </div>
         </div>
 
