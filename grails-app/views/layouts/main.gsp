@@ -80,10 +80,10 @@
                             </g:link>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                 <li role="presentation">
-                                    <a href="${request.forwardURI }?lang=en"> <g:message code="app.language.english"/></a>
+                                    <a href="${request.forwardURI}?${request.queryString != null ? request.queryString.replaceAll('(?i)&?lang=.*', '') + (request.queryString.replaceAll('(?i)&?lang=.*', '').empty ? '' : '&') : ''}lang=en"> <g:message code="app.language.english"/></a>
                                 </li>
                                 <li role="presentation">
-                                    <a href="${request.forwardURI }?lang=in"> <g:message code="app.language.indonesia"/></a>
+                                    <a href="${request.forwardURI}?${request.queryString != null ? request.queryString.replaceAll('(?i)&?lang=.*', '') + (request.queryString.replaceAll('(?i)&?lang=.*', '').empty ? '' : '&') : ''}lang=in"> <g:message code="app.language.indonesia"/></a>
                                 </li>
                             </ul>
                         </li>
@@ -193,10 +193,10 @@
                             </g:link>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                 <li role="presentation">
-                                    <a href="${request.forwardURI }?lang=en"> <g:message code="app.language.english"/></a>
+                                    <a href="${request.forwardURI}?${request.queryString != null ? request.queryString.replaceAll('(?i)&?lang=.*', '') + (request.queryString.replaceAll('(?i)&?lang=.*', '').empty ? '' : '&') : ''}lang=en"> <g:message code="app.language.english"/></a>
                                 </li>
                                 <li role="presentation">
-                                    <a href="${request.forwardURI }?lang=in"> <g:message code="app.language.indonesia"/></a>
+                                    <a href="${request.forwardURI}?${request.queryString != null ? request.queryString.replaceAll('(?i)&?lang=.*', '') + (request.queryString.replaceAll('(?i)&?lang=.*', '').empty ? '' : '&') : ''}lang=in"> <g:message code="app.language.indonesia"/></a>
                                 </li>
                             </ul>
                         </li>
