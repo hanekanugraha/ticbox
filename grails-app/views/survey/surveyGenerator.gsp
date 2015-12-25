@@ -1093,7 +1093,7 @@
                             <th class="rating-label" style="text-align: left">
                                 <input type="text" class="input-small form-control" placeholder="<g:message code="message.rating-to-set-label"/>" style="width: 100px;" maxlength="10">
                             </th>
-                            <th>
+                            <th style="white-space:nowrap;">
                                 <button class="btn btn-default btn-info remove-rating">
                                     <i class="glyphicon glyphicon-minus"></i>
                                 </button>
@@ -1117,7 +1117,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td style="max-width: 500px;">
+                            <td style="white-space:nowrap; max-width: 500px;">
                                 <button class="btn btn-default btn-info remove-row">
                                     <i class="glyphicon glyphicon-minus"></i>
                                 </button>
