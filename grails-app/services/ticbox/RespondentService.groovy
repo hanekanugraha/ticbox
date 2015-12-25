@@ -86,8 +86,13 @@ class RespondentService {
                 case ProfileItem.TYPES.STRING :
                     sb.append("{ ${'$or'}: [ {RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', val: '$val'} } } ,{RESPONDENT_FILTER : { ${'$not'}: { ${'$elemMatch'}: { code: '$key' } } } }]}")
                     break
-                case [ProfileItem.TYPES.NUMBER, ProfileItem.TYPES.DATE] :
+                case ProfileItem.TYPES.NUMBER :
                     sb.append("{ ${'$or'}: [ {RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', valFrom: {${'$lte'}: $val }, valTo: {${'$gte'}: $val } } } } ,{RESPONDENT_FILTER : { ${'$not'}: { ${'$elemMatch'}: { code: '$key'}} } }]}")
+                    break
+                case ProfileItem.TYPES.DATE :
+                    TimeZone currentTimezone = TimeZone.getDefault();
+                    def utcTimestamp = val + currentTimezone.getRawOffset();
+                    sb.append("{ ${'$or'}: [ {${'$where'}: \"function() { if(typeof this.RESPONDENT_FILTER !== 'undefined') { for(var i = 0; i < this.RESPONDENT_FILTER.length; i++) {if(this.RESPONDENT_FILTER[i].code == '$key' && Date.parse(this.RESPONDENT_FILTER[i].valFrom) <= new Date($utcTimestamp) && Date.parse(this.RESPONDENT_FILTER[i].valTo) >= new Date($utcTimestamp)) {return true;}}}return false; }\"}, {RESPONDENT_FILTER : { ${'$not'}: { ${'$elemMatch'}: { code: '$key'}} } } ]}")
                     break
                 case [ProfileItem.TYPES.CHOICE, ProfileItem.TYPES.LOOKUP] :
                     sb.append("{ ${'$or'}: [ {RESPONDENT_FILTER : { ${'$elemMatch'}: { code: '$key', checkItems: { ${'$elemMatch'}: { key: '$val' } } } } } ,{RESPONDENT_FILTER : { ${'$not'}: { ${'$elemMatch'}: { code: '$key'}} } }]}")
