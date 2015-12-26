@@ -89,7 +89,7 @@
                     <div class="profile-picture">
                         <g:if test="${respondent.pic}">
                             <a class="media-thumbnail" target="_blank" data-url="${g.createLink(action: 'viewImage', params: [respondentId: respondent.id])}" data-resolved-url-large="${g.createLink(action: 'viewImage', params: [respondentId: respondent.id])}" href="${g.createLink(action: 'viewImage', params: [respondentId: respondent.id])}" loaded="true">
-                                <img id="profilePic" class="img-polaroid img-rounded" src="${g.createLink(action: 'viewImage', params: [respondentId: respondent.id])}"/>
+                                <img id="profilePic" class="img-polaroid img-rounded profile-pic" src="${g.createLink(action: 'viewImage', params: [respondentId: respondent.id])}"/>
                             </a>
                         </g:if>
                         <g:else>
@@ -101,7 +101,9 @@
                     <div class="uploader-button">
                         <uploader:uploader id="imageUploader" url="${[controller:'respondent', action:'uploadImage']}" params="${[respondentId: respondent.id]}">
                             <uploader:onComplete>
-                                $('.profilePic').attr('src', '${g.createLink(action: "viewImage", params: [respondentId: respondent.id])}&u='+new Date().getTime());
+                                %{--$('.profilePic').attr('src', '${g.createLink(action: "viewImage", params: [respondentId: respondent.id])}&u='+new Date().getTime());--}%
+                                $('.profile-pic').attr('src', 'data:image;base64,' + responseJSON.img);
+                                $('.qq-upload-list').empty()
                             </uploader:onComplete>
                         </uploader:uploader>
                     </div>
