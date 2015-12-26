@@ -84,7 +84,7 @@ class RespondentController {
                 throw new Exception(user.errors.allErrors.first())
             }
 
-            return render(text: [success:true] as JSON, contentType:'text/json')
+            return render(text: [success:true, img:user.pic] as JSON, contentType:'text/json')
         } catch (FileUploadException e) {
             message = "Failed to upload file."
             log.error(message, e)

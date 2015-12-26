@@ -6,6 +6,8 @@ grails.project.target.level = 1.6
 grails.project.source.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
+grails.project.dependency.resolver="maven"
+
 // uncomment (and adjust settings) to fork the JVM to isolate classpaths
 //grails.project.fork = [
 //   run: [maxMemory:1024, minMemory:64, debug:false, maxPerm:256]
@@ -43,7 +45,7 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 
         // runtime 'mysql:mysql-connector-java:5.1.22'
-        runtime ':recaptcha4j:0.0.7'
+        runtime 'net.tanesha.recaptcha4j:recaptcha4j:0.0.7'
     }
 
     plugins {
@@ -73,7 +75,9 @@ grails.project.dependency.resolution = {
         }
         compile ":shiro-oauth:0.2"
         compile ":ajax-uploader:1.1"
-        compile ":mail:1.0.1"
+        compile ':mail:1.0.1', {
+            excludes 'spring-test'
+        }
         compile ":remote-pagination:0.4.8"
         compile ":quartz:1.0.1"
 

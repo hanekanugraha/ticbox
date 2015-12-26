@@ -243,10 +243,10 @@
                                 <div class="media">
                                     <div class="col-xs-5" style="padding-left: 0">
                                         <g:if test="${respondent.pic}">
-                                            <img id="sidebarPic" class="img-thumbnail img-responsive" src="${g.createLink(action: 'viewImage', params: [respondentId: respondent.id])}"/>
+                                            <img id="sidebarPic" class="img-thumbnail img-responsive profile-pic" src="${g.createLink(action: 'viewImage', params: [respondentId: respondent.id])}"/>
                                         </g:if>
                                         <g:else>
-                                            <img id="sidebarPic" class="img-thumbnail img-responsive" src="${g.resource(dir: 'images/ticbox', file: 'anonymous.png')}"/>
+                                            <img id="sidebarPic" class="img-thumbnail img-responsive profile-pic" src="${g.resource(dir: 'images/ticbox', file: 'anonymous.png')}"/>
                                         </g:else>
                                     </div>
                                     <div class="media-body col-xs-7" style="padding-left: 0;">
