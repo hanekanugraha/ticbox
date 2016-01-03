@@ -47,8 +47,6 @@ grails.project.dependency.resolution = {
         // runtime 'mysql:mysql-connector-java:5.1.22'
         runtime 'net.tanesha.recaptcha4j:recaptcha4j:0.0.7'
 
-        // add compatibility to mongoLab - kucing
-//        compile "org.mongdb:mongo-java-driver:2.13.1"
     }
 
     plugins {
@@ -72,7 +70,6 @@ grails.project.dependency.resolution = {
  		runtime (":excel-export:0.2.1")  
         compile ":webxml:1.4.1" // Heroku deployment requirement
         compile ":oauth:2.1.0"
-        //compile ":shiro:1.1.4"
         compile (":shiro:1.1.4") {
             excludes([name: 'quartz', group: 'org.opensymphony.quartz'])
         }
@@ -83,6 +80,7 @@ grails.project.dependency.resolution = {
         }
         compile ":remote-pagination:0.4.8"
         compile ":quartz:1.0.1"
+
 
     }
 }
