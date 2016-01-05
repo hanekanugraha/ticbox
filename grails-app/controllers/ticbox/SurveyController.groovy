@@ -3,18 +3,25 @@ package ticbox
 import com.mongodb.DBObject
 import grails.converters.JSON
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64
+import org.apache.commons.codec.binary.Base64OutputStream
 import org.bson.types.ObjectId
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.multipart.MultipartHttpServletRequest
 import org.apache.shiro.SecurityUtils
 import uk.co.desirableobjects.ajaxuploader.exception.FileUploadException
+
+import javax.imageio.ImageIO
+import java.awt.image.BufferedImage
 import java.text.SimpleDateFormat
 import pl.touk.excel.export.WebXlsxExporter
+
+import org.imgscalr.Scalr
 
 class SurveyController {
 
     def surveyService
     def surveyorService
+    def userService
 
     def index() {
         /*if(!surveyorService.getCurrentSurveyor()){
@@ -287,8 +294,16 @@ class SurveyController {
                 inputStream = request.inputStream
             }
 
+            BufferedImage image = ImageIO.read(inputStream)
+            BufferedImage scaledImg = Scalr.resize(image, Scalr.Method.QUALITY, Scalr.Mode.FIT_TO_WIDTH, 400, 300, Scalr.OP_ANTIALIAS)
+
+            ByteArrayOutputStream os = new ByteArrayOutputStream()
+            OutputStream b64 = new Base64OutputStream(os)
+            ImageIO.write(scaledImg, "jpg", b64)
+            String base64Str = os.toString("UTF-8")
+
             def userResource = new UserResource(user: surveyorService.getCurrentSurveyor()?.userAccount, kind: Survey.COMPONENTS.LOGO).save()
-            userResource[Survey.COMPONENTS.LOGO] = Base64.encode(inputStream.bytes)
+            userResource[Survey.COMPONENTS.LOGO] = base64Str
             userResource.save()
 
             if (userResource.hasErrors()) {
@@ -393,14 +408,7 @@ class SurveyController {
                 inputStream = request.inputStream
             }
 
-            // update user
-            def user = User.findById(params.surveyorId)
-            user.pic = Base64.encode(inputStream.bytes)
-            user.save()
-
-            if (user.hasErrors()) {
-                throw new Exception(user.errors.allErrors.first())
-            }
+            User user = userService.updateProfilePic(User.findById(params.surveyorId), inputStream)
 
             return render(text: [success:true, img:user.pic] as JSON, contentType:'text/json')
         } catch (FileUploadException e) {

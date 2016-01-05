@@ -1,8 +1,13 @@
 package ticbox
 
+import org.apache.commons.codec.binary.Base64OutputStream
 import org.apache.shiro.crypto.hash.Sha256Hash
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.codehaus.groovy.grails.web.util.WebUtils
+import org.imgscalr.Scalr
+
+import javax.imageio.ImageIO
+import java.awt.image.BufferedImage
 
 class UserService {
     def respondentService
@@ -250,5 +255,25 @@ class UserService {
 
     def User checkExistUsername(String username){
         return User.findByUsername(username)
+    }
+
+    def User updateProfilePic(User user, InputStream inputStream) throws Exception {
+        BufferedImage image = ImageIO.read(inputStream)
+        BufferedImage scaledImg = Scalr.resize(image, Scalr.Method.QUALITY, Scalr.Mode.AUTOMATIC, 250, 250, Scalr.OP_ANTIALIAS)
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        OutputStream b64 = new Base64OutputStream(os)
+        ImageIO.write(scaledImg, "jpg", b64)
+        String base64Str = os.toString("UTF-8")
+
+        // update user
+        user.pic = base64Str
+        user.save()
+
+        if (user.hasErrors()) {
+            throw new Exception(user.errors.allErrors.first())
+        }
+
+        return user
     }
 }

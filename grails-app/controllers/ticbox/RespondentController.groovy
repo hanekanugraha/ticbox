@@ -3,7 +3,6 @@ package ticbox
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64
 import grails.converters.JSON
 import org.apache.shiro.SecurityUtils
-import org.bson.types.ObjectId
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.multipart.MultipartHttpServletRequest
 import uk.co.desirableobjects.ajaxuploader.exception.FileUploadException
@@ -14,6 +13,7 @@ class RespondentController {
     def goldService
     def mailService
     def itemService
+    def userService
 
     def index() {
         def principal = SecurityUtils.subject.principal
@@ -75,14 +75,7 @@ class RespondentController {
                 inputStream = request.inputStream
             }
 
-            // update user
-            def user = User.findById(params.respondentId)
-            user.pic = Base64.encode(inputStream.bytes)
-            user.save()
-
-            if (user.hasErrors()) {
-                throw new Exception(user.errors.allErrors.first())
-            }
+            User user = userService.updateProfilePic(User.findById(params.respondentId), inputStream)
 
             return render(text: [success:true, img:user.pic] as JSON, contentType:'text/json')
         } catch (FileUploadException e) {
