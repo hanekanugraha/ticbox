@@ -94,7 +94,7 @@
                         </g:if>
                         <g:else>
                             <a class="media-thumbnail" target="_blank" data-url="${g.createLink(action: 'viewImage', params: [respondentId: respondent.id])}" data-resolved-url-large="${g.createLink(action: 'viewImage', params: [respondentId: respondent.id])}" href="${g.createLink(action: 'viewImage', params: [respondentId: respondent.id])}" loaded="true">
-                                <img id="profilePicAnonymous" class="img-polaroid img-rounded" src="${g.resource(dir: 'images/ticbox', file: 'anonymous.png')}"/>
+                                <img id="profilePicAnonymous" class="img-polaroid img-rounded profile-pic" src="${g.resource(dir: 'images/ticbox', file: 'anonymous.png')}"/>
                             </a>
                         </g:else>
                     </div>
