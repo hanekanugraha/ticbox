@@ -397,7 +397,7 @@
         </div>
         <div class="chart-container row" style="padding-top: 10px;">
             <div class="col col-xs-11 col-xs-offset-1">
-                <div class="chart" style="height:300px;width:500px;"></div><!-- width diremove untuk teks panjang -->
+                <div class="chart" style="width:500px;"></div>
             </div>
         </div>
 
@@ -805,17 +805,21 @@
 
                         if (summary) {
                             var MAX_NUM_OF_ANSWERS = 10;
-                            // var answers = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ultricies commodo enim, eu euismod tortor porta ac. Sed in leo vulputate, aliquam eros tincidunt, condimentum ante. Nullam sed justo sit amet dolor feugiat commodo sed sed orci. Nullam tincidunt quis nunc eu lobortis. Pellentesque dolor diam, hendrerit quis imperdiet vel, aliquam in nibh. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nec suscipit massa. Phasellus lorem eros, tincidunt ac interdum et, efficitur sed neque. Aenean bibendum mi libero, vitae porta nunc placerat pretium. Integer fermentum, purus quis molestie elementum, orci est dictum diam, nec tristique odio tellus a turpis. Sed non nibh vestibulum, varius sem sed, tristique nisi. Aenean velit ligula, eleifend eget tincidunt ac, sagittis et tellus. Integer ac purus in diam cursus placerat ac a tellus. Sed rutrum est et aliquet tincidunt. In id sapien condimentum, euismod elit vel, congue lectus. Nullam lacus augue, viverra quis ex in, finibus malesuada dolor'.split(".");
+                            // var answers = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ultricies commodo enim, eu euismod tortor porta ac. Sed in leo vulputate, aliquam eros tincidunt, condimentum ante. Nullam sed justo sit amet dolor feugiat commodo sed sed orci. Nullam tincidunt quis nunc eu lobortis. Pellentesque dolor diam, hendrerit quis imperdiet vel, aliquam in nibh. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nec suscipit massa. Phasellus lorem eros, tincidunt ac interdum et, efficitur sed neque. Aenean bibendum mi libero, vitae porta nunc placerat pretium. Integer fermentum, purus quis molestie elementum, orci est dictum diam, nec tristique odio tellus a turpis. Sed non nibh vestibulum, varius sem sed, tristique nisi. Aenean velit ligula, eleifend eget tincidunt ac, sagittis et tellus. Integer ac purus in diam cursus placerat ac a tellus. Sed rutrum est et aliquet tincidunt. In id sapien condimentum, euismod elit vel, congue lectus. Nullam lacus augue, viverra quis ex in, finibus malesuada dolor'.split(".");
                             var answers = summary;
 
                             var tab = jQuery('<table class="table table-bordered table-striped"></table>');
                             var tbody = jQuery('<tbody sytle="height: 100px; overflow-y: auto; overflow-x: hidden;"></tbody>');
                             jQuery.each(answers, function (index, val) {
-                                var row = jQuery('<tr><td>' + (index+1)+". " +  val + '</td></tr>');
+                                var row = jQuery('<tr><td style="text-align:right">' + (index + 1) + '. </td><td>' +  val + '</td></tr>');
                                 tbody.append(row);
                             });
                             tab.append(tbody);
-                            target.append(tab);
+
+                            var wrapper = jQuery('<div style="max-height:300px; overflow:auto;"></div>');
+                            wrapper.append(tab);
+
+                            target.append(wrapper);
 
                             tab.paging({limit: MAX_NUM_OF_ANSWERS});
                         }
