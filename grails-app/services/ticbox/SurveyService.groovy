@@ -58,8 +58,11 @@ class SurveyService {
     def submitRespondentFilter(String surveyType, String compDateFrom, String compDateTo, String ttlRespondent, String filterItemsJSON, Survey survey){
 
         def ttlLong = Long.parseLong(ttlRespondent)
+        println survey
 
         if (survey) {
+            println("Saving with surveyType = " + surveyType)
+
             if (Survey.SURVEY_TYPE.EASY.equals(surveyType)) {
                 DBObject dbObject = (DBObject) com.mongodb.util.JSON.parse(filterItemsJSON)
 
@@ -69,7 +72,8 @@ class SurveyService {
                 survey.completionDateTo = compDateTo
                 survey.ttlRespondent = ttlLong
                 survey.createdDate = ''
-                survey.save()
+                def result = survey.save()
+                println("Result = " + result)
             }
         else{
                 survey.type = surveyType

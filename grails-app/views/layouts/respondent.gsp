@@ -53,29 +53,11 @@
                     <li>
                         <a href="${request.contextPath}/howItsWork/"><g:message code="default.howitworks.label"/></a>
                     </li>
-                    <li><a><g:message code="default.pricing.label"/></a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><g:message code="default.gettoknowus.label"/><b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <g:link controller="knowUs" action="ourStory"><g:message code="default.ourstory.label"/></g:link>
-                            </li>
-                            %{--<li>--}%
-                                %{--<g:link controller="knowUs" action="ourTeam">Our Team</g:link>--}%
-                            %{--</li>--}%
-                            <li>
-                                <a href="#"><g:message code="default.ourcommunities.label"/></a>
-                            </li>
-                            <li>
-                                <a href="#"><g:message code="default.blog.label"/></a>
-                            </li>
-                        </ul>
-                    </li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
                     <shiro:notAuthenticated>
-                        <li><g:link controller="auth" action="login"><g:message code="default.registerlogin.label"/></g:link></li>
+                        <li><g:link controller="auth" action="login"><g:message code="default.login.label"/></g:link></li>
                         <li>
                             <g:link class="dropdown-toggle" data-toggle="dropdown">
                                 <span>
@@ -260,13 +242,9 @@
                             <div id="respondentProfileContainer" class="panel-collapse collapse in">
                                 <div class="panel-body" style="padding: 0 12px;">
                                     <div class="row profileStats">
-                                        <div class="col-xs-3 stats">
+                                        <div class="col-xs-6 stats">
                                             <div><strong>${respondent?.respondentProfile?.gold}</strong></div>
                                             <div class="gold"><b><g:message code="point.gold.label"/></b></div>
-                                        </div>
-                                        <div class="col-xs-3 stats leftBordered">
-                                            <div><strong>${respondent?.respondentProfile?.trust}</strong></div>
-                                            <div class="trust"><b><g:message code="point.trust.label"/></b></div>
                                         </div>
                                         <div class="col-xs-6 stats leftBordered">
                                             <div><strong>${surveyJoined}</strong></div>
@@ -295,9 +273,6 @@
                                         </li>
                                         <li class="profileForm">
                                             <g:link action="profileForm"><g:message code="resp.profile.label"/></g:link>
-                                        </li>
-                                        <li class="inviteFriends">
-                                            <g:link action="inviteFriends"><g:message code="resp.invitefriends.label"/></g:link>
                                         </li>
                                         <li class="redeemGold">
                                             <g:link action="redeemGold"><g:message code="resp.redeemgold.label"/></g:link>
