@@ -1,6 +1,8 @@
 package ticbox
 
+import grails.converters.JSON
 import org.apache.shiro.SecurityUtils
+import org.apache.shiro.crypto.hash.Sha256Hash
 
 class AdminController {
     def userService
@@ -261,5 +263,26 @@ class AdminController {
             log.error(e.message, e)
         }
         redirect(controller: "admin", action: "redemptions")
+    }
+
+    def getUser() {
+        def user = User.get(params.id);
+
+        render user as JSON
+
+    }
+
+    def saveUser() {
+        def user = User.get(params.id);
+
+        user.email = params.email
+        if (params.password) {
+            user.passwordHash = new Sha256Hash(params.password).toHex()
+        }
+
+        user.save()
+
+        render user as JSON
+
     }
 }

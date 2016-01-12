@@ -4,7 +4,28 @@
     <meta name="layout" content="admin"/>
     <title><g:message code="ticbox.admin.users.title"/></title>
     <style type="text/css">
+        .profile-card {
+            background-image: url("../images/skin/bg_tumblr_grey.jpg");
+            position: relative;
+            /*margin: 10px 0 20px;*/
+            /*box-shadow: 1px 1px 5px lightgrey;*/
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
 
+        .profile-picture {
+            display: table;
+            margin:auto;
+            padding-top: 20px;
+        }
+
+        .profile-card .uploader-button {
+            display: table;
+            margin: auto;
+            padding-top: 10px;
+            width: 100%;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -36,7 +57,7 @@
                             <g:each in="${users}" var="user" status="status">
                                 <tr>
                                     <td><input type="checkbox" name="userIds" userstatus="${user.status}" value="${user.id}" ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)?.equals(user.username) ? 'disabled="disabled"' : ''} /></td>
-                                    <td>${user.username}</td>
+                                    <td><a href="#" class="link-editUser" data-user-id="${user.id}">${user.username}</a></td>
                                     <td>${user.email}</td>
                                     <td>${user.roles*.name}</td>
                                     <td><g:message code="${User.getStatusLabel(user.status)}"/></td>
@@ -132,7 +153,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <span id="ActiveUsersLabel" class="modal-title">
+                <span id="activeUsersLabel" class="modal-title">
                     <g:message code="admin.validate.activateuser.header"/>
                 </span>
             </div>
@@ -155,8 +176,70 @@
     </div>
 </div>
 
+%{-- Edit User Modal --}%
+<div id="edit-user-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="module-content modal-content">
+            <div class="form-horizontal" name="surveyorProfileForm" id="surveyorProfileForm">
+                <!-- hiddens -->
+                <input type="hidden" name="id" value="232" id="id">
+
+                <div style="margin: 0;">
+
+                    <!-- static fields -->
+                    <div class="control-group" style="margin: 0;">
+                        <div class="profile-card">
+                            <div class="profile-picture">
+
+                                <a class="media-thumbnail" target="_blank" data-url="/ticbox/survey/viewImage?surveyorId=" data-resolved-url-large="/ticbox/survey/viewImage?surveyorId=" href="/ticbox/survey/viewImage?surveyorId=" loaded="true">
+                                    <img id="form-edituser-pic" class="img-polaroid img-rounded profile-pic" src="" width="300" height="250" style="margin-bottom: 20px;">
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div style="padding: 20px; background-color: #eeeeed; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="username">Username</label>
+                        <div class="col-sm-8">
+                            <span class="form-control" disabled="disabled" id="form-edituser-username"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="form-edituser-email">Email</label>
+                        <div class="col-sm-8">
+                            <input type="email" class="form-control" name="email" id="form-edituser-email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="form-edituser-password">Password</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" name="password" id="form-edituser-password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="form-edituser-password-confirm">Password Confirm</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" name="password-confirm" value="" id="form-edituser-password-confirm">
+                        </div>
+                    </div>
+
+                </div>
+
+                <button class="btn btn-lg btn-green" style="margin: 15px 0" id="form-edituser-save">Save</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+
 <g:javascript src="jquery.validate.min.js"/>
 <g:javascript src="additional-methods.min.js"/>
+<g:javascript src="loader.js"/>
 <script type="text/javascript">
     $(document).ready(function() {
 
@@ -244,6 +327,54 @@
                 form.submit();
             }else{
                 $('#cancelActiveUsers').click();
+            }
+        });
+
+        var editted_user_id = undefined;
+        $('.link-editUser').click(function(e){
+            e.preventDefault();
+
+            editted_user_id = undefined;
+            var userId = $(this).attr('data-user-id');
+            show_loader();
+            $.getJSON('getUser', {id:userId}, function(data){
+
+                $('#edit-user-modal').modal('show');
+                $('#form-edituser-username').html(data.username);
+                $('#form-edituser-email').val(data.email);
+                $('#form-edituser-pic').attr('src', 'data:image;base64,'+ data.pic);
+
+                editted_user_id = data.id;
+
+                hide_loader();
+            });
+        });
+
+        $('#form-edituser-save').click(function(data){
+            var password = $('#form-edituser-password').val();
+            var password_conf = $('#form-edituser-password-confirm').val();
+            if(password && password !== password_conf){
+                alert('Please confirm the password correctly');
+                return false;
+            }
+
+            if(confirm('Save User?')) {
+                show_loader();
+                $.post('saveUser', {
+                    id: editted_user_id,
+                    email: $('#form-edituser-email').val(),
+                    password: password
+                }, function(data){
+
+                    $('#edit-user-modal').modal('show');
+                    $('#form-edituser-username').html(data.username);
+                    $('#form-edituser-email').val(data.email);
+                    $('#form-edituser-pic').attr('src', 'data:image;base64,'+ data.pic);
+
+                    editted_user_id = data.id;
+
+                    hide_loader();
+                });
             }
         });
 
