@@ -34,6 +34,8 @@ class Survey {
 
     static constraints = {
         title maxSize: 1000, nullable: true
+		completionDateFrom nullable: true
+		completionDateTo nullable: true
     }
 
     String completionDateFrom
