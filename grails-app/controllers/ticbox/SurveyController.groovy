@@ -30,6 +30,7 @@ class SurveyController {
         Survey survey = surveyService.getCurrentEditedSurvey()
 
         [
+            allSurveys : Survey.findAllBySurveyor(surveyorService.currentSurveyor),
             drafts : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.DRAFT),
             inProgress : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.IN_PROGRESS),
             completes : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.COMPLETED),
@@ -103,6 +104,7 @@ class SurveyController {
             redirect action: 'index'
         }
 
+		survey.title = survey.title.decodeHTML().replace('<br/>', '\\n')
         def surveyorProfile = surveyorService.currentSurveyor
         def principal = SecurityUtils.subject.principal
         def surveyor = User.findByUsername(principal.toString())
