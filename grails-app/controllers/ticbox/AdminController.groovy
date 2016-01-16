@@ -20,6 +20,11 @@ class AdminController {
     def createUser = {
         try {
             userService.createUser(params)
+
+            // Automatically verified
+            user.verify = 1
+            userService.updateUser(user)
+
             flash.message = message(code: "general.create.success.message")
         } catch (Exception e) {
             flash.error = message(code: "general.create.failed.message") + " : " + e.message
