@@ -356,6 +356,22 @@
                     <label for="surveyName"><g:message code="survey.uniquename.label"/></label>
                     <!--input type="text" class="form-control" id="surveyName" name="surveyName" param-of="createSurveyBtn"-->
                     <g:textField name="surveyName" class="form-control"/>
+	                 <table>    
+		                 <tr>                   
+		                   	<td><g:radio name="surveyCreationRadio" value="1" checked="true"/></td>
+		                   	<td colspan="2"><label class="radio" style="font-weight: normal; margin: 10px 0 15px 0"><g:message code="admin.index.survey.createnew"/></label></td>                   	
+		                 </tr>
+		                 <tr>                       
+							<td><g:radio name="surveyCreationRadio" value="2"/></td>
+							<td colspan="2"><label class="radio" style="font-weight: normal; margin: 10px 0 15px 0"><g:message code="admin.index.survey.editexisting"/></label></td>
+						</tr>
+						<tr id="allSurveysListTr">
+							<td></td>
+							<td><label class="radio" style="font-weight: normal; margin: 10px 0 15px 0"><g:message code="admin.index.survey.yoursurveylist"/>&nbsp;</label></td>
+							<td><g:select id="allSurveysListSelect" name="allSurveysListSelect" from="${allSurveys}" optionKey="surveyId" optionValue="name" noSelection="${["":"${message(code: 'app.selectone.label')}"]}" class="form-control" 
+									  style="min-width: 20%; width: auto; ${}"/></td>
+					  	</tr>
+					</table>
                 </g:form>
             </div>
             <div class="modal-footer">
@@ -526,14 +542,28 @@
 
     $(document).ready(function() {
 
+    	jQuery('#allSurveysListTr').hide();
+    	
         // Validations
         $('#createSurveyForm').validate({
             rules: {
                 surveyName: {
                     required: true
-                }
+                },
+                allSurveysListSelect: {
+	                required: true
+	            }
             }
         });
+
+        $(document).on( "change", "input[name=surveyCreationRadio]", function() { 
+				if(this.value == '1') {
+					jQuery('#allSurveysListTr').hide();
+				} else {
+					jQuery('#allSurveysListTr').show();
+				}
+		
+             } );
 
         /* Add new survey submit button */
         $('#createNewSurvey').click(function() {

@@ -1,5 +1,6 @@
 package ticbox
 
+import java.text.SimpleDateFormat
 import com.mongodb.DBCollection
 import com.mongodb.DBObject
 import org.bson.types.ObjectId
@@ -21,8 +22,32 @@ class SurveyService {
 
     Survey createSurvey(def params){
         SurveyorProfile surveyor = surveyorService.getCurrentSurveyor()
+		Survey survey = null
 
-        Survey survey = new Survey(surveyId: UUID.randomUUID().toString(), name: params.surveyName, surveyor: surveyor)
+		if(params.surveyCreationRadio && "2".equals(params.surveyCreationRadio.value.toString())) {
+			def copySurveyId = params.allSurveysListSelect.value
+			Survey copySurvey = getSurvey(copySurveyId.toString()) 
+			survey = new Survey(copySurvey.properties)
+			survey.surveyId = UUID.randomUUID().toString()
+			survey.name = params.surveyName
+			survey.title = copySurvey.title.decodeHTML().replace('<br/>', '\\n')
+			survey.surveyor = surveyor
+			survey.status = Survey.STATUS.DRAFT
+			def date = new Date()
+			def sdf = new SimpleDateFormat("MM/dd/yyyy")
+			survey.createdDate = sdf.format(date)
+			
+			survey[Survey.COMPONENTS.QUESTION_ITEMS] = (DBObject) com.mongodb.util.JSON.parse(copySurvey.QUESTION_ITEMS.toString().replace('<br/>', '\n'))
+			survey.save(flush: false)
+			survey[Survey.COMPONENTS.RESPONDENT_FILTER] = (DBObject) com.mongodb.util.JSON.parse(copySurvey.RESPONDENT_FILTER.toString())
+			survey.save(flush: false)
+			survey[Survey.COMPONENTS.SUMMARY_DETAIL] = (DBObject) com.mongodb.util.JSON.parse(copySurvey.SUMMARY_DETAIL.toString())
+			survey.save(flush: false)
+			survey[Survey.COMPONENTS.LOGO] = copySurvey[Survey.COMPONENTS.LOGO]
+			survey.save(flush: false)
+		} else {
+			survey = new Survey(surveyId: UUID.randomUUID().toString(), name: params.surveyName, surveyor: surveyor)
+		}
 
         WebUtils.retrieveGrailsWebRequest().session.putAt('current-edited-survey', survey)
 
