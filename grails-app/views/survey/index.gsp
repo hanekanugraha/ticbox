@@ -221,18 +221,18 @@
                         <td class="content-width">
                             <!-- a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="${request.contextPath}/survey/deleteSurvey?surveyId=${survey.surveyId}">Delete</a -->
                             <!--a class="btn btn-xs btn-primary displayResultLink" id="delDraft" href="#delete-drafts-modal" role="button"  data-toggle="modal">Delete</a-->
-                            <button id="delDraft" href="#delete-drafts-modal"
+                            <button id="delDraft-${survey.surveyId}" href="#delete-drafts-modal-${survey.surveyId}"
                                     role="button" data-toggle="modal" class="btn btn-danger btn-xs"><g:message code="default.button.delete.label"/></button>
                         </td>
 
 
 
-                        <div id="delete-drafts-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteDraftsLabel" aria-hidden="true">
+                        <div id="delete-drafts-modal-${survey.surveyId}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteDraftsLabel-${survey.surveyId}" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                        <span id="deleteDraftsLabel" class="modal-title"><g:message code="default.button.delete.label"/></span>
+                                        <span id="deleteDraftsLabel-${survey.surveyId}" class="modal-title"><g:message code="default.button.delete.label"/></span>
                                     </div>
                                     <div class="modal-body">
                                         <g:form name="deleteDraftsForm" controller="admin" action="deleteDrafts" role="form">
