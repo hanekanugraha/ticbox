@@ -104,7 +104,9 @@ class SurveyController {
             redirect action: 'index'
         }
 
-		survey.title = survey.title.decodeHTML().replace('<br/>', '\\n')
+		if(survey.title) {
+			survey.title = survey.title.decodeHTML().replace('<br/>', '\\n')
+		}
         def surveyorProfile = surveyorService.currentSurveyor
         def principal = SecurityUtils.subject.principal
         def surveyor = User.findByUsername(principal.toString())
