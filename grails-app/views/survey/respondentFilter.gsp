@@ -451,7 +451,7 @@
 
 //                if(checkCompletion(compDateFrom,compDateTo)) {
 
-                    if (jQuery('#easySurveyChk').is(':checked')) {
+//                    if (jQuery('#easySurveyChk').is(':checked')) {
                         jQuery('#filterForm').find('.profile-item-container').each(function () {
 
                             var filterItem = {};
@@ -523,7 +523,7 @@
 
                         });
 
-                    }
+//                    }
 
                     var filterItemsJSON = JSON.stringify(filterItems);
 
