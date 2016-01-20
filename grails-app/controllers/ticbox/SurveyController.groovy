@@ -33,22 +33,27 @@ class SurveyController {
         def surveyorProfile = surveyorService.currentSurveyor
         def principal = SecurityUtils.subject.principal
         def surveyor = User.findByUsername(principal.toString())
-
+		def allSurveys = Survey.findAllBySurveyor(surveyorService.currentSurveyor)
+		def draftSurveys = allSurveys.findAll{ it.status == Survey.STATUS.DRAFT }
+		def inProgressSurveys = allSurveys.findAll{ it.status == Survey.STATUS.IN_PROGRESS }
+		def completedSurveys = allSurveys.findAll{ it.status == Survey.STATUS.COMPLETED }
+		def submittedSurveys = allSurveys.findAll{ it.status == Survey.STATUS.SUBMITTED }
+		
         Survey survey = surveyService.getCurrentEditedSurvey()
 
         [
-            allSurveys : Survey.findAllBySurveyor(surveyorService.currentSurveyor),
-            drafts : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.DRAFT),
-            inProgress : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.IN_PROGRESS),
-            completes : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.COMPLETED),
-            submitted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.SUBMITTED),
+            allSurveys : allSurveys,
+            drafts : draftSurveys,
+            inProgress : inProgressSurveys,
+            completes : completedSurveys,
+            submitted : submittedSurveys,
             surveyorProfile: surveyorProfile,
             surveyor: surveyor,
             survey: survey,
-            countDraft:Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.DRAFT).size(),
-            countInProgress : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.IN_PROGRESS).size(),
-            countCompleted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.COMPLETED).size(),
-            countSubmitted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.SUBMITTED).size()
+            countDraft: draftSurveys.size(),
+            countInProgress : inProgressSurveys.size(),
+            countCompleted : completedSurveys.size(),
+            countSubmitted : submittedSurveys.size()
         ]
 
     }
@@ -111,22 +116,23 @@ class SurveyController {
             redirect action: 'index'
         }
 
-		if(survey.title) {
-			survey.title = survey.title.decodeHTML().replace('<br/>', '\\n')
-		}
+		survey.title = survey.title?.decodeHTML()?.replace('<br/>', '\\n')
+
         def surveyorProfile = surveyorService.currentSurveyor
         def principal = SecurityUtils.subject.principal
         def surveyor = User.findByUsername(principal.toString())
-
+		
+		def allSurveys = Survey.findAllBysurveyor(surveyorProfile)
+		
         [
                 survey : survey,
                 profileItems : surveyService.profileItemsForRespondentFilter,
                 surveyorProfile: surveyorProfile,
                 surveyor: surveyor,
-                countDraft:Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.DRAFT).size(),
-                countInProgress : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.IN_PROGRESS).size(),
-                countCompleted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.COMPLETED).size(),
-                countSubmitted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.SUBMITTED).size()
+                countDraft: allSurveys.findAll{ it.status == Survey.STATUS.DRAFT }.size(),
+                countInProgress : allSurveys.findAll{ it.status == Survey.STATUS.IN_PROGRESS }.size(),
+                countCompleted : allSurveys.findAll{ it.status == Survey.STATUS.COMPLETED }.size(),
+                countSubmitted : allSurveys.findAll{ it.status == Survey.STATUS.SUBMITTED }.size()
         ]
     }
 
@@ -158,14 +164,16 @@ class SurveyController {
         def principal = SecurityUtils.subject.principal
         def surveyor = User.findByUsername(principal.toString())
 
+		def allSurveys = Survey.findAllBysurveyor(surveyorProfile)
+		
         [
                 survey : survey,
                 surveyorProfile: surveyorProfile,
                 surveyor: surveyor,
-                countDraft:Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.DRAFT).size(),
-                countInProgress : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.IN_PROGRESS).size(),
-                countCompleted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.COMPLETED).size(),
-                countSubmitted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.SUBMITTED).size()
+                countDraft: allSurveys.findAll{ it.status == Survey.STATUS.DRAFT }.size(),
+                countInProgress : allSurveys.findAll{ it.status == Survey.STATUS.IN_PROGRESS }.size(),
+                countCompleted : allSurveys.findAll{ it.status == Survey.STATUS.COMPLETED }.size(),
+                countSubmitted : allSurveys.findAll{ it.status == Survey.STATUS.SUBMITTED }.size()
         ]
     }
 
@@ -381,16 +389,18 @@ class SurveyController {
     }
 
     def profileForm() {
+		def surveyorProfile = surveyorService.currentSurveyor
         def profileItems = surveyService.getSurveyorProfileItems()
         def principal = SecurityUtils.subject.principal
         def surveyor = User.findByUsername(principal.toString())
         def surveyorDetail = SurveyorDetail.findBySurveyorId(surveyor.id)
+		def allSurveys = Survey.findAllBysurveyor(surveyorProfile)
         surveyorDetail = surveyorDetail ?: new SurveyorDetail(surveyorId: surveyor.id).save()
         [profileItems: profileItems,surveyor: surveyor, surveyorDetail: surveyorDetail,
-                            countDraft:Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.DRAFT).size(),
-                            countInProgress : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.IN_PROGRESS).size(),
-                            countCompleted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.COMPLETED).size(),
-                            countSubmitted : Survey.findAllBySurveyorAndStatus(surveyorService.currentSurveyor, Survey.STATUS.SUBMITTED).size()]
+                            countDraft:allSurveys.findAll{ it.status == Survey.STATUS.DRAFT }.size(),
+                            countInProgress:allSurveys.findAll{ it.status == Survey.STATUS.IN_PROGRESS }.size(),
+                            countCompleted:allSurveys.findAll{ it.status == Survey.STATUS.COMPLETED }.size(),
+                            countSubmitted:allSurveys.findAll{ it.status == Survey.STATUS.SUBMITTED }.size()]
     }
 
     def modify = {
