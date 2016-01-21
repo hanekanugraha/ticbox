@@ -57,13 +57,14 @@
             <table id="inProgressTable" class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="9"><g:message code="app.inprogress.status"/></th>
+                    <th colspan="10"><g:message code="app.inprogress.status"/></th>
                 </tr>
                 <tr class="sub-header">
                     <th></th>
                     <th><g:message code="app.name.title"/></th>
                     <th><g:message code="app.owner.label"/></th>
                     <th><g:message code="app.type.label"/></th>
+                    <th><g:message code="app.point.label"/></th>
                     <th><g:message code="app.createddate.label"/></th>
                     <th><g:message code="app.enddate.label"/></th>
                     <th><g:message code="app.price.label"/></th>
@@ -83,6 +84,7 @@
                         <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
                         <td>${survey.surveyor.userAccount.username}</td>
                         <td>${survey.type}</td>
+                        <td>${survey.point}</td>
                         <td>${survey.createdDate}</td>
                         <td>${survey.completionDateTo}</td>
                         <td>Rp. ${survey.surveyPrice}</td>
@@ -94,9 +96,11 @@
                                 ${survey.enableStatus}
                             </g:else>
                         </td>
-                        <td class="content-width">
-                            <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display Result</a>
-	                        <a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download Result</a>
+                        %{--<td class="content-width">--}%
+                        <td> <!-- kucing -->
+                            <a class="btn btn-xs btn-primary setPointLink" href="javascript:void(0)">Set Point</a>
+                            <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display</a>
+	                        <a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download</a>
                         </td>
                     </tr>
                 </g:each>
@@ -137,8 +141,8 @@
                         <td>${survey.ttlRespondent}</td>
                         <td>Rp. ${survey.surveyPrice}</td>
                         <td class="content-width">
-                            <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display Result</a>
-	                        <a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download Result</a>
+                            <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display</a>
+	                        <a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download</a>
                         </td>
                     </tr>
                 </g:each>
@@ -316,6 +320,27 @@
     </div>
 </div>
 
+<!-- kucing modal -->
+<div id="set-point-survey-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="setPointSurveyLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="setPointSurveyLabel" class="modal-title">
+                    <g:message code="default.setpointsurvey.label"/>
+                </span>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="templates" style="display: none;">
 
 <div id="questionPreviewTemplate" class="surveyItemContainer">
@@ -486,6 +511,15 @@
             });
             $('#enableSurveyIds', form).val(selected);
             form.submit();
+        });
+
+        <!-- kucing -->
+        jQuery('.setPointLink').click(function() {
+            var that = jQuery(this);
+            var surveyId = that.attr('surveyid');
+
+
+            $('#set-point-survey-modal').modal('show');
         });
 
         jQuery('.displayResultLink').click(function(){
