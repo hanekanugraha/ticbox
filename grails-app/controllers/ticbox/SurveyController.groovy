@@ -122,7 +122,7 @@ class SurveyController {
         def principal = SecurityUtils.subject.principal
         def surveyor = User.findByUsername(principal.toString())
 		
-		def allSurveys = Survey.findAllBysurveyor(surveyorProfile)
+		def allSurveys = Survey.findAllBySurveyor(surveyorProfile)
 		
         [
                 survey : survey,
@@ -164,7 +164,7 @@ class SurveyController {
         def principal = SecurityUtils.subject.principal
         def surveyor = User.findByUsername(principal.toString())
 
-		def allSurveys = Survey.findAllBysurveyor(surveyorProfile)
+		def allSurveys = Survey.findAllBySurveyor(surveyorProfile)
 		
         [
                 survey : survey,
@@ -394,7 +394,7 @@ class SurveyController {
         def principal = SecurityUtils.subject.principal
         def surveyor = User.findByUsername(principal.toString())
         def surveyorDetail = SurveyorDetail.findBySurveyorId(surveyor.id)
-		def allSurveys = Survey.findAllBysurveyor(surveyorProfile)
+		def allSurveys = Survey.findAllBySurveyor(surveyorProfile)
         surveyorDetail = surveyorDetail ?: new SurveyorDetail(surveyorId: surveyor.id).save()
         [profileItems: profileItems,surveyor: surveyor, surveyorDetail: surveyorDetail,
                             countDraft:allSurveys.findAll{ it.status == Survey.STATUS.DRAFT }.size(),
