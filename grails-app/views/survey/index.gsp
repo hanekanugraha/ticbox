@@ -369,7 +369,7 @@
 							<td></td>
 							<td><label class="radio" style="font-weight: normal; margin: 10px 0 15px 0"><g:message code="admin.index.survey.yoursurveylist"/>&nbsp;</label></td>
 							<td><g:select id="allSurveysListSelect" name="allSurveysListSelect" from="${allSurveys}" optionKey="surveyId" optionValue="name" noSelection="${["":"${message(code: 'app.selectone.label')}"]}" class="form-control" 
-									  style="min-width: 20%; width: auto; ${}"/></td>
+									  style="min-width: 20%; width: auto;"/></td>
 					  	</tr>
 					</table>
                 </g:form>
