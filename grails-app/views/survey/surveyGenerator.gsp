@@ -1105,7 +1105,7 @@
                             <th class="col-sm-3 form-inline" style="text-align: left; width: 100px; display: inline">
                             </th>
                             <th class="rating-label" style="text-align: left">
-                                <input type="text" class="input-small form-control" placeholder="<g:message code="message.rating-to-set-label"/>" style="width: 100px;" maxlength="10">
+                                <input type="text" class="input-small form-control" placeholder="<g:message code="message.rating-to-set-label"/>" style="width: 100px;" maxlength="50">
                             </th>
                             <th style="white-space:nowrap;">
                                 <button class="btn btn-default btn-info remove-rating">
