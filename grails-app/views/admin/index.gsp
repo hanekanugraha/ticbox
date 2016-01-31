@@ -36,7 +36,7 @@
                             <g:each in="${users}" var="user" status="status">
                                 <tr>
                                     <td><input type="checkbox" name="userIds" userstatus="${user.status}" value="${user.id}" ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)?.equals(user.username) ? 'disabled="disabled"' : ''} /></td>
-                                    <td>${user.username}</td>
+                                    <td><g:link controller="admin" action="editProfile" params="[uid: user.id, type: user.roles*.name]">${user.username}</g:link></td>
                                     <td>${user.email}</td>
                                     <td>${user.roles*.name}</td>
                                     <td><g:message code="${User.getStatusLabel(user.status)}"/></td>
