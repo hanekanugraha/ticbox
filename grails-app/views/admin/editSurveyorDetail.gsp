@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta name="layout" content="admin"/>
-    <title>Respondent Profile</title>
+    <title>Surveyor Profile</title>
     <r:require module="fileuploader" />
     <style type="text/css">
         .profile-card {
@@ -63,14 +63,12 @@
 <body>
     <div class="module">
         <div id="adminHeader" class="module-header">
-            <div class="title">Respondent Profile</div>
+            <div class="title">Surveyor Profile</div>
         </div>
 
 <div id="profileForm" class="module-content" >
-    <g:form class="form-horizontal" action="updateRespondentProfile">
+    <g:form class="form-horizontal" action="updateSurveyorProfile">
         <!-- hiddens -->
-        <g:hiddenField name="id" value="${respondentDetail.id}"/>
-
         <div style="margin: 0;">
 
             <!-- static fields -->
@@ -109,49 +107,19 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="username"><g:message code="app.username.label"/></label>
                 <div class="col-sm-8">
-                    <g:textField class="form-control" name="username" value="${respondentDetail.username}" disabled="disabled"/>
+                    <g:textField class="form-control" name="username" value="${user.username}" disabled="disabled"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="email"><g:message code="app.email.label"/></label>
                 <div class="col-sm-8">
-                    <g:textField class="form-control" name="email" value="${respondentDetail.email}"/>
+                    <g:textField class="form-control" name="email" value="${user.email}"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label"><g:message code="app.password.label"/></label>
                 <div class="col-sm-8">
                     <a href="#change-password-modal" role="button" class="btn btn-sm btn-light-oak" data-toggle="modal"><g:message code="app.change.label"/></a>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Division</label>
-                <div class="col-sm-8">
-                    <g:select name="profileItems_LM_DIVISION001"
-                      class="form-control" style="width: auto"
-                      from="${LookupMaster.findByCode('LM_DIVISION001')?.values}" optionKey="key" optionValue="value"
-                      value="${respondentDetail?.profileItems['PI_DIVISION001']}"
-                      noSelection="['':'-Choose One-']" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Role</label>
-                <div class="col-sm-8">
-                    <g:select name="profileItems_LM_ROLE001"
-                      class="form-control" style="width: auto"
-                      from="${LookupMaster.findByCode('LM_ROLE001')?.values}" optionKey="key" optionValue="value"
-                      value="${respondentDetail?.profileItems['PI_ROLE001']}"
-                      noSelection="['':'-Choose One-']" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Grade</label>
-                <div class="col-sm-8">
-                    <g:select name="profileItems_LM_GRADE001"
-                      class="form-control" style="width: auto"
-                      from="${LookupMaster.findByCode('LM_GRADE001')?.values}" optionKey="key" optionValue="value"
-                      value="${respondentDetail?.profileItems['PI_GRADE001']}"
-                      noSelection="['':'-Choose One-']" />
                 </div>
             </div>
         </div>

@@ -52,9 +52,9 @@ class AdminController {
         try {
             if (params.uid && params.type) {
                 if (params.type == "Surveyor") {
-                    def detail = SurveyorDetail.findByRespondentId(params.uid)
-                    def map = [detail: detail]
-                    render(view: "editSurveyorProfile", model: map)
+                    def user = User.findById(params.uid)
+                    def map = [user: user]
+                    render(view: "editSurveyorDetail", model: map)
 
                 } else if (params.type == "Respondent") {
                     def detail = RespondentDetail.findByRespondentId(params.uid)
@@ -89,6 +89,24 @@ class AdminController {
                 ]
 
                 respondentService.updateRespondentDetail(user, params)
+                flash.message = message(code: "general.update.success.message")
+            } else {
+                throw Exception("No user was found")
+            }
+        } catch (Exception e) {
+            flash.error = message(code: "general.update.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        redirect(controller: "admin", action: "index")
+    }
+
+    def updateSurveyorProfile = {
+        try {
+            if (params.email) {
+                User user = User.findByEmail(params.email)
+                if (user == null) {
+                    throw Exception("User with email = " + params.email + " is not found")
+                }
                 flash.message = message(code: "general.update.success.message")
             } else {
                 throw Exception("No user was found")
