@@ -150,6 +150,21 @@ class AdminController {
         redirect(controller: "admin", action: "surveys")
     }
 
+    // kucing
+    def savePointSurvey() {
+        try {
+            def surveyId = params.surveyId
+            def surveyPoint = Long.parseLong(params.surveyPoint)
+            System.out.println('surveyId = ' + surveyId)
+            surveyService.savePointSurvey(surveyId, surveyPoint)
+
+        } catch (Exception e) {
+            flash.error = message(code: "app.admin.survey.setpoint.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        redirect(controller: "admin", action: "surveys")
+    }
+
     def enableSurveys(){
         try {
             if (params.enableSurveyIds) {
