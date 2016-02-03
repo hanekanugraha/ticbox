@@ -36,6 +36,7 @@ class SurveyService {
 			def date = new Date()
 			def sdf = new SimpleDateFormat("MM/dd/yyyy")
 			survey.createdDate = sdf.format(date)
+			survey.modifiedDate = ''
 			
 			survey[Survey.COMPONENTS.QUESTION_ITEMS] = (DBObject) com.mongodb.util.JSON.parse(copySurvey.QUESTION_ITEMS.toString().replace('<br/>', '\n'))
 			survey.save(flush: false)
@@ -89,23 +90,19 @@ class SurveyService {
                 DBObject dbObject = (DBObject) com.mongodb.util.JSON.parse(filterItemsJSON)
 
                 survey[Survey.COMPONENTS.RESPONDENT_FILTER] = dbObject
-                survey.type = surveyType
-                survey.completionDateFrom = compDateFrom
-                survey.completionDateTo = compDateTo
-                survey.ttlRespondent = ttlLong
-                survey.createdDate = ''
-                survey.save()
             }
-        else{
-                survey.type = surveyType
-                survey.completionDateFrom = compDateFrom
-                survey.completionDateTo = compDateTo
-                survey.ttlRespondent = ttlLong
-                survey.createdDate = ''
-                survey.save()
-            }
-
-
+            survey.type = surveyType
+            survey.completionDateFrom = compDateFrom
+            survey.completionDateTo = compDateTo
+            survey.ttlRespondent = ttlLong
+			def date = new Date()
+			def sdf = new SimpleDateFormat("MM/dd/yyyy")
+			if(!survey.createdDate) {
+				survey.createdDate = sdf.format(date)
+			} else {			
+				survey.modifiedDate = sdf.format(date)
+			}
+            survey.save()
         }
     }
 
@@ -115,6 +112,12 @@ class SurveyService {
 
             survey[Survey.COMPONENTS.QUESTION_ITEMS] = dbObject
             survey.title = params.surveyTitle?.encodeAsHTML().replace('\n', '<br/>')
+			def date = new Date()
+			def sdf = new SimpleDateFormat("MM/dd/yyyy")
+			if(!survey.createdDate) {
+				survey.createdDate = sdf.format(date) 
+			}
+			survey.modifiedDate = sdf.format(date)
 
             if(params.logoResourceId){
                 def userResource = UserResource.findById(new ObjectId(params.logoResourceId))
@@ -184,6 +187,8 @@ class SurveyService {
         }
         survey.point=Long.parseLong(params.surveyPoint)
         survey.status = Survey.STATUS.IN_PROGRESS
+		def sdf = new SimpleDateFormat("MM/dd/yyyy")
+		survey.modifiedDate = sdf.format(new Date())
         survey.save()
 
     }

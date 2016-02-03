@@ -193,10 +193,11 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="6"><g:message code="app.draft.status"/></th>
+                    <th colspan="7"><g:message code="app.draft.status"/></th>
                 </tr>
                 <tr class="sub-header">
                     <th><g:message code="app.user.name.label"/></th>
+                    <th><g:message code="app.modifiedon.label"/></th>
                     <th><g:message code="app.type.label"/></th>
                     <th><g:message code="app.runningtime.label"/></th>
                     <th><g:message code="app.totalrespondent.label"/></th>
@@ -212,7 +213,9 @@
                 </g:if>
                 <g:each in="${drafts}" var="survey">
                     <tr>
-                        <td><a href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}">${survey.name}</a></td>
+                        <td class="pre"><a href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}">${survey.name}</a>
+<span style="font-size: xx-small;"><g:message code="app.createdon.label"/> ${survey.createdDate}</span></td>
+                        <td>${survey.modifiedDate}</td>
                         <td>${survey.type}</td>
                         <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                         <td>${survey.ttlRespondent}</td>
@@ -269,10 +272,11 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                     <tr class="top-header">
-                        <th colspan="6"><g:message code="app.inprogress.status"/></th>
+                        <th colspan="7"><g:message code="app.inprogress.status"/></th>
                     </tr>
                     <tr class="sub-header">
                         <th><g:message code="app.user.name.label"/></th>
+	                    <th><g:message code="app.modifiedon.label"/></th>
                         <th><g:message code="app.type.label"/></th>
                         <th><g:message code="app.runningtime.label"/></th>
                         <th><g:message code="app.totalrespondent.label"/></th>
@@ -288,14 +292,16 @@
                     </g:if>
                     <g:each in="${inProgress}" var="survey">
                         <tr>
-                            <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
+                            <td class="pre"><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a>
+<span style="font-size: xx-small;"><g:message code="app.createdon.label"/> ${survey.createdDate}</span></td>
+                            <td>${survey.modifiedDate}</td>
                             <td>${survey.type}</td>
                             <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                             <td>${survey.ttlRespondent}</td>
                             <td>Rp. ${survey.surveyPrice}</td>
-                            <td class="content-width">
-                                <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>
-								<a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.downloadresult"/></a>
+                            <td class="content-width" style="padding: 0px;">
+                                <a class="btn btn-xs btn-primary displayResultLink btn-vertical-top" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>
+                                <a class="btn btn-xs btn-primary downloadResultLink btn-vertical-bottom" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.downloadresult"/></a>
                             </td>
                         </tr>
                     </g:each>
@@ -305,10 +311,11 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="6"><g:message code="app.completed.status"/></th>
+                    <th colspan="7"><g:message code="app.completed.status"/></th>
                 </tr>
                 <tr class="sub-header">
                     <th><g:message code="app.user.name.label"/></th>
+                    <th><g:message code="app.modifiedon.label"/></th>
                     <th><g:message code="app.type.label"/></th>
                     <th><g:message code="app.runningtime.label"/></th>
                     <th><g:message code="app.totalrespondent.label"/></th>
@@ -324,14 +331,16 @@
                     </g:if>
                     <g:each in="${completes}" var="survey">
                         <tr>
-                            <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
+                            <td class="pre"><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a>
+<span style="font-size: xx-small;"><g:message code="app.createdon.label"/> ${survey.createdDate}</span></td>
+                            <td>${survey.modifiedDate}</td>
                             <td>${survey.type}</td>
                             <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                             <td>${survey.ttlRespondent}</td>
                             <td>Rp. ${survey.surveyPrice}</td>
-                            <td class="content-width">
-                                <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>
-                            	<a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.downloadresult"/></a>
+                            <td class="content-width" style="padding: 0px;">
+                                <a class="btn btn-xs btn-primary displayResultLink btn-vertical-top" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>
+                            	<a class="btn btn-xs btn-primary downloadResultLink btn-vertical-bottom" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.downloadresult"/></a>
 							</td>
                         </tr>
                     </g:each>

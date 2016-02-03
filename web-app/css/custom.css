@@ -335,6 +335,10 @@ td.content-width {
     white-space:nowrap;
 }
 
+.pre {
+	white-space: pre;
+}
+
 /*
  ###################################################################################################################
  BUTTONS
@@ -527,6 +531,22 @@ fieldset[disabled] .btn-coffee.active {
 .btn-coffee .badge {
     color: #998675;
     background-color: #fff;
+}
+
+.btn-vertical-top {
+	display: block;
+	margin-left: 2px;
+	margin-right: 2px;
+	margin-top: 4px;
+	margin-bottom: 1px;
+}
+
+.btn-vertical-bottom {
+	display: block;
+	margin-left: 2px;
+	margin-right: 2px;
+	margin-top: 1px;
+	margin-bottom: 4px;
 }
 
 /*
