@@ -43,5 +43,6 @@ class Survey {
     long ttlRespondent
     long surveyPrice
     String createdDate
+	String modifiedDate
 
 }

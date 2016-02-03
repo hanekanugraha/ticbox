@@ -200,7 +200,7 @@
                     <th><g:message code="app.type.label"/></th>
                     <th><g:message code="app.runningtime.label"/></th>
                     <th><g:message code="app.totalrespondent.label"/></th>
-                    <th><g:message code="app.totalcharge.label"/></th>
+                    <th><g:message code="app.createdon.label"/></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -216,7 +216,7 @@
                         <td>${survey.type}</td>
                         <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                         <td>${survey.ttlRespondent}</td>
-                        <td>Rp. ${survey.surveyPrice}</td>
+                        <td>${survey.createdDate}</td>
                         <!-- Delete Draft -->
                         <td class="content-width">
                             <!-- a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="${request.contextPath}/survey/deleteSurvey?surveyId=${survey.surveyId}">Delete</a -->
@@ -276,7 +276,7 @@
                         <th><g:message code="app.type.label"/></th>
                         <th><g:message code="app.runningtime.label"/></th>
                         <th><g:message code="app.totalrespondent.label"/></th>
-                        <th><g:message code="app.totalcharge.label"/></th>
+                        <th><g:message code="app.createdon.label"/></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -292,7 +292,7 @@
                             <td>${survey.type}</td>
                             <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                             <td>${survey.ttlRespondent}</td>
-                            <td>Rp. ${survey.surveyPrice}</td>
+                            <td>${survey.createdDate}</td>
                             <td class="content-width">
                                 <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>
 								<a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.downloadresult"/></a>
@@ -312,7 +312,7 @@
                     <th><g:message code="app.type.label"/></th>
                     <th><g:message code="app.runningtime.label"/></th>
                     <th><g:message code="app.totalrespondent.label"/></th>
-                    <th><g:message code="app.totalcharge.label"/></th>
+                    <th><g:message code="app.createdon.label"/></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -328,7 +328,7 @@
                             <td>${survey.type}</td>
                             <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                             <td>${survey.ttlRespondent}</td>
-                            <td>Rp. ${survey.surveyPrice}</td>
+                            <td>${survey.createdDate}</td>
                             <td class="content-width">
                                 <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>
                             	<a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.downloadresult"/></a>
