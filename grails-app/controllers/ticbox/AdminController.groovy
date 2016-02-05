@@ -154,12 +154,22 @@ class AdminController {
     def savePointSurvey() {
         try {
             System.out.println("masuk save point!")
-            System.out.println('surveyId    = ' + params.savePointSurveyId)
-            System.out.println('surveyPoint = ' + params.surveyPoint)
             def surveyId = params.savePointSurveyId
             def surveyPoint = params.surveyPoint
-            surveyService.savePointSurvey(surveyId, surveyPoint)
 
+            def survey = surveyService.getSurvey(surveyId)
+
+            if(survey.getEnableStatus()==Survey.ENABLE_STATUS.DISABLE) {
+                System.out.println('surveyId    = ' + survey.getSurveyId())
+                System.out.println('surveyPoint = ' + survey.getPoint())
+                survey.setPoint(Long.parseLong(surveyPoint))
+                System.out.println('after set point = ' + survey.getPoint())
+
+                surveyService.savePointSurvey(survey)
+            } else {
+                flash.error = message(code: "app.admin.survey.setpoint.failed.statusenable")
+
+            }
         } catch (Exception e) {
             flash.error = message(code: "app.admin.survey.setpoint.failed.message") + " : " + e.message
             log.error(e.message, e)

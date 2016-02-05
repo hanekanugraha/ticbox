@@ -731,12 +731,12 @@ class SurveyService {
         return ProfileItem.findAllByRole(ProfileItem.ROLES.SURVEYOR)?.sort{it.seq}
     }
 
-    def savePointSurvey(String surveyId, String point) {
+    def savePointSurvey(Survey survey) {
         System.out.println("savePointSurvey SurveyService")
-        Survey survey = Survey.findBySurveyId(surveyId)
+//        Survey survey = Survey.findBySurveyId(surveyId)
         System.out.println("survey name = " + survey.name)
-//        survey.point=Long.parseLong(point)
-        survey.setPoint(Long.parseLong(point))
+
+//        survey.setPoint(Long.parseLong(point))
         System.out.println("point survey = " + survey.point)
         survey.save();
     }
