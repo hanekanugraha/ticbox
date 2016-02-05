@@ -732,12 +732,6 @@ class SurveyService {
     }
 
     def savePointSurvey(Survey survey) {
-        System.out.println("savePointSurvey SurveyService")
-//        Survey survey = Survey.findBySurveyId(surveyId)
-        System.out.println("survey name = " + survey.name)
-
-//        survey.setPoint(Long.parseLong(point))
-        System.out.println("point survey = " + survey.point)
         survey.save();
     }
 }

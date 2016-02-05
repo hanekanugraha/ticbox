@@ -97,7 +97,7 @@
                             </g:else>
                         </td>
                         %{--<td class="content-width">--}%
-                        <td> <!-- kucing -->
+                        <td>
                             <a class="btn btn-xs btn-primary setPointLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Set Point</a>
                             <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display</a>
 	                        <a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download</a>
@@ -320,7 +320,6 @@
     </div>
 </div>
 
-<!-- kucing modal -->
 <div id="set-point-survey-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="setPointSurveyLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -532,7 +531,6 @@
             form.submit();
         })
 
-        <!-- kucing -->
         jQuery('.setPointLink').click(function() {
             var that = jQuery(this);
             var surveyId = that.attr('surveyid');

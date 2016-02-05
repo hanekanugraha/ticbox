@@ -150,21 +150,15 @@ class AdminController {
         redirect(controller: "admin", action: "surveys")
     }
 
-    // kucing
     def savePointSurvey() {
         try {
-            System.out.println("masuk save point!")
             def surveyId = params.savePointSurveyId
             def surveyPoint = params.surveyPoint
 
             def survey = surveyService.getSurvey(surveyId)
 
             if(survey.getEnableStatus()==Survey.ENABLE_STATUS.DISABLE) {
-                System.out.println('surveyId    = ' + survey.getSurveyId())
-                System.out.println('surveyPoint = ' + survey.getPoint())
                 survey.setPoint(Long.parseLong(surveyPoint))
-                System.out.println('after set point = ' + survey.getPoint())
-
                 surveyService.savePointSurvey(survey)
             } else {
                 flash.error = message(code: "app.admin.survey.setpoint.failed.statusenable")
