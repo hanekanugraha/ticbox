@@ -332,10 +332,10 @@
             </div>
             <div class="modal-body">
                 <g:form name="setPointSurveyForm" controller="admin" action="savePointSurvey" role="form">
-                    <input  id="savePointSurveyId" name="savePointSurveyId" value=""/>
+                    <input  id="savePointSurveyId" name="savePointSurveyId" />
                     <div class="well">
                         <label class="" ><g:message code="survey.addgoldpoint.label"/></label>
-                        <select id="surveyPoint" class="form-control">
+                        <select id="surveyPoint" name="surveyPoint" class="form-control">
                             <option value="0">0</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -526,10 +526,9 @@
         });
 
         $('#setPointSurvey').click(function() {
-            alert('masuk set point survey')
             $(this).button('loading');
             var form= $('#setPointSurveyForm');
-            alert(form.savePointSurveyId + form.surveyPoint)
+
             form.submit();
         })
 

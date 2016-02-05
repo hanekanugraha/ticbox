@@ -153,9 +153,11 @@ class AdminController {
     // kucing
     def savePointSurvey() {
         try {
-            def surveyId = params.surveyId
-            def surveyPoint = Long.parseLong(params.surveyPoint)
-            System.out.println('surveyId = ' + surveyId)
+            System.out.println("masuk save point!")
+            System.out.println('surveyId    = ' + params.savePointSurveyId)
+            System.out.println('surveyPoint = ' + params.surveyPoint)
+            def surveyId = params.savePointSurveyId
+            def surveyPoint = params.surveyPoint
             surveyService.savePointSurvey(surveyId, surveyPoint)
 
         } catch (Exception e) {
