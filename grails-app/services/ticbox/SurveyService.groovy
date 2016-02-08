@@ -733,4 +733,8 @@ class SurveyService {
     def getSurveyorProfileItems () {
         return ProfileItem.findAllByRole(ProfileItem.ROLES.SURVEYOR)?.sort{it.seq}
     }
+
+    def savePointSurvey(Survey  survey) {
+        survey.save();
+    }
 }
