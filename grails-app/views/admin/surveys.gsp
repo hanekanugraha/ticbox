@@ -95,8 +95,9 @@
                             </g:else>
                         </td>
                         <td class="content-width">
-                            <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display Result</a>
-	                        <a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download Result</a>
+                            <a class="btn btn-xs btn-primary setPointLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Set Point</a>
+                            <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display</a>
+	                        <a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download</a>
                         </td>
                     </tr>
                 </g:each>
@@ -137,8 +138,8 @@
                         <td>${survey.ttlRespondent}</td>
                         <td>Rp. ${survey.surveyPrice}</td>
                         <td class="content-width">
-                            <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display Result</a>
-	                        <a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download Result</a>
+                            <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display</a>
+	                        <a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download</a>
                         </td>
                     </tr>
                 </g:each>
@@ -316,6 +317,39 @@
     </div>
 </div>
 
+<!-- kucing modal -->
+ <div id="set-point-survey-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="setPointSurveyLabel" aria-hidden="true"> 
+    <div class="modal-dialog"> 
+        <div class="modal-content"> 
+            <div class="modal-header"> 
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> 
+                <span id="setPointSurveyLabel" class="modal-title"> 
+                    <g:message code="default.setpointsurvey.label"/> 
+                </span> 
+            </div> 
+            <div class="modal-body"> 
+                <g:form name="setPointSurveyForm" controller="admin" action="savePointSurvey" role="form"> 
+                    <input  id="savePointSurveyId" name="savePointSurveyId" /> 
+                    <div class="well"> 
+                        <label class="" ><g:message code="survey.addgoldpoint.label"/></label> 
+                        <select id="surveyPoint" name="surveyPoint" class="form-control"> 
+                            <option value="0">0</option> 
+                            <option value="5">5</option> 
+                            <option value="10">10</option> 
+                            <option value="15">15</option> 
+                            <option value="20">20</option> 
+                        </select> 
+                    </div> 
+                </g:form> 
+            </div> 
+            <div class="modal-footer"> 
+                <button id="setPointSurvey" class="btn btn-blue-trust" data-loading-text="Processing.."><g:message code="label.button.setpoint"/></button> 
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button> 
+            </div> 
+        </div> 
+    </div>
+ </div>
+
 <div class="templates" style="display: none;">
 
 <div id="questionPreviewTemplate" class="surveyItemContainer">
@@ -486,6 +520,20 @@
             });
             $('#enableSurveyIds', form).val(selected);
             form.submit();
+        });
+
+        $('#setPointSurvey').click(function() { 
+            $(this).button('loading'); 
+            var form= $('#setPointSurveyForm');  
+            form.submit(); 
+        })  
+
+        <!-- kucing --> 
+        jQuery('.setPointLink').click(function() { 
+            var that = jQuery(this); 
+            var surveyId = that.attr('surveyid');  
+            $('#set-point-survey-modal').modal('show'); 
+            $('#savePointSurveyId').val(surveyId);   
         });
 
         jQuery('.displayResultLink').click(function(){

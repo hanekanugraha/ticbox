@@ -219,6 +219,25 @@ class AdminController {
         redirect(controller: "admin", action: "surveys")
     }
 
+    def savePointSurvey() {
+        try {
+            def surveyId = params.savePointSurveyId
+            def surveyPoint = params.surveyPoint
+
+            def survey = surveyService.getSurvey(surveyId)
+
+            if(survey.getEnableStatus()==Survey.ENABLE_STATUS.DISABLE) {
+                survey.setPoint(Long.parseLong(surveyPoint))
+                surveyService.savePointSurvey(survey)
+            } else {
+                flash.error = message(code: "app.admin.survey.setpoint.failed.statusenable")
+            }
+        } catch (Exception e) {
+            flash.error = message(code: "app.admin.survey.setpoint.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+    }
+
     def enableSurveys(){
         try {
             if (params.enableSurveyIds) {
