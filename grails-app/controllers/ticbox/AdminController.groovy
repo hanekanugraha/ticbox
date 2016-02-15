@@ -220,7 +220,6 @@ class AdminController {
     }
 
     def savePointSurvey() {
-        System.out.println("masuk savePointSurvey AdminController!")
         try {
             def surveyId = params.savePointSurveyId
             def surveyPoint = params.surveyPoint
@@ -237,6 +236,7 @@ class AdminController {
             flash.error = message(code: "app.admin.survey.setpoint.failed.message") + " : " + e.message
             log.error(e.message, e)
         }
+        redirect(controller: "admin", action: "surveys")
     }
 
     def enableSurveys(){

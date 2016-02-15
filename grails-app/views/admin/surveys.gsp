@@ -63,7 +63,7 @@
                     <th></th>
                     <th><g:message code="app.name.title"/></th>
                     <th><g:message code="app.owner.label"/></th>
-                    <th><g:message code="app.type.label"/></th>
+                    %{--<th><g:message code="app.type.label"/></th>--}%
                     <th><g:message code="app.point.label"/></th>
                     <th><g:message code="app.createddate.label"/></th>
                     <th><g:message code="app.enddate.label"/></th>
@@ -83,7 +83,7 @@
                         <td><input type="checkbox" name="surveyInprogressIds"  value="${survey.id}" /></td>
                         <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
                         <td>${survey.surveyor.userAccount.username}</td>
-                        <td>${survey.type}</td>
+                        %{--<td>${survey.type}</td>--}%
                         <td>${survey.point}</td>
                         <td>${survey.createdDate}</td>
                         <td>${survey.completionDateTo}</td>
@@ -114,7 +114,7 @@
                 <tr class="sub-header">
                     <th><g:message code="app.name.title"/></th>
                     <th><g:message code="app.owner.label"/></th>
-                    <th><g:message code="app.type.label"/></th>
+                    %{--<th><g:message code="app.type.label"/></th>--}%
                     <th><g:message code="app.createddate.label"/></th>
                     <th><g:message code="app.runningtime.label"/></th>
                     <th><g:message code="app.respondents.label"/></th>
@@ -134,7 +134,7 @@
                         <!--td>${survey.name}</td-->
                         <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
                         <td>${survey.surveyor.userAccount.username}</td>
-                        <td>${survey.type}</td>
+                        %{--<td>${survey.type}</td>--}%
                         <td>${survey.createdDate}</td>
                         <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                         <td>${survey.ttlRespondent}</td>
@@ -331,7 +331,7 @@
             </div> 
             <div class="modal-body"> 
                 <g:form name="setPointSurveyForm" controller="admin" action="savePointSurvey" role="form"> 
-                    <input  id="savePointSurveyId" name="savePointSurveyId" /> 
+                    <input type="hidden" id="savePointSurveyId" name="savePointSurveyId" /> 
                     <div class="well"> 
                         <label class="" ><g:message code="survey.addgoldpoint.label"/></label> 
                         <select id="surveyPoint" name="surveyPoint" class="form-control"> 
@@ -525,16 +525,13 @@
         });
 
         $('#setPointSurvey').click(function() {
-            alert('setPointSurvey')
             $(this).button('loading');
             var form= $('#setPointSurveyForm');
 
             form.submit();
         });
 
-        <!-- kucing --> 
         jQuery('.setPointLink').click(function() {
-            alert('setPointLink')
             var that = jQuery(this);
             var surveyId = that.attr('surveyid');
 
