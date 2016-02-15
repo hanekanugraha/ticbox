@@ -220,6 +220,7 @@ class AdminController {
     }
 
     def savePointSurvey() {
+        System.out.println("masuk savePointSurvey AdminController!")
         try {
             def surveyId = params.savePointSurveyId
             def surveyPoint = params.surveyPoint

@@ -735,6 +735,7 @@ class SurveyService {
     }
 
     def savePointSurvey(Survey  survey) {
+        System.out.println("masuk savePointSurvey SurveyService!")
         survey.save();
     }
 }
