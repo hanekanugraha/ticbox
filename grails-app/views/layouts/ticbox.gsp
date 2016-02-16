@@ -254,12 +254,14 @@
         <div class="container" id="page-outer">
             %{--<div id="wrapper-effect" class="" style="padding-top: 0">--}%
 
-                <g:if test="${flash.error}">
-                    <div class="alert alert-danger" style="display: block">${flash.error}</div>
-                </g:if>
-                <g:if test="${flash.message}">
-                    <div class="alert alert-success" style="display: block">${flash.message}</div>
-                </g:if>
+				<div id="flashdiv">
+	                <g:if test="${flash.error}">
+	                    <div class="alert alert-danger" style="display: block">${flash.error}</div>
+	                </g:if>
+	                <g:if test="${flash.message}">
+	                    <div class="alert alert-success" style="display: block">${flash.message}</div>
+	                </g:if>
+                </div>
 
                 <g:layoutBody/>
             %{--</div>--}%
@@ -294,6 +296,17 @@
 
             });
 
+            function flashMessage(message, success) {
+                $('#flashdiv').html('<div class="alert alert-' + (success ? 'success' : 'danger') + '" style="display: block">' + message + '</div>');
+                $('html, body').animate({
+                    scrollTop: $("#flashdiv").offset().top
+                }, 250);
+                setTimeout(
+        			function() {
+        					$('#flashdiv').html('');
+        				}, 3000);
+            }
+            
         </script>
     </body>
 </html>

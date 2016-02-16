@@ -300,8 +300,12 @@
                             <td>${survey.ttlRespondent}</td>
                             <td>Rp. ${survey.surveyPrice}</td>
                             <td class="content-width" style="padding: 0px;">
+                            <table><tr><td>
                                 <a class="btn btn-xs btn-primary displayResultLink btn-vertical-top" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>
+                            </td></tr>
+                            <tr><td>
                                 <a class="btn btn-xs btn-primary downloadResultLink btn-vertical-bottom" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.downloadresult"/></a>
+                            </td></tr></table>
                             </td>
                         </tr>
                     </g:each>
@@ -339,8 +343,12 @@
                             <td>${survey.ttlRespondent}</td>
                             <td>Rp. ${survey.surveyPrice}</td>
                             <td class="content-width" style="padding: 0px;">
-                                <a class="btn btn-xs btn-primary displayResultLink btn-vertical-top" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>
+                            <table><tr><td>                            
+                                <a class="btn btn-xs btn-primary displayResultLink btn-vertical-top" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>                           
+							</td></tr>
+                            <tr><td>
                             	<a class="btn btn-xs btn-primary downloadResultLink btn-vertical-bottom" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.downloadresult"/></a>
+                            </td></tr></table>
 							</td>
                         </tr>
                     </g:each>

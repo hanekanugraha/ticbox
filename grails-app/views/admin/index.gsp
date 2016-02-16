@@ -57,7 +57,7 @@
                             <g:each in="${users}" var="user" status="status">
                                 <tr>
                                     <td><input type="checkbox" name="userIds" userstatus="${user.status}" value="${user.id}" ${SecurityUtils.getSubject().getPrincipals().oneByType(String.class)?.equals(user.username) ? 'disabled="disabled"' : ''} /></td>
-                                    <td><a href="#" class="link-editUser" data-user-id="${user.id}">${user.username}</a></td>
+                                    <td><a href="#" class="link-editUser" onclick="editUser(event, ${user.id});" data-user-id="${user.id}">${user.username}</a></td>
                                     <td>${user.email}</td>
                                     <td>${user.roles*.name}</td>
                                     <td><g:message code="${User.getStatusLabel(user.status)}"/></td>
@@ -181,6 +181,7 @@
     <div class="modal-dialog">
         <div class="module-content modal-content">
             <div class="form-horizontal" name="surveyorProfileForm" id="surveyorProfileForm">
+            <g:form id="editUserForm" name="editUserForm" class="form-horizontal" role="form">
                 <!-- hiddens -->
                 <input type="hidden" name="id" value="232" id="id">
 
@@ -204,35 +205,38 @@
                 <div style="padding: 20px; background-color: #eeeeed; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label" for="username">Username</label>
+                        <label class="col-sm-3 control-label" for="username"><g:message code="app.username.label"/></label>
                         <div class="col-sm-8">
                             <span class="form-control" disabled="disabled" id="form-edituser-username"></span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label" for="form-edituser-email">Email</label>
+                        <label class="col-sm-3 control-label" for="form-edituser-email"><g:message code="app.email.label"/></label>
                         <div class="col-sm-8">
-                            <input type="email" class="form-control" name="email" id="form-edituser-email">
+                            <input type="email" class="form-control" name="form-edituser-email" id="form-edituser-email">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label" for="form-edituser-password">Password</label>
+                        <label class="col-sm-3 control-label" for="form-edituser-password"><g:message code="app.newpassword.label"/></label>
                         <div class="col-sm-8">
-                            <input type="password" class="form-control" name="password" id="form-edituser-password">
+                            <input type="password" class="form-control" name="form-edituser-password" id="form-edituser-password">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label" for="form-edituser-password-confirm">Password Confirm</label>
+                        <label class="col-sm-3 control-label" for="form-edituser-password-confirm"><g:message code="app.passwordconfirm.label"/></label>
                         <div class="col-sm-8">
-                            <input type="password" class="form-control" name="password-confirm" value="" id="form-edituser-password-confirm">
+                            <input type="password" class="form-control" name="form-edituser-password-confirm" value="" id="form-edituser-password-confirm">
                         </div>
                     </div>
-
+                    
                 </div>
 
-                <button class="btn btn-lg btn-green" style="margin: 15px 0" id="form-edituser-save">Save</button>
+	            <div class="modal-footer">
+	                <button class="btn btn-default btn-green" style="margin: 15px 0" id="form-edituser-save"><g:message code="app.savechanges.label"/></button>
+	                <button class="btn btn-default btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close"/></button>
+                </div>
 
-            </form>
+            </g:form>
         </div>
     </div>
 </div>
@@ -241,6 +245,34 @@
 <g:javascript src="additional-methods.min.js"/>
 <g:javascript src="loader.js"/>
 <script type="text/javascript">
+		var editted_user_id = undefined;
+
+		// Moved out from document.ready because it didn't work when user changed pagination. TODO: Clean up later.
+		function editUser(e, userId){
+            e.preventDefault();
+
+            editted_user_id = undefined;
+            show_loader();
+            $.getJSON('getUser', {id:userId}, function(data){
+
+                $('#edit-user-modal').modal('show');
+                $('#form-edituser-username').html(data.username);
+                $('#form-edituser-email').val(data.email);
+                $('#form-edituser-pic').attr('src', 'data:image;base64,'+ data.pic);
+
+                editted_user_id = data.id;
+
+                hide_loader();
+            });
+            return false;
+        }
+        
+    $('#edit-user-modal').on('hide.bs.modal', function() {
+		var validator = $('#editUserForm').validate();
+    	validator.resetForm();
+        $(this).find('input[type="password"]').val('');
+    });
+        
     $(document).ready(function() {
 
         $('#userTable').DataTable( {
@@ -330,52 +362,26 @@
             }
         });
 
-        var editted_user_id = undefined;
-        $('.link-editUser').click(function(e){
+        $('#form-edituser-save').click(function(e){
+        	var form = $('#editUserForm');
+        	if(form.valid()) {
+	            var password = $('#form-edituser-password').val();
+	
+	            if(confirm("${message(code: 'admin.edituser.saveuser')}")) {
+	                show_loader();
+	                $.post('saveUser', {
+	                    id: editted_user_id,
+	                    email: $('#form-edituser-email').val(),
+	                    password: password
+	                }, function(e){
+	                    hide_loader();                    
+	                    $('#edit-user-modal').modal('hide');
+	                    flashMessage("${message(code: 'admin.edituser.usersaved')}", true);
+	                });
+	            }
+            }
             e.preventDefault();
-
-            editted_user_id = undefined;
-            var userId = $(this).attr('data-user-id');
-            show_loader();
-            $.getJSON('getUser', {id:userId}, function(data){
-
-                $('#edit-user-modal').modal('show');
-                $('#form-edituser-username').html(data.username);
-                $('#form-edituser-email').val(data.email);
-                $('#form-edituser-pic').attr('src', 'data:image;base64,'+ data.pic);
-
-                editted_user_id = data.id;
-
-                hide_loader();
-            });
-        });
-
-        $('#form-edituser-save').click(function(data){
-            var password = $('#form-edituser-password').val();
-            var password_conf = $('#form-edituser-password-confirm').val();
-            if(password && password !== password_conf){
-                alert('Please confirm the password correctly');
-                return false;
-            }
-
-            if(confirm('Save User?')) {
-                show_loader();
-                $.post('saveUser', {
-                    id: editted_user_id,
-                    email: $('#form-edituser-email').val(),
-                    password: password
-                }, function(data){
-
-                    $('#edit-user-modal').modal('show');
-                    $('#form-edituser-username').html(data.username);
-                    $('#form-edituser-email').val(data.email);
-                    $('#form-edituser-pic').attr('src', 'data:image;base64,'+ data.pic);
-
-                    editted_user_id = data.id;
-
-                    hide_loader();
-                });
-            }
+            return false;
         });
 
         // Validations
@@ -405,8 +411,39 @@
             }
         });
 
-
+        $('#editUserForm').validate({
+            rules: {
+                "form-edituser-email": {
+                    email: true,
+                    required: true,
+                    minlength: 5
+                },
+            	"form-edituser-password": {
+                    minlength: 5
+                },
+                "form-edituser-password-confirm": {
+                	minlength: 5,
+                	equalTo: "#form-edituser-password"  	
+	            }
+            },
+            messages: {
+                "form-edituser-email": {
+                    email: "${message(code: 'message.email.invalid')}",
+                    required: "${message(code: 'label.field.required')}",
+                    minlength: "${message(code: 'message.password.failed')}"
+                },
+                "form-edituser-password": {
+                	minlength: "${message(code: 'message.password.failed')}"
+                },
+                "form-edituser-password-confirm": {
+                	minlength: "${message(code: 'message.password.failed')}",
+                	equalTo: "${message(code: 'message.password.notmatch')}"                    
+                }
+            }
+        });
+        
     });
+        
 </script>
 </body>
 </html>
