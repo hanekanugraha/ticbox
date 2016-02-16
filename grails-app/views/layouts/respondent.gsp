@@ -215,6 +215,14 @@
 
     <div id="page-outer" class="container">
         <div id="wrapper-effect" class="">
+   			<div id="flashdiv">
+	            <g:if test="${flash.error}">
+	                <div class="alert alert-danger" style="display: block">${flash.error}</div>
+	            </g:if>
+	            <g:if test="${flash.message}">
+	                <div class="alert alert-success" style="display: block">${flash.message}</div>
+	            </g:if>
+            </div>
 
             <div class="row">
                 <div id="menuNavPanel" class="col-sm-3" style="margin-bottom: 10px;">
@@ -330,6 +338,17 @@
 
         });
 
+        function flashMessage(message, success) {
+            $('#flashdiv').html('<div class="alert alert-' + (success ? 'success' : 'danger') + '" style="display: block">' + message + '</div>');
+            $('html, body').animate({
+                scrollTop: $("#flashdiv").offset().top
+            }, 250);
+            setTimeout(
+    			function() {
+    					$('#flashdiv').html('');
+    				}, 3000);
+        }
+        
     </script>
 
 </body>

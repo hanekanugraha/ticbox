@@ -467,19 +467,6 @@
                 jQuery(this).attr('seq',idx+1);
             });
         }
-        
-        function flashMessage(i18nmessage) {
-            $flashMsg = $('<div class="flash_message">');
-		    $message = $('<div>' + i18nmessage + '</div>').hide();
-		    $flashMsg.append($message);
-		    $('body').prepend($flashMsg);
-		    $message.fadeIn(400, function() {
-			        setTimeout(function(){
-		            $flashMsg.fadeOut();
-		        }, 3000)
-		    });
-        
-        }
 
         function submitSurvey(questionItems){
             show_loader();
@@ -487,11 +474,11 @@
             jQuery.post('${request.contextPath}/survey/submitSurvey', {questionItems: JSON.stringify(questionItems), surveyTitle: jQuery('#surveyTitle').val(), logoResourceId:logoId}, function(data){
 
                 if('SUCCESS' == data){
-                    flashMessage('<g:message code="message.survey.survey-generator.saved"/>');
+                    flashMessage('<g:message code="message.survey.survey-generator.saved"/>', true);
                 }else if('LIMIT' == data){
-                    alert('Max Free Survey more than limit..');
+                    flashMessage('Max Free Survey more than limit..', false);
                 }else{
-                    alert('Submission failure');
+                    flashMessage('Submission failure', false);
                 }
 
                 hide_loader();
@@ -599,10 +586,10 @@
 
                     if('SUCCESS' == data){
                     	jQuery('#submit-confirmation-modal').modal('hide');
-	                    flashMessage('<g:message code="message.survey.survey-generator.submitted"/>');
-                        window.location = "${request.contextPath}/survey/index";
+	                    flashMessage('<g:message code="message.survey.survey-generator.submitted"/>', true);
+                   		window.location = "${request.contextPath}/survey/index";
                     }else if('LIMIT' == data){
-                        alert('Max Free Survey more than limit..');
+                        flashMessage('Max Free Survey more than limit..', false);
                     }else{
                         window.location = data;
                     }

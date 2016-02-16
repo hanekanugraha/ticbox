@@ -281,14 +281,52 @@ class AuthController {
 
         forward(action: errorAction)
     }
+	
+	def adminChangePassword = {
+		def result
+		def success = false
+		def msg
+		if (params.id) {
+			if (params.newPassword && params.confirmPassword) {
+				if((params.newPassword).length()>=5 || (params.confirmPassword).length()>=5) {
 
+					if (params.newPassword == params.confirmPassword) {
+						def newPasswordHash = new Sha256Hash(params.newPassword).toHex()
+						def user = User.findById(params.id)
+						if (user) {
+							user.passwordHash = newPasswordHash
+
+							user.save()
+							success = true
+							msg = message(code: "app.changepassword.successful.message")							
+						} else {
+							msg = message(code: "message.password.notmatch")
+						}
+					} else {
+						msg = message(code: "message.new-password.missmatch")
+					}
+
+				} else {
+					msg = message(code: "message.password.failed")
+				}
+
+			} else {
+				msg = message(code: "message.details.invalid")
+			}
+		} else {
+			msg = message(code: "message.user.invalid")
+		}
+		result = [success: success, message: msg]
+		render result as JSON
+	}
+	
     def changePassword = {
         def result
         def success = false
-        def message
+        def msg
         if (params.id) {
             if (params.oldPassword && params.newPassword && params.confirmPassword) {
-                if((params.newPassword).length()>5 || (params.confirmPassword).length()>5) {
+                if((params.newPassword).length()>=5 || (params.confirmPassword).length()>=5) {
 
                     if (params.newPassword == params.confirmPassword) {
                         def oldPasswordHash = new Sha256Hash(params.oldPassword).toHex()
@@ -299,25 +337,25 @@ class AuthController {
 
                             user.save()
                             success = true
-                            message = "Password successfully changed"
+                            msg = message(code: "app.changepassword.successful.message")
                         } else {
-                            message = message(code: "message.password.notmatch")
+                            msg = message(code: "message.oldpassword.invalid")
                         }
                     } else {
-                        message = message(code: "message.new-password.missmatch")
+                        msg = message(code: "message.new-password.missmatch")
                     }
 
                 } else {
-                    message = message(code: "message.password.failed")
+                    msg = message(code: "message.password.failed")
                 }
 
             } else {
-                message = message(code: "message.details.invalid")
+                msg = message(code: "message.details.invalid")
             }
         } else {
-            message = message(code: "message.user.invalid")
+            msg = message(code: "message.user.invalid")
         }
-        result = [success: success, message: message]
+        result = [success: success, message: msg]
         render result as JSON
     }
 
