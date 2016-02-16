@@ -96,8 +96,7 @@
                                 ${survey.enableStatus}
                             </g:else>
                         </td>
-                        %{--<td class="content-width">--}%
-                        <td>
+                        <td class="content-width">
                             <a class="btn btn-xs btn-primary setPointLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Set Point</a>
                             <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display</a>
 	                        <a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download</a>
@@ -331,7 +330,7 @@
             </div>
             <div class="modal-body">
                 <g:form name="setPointSurveyForm" controller="admin" action="savePointSurvey" role="form">
-                    <input  id="savePointSurveyId" name="savePointSurveyId" />
+                    <input type="hidden" id="savePointSurveyId" name="savePointSurveyId" />
                     <div class="well">
                         <label class="" ><g:message code="survey.addgoldpoint.label"/></label>
                         <select id="surveyPoint" name="surveyPoint" class="form-control">
