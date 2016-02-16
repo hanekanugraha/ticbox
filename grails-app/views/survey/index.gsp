@@ -358,11 +358,11 @@
                     <g:textField name="surveyName" class="form-control"/>
 	                 <table>    
 		                 <tr>                   
-		                   	<td><g:radio name="surveyCreationRadio" value="1" checked="true"/></td>
+		                   	<td><g:radio id="surveyCreationRadio1" name="surveyCreationRadio" value="1" checked="true"/></td>
 		                   	<td colspan="2"><label class="radio" style="font-weight: normal; margin: 10px 0 15px 0"><g:message code="admin.index.survey.createnew"/></label></td>                   	
 		                 </tr>
 		                 <tr>                       
-							<td><g:radio name="surveyCreationRadio" value="2"/></td>
+							<td><g:radio id="surveyCreationRadio2" name="surveyCreationRadio" value="2"/></td>
 							<td colspan="2"><label class="radio" style="font-weight: normal; margin: 10px 0 15px 0"><g:message code="admin.index.survey.editexisting"/></label></td>
 						</tr>
 						<tr id="allSurveysListTr">
@@ -540,6 +540,28 @@
 <g:javascript src="additional-methods.min.js"/>
 <script type="text/javascript">
 
+	jQuery.validator.addMethod("uniqueto", function(value, element, params) {
+	
+		var unique = true;
+		var lowerCaseValue = value.toLocaleLowerCase();
+		$(params + ' option').each(function(){
+		    if (this.innerHTML.toLocaleLowerCase() === lowerCaseValue) {
+		    	unique = false;
+		        return false;
+		    }
+		});
+	    return this.optional(element) || unique;
+	    
+	}, "${message(code: 'app.createsurvey.nonuniquename')}");
+
+    $('#createSurveyModal').on('hide.bs.modal', function() {
+    	var validator = $('#createSurveyForm').validate();
+    	validator.resetForm();
+        $('#surveyName').val('');
+        $('#surveyCreationRadio1').prop("checked", true);
+		$('#allSurveysListTr').hide();        
+    });
+
     $(document).ready(function() {
 
     	jQuery('#allSurveysListTr').hide();
@@ -548,12 +570,21 @@
         $('#createSurveyForm').validate({
             rules: {
                 surveyName: {
-                    required: true
+                    required: true,
+                    uniqueto: "#allSurveysListSelect"
                 },
                 allSurveysListSelect: {
 	                required: true
 	            }
-            }
+	        },
+            messages: {
+            	surveyName: {
+                    required: "${message(code: 'label.field.required')}"
+                },
+                allSurveysListSelect: {
+                    required: "${message(code: 'label.field.required')}"
+                }
+			}
         });
 
         $(document).on( "change", "input[name=surveyCreationRadio]", function() { 
@@ -567,13 +598,11 @@
 
         /* Add new survey submit button */
         $('#createNewSurvey').click(function() {
-//            alert('masuk sini')
-//            $(this).button('loading');
             var form = $('#createSurveyForm');
 
             if (form.valid()) {
+                $('#surveyName').val($.trim($('#surveyName').val()));
                 form.submit();
-
             } else {
                 $(this).button('reset');
             }
