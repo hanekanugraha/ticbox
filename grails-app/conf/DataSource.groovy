@@ -22,7 +22,7 @@ environments {
                 username = "firman"
                 password = "redchair45"
                 databaseName = "ticboxdb-wl"
-                
+
             }
         }
     }
