@@ -591,7 +591,8 @@
                     }else if('LIMIT' == data){
                         flashMessage('Max Free Survey more than limit..', false);
                     }else{
-                        window.location = data;
+                        flashMessage('Submission failure', false);
+//                        window.location = data;
                     }
 
                     hide_loader();
