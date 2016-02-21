@@ -236,6 +236,7 @@ class AdminController {
             flash.error = message(code: "app.admin.survey.setpoint.failed.message") + " : " + e.message
             log.error(e.message, e)
         }
+        redirect(controller: "admin", action: "surveys")
     }
 
     def enableSurveys(){

@@ -148,6 +148,8 @@ class SurveyController {
     }
 
     def surveyGenerator(){
+        System.out.println("masuk survey generator!");
+        System.out.println();
         Survey survey = surveyService.getCurrentEditedSurvey()
 
         if(!survey){
@@ -188,7 +190,14 @@ class SurveyController {
                 render 'LIMIT'
                 return
             }
+
+            // kucing
             Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
+
+            if(!survey) {
+                survey = surveyService.getCurrentEditedSurvey()
+            }
+
             if(survey.type==Survey.SURVEY_TYPE.FREE){
                 def maxQuestion = Parameter.findByCode("MAX_QUESTION_FREE_SURVEY")
                 DBObject dbObject = (DBObject) com.mongodb.util.JSON.parse(params.questionItems)
@@ -236,6 +245,10 @@ class SurveyController {
                 return
             }
             Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
+            if(!survey) {
+                survey = surveyService.getCurrentEditedSurvey()
+            }
+
             if(survey.type==Survey.SURVEY_TYPE.FREE){
                 def maxQuestion = Parameter.findByCode("MAX_QUESTION_FREE_SURVEY")
                 DBObject dbObject = (DBObject) com.mongodb.util.JSON.parse(params.questionItems)

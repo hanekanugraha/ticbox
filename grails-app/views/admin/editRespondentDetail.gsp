@@ -170,31 +170,32 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="myModalLabel" class="modal-title" ><g:message code="app.changepassword.label"/></span>
             </div>
-            <div class="modal-body form-horizontal">
-                <div class="form-group">
-                    <label class="col-xs-4 control-label"><g:message code="app.oldpassword.label"/></label>
-                    <div class="col-xs-7">
-                        <g:hiddenField name="id" value="${user.id}"/>
-                        <g:passwordField class="form-control" name="oldPassword" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-xs-4 control-label"><g:message code="app.newpassword.label"/></label>
-                    <div class="col-xs-7">
-                        <g:passwordField class="form-control" name="newPassword" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-xs-4 control-label"><g:message code="app.confirmpassword.label"/></label>
-                    <div class="col-xs-7">
-                        <g:passwordField class="form-control" name="confirmPassword" />
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-default btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close"/></button>
-                <button id="change-password-button" class="btn btn-default btn-green"><g:message code="app.savechanges.label"/></button>
-            </div>
+
+            <g:form name="changePasswordForm" class="form-horizontal" role="form">	            
+	            <div class="modal-body form-horizontal">
+	                <div class="form-group">
+	                    <div class="col-xs-7">
+	                        <g:hiddenField name="id" value="${user.id}"/>
+	                    </div>
+	                </div>
+	                <div class="form-group">
+	                    <label for="newPassword" class="col-xs-4 control-label"><g:message code="app.newpassword.label"/></label>
+	                    <div class="col-xs-7">
+	                        <g:passwordField id="newPassword" class="form-control" name="newPassword" />
+	                    </div>
+	                </div>
+	                <div class="form-group">
+	                    <label for="confirmPassword" class="col-xs-4 control-label"><g:message code="app.confirmpassword.label"/></label>
+	                    <div class="col-xs-7">
+	                        <g:passwordField id="confirmPassword" class="form-control" name="confirmPassword" />
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="modal-footer">
+	                <button id="change-password-button" class="btn btn-default btn-green"><g:message code="app.savechanges.label"/></button>
+	                <button class="btn btn-default btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close"/></button>
+	            </div>
+            </g:form>
         </div>
     </div>
 </div>
@@ -204,24 +205,57 @@
 <script type="text/javascript">
 
     /* Change password modal trigger */
-    $('#change-password-button').click(function() {
-        var url = '${g.createLink(controller: "auth", action: "changePassword")}';
-        var data = $('#change-password-modal').find('input').serialize();
-        $.post(url, data, function(response) {
-            var message = (response) ? response.message : 'Application error';
-            $('#change-password-modal').modal('hide');
-            alert(message);
-        });
+    $('#change-password-button').click(function(e) {
+        var form = $('#changePasswordForm');
+        if (form.valid()) {
+        	var url = '${g.createLink(controller: "auth", action: "adminChangePassword")}';
+	        var data = $('#change-password-modal').find('input').serialize();
+	        $.post(url, data, function(response) {
+	            var message = (response) ? response.message : 'Application error';
+                $('#change-password-modal').modal('hide');
+                flashMessage(message, response.success);
+	        });
+        } else {
+            $(this).button('reset');
+        }
+        e.preventDefault();
+		return false;        
     });
 
     /* Change password modal on close */
-    $('#change-password-modal').on('hide', function() {
-        $('#change-password-modal').find('input[type="password"]').val('');
+    $('#change-password-modal').on('hide.bs.modal', function() {
+    	var validator = $('#changePasswordForm').validate();
+    	validator.resetForm();
+        $(this).find('input[type="password"]').val('');
     });
 
     $(document).ready(function() {
 
-
+        $('#changePasswordForm').validate({
+            rules: {
+            	newPassword: {
+                	required: true,
+                    minlength: 5
+                },
+                confirmPassword: {
+                    required: true,
+                	minlength: 5,
+                	equalTo: "#newPassword"  	
+	            }
+            },
+            messages: {
+                newPassword: {
+                    required: "${message(code: 'label.field.required')}",
+                	minlength: "${message(code: 'message.password.failed')}"
+                },
+                confirmPassword: {
+                    required: "${message(code: 'label.field.required')}",
+                	minlength: "${message(code: 'message.password.failed')}",
+                	equalTo: "${message(code: 'message.password.notmatch')}"                    
+                }
+            }
+        });
+        
         $('#respProfileForm').validate({
             rules: {
                 email: {
