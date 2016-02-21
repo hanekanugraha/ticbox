@@ -10,6 +10,7 @@ import org.apache.shiro.SecurityUtils
 import uk.co.desirableobjects.ajaxuploader.exception.FileUploadException
 import java.text.SimpleDateFormat
 import pl.touk.excel.export.WebXlsxExporter
+import java.io.*;
 
 class SurveyController {
 
@@ -425,6 +426,47 @@ class SurveyController {
             log.error(message, e)
         }
         return render(text: [success:false, message: message] as JSON, contentType:'text/json')
+    }
+
+    def uploadImageToString = {
+        def message
+        try {
+            def inputStream
+            if (request instanceof MultipartHttpServletRequest) {
+                MultipartFile multipartFile = ((MultipartHttpServletRequest) request).getFile("qqfile")
+                inputStream = multipartFile.inputStream
+            } else {
+                inputStream = request.inputStream
+            }
+
+            String pic = Base64.encode(inputStream.bytes)
+            String tempFileId = save(pic)
+
+            return render(text: [success:true, img:pic, fid:tempFileId] as JSON, contentType:'text/json')
+        } catch (FileUploadException e) {
+            message = "Failed to upload file."
+            log.error(message, e)
+        } catch (Exception e) {
+            message = "Unknown error"
+            log.error(message, e)
+        }
+        return render(text: [success:false, message: message] as JSON, contentType:'text/json')
+    }
+
+    def save(String base64Picture) {
+        File f = File.createTempFile("pref_updfile", "suf_updfile");
+        Writer writer = null
+        try {
+            writer = new FileWriter(f);
+            writer.write(base64Picture);
+        } finally {
+            try {
+                writer.close();
+            } catch (Exception e) {
+                // Don't care
+            }
+        }
+        return f.name;
     }
 
     def viewImage = {
