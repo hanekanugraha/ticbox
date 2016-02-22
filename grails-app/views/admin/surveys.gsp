@@ -65,7 +65,7 @@
                     <th><g:message code="app.owner.label"/></th>
                     <th><g:message code="app.type.label"/></th>
                     <th><g:message code="app.point.label"/></th>
-                    <th><g:message code="app.createddate.label"/></th>
+                    %{--<th><g:message code="app.createddate.label"/></th>--}%
                     <th><g:message code="app.enddate.label"/></th>
                     <th><g:message code="app.price.label"/></th>
                     <th><g:message code="app.status.label"/></th>
@@ -81,11 +81,13 @@
                 <g:each in="${inProgress}" var="survey">
                     <tr>
                         <td><input type="checkbox" name="surveyInprogressIds"  value="${survey.id}" /></td>
-                        <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
+                        <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a>
+                            <span style="font-size: xx-small;"><g:message code="app.createdon.label"/> ${survey.createdDate}</span>
+                        </td>
                         <td>${survey.surveyor.userAccount.username}</td>
                         <td>${survey.type}</td>
                         <td>${survey.point}</td>
-                        <td>${survey.createdDate}</td>
+                        %{--<td>${survey.createdDate}</td>--}%
                         <td>${survey.completionDateTo}</td>
                         <td>Rp. ${survey.surveyPrice}</td>
                         <td>
@@ -115,7 +117,7 @@
                     <th><g:message code="app.name.title"/></th>
                     <th><g:message code="app.owner.label"/></th>
                     <th><g:message code="app.type.label"/></th>
-                    <th><g:message code="app.createddate.label"/></th>
+                    %{--<th><g:message code="app.createddate.label"/></th>--}%
                     <th><g:message code="app.runningtime.label"/></th>
                     <th><g:message code="app.respondents.label"/></th>
                     <th><g:message code="app.price.label"/></th>
@@ -132,10 +134,13 @@
                     <tr>
                         <%--td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td--%>
                         <!--td>${survey.name}</td-->
-                        <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
+                        <td class="75%">
+                            <a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a>
+                            <span style="font-size: xx-small;"><g:message code="app.createdon.label"/> ${survey.createdDate}</span>
+                        </td>
                         <td>${survey.surveyor.userAccount.username}</td>
                         <td>${survey.type}</td>
-                        <td>${survey.createdDate}</td>
+                        %{--<td>${survey.createdDate}</td>--}%
                         <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                         <td>${survey.ttlRespondent}</td>
                         <td>Rp. ${survey.surveyPrice}</td>
