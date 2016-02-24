@@ -114,7 +114,7 @@
 //            jQuery('#surveyPreviewModal').on('shown', function(){
             jQuery('#surveyPreviewModal').on('shown.bs.modal', function(){
                 console.log('~ BEGIN #surveyPreviewModal.onShown');
-                var questionItems = buildQuestionItemsMap();
+                var questionItems = buildQuestionItemsMap(true);
                 constructPreview(questionItems);
 
 //            }).on('hidden', function(){
@@ -188,6 +188,7 @@
             });
         }
 
+        var pureQuestionTemplate = null;
         function constructQuestionItem(type, subtype){
             var answerComp = null;
 
@@ -364,7 +365,10 @@
 
             }
 
-            var questionComp = jQuery('#questionTemplate').clone().removeAttr('id').append(answerComp).appendTo('.surveyItemsContainer');
+            if (pureQuestionTemplate == null) {
+              pureQuestionTemplate = jQuery('#questionTemplate').clone();
+            }
+            var questionComp = pureQuestionTemplate.clone().removeAttr('id').append(answerComp).appendTo('.surveyItemsContainer');
 
             // Sanchez
             // An uploader for this button
@@ -418,10 +422,14 @@
             return questionComp;
         }
 
-        function buildQuestionItemsMap(){
+        function buildQuestionItemsMap(withImageData){
             console.log('~ BEGIN buildQuestionItemsMap');
             var questionItems = [];
             var seq = 0;
+
+            if (typeof withImageData === "undefined") {
+              withImageData = false;
+            }
 
             jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(){
                 console.log('~ BEGIN .surveyItemsContainer > .surveyItemContainer each');
@@ -430,13 +438,21 @@
                 var type = jQuery('.answerTemplate', container).attr('type');
 
                 var questionStr = jQuery('.questionTextContainer > textarea', container).val();
+                // sanchez
+                var questionImgFid = jQuery('input[name="question-image-fid"]', container).val();
+                var questionImg = null;
+                if (withImageData) {
+                  questionImg = jQuery('img', container).attr('src');
+                }
+
                 var answerDetails = {};
                 answerDetails['type'] = type;
 
                 switch(type){
 
                     case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
-                        console.log('~ type is choice');
+                        console.log('~ type is single choice');
+
                         answerDetails['choiceItems'] = [];
                         jQuery('.choice-items > .choice-item', container).each(function(){
 
@@ -445,6 +461,11 @@
                             choiceItem['label'] = jQuery('input.item-label', item).val();
                             choiceItem['rule'] = 'selected';
                             choiceItem['nextQuestion'] = jQuery('input.item-seq', item).val();
+                            // sanchez
+                            choiceItem['imgFid'] = jQuery('input[name="answer-image-fid"]', item).val();
+                            if (withImageData) {
+                              choiceItem['img'] = jQuery('img', item).attr('src');
+                            }
                             answerDetails['choiceItems'].push(choiceItem);
                         });
 
@@ -453,12 +474,20 @@
                         break;
 
                     case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
-                        console.log('~ type is choice');
+                        console.log('~ type is multi choice');
+
                         answerDetails['choiceItems'] = [];
                         jQuery('.choice-items > .choice-item', container).each(function(){
 
                             var item = jQuery(this);
-                            answerDetails['choiceItems'].push(jQuery('input.item-label', item).val());
+                            var choiceItem = {};
+                            choiceItem['label'] = jQuery('input.item-label', item).val();
+                            // sanchez
+                            choiceItem['imgFid'] = jQuery('input[name="answer-image-fid"]', item).val();
+                            if (withImageData) {
+                              choiceItem['img'] = jQuery('img', item).attr('src');
+                            }
+                            answerDetails['choiceItems'].push(choiceItem);
                         });
 
                         answerDetails['choiceType'] = jQuery('select.choice-type', container).val();
@@ -496,11 +525,20 @@
 
                 }
 
-                questionItems.push({
-                    seq : ++seq,
-                    questionStr : questionStr,
-                    answerDetails : answerDetails
-                });
+console.log('@buildQuestionItemsMap: questionImgFid = ' + questionImgFid);
+
+                var questionItem = {
+                                   seq : ++seq,
+                                   questionStr : questionStr,
+                                   answerDetails : answerDetails,
+                                   imgFid: questionImgFid
+                               };
+                if (questionImgFid != null) {
+                  questionItem['img'] = questionImg;
+                }
+
+console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionItem, null, "    "));
+                questionItems.push(questionItem);
 
             });
 
@@ -794,6 +832,14 @@
                 var questionTemplate = jQuery('#questionPreviewTemplate').clone().removeAttr('id');
 
                 jQuery('.seqNumberContainer', questionTemplate).html(idx+1+'.');
+                // Sanchez
+                console.log("class of img = " + jQuery('img', questionTemplate).attr('class'));
+                if (item.img != null) {
+                  jQuery('img', questionTemplate).attr('src', item.img);
+                  jQuery('img', questionTemplate).show(0);
+                } else {
+                  jQuery('img', questionTemplate).hide(0);
+                }
 
                 jQuery('.question-text', questionTemplate).html("<span style='font-size:24px;color:grey;'>"+questionStr.charAt(0)+"</span>" + questionStr.substring(1));
 
@@ -815,8 +861,17 @@
                             var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
                             jQuery('input.item-check', choiceItemContainer).attr('name', idx);
                             jQuery('input.item-check', choiceItemContainer).val(choiceItem);
+
                             jQuery('.item-label', choiceItemContainer).html(choiceItem.label);
 //                                    answerTemplate.append(choiceItemContainer);
+                            // Sanchez
+                            if (choiceItem.img != null) {
+                              jQuery('img', choiceItemContainer).attr('src', choiceItem.img);
+                              jQuery('img', choiceItemContainer).show(0);
+                            } else {
+                              jQuery('img', choiceItemContainer).hide(0);
+                            }
+
                             jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
                         });
                         jQuery('.choice-item:first', answerTemplate).remove();
@@ -834,9 +889,16 @@
 //                                jQuery.each(choiceItems, function(idx, choiceItem){
                         jQuery.each(choiceItems, function(j, choiceItem){
                             var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
-                            jQuery('input.item-check', choiceItemContainer).val(choiceItem);
-                            jQuery('.item-label', choiceItemContainer).html(choiceItem);
+                            jQuery('input.item-check', choiceItemContainer).val(choiceItem.label);
+                            jQuery('.item-label', choiceItemContainer).html(choiceItem.label);
 //                                    answerTemplate.append(choiceItemContainer);
+                            // Sanchez
+                            if (item.img != null) {
+                              jQuery('img', choiceItemContainer).attr('src', choiceItem.img);
+                              jQuery('img', choiceItemContainer).show(0);
+                            } else {
+                              jQuery('img', choiceItemContainer).hide(0);
+                            }
                             jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
                         });
                         jQuery('.choice-item:first', answerTemplate).remove();
@@ -1070,7 +1132,7 @@
                         <span class="media-thumbnail">
                             <img class="pic upload-pic" src="" />
                         </span>
-                        <input type="hidden" name="question-image-fid" value="" />
+                        <input type="hidden" name="question-image-fid" class="img-fid" value="" />
                         <div class="image-uploader">
                             <noscript>
                                 <p>Please enable JavaScript to use file uploader.</p>
@@ -1112,7 +1174,7 @@
                             <span class="media-thumbnail">
                                 <img class="pic upload-pic" src="" />
                             </span>
-                            <input type="hidden" name="answer-image-fid" value="" />
+                            <input type="hidden" name="answer-image-fid" class="img-fid" value="" />
                             <div class="image-uploader">
                                 <noscript>
                                     <p>Please enable JavaScript to use file uploader.</p>
@@ -1152,7 +1214,7 @@
                         <span class="media-thumbnail">
                             <img class="pic upload-pic" src="" />
                         </span>
-                        <input type="hidden" name="answer-image-fid" value="" />
+                        <input type="hidden" name="answer-image-fid" class="img-fid" value="" />
                         <div class="image-uploader">
                             <noscript>
                                 <p>Please enable JavaScript to use file uploader.</p>
@@ -1258,6 +1320,10 @@
             <div class="questionTextContainer col-xs-11">
                 <span class="question-text"></span>
             </div>
+            <!-- sanchez -->
+            <span class="media-thumbnail">
+                <img class="pic upload-pic" src="" />
+            </span>
         </div>
     </div>
 
@@ -1277,6 +1343,10 @@
                 %{--</div>--}%
                 %{--<div class="col col-xs-11" style="padding-left: 0">--}%
                     <span class="item-label" style="font-weight: normal; margin-bottom: 0"></span>
+                    <!-- sanchez -->
+                    <span class="media-thumbnail">
+                        <img class="pic upload-pic" src="" />
+                    </span>
                 </div>
                 %{--</label>--}%
             </div>
@@ -1300,6 +1370,10 @@
                 %{--</div>--}%
                 %{--<div class="col col-xs-11" style="padding-left: 0">--}%
                     <span class="item-label" style="font-weight: normal; margin-bottom: 0"></span>
+                    <!-- sanchez -->
+                    <span class="media-thumbnail">
+                        <img class="pic upload-pic" src="" />
+                    </span>
                 </div>
             </div>
         </div>

@@ -66,6 +66,12 @@
         /*background-position: 52px -10px !important;*/
     /*}*/
 
+
+        img.upload-pic {
+            width: auto;
+            max-height: 150px;
+        }
+
 </style>
 
 <script type="text/javascript">
@@ -356,15 +362,20 @@
                         jQuery.each(choiceItems, function (j, choiceItem) {
                             var choiceItemCont = jQuery('.choice-items > .choice-item:first', container).clone();
                             choiceItemCont.find('.item-check').attr('name', i);
-                            if(answerDetails.type=='${Survey.QUESTION_TYPE.CHOICE_SINGLE}') {
+                            if(choiceItem.label != 'undefined') {
                                 choiceItemCont.find('.item-check').val(choiceItem.label);
                             }
-                            else{
+                            else {
+                                // Back compat
                                 choiceItemCont.find('.item-check').val(choiceItem);
                             }
+                            if (choiceItem.img != 'undefined') {
+                              choiceItemCont.find('img').attr('src', 'data:image;base64,' + choiceItem.img);
+                            }
+
                             choiceItemCont.find('.item-check').attr('nextQuestion',choiceItem.nextQuestion);
                             jQuery('.choice-items', container).append(choiceItemCont);
-                            if(answerDetails.type=='${Survey.QUESTION_TYPE.CHOICE_SINGLE}') {
+                            if(choiceItem.label != 'undefined') {
                                 jQuery('.item-label', choiceItemCont).text(choiceItem.label);
                             }
                             else{
@@ -449,6 +460,9 @@
                 container.attr('id',"question"+item.seq);
                 container.attr('seq',item.seq);
                 jQuery('.question-text', container).html("<span style='font-size:24px;color:grey;'>"+item.questionStr.charAt(0)+"</span>" + item.questionStr.substring(1));
+                if (('' + item.img) != 'undefined') {
+                  jQuery('img.question-pic', container).attr('src', 'data:image;base64,' + item.img);
+                }
                 if(i==0){
                     container.attr('hidden',false)
                 }
@@ -515,6 +529,9 @@
                     <div class="questionTextContainer col-xs-11">
                         <span class="question-text"></span>
                         %{--<div rows="3"></div>--}%
+                        <span class="media-thumbnail">
+                            <img class="pic upload-pic question-pic" src="" />
+                        </span>
                     </div>
                 </div>
             </div>
@@ -535,6 +552,9 @@
                         %{--<div class="col col-xs-11" style="padding-left: 0">--}%
                             <label class="item-label" style="font-weight: normal; margin-bottom: 0">
                             </label>
+                            <span class="media-thumbnail">
+                                <img class="pic upload-pic" src="" />
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -549,6 +569,9 @@
                             %{--<div class="col col-xs-11" style="padding-left: 0">--}%
                             <label class="item-label" style="font-weight: normal; margin-bottom: 0">
                             </label>
+                            <span class="media-thumbnail">
+                                <img class="pic upload-pic" src="" />
+                            </span>
                         </div>
                     </div>
                 </div>

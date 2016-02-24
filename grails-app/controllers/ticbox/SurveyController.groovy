@@ -53,13 +53,14 @@ class SurveyController {
     }
 
     def createSurvey(){
-
+        System.out.println("createSurvey");
         surveyService.createSurvey(params)
-
+        clearImages()
         redirect action: 'respondentFilter'
     }
 
     def editSurvey(){
+        System.out.println("createSurvey");
         Survey survey=surveyService.getSurvey(params.surveyId)
         session.putAt('current-edited-survey', survey)
 
@@ -148,13 +149,15 @@ class SurveyController {
     }
 
     def surveyGenerator(){
-        System.out.println("masuk survey generator!");
+        System.out.println("surveyGenerator");
         System.out.println();
         Survey survey = surveyService.getCurrentEditedSurvey()
 
         if(!survey){
             redirect action: 'index'
         }
+
+        clearImages();
 
         def surveyorProfile = surveyorService.currentSurveyor
         def principal = SecurityUtils.subject.principal
@@ -175,12 +178,23 @@ class SurveyController {
 
 
     def submitAndFinalizeSurvey(){
+        System.out.println("submitAndFinalizeSurvey");
+
         try {
 //            params.surveyTitle = params.surveyTitle?.encodeAsHTML().replace('\n', '<br/>')
 
             def obj = JSON.parse(params.questionItems)
             obj.each {
+                System.out.println("it = " + it)
                 it.questionStr = it.questionStr?.encodeAsHTML().replace('\n', '<br/>')
+                putRealImage(it)
+
+                def answer = it.answerDetails
+                if (answer.type == 'CHOICE_SINGLE' || answer.type == 'CHOICE_MULTIPLE') {
+                    answer.choiceItems.each {
+                       putRealImage(it)
+                    }
+                }
             }
             params.questionItems = obj.toString()
 
@@ -235,8 +249,20 @@ class SurveyController {
         }
     }
 
+    def putRealImage(it) {
+        System.out.println("@putRealImage it = " + it)
+        // Load the real image
+        if (it.imgFid != null && it.imgFid != "") {
+            it.img = retrieveImage(Integer.parseInt(it.imgFid))
+        } else {
+            it.img = null
+        }
+        it.imgFid = null
+    }
 
     def submitSurvey(){
+        System.out.println("submitSurvey");
+
         try {
             def count=surveyService.getCountFreeSurvey()
             def limit=Integer.parseInt(Parameter.findByCode("MAX_FREE_SURVEY_PER_SURVEYOR").value)
@@ -453,7 +479,7 @@ class SurveyController {
             }
 
             String pic = Base64.encode(inputStream.bytes)
-            String tempFileId = save(pic)
+            int tempFileId = storeImage(pic)
 
             return render(text: [success:true, img:pic, fid:tempFileId] as JSON, contentType:'text/json')
         } catch (FileUploadException e) {
@@ -466,20 +492,36 @@ class SurveyController {
         return render(text: [success:false, message: message] as JSON, contentType:'text/json')
     }
 
-    def save(String base64Picture) {
-        File f = File.createTempFile("pref_updfile", "suf_updfile");
-        Writer writer = null
-        try {
-            writer = new FileWriter(f);
-            writer.write(base64Picture);
-        } finally {
-            try {
-                writer.close();
-            } catch (Exception e) {
-                // Don't care
-            }
+    static String CREATING_SURVEY_IMAGES_SESSION_KEY = 'making-of-survey.images'
+
+    /**
+     * Save an image to be called back later
+     * @Return a unique identifier for this image
+     */
+    int storeImage(String base64Picture) {
+        List<String> images = session[CREATING_SURVEY_IMAGES_SESSION_KEY]
+        if (images == null) {
+            images = new ArrayList<String>()
+            session[CREATING_SURVEY_IMAGES_SESSION_KEY] = images
         }
-        return f.name;
+        images.add(base64Picture)
+
+        return images.size() - 1;
+    }
+
+    String retrieveImage(int id) {
+        List<String> images = session[CREATING_SURVEY_IMAGES_SESSION_KEY]
+        if (images != null && images.size() > id) {
+            return images.get(id);
+        } else {
+            return null;
+        }
+    }
+
+    List<String> clearImages() {
+        List<String> images = session[CREATING_SURVEY_IMAGES_SESSION_KEY]
+        session[CREATING_SURVEY_IMAGES_SESSION_KEY] = null
+        return images
     }
 
     def viewImage = {

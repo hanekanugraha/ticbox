@@ -720,7 +720,12 @@
                     jQuery.each(choiceItems, function(j, choiceItem){
                         var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
                         jQuery('input.item-check', choiceItemContainer).val(choiceItem);
-                        jQuery('.item-label', choiceItemContainer).html(choiceItem);
+                        if (('' + choiceItem.label) === 'undefined') {
+                          jQuery('.item-label', choiceItemContainer).html(choiceItem); // back compat
+                        } else {
+                          jQuery('.item-label', choiceItemContainer).html(choiceItem.label);
+                        }
+
 //                                    answerTemplate.append(choiceItemContainer);
                         jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
                     });
@@ -851,7 +856,11 @@
                         var counts = [];
 
                         if (summary){
-                            jQuery.each(answerDetails.choiceItems, function (i, label) {
+                            jQuery.each(answerDetails.choiceItems, function (i, choiceItem) {
+                                var label = choiceItem.label;
+                                if (('' + label) === 'undefined') { // back compat
+                                  label = choiceItem;
+                                }
                                 labels.push(label);
                                 counts.push(label in summary ? summary[label] : 0);
                             });
