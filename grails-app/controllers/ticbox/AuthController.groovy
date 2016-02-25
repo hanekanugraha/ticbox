@@ -156,6 +156,7 @@ class AuthController {
 
             log.info "Exception at sign in for user '${params.username}'."
             flash.error = message(code: "auth.general.error")
+			log.error ex
 
             // Redirect back to the login page.
             redirect(uri: "/auth/login")

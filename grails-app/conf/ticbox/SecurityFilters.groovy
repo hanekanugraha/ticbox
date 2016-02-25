@@ -9,6 +9,11 @@ class SecurityFilters {
     def publicControllers = ["oauth","shiroOAuth","home","policies","userMessage","knowUs","howItsWork", "pricing"]
 
     def filters = {
+		monitoring(uri: "/monitoring/**") {
+            before = {
+				return true;
+            }
+        }
         all(uri: "/**") {
             before = {
                 // Ignore direct views (e.g. the default main index page).
