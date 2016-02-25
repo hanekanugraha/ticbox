@@ -19,13 +19,15 @@ grails.project.dependency.resolution = {
         // specify dependency exclusions here; for example, uncomment this to disable ehcache:
         // excludes 'ehcache'
 		excludes 'xercesImpl'
+		excludes 'mongo-java-driver-2.12.13'
     }
-    log "error" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
+    log "info" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     checksums true // Whether to verify checksums on resolve
 
     repositories {
         inherits true // Whether to inherit repository definitions from plugins
-
+		//grailsRepo "http://grails.org/plugins"
+		
         grailsPlugins()
         grailsHome()
         grailsCentral()
@@ -38,6 +40,7 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://repository.codehaus.org"
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
+		mavenRepo "http://repo.grails.org/grails/plugins"
         mavenRepo "http://repo1.maven.org/maven2/"
     }
 
@@ -66,7 +69,7 @@ grails.project.dependency.resolution = {
         //compile ':cache:1.0.1' //removed
 
         //App plugins
-        runtime ":mongodb:3.0.1" // User runtime to solve exception
+        compile ":mongodb:3.0.3" // User runtime to solve exception
  		runtime (":excel-export:0.2.1")  
         compile ":webxml:1.4.1" // Heroku deployment requirement
         compile ":oauth:2.1.0"
@@ -80,7 +83,7 @@ grails.project.dependency.resolution = {
         }
         compile ":remote-pagination:0.4.8"
         compile ":quartz:1.0.1"
-
+		compile "org.grails.plugins:grails-melody:1.58.0"
 
     }
 }
