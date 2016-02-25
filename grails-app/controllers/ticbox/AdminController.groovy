@@ -9,6 +9,7 @@ class AdminController {
     def goldService
     def surveyService
     def itemService
+    def respondentService;
 
     def index() {
         // todo add pagination
@@ -19,7 +20,7 @@ class AdminController {
 
     def createUser = {
         try {
-            userService.createUser(params)
+            def user = userService.createUser(params)
 
             // Automatically verified
             user.verify = 1
@@ -44,6 +45,76 @@ class AdminController {
             }
         } catch (Exception e) {
             flash.error = message(code: "general.delete.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        redirect(controller: "admin", action: "index")
+    }
+
+    def editProfile = {
+        try {
+            if (params.uid && params.type) {
+                if (params.type == "Surveyor") {
+                    def user = User.findById(params.uid)
+                    def map = [user: user]
+                    render(view: "editSurveyorDetail", model: map)
+
+                } else if (params.type == "Respondent") {
+                    def detail = RespondentDetail.findByRespondentId(params.uid)
+                    def user = User.findById(params.uid)
+                    def map = [respondentDetail: detail, user: user]
+                    render(view: "editRespondentDetail", model: map)
+
+                } else {
+                    throw Exception("Unknown type: " + params.type)
+                }
+            } else {
+                throw Exception("Missing parameters: id or type")
+            }
+        } catch (Exception e) {
+            flash.error = message(code: "general.delete.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+    }
+
+    def updateRespondentProfile = {
+        try {
+            if (params.email) {
+                User user = User.findByEmail(params.email)
+                if (user == null) {
+                    throw Exception("User with email = " + params.email + " is not found")
+                }
+
+                def params = [
+                        'PI_DIVISION001' : params.profileItems_LM_DIVISION001,
+                        'PI_ROLE001' : params.profileItems_LM_ROLE001,
+                        'PI_GRADE001' : params.profileItems_LM_GRADE001
+                ]
+
+                respondentService.updateRespondentDetail(user, params)
+                flash.message = message(code: "general.update.success.message")
+            } else {
+                throw Exception("No user was found")
+            }
+        } catch (Exception e) {
+            flash.error = message(code: "general.update.failed.message") + " : " + e.message
+            log.error(e.message, e)
+        }
+        redirect(controller: "admin", action: "index")
+    }
+
+    def updateSurveyorProfile = {
+        try {
+            if (params.email) {
+                User user = User.findByEmail(params.email)
+                if (user == null) {
+                    throw Exception("User with email = " + params.email + " is not found")
+                }
+                flash.message = message(code: "general.update.success.message")
+            } else {
+                throw Exception("No user was found")
+            }
+        } catch (Exception e) {
+            flash.error = message(code: "general.update.failed.message") + " : " + e.message
             log.error(e.message, e)
         }
         redirect(controller: "admin", action: "index")
@@ -162,7 +233,10 @@ class AdminController {
                 surveyService.savePointSurvey(survey)
             } else {
                 flash.error = message(code: "app.admin.survey.setpoint.failed.statusenable")
+<<<<<<< HEAD
 
+=======
+>>>>>>> ticbox-wl
             }
         } catch (Exception e) {
             flash.error = message(code: "app.admin.survey.setpoint.failed.message") + " : " + e.message

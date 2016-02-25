@@ -100,7 +100,7 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <shiro:notAuthenticated>
-                        <li><g:link controller="auth" action="login"><g:message code="default.registerlogin.label"/></g:link></li>
+                        <li><g:link controller="auth" action="login"><g:message code="default.login.label"/></g:link></li>
                         <li>
                             <g:link class="dropdown-toggle" data-toggle="dropdown">
                                 <span>
@@ -302,18 +302,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="panel-body" style="padding: 0 12px;">
-                                    <div class="row profileStats">
-                                        <div class="col-xs-12 stats">
-                                            <strong style="display: inline">3,500,000</strong>
-                                            <span class="gold" style="margin-left: 5px"><g:message code="app.creditsavailable.title"/></span>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
-
+                            <!--
                     %{-- ################# SURVEY INFO ACCORDION ################# --}%
                     <div id="surveyInfoAccordion" class="panel-group" style="margin-bottom: 10px;">
                         <div class="panel panel-default">
@@ -368,6 +360,7 @@
                             </div>
                         </div>
                     </div>
+                    -->
                 </div>
 
                 <div role="main" class="col-sm-9" id="contentPanel">

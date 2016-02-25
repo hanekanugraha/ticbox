@@ -52,86 +52,8 @@
     </div>
 
     <div class="module">
-        <!--div class="module-header">
-            <div class="title">Survey Info</div>
-        </div>
+        <input name="surveyType" type="hidden" class="surveyType" id="freeSurveyChk" value="${Survey.SURVEY_TYPE.EASY}" />
 
-        <div class="module-content">
-            <div class="row">
-                <div class="col-xs-12">
-                        Name : ${survey?.name}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                        Num of Respondents : 100
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    Itinerary Details :
-                    <div>
-                        <ul style="font-size: 12px; margin-bottom: 0">
-                            <li>100 x $0 = $0</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <form class="form-horizontal" role="form" style="border-top: 1px dotted lightgrey">
-                        <div class="form-group" style="margin-bottom: 0">
-                            <label for="total" class="col-sm-2 control-label">Total</label>
-                            <div class="col-sm-10">
-                                <input id="total" class="form-control" type="text" value="$ 0" readonly="true" style="width: auto; background-color: #d4dcb4; margin: 0; border-radius: 20px; font-weight: bold; color: darkgoldenrod">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div-->
-
-        <div class="module-header">
-            <div class="title"><g:message code="app.username.label"/></div>
-        </div>
-
-        <div class="module-content">
-            <div class="row" style="margin-top: 10px; padding: 0 20%; text-align: center">
-                <div class="col-xs-6 enableTooltip" id="freeSurvey" style="margin-bottom: 10px;">
-                    %{--<div id="freeSurvey" style="text-align: center">--}%
-                        <label class="img-radio" for="freeSurveyChk" style="max-width: 100%">
-                            <input name="surveyType" data-toggle="tooltip" data-placement="bottom" type="radio"
-                                   class="surveyType" id="freeSurveyChk"
-                                   data-label="<g:message code="survey.type.free.label"/>" value="${Survey.SURVEY_TYPE.FREE}">
-                            <img src="../images/ticbox/free_survey_140.png" class="img-circle img-responsive">
-                            <div>
-                                <span class="img-label"><g:message code="survey.type.free.label"/></span>
-                                <i class="glyphicon glyphicon-question-sign" style="text-align: left" data-toggle="tooltip" title="<g:message code="survey.free.tooltip"/>"
-                                   id='freeSurveyInfo'></i>
-                            </div>
-                        </label>
-
-                    %{--</div>--}%
-                </div>
-                <div class="col-xs-6 enableTooltip" id="easySurvey" style="margin-bottom: 10px;">
-                    %{--<div id="easySurvey" style="text-align: center">--}%
-                        <label class="img-radio" for="easySurveyChk" style="max-width: 100%">
-                            <input name="surveyType" data-toggle="tooltip" data-placement="bottom" type="radio"
-                               class="surveyType" id="easySurveyChk"
-                               data-label="<g:message code="survey.type.easy.label"/>" value="${Survey.SURVEY_TYPE.EASY}">
-                            <img src="../images/ticbox/easy_survey_140.png" class="img-circle img-responsive">
-                            <div>
-                                <span class="img-label"><g:message code="survey.type.easy.label"/></span>
-                                <i class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="<g:message code="survey.easy.tooltip"/>"
-                                   id='easySurveyInfo'></i>
-                            </div>
-                        </label>
-                    %{--</div>--}%
-                </div>
-            </div>
-
-
-        </div>
         <div class="module-header">
             <div class="title"><g:message code="survey.choosecompletion.label"/></div>
         </div>
@@ -415,7 +337,7 @@
                     jQuery('.total-respondents').html(surveySummary.totalRespondent);
                 }
             });
-
+/*
             jQuery('input.surveyType').change(function () {
                 if (jQuery(this).is(':checked')) {
                     var val = jQuery(this).val();
@@ -435,7 +357,7 @@
             });
 
             jQuery('input.surveyType[value="${survey.type}"]').prop('checked', true).trigger('change');
-
+*/
             if('${survey.completionDateTo}'==null || '${survey.completionDateTo}'=='') {
                 jQuery('#completionDateFrom').prop('disabled', true).trigger('change');
                 jQuery('#completionDateTo').prop('disabled', true).trigger('change');
@@ -529,7 +451,7 @@
 
 //                if(checkCompletion(compDateFrom,compDateTo)) {
 
-                    if (jQuery('#easySurveyChk').is(':checked')) {
+//                    if (jQuery('#easySurveyChk').is(':checked')) {
                         jQuery('#filterForm').find('.profile-item-container').each(function () {
 
                             var filterItem = {};
@@ -601,15 +523,14 @@
 
                         });
 
-                    }
+//                    }
 
                     var filterItemsJSON = JSON.stringify(filterItems);
 
                     jQuery.getJSON('${request.contextPath}/survey/submitRespondentFilter', {filterItemsJSON: filterItemsJSON, compDateFrom: compDateFrom, compDateTo:compDateTo,
-                                                                                            ttlRespondent:ttlRespondent, surveyType: jQuery('input.surveyType:checked').val()}, function (data) {
+                                                                                            ttlRespondent:ttlRespondent, surveyType: jQuery('input.surveyType').val()}, function (data) {
 
-                        //alert('Submitted');
-
+//                        alert('Submitted');
                         loadRespondentFilter(data);
                         window.location = "${request.contextPath}/survey/surveyGenerator";
                     });

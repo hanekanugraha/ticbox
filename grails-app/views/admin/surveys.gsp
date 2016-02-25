@@ -65,7 +65,7 @@
                     <th><g:message code="app.owner.label"/></th>
                     <th><g:message code="app.type.label"/></th>
                     <th><g:message code="app.point.label"/></th>
-                    %{--<th><g:message code="app.createddate.label"/></th>--}%
+                    <th><g:message code="app.createddate.label"/></th>
                     <th><g:message code="app.enddate.label"/></th>
                     <th><g:message code="app.price.label"/></th>
                     <th><g:message code="app.status.label"/></th>
@@ -87,7 +87,7 @@
                         <td>${survey.surveyor.userAccount.username}</td>
                         <td>${survey.type}</td>
                         <td>${survey.point}</td>
-                        %{--<td>${survey.createdDate}</td>--}%
+                        <td>${survey.createdDate}</td>
                         <td>${survey.completionDateTo}</td>
                         <td>Rp. ${survey.surveyPrice}</td>
                         <td>
@@ -117,7 +117,7 @@
                     <th><g:message code="app.name.title"/></th>
                     <th><g:message code="app.owner.label"/></th>
                     <th><g:message code="app.type.label"/></th>
-                    %{--<th><g:message code="app.createddate.label"/></th>--}%
+                    <th><g:message code="app.createddate.label"/></th>
                     <th><g:message code="app.runningtime.label"/></th>
                     <th><g:message code="app.respondents.label"/></th>
                     <th><g:message code="app.price.label"/></th>
@@ -140,7 +140,7 @@
                         </td>
                         <td>${survey.surveyor.userAccount.username}</td>
                         <td>${survey.type}</td>
-                        %{--<td>${survey.createdDate}</td>--}%
+                        <td>${survey.createdDate}</td>
                         <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                         <td>${survey.ttlRespondent}</td>
                         <td>Rp. ${survey.surveyPrice}</td>
@@ -533,7 +533,7 @@
             var form= $('#setPointSurveyForm');
 
             form.submit();
-        })
+        });
 
         jQuery('.setPointLink').click(function() {
             var that = jQuery(this);
@@ -541,8 +541,6 @@
 
             $('#set-point-survey-modal').modal('show');
             $('#savePointSurveyId').val(surveyId);
-
-
         });
 
         jQuery('.displayResultLink').click(function(){

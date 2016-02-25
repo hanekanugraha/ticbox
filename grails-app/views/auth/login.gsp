@@ -65,20 +65,6 @@
                         %{--</a>--}%
                     </div>
 
-                    <div class="module-header"></div>
-                    <div class="module-content">
-                        <div style="font-weight: bold; margin-top: 10px;"><g:message code="label.login.content2"/></div>
-                        <div class="row" style="margin: 15px 0;">
-                            <div class="col-sm-12" style="padding-left: 0">
-                                <a style="margin:0 0 5px 0" class="btn btn-lg btn-light-oak" href="${g.createLink(controller: 'auth', action: 'registerRespondent')}">
-                                    <span class="glyphicon glyphicon-user"></span> <g:message code="app.register.respondent.label"/>
-                                </a>
-                                <a style="margin:0 0 5px 0" class="btn btn-lg btn-blue-trust" href="${g.createLink(controller: 'auth', action: 'registerSurveyor')}">
-                                    <span class="glyphicon glyphicon-user"></span> <g:message code="app.register.surveyor.label"/>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

@@ -12,15 +12,15 @@ environments {
                 username = ""
                 password = ""
                 databaseName = "ticbox"
-                //diaglog = 3
+                databaseName = "ticbox-wl"
                 */
+                //diaglog = 3
 
                 host = "kahana.mongohq.com"
                 port = 10040
                 username = "ticboxnew"
                 password = "ticboxnew"
                 databaseName = "ticboxnew"
-
             }
         }
     }
@@ -29,11 +29,11 @@ environments {
     production {
         grails {
             mongo {
-                host = "kahana.mongohq.com"
-                port = 10040
-                username = "ticboxnew"
-                password = "ticboxnew"
-                databaseName = "ticboxnew"
+           	 	host = "kahana.mongohq.com"
+	            port = 10040
+	            username = "ticboxnew"
+	            password = "ticboxnew"
+	            databaseName = "ticboxnew"
             }
         }
     }

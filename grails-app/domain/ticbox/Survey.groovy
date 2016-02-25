@@ -44,5 +44,4 @@ class Survey {
     long surveyPrice
     String createdDate
 	String modifiedDate
-	
 }

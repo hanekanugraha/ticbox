@@ -1467,3 +1467,22 @@ footer ul li {
     left: 50%;
     margin: -28px 0 0 -25px;
 }
+<<<<<<< HEAD
+=======
+
+.flash_message {
+    position: static;
+    z-index: 999;
+    top: 0px;
+    width: 100%;
+}
+
+.flash_message div {
+    padding: 10px;
+    background: #7b911f;
+    color: #fff;
+    text-align: center;
+    font-size: 16px;
+}
+
+>>>>>>> ticbox-wl

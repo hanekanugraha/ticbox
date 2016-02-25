@@ -298,7 +298,7 @@
     $('#change-password-modal').on('hide.bs.modal', function() {
     	var validator = $('#changePasswordForm').validate();
     	validator.resetForm();
-        $('#change-password-modal').find('input[type="password"]').val('');
+        $(this).find('input[type="password"]').val('');
     });
 
     $(document).ready(function() {

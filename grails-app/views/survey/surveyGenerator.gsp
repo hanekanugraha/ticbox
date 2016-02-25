@@ -12,8 +12,18 @@
     <title></title>
 
     <style type="text/css">
+        .qq-upload-button {
+            margin: auto;
+        }
 
+        .qq-upload-button, .qq-upload-button input[type="file"] {
+            opacity: 0;
+        }
 
+        img.upload-pic {
+            width: auto;
+            max-height: 150px;
+        }
     </style>
 
     <script type="text/javascript">
@@ -65,12 +75,12 @@
             jQuery('.surveyItemTypeAdd').click(function(){
                 var validate=false;
                 var addItemComponent=jQuery(this);
-                jQuery.getJSON('${request.contextPath}/ticboxUtil/getMaxFreeQuestion', {}, function(maxFeeQuestion){
+
                     var questions =0;
                     jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
                         questions++;
                     });
-                    if(maxFeeQuestion>questions||"${survey.type}"=="${Survey.SURVEY_TYPE.EASY}") {
+
                         console.log('~ surveyItemTypeAdd.clicked');
                         var type = addItemComponent.attr('type');
                         var subtype = addItemComponent.attr('subtype');
@@ -78,12 +88,8 @@
                             %{--alert('Free Survey not support scale');--}%
                         %{--}--}%
                         %{--else--}%
-                            constructQuestionItem(type, subtype);
-                    }
-                    else{
-                        alert('Question max = '+maxFeeQuestion);
-                    }
-                });
+                        constructQuestionItem(type, subtype); // This is called
+
 
             });
 
@@ -168,6 +174,20 @@
             jQuery('input.logoResourceId', logoWrapper).val(id).prettyCheckable();
         }
 
+        function activateAnswerUploadButton(scope) {
+            // Sanchez
+            // An uploader for this button
+            new qq.FileUploader({
+                element: jQuery('.answer-level-upload .image-uploader', scope)[0],
+                action: '/ticbox/survey/uploadImageToString',
+                onComplete: function(id, fileName, responseJSON) {
+                    jQuery('.answer-level-upload img.pic', scope).attr('src', 'data:image;base64,' + responseJSON.img);
+                    jQuery('.answer-level-upload input[type="hidden"]', scope).val(responseJSON.fid);
+                    jQuery('.qq-upload-list', scope).empty()
+                }
+            });
+        }
+
         function constructQuestionItem(type, subtype){
             var answerComp = null;
 
@@ -203,8 +223,12 @@
 
                     });
 
+                    activateAnswerUploadButton(jQuery('.choice-item', answerComp));
+
                     jQuery('.add-item', answerComp).click(function(){
-                        var newItem = jQuery('.choice-item:first', '#answerTemplate-choice-single').clone();
+                        var newItem = jQuery('.choice-item:first', '#answerTemplate-choice-single').clone().removeAttr('id');
+                        activateAnswerUploadButton(newItem);
+
                         jQuery('.item-label', newItem).val('');
 
                         newItem.appendTo(jQuery('.choice-items', answerComp));
@@ -232,6 +256,8 @@
 
                             jQuery('#singleQuestionNextModal').modal('show');
 
+
+
                         });
 
                     });
@@ -247,11 +273,13 @@
 
                     changeTypeIconClass = 'multiple-choice-icon';
 
+                    activateAnswerUploadButton(jQuery('.choice-item', answerComp));
 
                     jQuery('.add-item', answerComp).click(function(){
-                        var newItem = jQuery('.choice-item:first', '#answerTemplate-choice-multiple').clone();
+                        var newItem = jQuery('.choice-item:first', '#answerTemplate-choice-multiple').clone().removeAttr('id');
                         jQuery('.item-label', newItem).val('');
 
+                        activateAnswerUploadButton(newItem);
                         newItem.appendTo(jQuery('.choice-items', answerComp));
 
                         jQuery('input.item-check', newItem).click(function(){
@@ -337,6 +365,21 @@
             }
 
             var questionComp = jQuery('#questionTemplate').clone().removeAttr('id').append(answerComp).appendTo('.surveyItemsContainer');
+
+            // Sanchez
+            // An uploader for this button
+            new qq.FileUploader({
+                element: jQuery('.question-level-upload .image-uploader', questionComp)[0],
+                action: '/ticbox/survey/uploadImageToString',
+                onComplete: function(id, fileName, responseJSON) {
+                    jQuery('.question-level-upload img.pic', questionComp).attr('src', 'data:image;base64,' + responseJSON.img);
+                    jQuery('.question-level-upload input[type="hidden"]', questionComp).val(responseJSON.fid);
+                    jQuery('.qq-upload-list', questionComp).empty()
+
+                    var curWidth = parseInt(jQuery('.questionTextContainer', questionComp).css('width'));
+                    jQuery('.questionTextContainer').css('width', (curWidth - 150) + 'px');
+                }
+            });
 
             jQuery('.change-question-type-btn', questionComp).addClass(changeTypeIconClass);
 
@@ -872,6 +915,22 @@
 
     <r:require module="fileuploader" />
 
+    <script type="text/javascript">
+    /*
+        var au_imageUploader = new qq.FileUploader({
+            element: document.getElementById('au-imageUploader'),
+            action: '/ticbox/survey/uploadImage',
+            params: {
+                surveyorId: 27
+            },
+            onComplete: function(id, fileName, responseJSON) {
+                $('.profile-pic').attr('src', 'data:image;base64,' + responseJSON.img);
+                $('.qq-upload-list').empty()
+            }
+        });
+     */
+    </script>
+
 </head>
 <body>
 
@@ -989,6 +1048,7 @@
 <div class="templates" style="display: none;">
 
     <div id="questionTemplate" class="surveyItemContainer">
+    <!-- sanchez -->
         <div class="row" style="position: relative">
             <div class="seqNumberContainer questionNumber col-xs-1"></div>
             <div class="col-xs-11">
@@ -1005,10 +1065,21 @@
                     %{--</div>--}%
                     %{--<div>--}%
                     %{--<button class="btn picture" data-toggle="tooltip" data-placement="top" title="Upload picture"><i class="icon-camera"></i></button>--}%
-                    <div class="question-action-btn upload-pic-icon clickable" style="margin: 0 0 0 0"></div>
-                    %{--<button class="btn remove" data-toggle="tooltip" data-placement="top" title="Remove"><i class="icon-remove"></i></button>--}%
-                    <div class="question-action-btn upload-vid-icon clickable" style="margin: 3px 0 0 0"></div>
+                    <!-- Sanchez: Real upload button -->
+                    <div class="question-action-btn upload-pic-icon question-level-upload" style="margin: 0 0 0 0">
+                        <span class="media-thumbnail">
+                            <img class="pic upload-pic" src="" />
+                        </span>
+                        <input type="hidden" name="question-image-fid" value="" />
+                        <div class="image-uploader">
+                            <noscript>
+                                <p>Please enable JavaScript to use file uploader.</p>
+                            </noscript>
+                        </div>
+                    </div>
+                    <!-- // end of: Sanchez: Real upload button -->
 
+                    %{--<button class="btn remove" data-toggle="tooltip" data-placement="top" title="Remove"><i class="icon-remove"></i></button>--}%
                     %{--</div>--}%
                 </div>
             </div>
@@ -1036,11 +1107,22 @@
                     <div class="col" style="float: left; padding: 1px 0 0 5px">
                         %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
                         %{--<div style="width: 20px; height: 100%; cursor: pointer; background: transparent url('../images/ticbox/06_Question_UploadIcon_Picture.png') no-repeat center"></div>--}%
-                        <div class="question-action-btn upload-pic-icon clickable" style="margin: 0 0 0 0"></div>
-                        <div class="question-action-btn clickable question-next" style="margin: 3px 0 0 0" data-toggle="modal"></div>
-                    </div>
-                    <input class="item-seq form-control form-control" type="text">
+                        <!-- Sanchez: Real upload button -->
+                        <div class="question-action-btn upload-pic-icon answer-level-upload" style="margin: 0 0 0 0">
+                            <span class="media-thumbnail">
+                                <img class="pic upload-pic" src="" />
+                            </span>
+                            <input type="hidden" name="answer-image-fid" value="" />
+                            <div class="image-uploader">
+                                <noscript>
+                                    <p>Please enable JavaScript to use file uploader.</p>
+                                </noscript>
+                            </div>
+                        </div>
+                        <!-- // end of: Sanchez: Real upload button -->
 
+
+                    </div>
             </div>
         </div>
         <div class="form-group col col-xs-11 col-xs-offset-1" style="clear: both; width: 100%; padding: 5px 15px 0">
@@ -1065,7 +1147,19 @@
                 <div class="col" style="float: left; padding: 1px 0 0 5px">
                     %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
                     %{--<div style="width: 20px; height: 100%; cursor: pointer; background: transparent url('../images/ticbox/06_Question_UploadIcon_Picture.png') no-repeat center"></div>--}%
-                    <div class="question-action-btn upload-pic-icon clickable" style="margin: 0 0 0 0"></div>
+                    <!-- Sanchez: Real upload button -->
+                    <div class="question-action-btn upload-pic-icon answer-level-upload" style="margin: 0 0 0 0">
+                        <span class="media-thumbnail">
+                            <img class="pic upload-pic" src="" />
+                        </span>
+                        <input type="hidden" name="answer-image-fid" value="" />
+                        <div class="image-uploader">
+                            <noscript>
+                                <p>Please enable JavaScript to use file uploader.</p>
+                            </noscript>
+                        </div>
+                    </div>
+                    <!-- // end of: Sanchez: Real upload button -->
                 </div>
             </div>
         </div>

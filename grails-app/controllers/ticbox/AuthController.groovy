@@ -156,6 +156,7 @@ class AuthController {
 
             log.info "Exception at sign in for user '${params.username}'."
             flash.error = message(code: "auth.general.error")
+			log.error ex
 
             // Redirect back to the login page.
             redirect(uri: "/auth/login")
@@ -281,7 +282,45 @@ class AuthController {
 
         forward(action: errorAction)
     }
+	
+	def adminChangePassword = {
+		def result
+		def success = false
+		def msg
+		if (params.id) {
+			if (params.newPassword && params.confirmPassword) {
+				if((params.newPassword).length()>=5 || (params.confirmPassword).length()>=5) {
 
+					if (params.newPassword == params.confirmPassword) {
+						def newPasswordHash = new Sha256Hash(params.newPassword).toHex()
+						def user = User.findById(params.id)
+						if (user) {
+							user.passwordHash = newPasswordHash
+
+							user.save()
+							success = true
+							msg = message(code: "app.changepassword.successful.message")							
+						} else {
+							msg = message(code: "message.password.notmatch")
+						}
+					} else {
+						msg = message(code: "message.new-password.missmatch")
+					}
+
+				} else {
+					msg = message(code: "message.password.failed")
+				}
+
+			} else {
+				msg = message(code: "message.details.invalid")
+			}
+		} else {
+			msg = message(code: "message.user.invalid")
+		}
+		result = [success: success, message: msg]
+		render result as JSON
+	}
+	
     def changePassword = {
         def result
         def success = false

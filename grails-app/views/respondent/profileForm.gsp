@@ -273,7 +273,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="myModalLabel" class="modal-title" ><g:message code="app.changepassword.label"/> </span>
             </div>
-
             <g:form name="changePasswordForm" class="form-horizontal" role="form">	
 	            <div class="modal-body form-horizontal">
 	                <div class="form-group">
@@ -318,7 +317,7 @@
 	        $.post(url, data, function(response) {
 	            var message = (response) ? response.message : 'Application error';
                 $('#change-password-modal').modal('hide');
-                flashMessage(message, response.success);                
+                flashMessage(message, response.success);       
 	        });
         } else {
             $(this).button('reset');

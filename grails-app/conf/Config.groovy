@@ -66,7 +66,8 @@ grails.plugins.remotepagination.enableBootstrap=true
 environments {
     development {
         grails.logging.jul.usebridge = true
-        grails.serverURL = "http://localhost:8080/${appName}"
+/*        grails.serverURL = "http://ticbox-wl.us-east-1.elasticbeanstalk.com"*/
+		grails.serverURL = "http://localhost:8080/${appName}"
         oauth {
             providers {
                 facebook {
@@ -148,7 +149,11 @@ log4j = {
     appenders {
         console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
     }
-
+	root {
+		info 'stdout'
+	}
+	info   'grails.app'
+	
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
            'org.codehaus.groovy.grails.web.pages',          // GSP
            'org.codehaus.groovy.grails.web.sitemesh',       // layouts

@@ -84,8 +84,11 @@ class SurveyService {
     def submitRespondentFilter(String surveyType, String compDateFrom, String compDateTo, String ttlRespondent, String filterItemsJSON, Survey survey){
 
         def ttlLong = Long.parseLong(ttlRespondent)
+        println survey
 
         if (survey) {
+            println("Saving with surveyType = " + surveyType)
+
             if (Survey.SURVEY_TYPE.EASY.equals(surveyType)) {
                 DBObject dbObject = (DBObject) com.mongodb.util.JSON.parse(filterItemsJSON)
 
@@ -731,7 +734,7 @@ class SurveyService {
         return ProfileItem.findAllByRole(ProfileItem.ROLES.SURVEYOR)?.sort{it.seq}
     }
 
-    def savePointSurvey(Survey survey) {
+    def savePointSurvey(Survey  survey) {
         survey.save();
     }
 }
