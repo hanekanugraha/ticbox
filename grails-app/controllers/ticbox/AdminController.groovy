@@ -233,10 +233,7 @@ class AdminController {
                 surveyService.savePointSurvey(survey)
             } else {
                 flash.error = message(code: "app.admin.survey.setpoint.failed.statusenable")
-<<<<<<< HEAD
 
-=======
->>>>>>> ticbox-wl
             }
         } catch (Exception e) {
             flash.error = message(code: "app.admin.survey.setpoint.failed.message") + " : " + e.message
