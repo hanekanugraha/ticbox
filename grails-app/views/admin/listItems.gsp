@@ -4,8 +4,47 @@
     <meta name="layout" content="admin"/>
     <title><g:message code="ticbox.admin.items.label"/></title>
     <style type="text/css">
+        .qq-upload-button {
+            margin: auto;
+        }
 
+        .qq-upload-button, .qq-upload-button input[type="file"] {
+            opacity: 0;
+        }
+
+        img.upload-pic {
+            width: auto;
+            max-height: 100px;
+        }
     </style>
+    <r:require module="fileuploader" />
+    <script>
+        function activateUploadButton(scope, index) { // scope = td
+            // Sanchez
+            // An uploader for this button
+            new qq.FileUploader({
+                element: scope,
+                params: {
+                  itemId: jQuery("input[name=itemIds]")[index].value
+                },
+                action: '/ticbox/admin/uploadItemImage',
+                onComplete: function(id, fileName, responseJSON) {
+                    jQuery('img', scope).attr('src', 'data:image;base64,' + responseJSON.img);
+                    jQuery('.qq-upload-list', scope).empty();
+                }
+            });
+        }
+
+        jQuery(function() {
+
+          jQuery('.upload-pic-container').each(function(index, button){
+            // activateUploadButton(button, index);
+          });
+
+
+        });
+
+    </script>
 </head>
 <body>
 <div class="module">
@@ -25,16 +64,33 @@
                 <table id="itemTable" class="table table-bordered table-striped table-hover">
                     <thead>
                     <tr>
-                        <th></th>
+                        <th style="width:30px"></th>
+                        <th style="width:100px"><g:message code="admin.items.itemname.picture"/></th>
                         <th><g:message code="admin.items.itemname.label"/></th>
                         <th><g:message code="admin.items.gold.label"/></th>
-
                     </tr>
                     </thead>
                     <tbody>
                     <g:each in="${items}" var="item" >
                         <tr>
                             <td><input type="checkbox" name="itemIds"  value="${item.id}" /></td>
+                            <td>
+                              <div class="upload-pic-container">
+                              <img class="pic upload-pic" id="item-pic${item.id}"
+                                 <g:if test="${item.pic != null}">src="data:image;base64,${item.pic}"</g:if>
+                                 <g:else>src="/ticbox/images/ticbox/no-image.png"</g:else>
+                              />
+                              </div>
+                              <div class="uploader-button question-action-btn upload-pic-icon">
+                              <uploader:uploader id="imageUploader${item.id}" url="${[controller:'admin', action:'uploadItemImage']}"
+                                                 params="${[itemId: item.id]}">
+                                <uploader:onComplete>
+                                  $('#item-pic' + '${item.id}').attr('src', 'data:image;base64,' + responseJSON.img);
+                                  $('.qq-upload-list').empty()
+                                </uploader:onComplete>
+                              </uploader:uploader>
+                              </div>
+                            </td>
                             <td>${item.itemName}</td>
                             <td>${item.gold}</td>
 

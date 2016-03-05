@@ -1,6 +1,11 @@
 package ticbox
 
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64
 import org.apache.shiro.SecurityUtils
+import grails.converters.JSON
+import org.springframework.web.multipart.MultipartFile
+import org.springframework.web.multipart.MultipartHttpServletRequest
+import uk.co.desirableobjects.ajaxuploader.exception.FileUploadException
 
 class AdminController {
     def userService
@@ -358,4 +363,36 @@ class AdminController {
         }
         redirect(controller: "admin", action: "redemptions")
     }
+
+    def uploadItemImage = {
+        def message
+        try {
+            def inputStream
+            if (request instanceof MultipartHttpServletRequest) {
+                MultipartFile multipartFile = ((MultipartHttpServletRequest) request).getFile("qqfile")
+                inputStream = multipartFile.inputStream
+            } else {
+                inputStream = request.inputStream
+            }
+
+            // Update item
+            Item item = Item.findById(params.itemId)
+            item.pic = Base64.encode(inputStream.bytes)
+            item.save()
+
+            if (item.hasErrors()) {
+                throw new Exception(item.errors.allErrors.first())
+            }
+
+            return render(text: [success:true, img:item.pic] as JSON, contentType:'text/json')
+        } catch (FileUploadException e) {
+            message = "Failed to upload file."
+            log.error(message, e)
+        } catch (Exception e) {
+            message = "Failed to save item"
+            log.error(message, e)
+        }
+        return render(text: [success:false, message: message] as JSON, contentType:'text/json')
+    }
+
 }
