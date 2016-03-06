@@ -343,10 +343,10 @@
             $('html, body').animate({
                 scrollTop: $("#flashdiv").offset().top
             }, 250);
-            setTimeout(
+/*            setTimeout(
     			function() {
     					$('#flashdiv').html('');
-    				}, 3000);
+    				}, 3000);*/
         }
         
     </script>
