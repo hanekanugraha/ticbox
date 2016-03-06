@@ -2,13 +2,38 @@
 <html>
 <head>
     <meta name="layout" content="admin"/>
-    <title><g:message code="ticbox.admin.redeemtions.label"/></title>
+    <title><g:message code="ticbox.admin.redemptions.label"/></title>
     <style type="text/css">
-
+        .fade-text {
+            color: #bfbfbf;
+            font-style: italic;
+        }
     </style>
+    <script>
+      function disableCheckbox(checkbox) {
+        checkbox.attr('disabled', 'disabled');
+        checkbox.attr('title', 'Please complete the information first');
+      }
+
+      function enableCheckbox(checkbox) {
+        checkbox.attr('disabled', null);
+        checkbox.attr('class', null);
+      }
+
+      jQuery(function() {
+
+          jQuery('tbody tr').each(function(index, dataRow){
+            var cls = jQuery('.redemption-info a', dataRow).attr('class');
+            if (cls == 'fade-text') {
+              disableCheckbox(jQuery(':checkbox', dataRow));
+            }
+          });
+
+      });
+    </script>
 </head>
 <body>
-    <h3><g:message code="admin.redeemtions.money.label"/></h3>
+    <h3><g:message code="admin.redemptions.money.label"/></h3>
 
     %{--<div class="row-fluid">--}%
         %{--<div class="span2">--}%
@@ -30,34 +55,45 @@
         <thead>
             <tr>
                 <th></th>
-                <th><g:message code="app.createddate.label"/></th>
-                <th><g:message code="app.respondentid.label"/></th>
+                <th><g:message code="app.redemptiondate.label"/></th>
                 <th><g:message code="app.name.title"/></th>
                 <th><g:message code="app.amount.label"/></th>
                 <th><g:message code="app.bankname.label"/></th>
                 <th><g:message code="app.accountno.label"/></th>
                 <th><g:message code="app.accountname.label"/></th>
                 <th><g:message code="app.status.label"/></th>
+                <th><g:message code="app.information.label"/></th>
             </tr>
         </thead>
         <tbody>
             <g:each in="${redemptionRequestList}" var="redemption" status="status">
                 <tr>
-                    <td><input type="checkbox" name="redemptionIds" value="${redemption.id}" /></td>
+                    <td><input type="checkbox" name="redemptionIds" value="${redemption.id}" class="row-checkbox" /></td>
                     <td>${redemption.dateCreated}</td>
-                    <td>${redemption.respondentId}</td>
                     <td>${redemption.respondentUsername}</td>
                     <td>${g.formatNumber(number: redemption.redemptionAmount, formatName: 'app.currency.format')}</td>
                     <td>${redemption.bankName}</td>
                     <td>${redemption.bankAccountNumber}</td>
                     <td>${redemption.bankAccountName}</td>
                     <td>${redemption.status}</td>
+                    <td class="redemption-info">
+                        <g:if test="${redemption.info != null}">
+                        <a href="#edit-info-modal" role="button" data-toggle="modal" data-argument="${redemption.id}" data-type="money">
+                            ${redemption.info}
+                        </a>
+                        </g:if>
+                        <g:else>
+                        <a href="#edit-info-modal" role="button" data-toggle="modal" data-type="money" class="fade-text">
+                            &lt;blank&gt;
+                        </a>
+                        </g:else>
+                    </td>
                 </tr>
             </g:each>
         </tbody>
     </table>
 
-    <h3><g:message code="admin.redeemtions.items.label"/></h3>
+    <h3><g:message code="admin.redemptions.items.label"/></h3>
 
 
     <div class="row" style="margin-bottom:10px">
@@ -72,12 +108,12 @@
     <thead>
     <tr>
         <th></th>
-        <th><g:message code="app.createddate.label"/></th>
-        <th><g:message code="app.respondentid.label"/></th>
+        <th><g:message code="app.redemptiondate.label"/></th>
         <th><g:message code="app.name.title"/></th>
         <th><g:message code="app.goldamount.label"/></th>
         <th><g:message code="admin.items.label"/></th>
         <th><g:message code="app.status.label"/></th>
+        <th><g:message code="app.information.label"/></th>
     </tr>
     </thead>
     <tbody>
@@ -85,7 +121,6 @@
         <tr>
             <td><input type="checkbox" name="redemptionItemIds" value="${redemptionItem.id}" /></td>
             <td>${redemptionItem.dateCreated}</td>
-            <td>${redemptionItem.respondentId}</td>
             <td>${redemptionItem.respondentUsername}</td>
             <td>${redemptionItem.goldAmount}</td>
             <td><g:each in="${redemptionItem.ITEMS}" var="item" status="status">
@@ -95,6 +130,18 @@
                 </g:each>
             </td>
             <td>${redemptionItem.status}</td>
+            <td class="redemption-info">
+                <g:if test="${redemption.info != null}">
+                <a href="#edit-info-modal" role="button" data-toggle="modal" data-type="item">
+                    ${redemption.info}
+                </a>
+                </g:if>
+                <g:else>
+                <a href="#edit-info-modal" role="button" data-toggle="modal" data-type="item" class="fade-text">
+                    &lt;blank&gt;
+                </a>
+                </g:else>
+            </td>
         </tr>
     </g:each>
     </tbody>
@@ -212,6 +259,33 @@
     <g:hiddenField name="redemptionIds"></g:hiddenField>
     <g:hiddenField name="newStatus"></g:hiddenField>
 </g:form>
+</div>
+
+<div id="edit-info-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editInfoLabel" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="editInfoLabel" class="modal-title">
+                    Information given to user
+                </span>
+            </div>
+            <div class="modal-body" style="overflow: auto">
+                <g:form name="editInfoForm" controller="admin" action="putRedemptionInfo" class="form-horizontal" role="form">
+                    <input type="hidden" name="redemptionId" />
+                    <input type="hidden" name="redemptionType" />
+                    <div class="form-group">
+                        <div class="col-xs-8"><g:textArea name="infoText" class="form-control" rows="5" cols="500" style="width:500px" /></div>
+                    </div>
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button id="update-info-btn" class="btn btn-green" data-loading-text="Processing..">OK</button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -273,6 +347,45 @@
             $('#rejectRedempItemIds', form).val(selected);
             form.submit();
         });
+
+        $('.redemption-info a').click(function() {
+            var dataRow = $(this).parents('tr');
+            var id = $(':checkbox', dataRow).val();
+            var type = $(this).data('type');
+            var content = $('a', dataRow).html().trim();
+            var cls = $('.redemption-info a', dataRow).attr('class');
+            if (cls == 'fade-text') {
+              content = '';
+            }
+
+            $('#edit-info-modal input[name=redemptionId]').val(id);
+            $('#edit-info-modal input[name=redemptionType]').val(type);
+            $('#edit-info-modal textarea').val(content);
+            $('#edit-info-modal').modal('show');
+            $('#edit-info-modal textarea').focus();
+        });
+
+        $('#update-info-btn').click(function() {
+            $(this).button('loading');
+            var redemptionId = $('#edit-info-modal form input[name=redemptionId]').val();
+            var redemptionType = $('#edit-info-modal form input[name=redemptionType]').val();
+            var infoText = $('#edit-info-modal form textarea[name=infoText]').val();
+
+            $.post('/ticbox/admin/updateRedemptionInfo', {rid: redemptionId, type: redemptionType, info: infoText}, function(data) {
+                if (data.success) {
+                  var checkbox = $(':checkbox[value=' + redemptionId + ']');
+                  $('.redemption-info a', checkbox.parents('tr')).html(infoText);
+                  enableCheckbox(checkbox);
+                } else {
+                  alert('Failed: ' + data.message);
+                }
+            }).fail(function() {
+                alert('Failed: Server not responding');
+            }).always(function() {
+                $('#edit-info-modal').modal('toggle');
+            });
+        });
+
     });
 </script>
 </body>

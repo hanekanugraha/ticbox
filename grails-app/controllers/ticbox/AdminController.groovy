@@ -129,6 +129,23 @@ class AdminController {
         [redemptionRequestList:redemptionRequestList, redemptionStatuses: RedemptionRequest.STATUS,redemptionItemRequestList:redemptionItemRequestList]
     }
 
+    def updateRedemptionInfo() {
+        if (params.type == 'money') {
+            def redemption = RedemptionRequest.findById(params.rid)
+            redemption.info = params.info
+            redemption.save()
+        } else if (params.type == 'item') {
+            def redemption = RedemptionItemRequest.findById(params.rid)
+            redemption.info = params.info
+            redemption.save()
+        } else {
+            String message = "Valid types for redemption: money, item"
+            return render(text: [success:false, message: message] as JSON, contentType:'text/json')
+        }
+
+        return render(text: [success:true] as JSON, contentType:'text/json')
+    }
+
     def changeRedemptionStatus = {
         try {
             if (params.redemptionIds) {
