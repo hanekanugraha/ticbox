@@ -81,8 +81,8 @@
                 <g:each in="${inProgress}" var="survey">
                     <tr>
                         <td><input type="checkbox" name="surveyInprogressIds"  value="${survey.id}" /></td>
-                        <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a>
-                            <span style="font-size: xx-small;"><g:message code="app.createdon.label"/> ${survey.createdDate}</span>
+                        <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a><br/>
+                        	<span style="font-size: xx-small;"><g:message code="app.createdon.label"/> ${survey.createdDate}</span>
                         </td>
                         <td>${survey.surveyor.userAccount.username}</td>
                         <td>${survey.type}</td>
@@ -135,7 +135,7 @@
                         <%--td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td--%>
                         <!--td>${survey.name}</td-->
                         <td class="75%">
-                            <a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a>
+                            <a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a><br/>
                             <span style="font-size: xx-small;"><g:message code="app.createdon.label"/> ${survey.createdDate}</span>
                         </td>
                         <td>${survey.surveyor.userAccount.username}</td>
@@ -495,7 +495,9 @@
             }
         } );
 
-        $('#deleteInprogressSurveys').click(function() {
+        // Don't use regular .onclick event on dynamic pages such as paginated pages
+        // http://learn.jquery.com/events/event-delegation/
+        $(document).on('click',"#deleteInprogressSurveys",function() {
             $(this).button('loading');
             var selected = [];
             var form = $('#deleteSurveysForm');
@@ -506,7 +508,7 @@
             form.submit();
         });
 
-        $('#disableSurveys').click(function() {
+        $(document).on('click',"#disableSurveys",function() {
             $(this).button('loading');
             var selected = [];
             var form = $('#disableSurveysForm');
@@ -517,7 +519,7 @@
             form.submit();
         });
 
-        $('#enableSurveys').click(function() {
+        $(document).on('click',"#enableSurveys",function() {
             $(this).button('loading');
             var selected = [];
             var form = $('#enableSurveysForm');
@@ -528,14 +530,14 @@
             form.submit();
         });
 
-        $('#setPointSurvey').click(function() {
+        $(document).on('click',"#setPointSurvey",function() {
             $(this).button('loading');
             var form= $('#setPointSurveyForm');
 
             form.submit();
         });
 
-        jQuery('.setPointLink').click(function() {
+        $(document).on('click',".setPointLink",function() {
             var that = jQuery(this);
             var surveyId = that.attr('surveyid');
 
@@ -543,7 +545,7 @@
             $('#savePointSurveyId').val(surveyId);
         });
 
-        jQuery('.displayResultLink').click(function(){
+        $(document).on('click',".displayResultLink",function() {
             var that = jQuery(this);
             var surveyId = that.attr('surveyid');
 
@@ -561,19 +563,19 @@
                 }, 500);
             });
         });
-		jQuery('.downloadResultLink').click(function(e){
+
+        $(document).on('click',".downloadResultLink",function(e) {
 	        var that = jQuery(this);
             var surveyId = that.attr('surveyid');
            	e.preventDefault();  //stop the browser from following
 			var url =  '${request.contextPath}/survey/downloadSurveyResult?surveyId='+surveyId;
-			alert(url);
 			window.location.href =url;
         });
 
         jQuery('#surveyorProfileContent').addClass('in');
         jQuery('#surveyInfoAccordion').hide();
 
-        jQuery('.displayQuestionLink').click(function(){
+        $(document).on('click',".displayQuestionLink",function() {
             var that = jQuery(this);
             var surveyId = that.attr('surveyid');
 
