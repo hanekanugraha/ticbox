@@ -102,6 +102,7 @@ class SurveyService {
 			def sdf = new SimpleDateFormat("MM/dd/yyyy")
 			if(!survey.createdDate) {
 				survey.createdDate = sdf.format(date)
+				survey.modifiedDate = ''
 			} else {			
 				survey.modifiedDate = sdf.format(date)
 			}
