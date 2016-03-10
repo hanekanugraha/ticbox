@@ -14,6 +14,8 @@ class RedemptionRequest {
     String bankAccountName
     String remarks
     String status
+    String info
+
     Date dateCreated
     Date lastUpdated
     static constraints = {

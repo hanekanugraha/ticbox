@@ -124,9 +124,14 @@ class AdminController {
     }
 
     def redemptions = {
-        def redemptionRequestList = RedemptionRequest.findAllByStatus(RedemptionRequest.STATUS.New)
-        def redemptionItemRequestList=RedemptionItemRequest.findAllByStatus(RedemptionItemRequest.STATUS.New)
-        [redemptionRequestList:redemptionRequestList, redemptionStatuses: RedemptionRequest.STATUS,redemptionItemRequestList:redemptionItemRequestList]
+        List<RedemptionRequest> redemptionRequestList = RedemptionRequest.findAllByStatus(RedemptionRequest.STATUS.New)
+        List<RedemptionItemRequest> redemptionItemRequestList = RedemptionItemRequest.findAllByStatus(RedemptionItemRequest.STATUS.New)
+        System.out.println("redemptionRequestList.size = " + redemptionRequestList.size())
+        System.out.println("redemptionItemRequestList.size = " + redemptionItemRequestList.size())
+        if (redemptionItemRequestList.size() > 0) {
+            System.out.println("redemptionItemRequestList[0] = " + redemptionItemRequestList[0])
+        }
+        return [redemptionRequestList:redemptionRequestList, redemptionStatuses: RedemptionRequest.STATUS,redemptionItemRequestList:redemptionItemRequestList]
     }
 
     def updateRedemptionInfo() {

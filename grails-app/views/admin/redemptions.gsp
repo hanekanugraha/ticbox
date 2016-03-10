@@ -19,17 +19,6 @@
         checkbox.attr('disabled', null);
         checkbox.attr('class', null);
       }
-
-      jQuery(function() {
-
-          jQuery('tbody tr').each(function(index, dataRow){
-            var cls = jQuery('.redemption-info a', dataRow).attr('class');
-            if (cls == 'fade-text') {
-              disableCheckbox(jQuery(':checkbox', dataRow));
-            }
-          });
-
-      });
     </script>
 </head>
 <body>
@@ -103,7 +92,8 @@
         </div>
     </div>
     <br />
-
+<g:each in="${redemptionItemRequestList}" var="redemptionItem">
+</g:each>
 <table id="redemptionItemTable" class="table table-bordered table-striped">
     <thead>
     <tr>
@@ -131,9 +121,9 @@
             </td>
             <td>${redemptionItem.status}</td>
             <td class="redemption-info">
-                <g:if test="${redemption.info != null}">
+                <g:if test="${redemptionItem.info != null}">
                 <a href="#edit-info-modal" role="button" data-toggle="modal" data-type="item">
-                    ${redemption.info}
+                    ${redemptionItem.info}
                 </a>
                 </g:if>
                 <g:else>
@@ -384,6 +374,13 @@
             }).always(function() {
                 $('#edit-info-modal').modal('toggle');
             });
+        });
+
+        $('tbody tr').each(function(index, dataRow){
+            var cls = $('.redemption-info a', dataRow).attr('class');
+            if (cls == 'fade-text') {
+                disableCheckbox($(':checkbox', dataRow));
+            }
         });
 
     });

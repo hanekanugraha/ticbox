@@ -32,9 +32,11 @@ class GoldService {
 
     def approveRedemptions(String[] ids){
         List<String> redempIds = HelperService.getListOfString(ids)
-        def redempionRequests = RedemptionRequest.findAll{
-            inList("_id", redempIds)
+        List<Object> redempionRequests = RedemptionRequest.findAll{ inList("_id", redempIds) }
+        if (redempionRequests.isEmpty()) {
+            redempionRequests = RedemptionItemRequest.findAll{ inList("_id", redempIds) }
         }
+
         if (redempionRequests) {
             for(request in redempionRequests){
                 RespondentGoldHistory goldHistory = RespondentGoldHistory.findById(request.respondentGoldHistoryId)
@@ -42,7 +44,10 @@ class GoldService {
                 goldHistory.save()
                 request.status = RedemptionRequest.STATUS.Success
                 request.save()
+                if (request instanceof RedemptionItemRequest) {
+                    emailForApprovedRedemptionItemRequest((RedemptionItemRequest)request)
                 }
+            }
         } else {
             throw new Exception("No Redemption was found")
         }
@@ -50,9 +55,11 @@ class GoldService {
 
     def rejectRedemptions(String[] ids){
         List<String> redempIds = HelperService.getListOfString(ids)
-        def redempionRequests = RedemptionRequest.findAll{
-            inList("_id", redempIds)
+        List<Object> redempionRequests = RedemptionRequest.findAll{ inList("_id", redempIds) }
+        if (redempionRequests.isEmpty()) {
+            redempionRequests = RedemptionItemRequest.findAll{ inList("_id", redempIds) }
         }
+
         if (redempionRequests) {
             for(request in redempionRequests){
                 RespondentGoldHistory goldHistory = RespondentGoldHistory.findById(request.respondentGoldHistoryId)
@@ -63,10 +70,61 @@ class GoldService {
                 def respondent = User.findById(request.respondentId)
                 respondent.respondentProfile.gold += goldHistory.amount
                 respondent.save()
+                if (request instanceof RedemptionItemRequest) {
+                    emailForRejectedRedemptionItemRequest((RedemptionItemRequest)request)
+                }
             }
         } else {
             throw new Exception("No Redemption was found")
         }
+    }
+
+    def emailForApprovedRedemptionItemRequest(RedemptionItemRequest request) {
+        User respondent = User.findByUsername(request.respondentUsername)
+
+        recipients << [
+                email   : respondent.email,
+                fullname: respondent.username //TODO RespondentProfile should consists full name
+        ]
+
+        String itemsInText = "Tidak ada"
+        if (request.ITEMS.size() > 0) {
+            itemsInText = toItemName(request.ITEMS[0]);
+
+            for (int i = 0; i < request.ITEMS.length; i++) {
+                itemsInText += ", " + toItemName(request.ITEMS[i]);
+            }
+        }
+
+        String title = "Redeem ${itemsInText} Confirmation"
+        emailBlasterService.blastEmail(recipients, "approvedItemRedemption", title,
+                [name: respondent.username, itemsInText: itemsInText, info: request.info])
+    }
+
+    def emailForRejectedRedemptionItemRequest(RedemptionItemRequest request) {
+        User respondent = User.findByUsername(request.respondentUsername)
+
+        recipients << [
+                email   : respondent.email,
+                fullname: respondent.username //TODO RespondentProfile should consists full name
+        ]
+
+        String itemsInText = "Tidak ada"
+        if (request.ITEMS.size() > 0) {
+            itemsInText = toItemName(request.ITEMS[0]);
+
+            for (int i = 0; i < request.ITEMS.length; i++) {
+                itemsInText += ", " + toItemName(request.ITEMS[i]);
+            }
+        }
+
+        String title = "Redeem ${itemsInText} Confirmation"
+        emailBlasterService.blastEmail(recipients, "rejectedItemRedemption", title,
+                [name: respondent.username, itemsInText: itemsInText, info: request.info])
+    }
+
+    String toItemName(def itemId) {
+        return Item.findById(itemId)?.itemName
     }
 
     def addGoldToReferrer(String description, User respondent, Date date) {
