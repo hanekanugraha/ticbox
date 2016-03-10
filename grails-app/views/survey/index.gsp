@@ -201,7 +201,7 @@
                     <th><g:message code="app.type.label"/></th>
                     <th><g:message code="app.runningtime.label"/></th>
                     <th><g:message code="app.totalrespondent.label"/></th>
-                    <th><g:message code="app.createdon.label"/></th>
+                    <th><g:message code="app.totalcharge.label"/></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -219,7 +219,7 @@
                         <td>${survey.type}</td>
                         <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                         <td>${survey.ttlRespondent}</td>
-                        <td>${survey.createdDate}</td>
+                        <td>Rp. ${survey.surveyPrice}</td>
                         <!-- Delete Draft -->
                         <td class="content-width">
                             <!-- a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="${request.contextPath}/survey/deleteSurvey?surveyId=${survey.surveyId}">Delete</a -->
@@ -280,7 +280,7 @@
                         <th><g:message code="app.type.label"/></th>
                         <th><g:message code="app.runningtime.label"/></th>
                         <th><g:message code="app.totalrespondent.label"/></th>
-                        <th><g:message code="app.createdon.label"/></th>
+                        <th><g:message code="app.totalcharge.label"/></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -299,10 +299,13 @@
                             <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                             <td>${survey.ttlRespondent}</td>
                             <td>Rp. ${survey.surveyPrice}</td>
-                            <td>${survey.createdDate}</td>
-                            <td class="content-width">
-                                <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>
-								<a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.downloadresult"/></a>
+                            <td class="content-width" style="padding: 0px;">
+                            <table><tr><td>
+                                <a class="btn btn-xs btn-primary displayResultLink btn-vertical-top" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>
+                            </td></tr>
+                            <tr><td>
+                                <a class="btn btn-xs btn-primary downloadResultLink btn-vertical-bottom" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.downloadresult"/></a>
+                            </td></tr></table>
                             </td>
                         </tr>
                     </g:each>
@@ -320,7 +323,7 @@
                     <th><g:message code="app.type.label"/></th>
                     <th><g:message code="app.runningtime.label"/></th>
                     <th><g:message code="app.totalrespondent.label"/></th>
-                    <th><g:message code="app.createdon.label"/></th>
+                    <th><g:message code="app.totalcharge.label"/></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -339,10 +342,13 @@
                             <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                             <td>${survey.ttlRespondent}</td>
                             <td>Rp. ${survey.surveyPrice}</td>
-                            <td>${survey.createdDate}</td>
-                            <td class="content-width">
-                                <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>
-                            	<a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.downloadresult"/></a>
+                            <td class="content-width" style="padding: 0px;">
+                            <table><tr><td>                            
+                                <a class="btn btn-xs btn-primary displayResultLink btn-vertical-top" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>                           
+							</td></tr>
+                            <tr><td>
+                            	<a class="btn btn-xs btn-primary downloadResultLink btn-vertical-bottom" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.downloadresult"/></a>
+                            </td></tr></table>
 							</td>
                         </tr>
                     </g:each>
@@ -551,27 +557,27 @@
 <g:javascript src="additional-methods.min.js"/>
 <script type="text/javascript">
 
-	jQuery.validator.addMethod("uniqueto", function(value, element, params) {
-	
-		var unique = true;
-		var lowerCaseValue = value.toLocaleLowerCase();
-		$(params + ' option').each(function(){
-		    if (this.innerHTML.toLocaleLowerCase() === lowerCaseValue) {
-		    	unique = false;
-		        return false;
-		    }
-		});
-	    return this.optional(element) || unique;
-	    
+jQuery.validator.addMethod("uniqueto", function(value, element, params) {
+
+	var unique = true;
+	var lowerCaseValue = value.trim().toLocaleLowerCase();
+	$(params + ' option').each(function(){
+	    if (this.innerHTML.trim().toLocaleLowerCase() === lowerCaseValue) {
+	    	unique = false;
+	        return false;
+	    }
+	});
+    return this.optional(element) || unique;
+    
 	}, "${message(code: 'app.createsurvey.nonuniquename')}");
 
-    $('#createSurveyModal').on('hide.bs.modal', function() {
-    	var validator = $('#createSurveyForm').validate();
-    	validator.resetForm();
-        $('#surveyName').val('');
-        $('#surveyCreationRadio1').prop("checked", true);
+	$('#createSurveyModal').on('hide.bs.modal', function() {
+		var validator = $('#createSurveyForm').validate();
+		validator.resetForm();
+	    $('#surveyName').val('');
+	    $('#surveyCreationRadio1').prop("checked", true);
 		$('#allSurveysListTr').hide();        
-    });
+	});
 
     $(document).ready(function() {
 
@@ -587,15 +593,15 @@
                 allSurveysListSelect: {
 	                required: true
 	            }
+			},
 	        messages: {
-	        },
             	surveyName: {
                     required: "${message(code: 'label.field.required')}"
                 },
                 allSurveysListSelect: {
                     required: "${message(code: 'label.field.required')}"
                 }
-			}
+            }
         });
 
         $(document).on( "change", "input[name=surveyCreationRadio]", function() { 

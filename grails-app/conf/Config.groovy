@@ -11,6 +11,8 @@
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
 
+//grails.gorm.failOnError = true // Uncomment this when debugging
+
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
@@ -66,8 +68,8 @@ grails.plugins.remotepagination.enableBootstrap=true
 environments {
     development {
         grails.logging.jul.usebridge = true
-        grails.serverURL = "http://ticbox-ol.us-east-1.elasticbeanstalk.com"
-/*		grails.serverURL = "http://localhost:8080/${appName}"*/
+/*        grails.serverURL = "http://ticbox-ol.us-east-1.elasticbeanstalk.com"*/
+		grails.serverURL = "http://localhost:8080/${appName}"
         oauth {
             providers {
                 facebook {
