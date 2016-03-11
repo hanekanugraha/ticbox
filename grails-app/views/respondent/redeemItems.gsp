@@ -33,7 +33,11 @@
                     <g:each in="${items}" var="item" >
                         <tr>
                             <td><input type="checkbox" name="itemIds"  value="${item.id}" gold="${item.gold}" /></td>
-                            <td>${item.pic}</td>
+                            <td>
+                              <img class="pic upload-pic" id="item-pic${item.id}"
+                                 <g:if test="${item.pic != null}">src="data:image;base64,${item.pic}"</g:if>
+                                 <g:else>src="/ticbox/images/ticbox/no-image.png"</g:else>
+                              /></td>
                             <td>${item.itemName}</td>
                             <td>${item.gold}</td>
 
