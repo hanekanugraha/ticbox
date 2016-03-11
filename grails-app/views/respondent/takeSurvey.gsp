@@ -330,10 +330,10 @@
         jQuery.post('${request.contextPath}/respondent/saveResponse', {surveyResponse: JSON.stringify(questionItems), surveyId: '${survey.surveyId}', respondentId: ${respondent.id}}, function (data) {
 
             if ('SUCCESS' == data) {
-                alert('Submission success..');
+//                alert('Submission success..');
                 window.location.replace('${request.contextPath}/respondent/');
             } else {
-                alert('Submission failure');
+//                alert('Submission failure');
                 jQuery(btn).removeAttr('disabled');
             }
 

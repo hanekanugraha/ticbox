@@ -12,7 +12,7 @@
                 <g:message code="homepage.content1.label"/>
             </p>
             <p>
-                <button class="btn btn-green btn-lg"><g:message code="label.button.watch.video"/></button>
+                %{--<button class="btn btn-green btn-lg"><g:message code="label.button.watch.video"/></button>--}%
             </p>
         </div>
 
