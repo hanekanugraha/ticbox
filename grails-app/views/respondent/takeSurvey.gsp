@@ -529,9 +529,9 @@
                     <div class="questionTextContainer col-xs-11">
                         <span class="question-text"></span>
                         %{--<div rows="3"></div>--}%
-                        <span class="media-thumbnail">
-                            <img class="pic upload-pic question-pic" src="" />
-                        </span>
+                        %{--<span class="media-thumbnail">--}%
+                            %{--<img class="pic upload-pic question-pic" src="" />--}%
+                        %{--</span>--}%
                     </div>
                 </div>
             </div>
@@ -552,9 +552,9 @@
                         %{--<div class="col col-xs-11" style="padding-left: 0">--}%
                             <label class="item-label" style="font-weight: normal; margin-bottom: 0">
                             </label>
-                            <span class="media-thumbnail">
-                                <img class="pic upload-pic" src="" />
-                            </span>
+                            %{--<span class="media-thumbnail">--}%
+                                %{--<img class="pic upload-pic" src="" />--}%
+                            %{--</span>--}%
                         </div>
                     </div>
                 </div>
@@ -569,9 +569,9 @@
                             %{--<div class="col col-xs-11" style="padding-left: 0">--}%
                             <label class="item-label" style="font-weight: normal; margin-bottom: 0">
                             </label>
-                            <span class="media-thumbnail">
-                                <img class="pic upload-pic" src="" />
-                            </span>
+                            %{--<span class="media-thumbnail">--}%
+                                %{--<img class="pic upload-pic" src="" />--}%
+                            %{--</span>--}%
                         </div>
                     </div>
                 </div>
