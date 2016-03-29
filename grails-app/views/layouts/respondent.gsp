@@ -291,6 +291,9 @@
                                         <li class="goldHistory">
                                             <g:link action="goldHistory"><g:message code="resp.goldpointhist.label"/></g:link>
                                         </li>
+                                        <li class="surveyHistory">
+                                            <g:link action="surveyHistory"><g:message code="resp.surveyhist.label"/></g:link>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

@@ -184,7 +184,7 @@
                             <input name="${profileItem.code}" type="text" placeholder="${profileItem.min && profileItem.max ? "${profileItem.min} - ${profileItem.max}" : ''}" value="${respondentDetail?.profileItems[profileItem.code]}" class="num form-control" data-max="${profileItem.max}" data-min="${profileItem.min}" style="text-align:right">
                         </g:elseif>
                         <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.LOOKUP}">
-                            <g:select name="${profileItem.code}" class="form-control" style="width: auto" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" value="${respondentDetail?.profileItems[profileItem.code]}" noSelection="${['null':'Select One...']}"/>
+                            <g:select name="${profileItem.code}" disabled="true" class="form-control" style="width: auto" from="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" optionKey="key" optionValue="value" value="${respondentDetail?.profileItems[profileItem.code]}" noSelection="${['null':'Select One...']}"/>
                         </g:elseif>
                         <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.CHOICE}">
 
