@@ -6,14 +6,14 @@ environments {
         grails {
             mongo {
 
-
+                /*
                 host = "localhost"
                 port = 27017
                 username = ""
                 password = ""
                 databaseName = "ticbox-wl"
                 //diaglog = 3
-
+                */
 
                 /*
                 host = "ds037215.mongolab.com"
@@ -23,11 +23,11 @@ environments {
                 databaseName = "ticboxdb-wl"
                 */
 
-//                host = "ds045464.mongolab.com"
-//                port = 45464
-//                username = "firman"
-//                password = "redchair45"
-//                databaseName = "ticboxdb-demo"
+                host = "ds045464.mongolab.com"
+                port = 45464
+                username = "firman"
+                password = "redchair45"
+                databaseName = "ticboxdb-demo"
             }
         }
     }
