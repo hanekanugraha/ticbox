@@ -158,14 +158,14 @@ class RespondentController {
     def goldHistory = {
         def principal = SecurityUtils.subject.principal
         def respondent = User.findByUsername(principal.toString())
-        def goldHistory = RespondentGoldHistory.findAllByRespondentIdAndType(respondent.id, RespondentGoldHistory.TYPES.INCOME_SURVEY)
+        def goldHistory = RespondentGoldHistory.findAllByRespondentIdAndType(respondent.id, RespondentGoldHistory.TYPES.EXPENSE_REDEMPTION)
         [goldHistory:goldHistory, respondent: respondent,surveyJoined:SurveyResponse.countByRespondentId(respondent.id)]
     }
 
     def surveyHistory = {
         def principal = SecurityUtils.subject.principal
         def respondent = User.findByUsername(principal.toString())
-        def surveyHistory = RespondentGoldHistory.findAllByRespondentIdAndType(respondent.id, RespondentGoldHistory.TYPES.EXPENSE_REDEMPTION)
+        def surveyHistory = RespondentGoldHistory.findAllByRespondentIdAndType(respondent.id, RespondentGoldHistory.TYPES.INCOME_SURVEY)
         [surveyHistory:surveyHistory, respondent: respondent, surveyJoined:SurveyResponse.countByRespondentId(respondent.id)]
     }
 
