@@ -21,5 +21,7 @@ web-app/WEB-INF/tld/fmt.tld
 /.idea
 .idea
 .DS_STORE
+/.slcache
+.slcache
 
 grails-app/conf/DataSource.groovy
