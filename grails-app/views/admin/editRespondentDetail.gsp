@@ -154,6 +154,27 @@
                       noSelection="['':'-Choose One-']" />
                 </div>
             </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Directorate</label>
+                <div class="col-sm-8">
+                    <g:select name="profileItems_LM_DIRECTORATE"
+                        class="form-control" style="width: auto"
+                        from="${LookupMaster.findByCode('LM_DIRECTORATE')?.values}" optionKey="key" optionValue="value"
+                        value="${respondentDetail?.profileItems['PI_DIRECTORATE']}"
+                        noSelection="['':'-Choose One-']" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Business Unit</label>
+                <div class="col-sm-8">
+                    <g:select name="profileItems_LM_BU"
+                        class="form-control" style="width: auto"
+                        from="${LookupMaster.findByCode('LM_BU')?.values}" optionKey="key" optionValue="value"
+                        value="${respondentDetail?.profileItems['PI_BU']}"
+                        noSelection="['':'-Choose One-']" />
+                </div>
+            </div>
         </div>
 
         <!-- action buttons -->
