@@ -386,6 +386,13 @@ class AdminController {
         redirect(controller: "admin", action: "redemptions")
     }
 
+    def redeemHistory = {
+        List<RedemptionRequest> redemptionRequestList = RedemptionRequest.findAllByStatusOrStatus(RedemptionItemRequest.STATUS.Success, RedemptionItemRequest.STATUS.Failed)
+        List<RedemptionItemRequest> redemptionItemRequestList = RedemptionItemRequest.findAllByStatusOrStatus(RedemptionItemRequest.STATUS.Success, RedemptionItemRequest.STATUS.Failed)
+
+        return [redemptionRequestList:redemptionRequestList, redemptionStatuses: RedemptionRequest.STATUS,redemptionItemRequestList:redemptionItemRequestList]
+    }
+
     def uploadItemImage = {
         def message
         try {

@@ -269,6 +269,9 @@
                                         <li class="adminlistItems">
                                             <g:link controller="admin" action="listItems"><g:message code="admin.items.label"/></g:link>
                                         </li>
+                                        <li class="adminRedeemHistory">
+                                            <g:link controller="admin" action="redeemHistory"><g:message code="admin.redeemhistory.label"/></g:link>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
