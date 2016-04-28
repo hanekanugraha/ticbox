@@ -504,9 +504,9 @@
                                 <div class="module-message" style="font-size: inherit"><g:message code="surveylist.nodesc.label"/> </div>
                             </g:else>
                         </p>
-                        <div class="alert alert-info" style="margin-bottom: 0; font-size: 8px; width: 100%">
-                            <g:message code="takesurvey.appreciation.label"/>
-                        </div>
+                        %{--<div class="alert alert-info" style="margin-bottom: 0; font-size: 8px; width: 100%">--}%
+                            %{--<g:message code="takesurvey.appreciation.label"/>--}%
+                        %{--</div>--}%
                     </div>
                 </div>
             </div>
