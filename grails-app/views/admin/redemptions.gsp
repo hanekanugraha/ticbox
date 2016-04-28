@@ -67,14 +67,14 @@
                     <td>${redemption.status}</td>
                     <td class="redemption-info">
                         <g:if test="${redemption.info != null}">
-                        <a href="#edit-info-modal" role="button" data-toggle="modal" data-argument="${redemption.id}" data-type="money">
+                        %{--<a href="#edit-info-modal" role="button" data-toggle="modal" data-argument="${redemption.id}" data-type="money">--}%
                             ${redemption.info}
-                        </a>
+                        %{--</a>--}%
                         </g:if>
                         <g:else>
-                        <a href="#edit-info-modal" role="button" data-toggle="modal" data-type="money" class="fade-text">
+                        %{--<a href="#edit-info-modal" role="button" data-toggle="modal" data-type="money" class="fade-text">--}%
                             &lt;blank&gt;
-                        </a>
+                        %{--</a>--}%
                         </g:else>
                     </td>
                 </tr>
@@ -87,8 +87,8 @@
 
     <div class="row" style="margin-bottom:10px">
         <div class="col-sm-12">
-            <a id="approveItemRedemps" href="#approve-submitted-redemp-item-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> <g:message code="label.button.approve"/></a>
-            <a id="rejectItemRedemps" href="#reject-submitted-redemp-item-modal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> <g:message code="label.button.reject"/></a>
+            <a id="approveItemRedemps"  role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> <g:message code="label.button.approve"/></a>
+            <a id="rejectItemRedemps" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-remove icon-white"></i> <g:message code="label.button.reject"/></a>
         </div>
     </div>
     <br />
@@ -104,6 +104,7 @@
         <th><g:message code="admin.items.label"/></th>
         <th><g:message code="app.status.label"/></th>
         <th><g:message code="app.information.label"/></th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
@@ -121,16 +122,20 @@
             </td>
             <td>${redemptionItem.status}</td>
             <td class="redemption-info">
-                <g:if test="${redemptionItem.info != null}">
-                <a href="#edit-info-modal" role="button" data-toggle="modal" data-type="item">
+                <g:if test="${redemptionItem.info != null}" >
+                %{--<a href="#edit-info-modal" role="button" data-toggle="modal" data-type="item">--}%
                     ${redemptionItem.info}
-                </a>
+                %{--</a>--}%
                 </g:if>
                 <g:else>
-                <a href="#edit-info-modal" role="button" data-toggle="modal" data-type="item" class="fade-text">
+                <a data-toggle="modal" data-type="item" class="fade-text">
                     &lt;blank&gt;
                 </a>
                 </g:else>
+            </td>
+
+            <td class="content-width">
+                <a class="btn btn-xs btn-primary setInfoLink" redeemtionitemid="${redemptionItem.id}" redeemtioniteminfo="${redemptionItem.info}" href="javascript:void(0)">Set Info</a>
             </td>
         </tr>
     </g:each>
@@ -191,12 +196,14 @@
     </div>
 </div>
 
+
+
 <div id="approve-submitted-redemp-item-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="approveRedempLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <span id="approveRedempLabel" class="modal-title">
+                <span id="approveRedempItemLabel" class="modal-title">
                     <g:message code="admin.approveredeem.label"/>
                 </span>
             </div>
@@ -211,7 +218,7 @@
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="approveRedempItem" class="btn btn-danger" data-loading-text="Processing.."><g:message code="label.button.approve"/></button>
+                <button id="approveRedempItemAction" class="btn btn-danger" data-loading-text="Processing.."><g:message code="label.button.approve"/></button>
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
@@ -238,7 +245,7 @@
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="rejectRedempItem" class="btn btn-danger" data-loading-text="Processing.."><g:message code="label.button.reject"/></button>
+                <button id="rejectRedempItemAction" class="btn btn-danger" data-loading-text="Processing.."><g:message code="label.button.reject"/></button>
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
@@ -257,26 +264,52 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="editInfoLabel" class="modal-title">
-                    Information given to user
+                    <g:message code="redeemItems.info.label"/>
                 </span>
             </div>
             <div class="modal-body" style="overflow: auto">
-                <g:form name="editInfoForm" controller="admin" action="putRedemptionInfo" class="form-horizontal" role="form">
-                    <input type="hidden" name="redemptionId" />
-                    <input type="hidden" name="redemptionType" />
+                <g:form name="editInfoForm" controller="admin" action="updateRedemptionInfo" class="form-horizontal" role="form">
+                    <input type="hidden" id="redemptionId" name="redemptionId" />
+                    <input type="hidden" id="redemptionType" name="redemptionType" />
                     <div class="form-group">
-                        <div class="col-xs-8"><g:textArea name="infoText" class="form-control" rows="5" cols="500" style="width:500px" /></div>
+                        <div class="col-xs-8">
+                            <g:textArea id="infoText" name="infoText" class="form-control" rows="5" cols="500" style="width:500px" />
+                        </div>
                     </div>
                 </g:form>
             </div>
             <div class="modal-footer">
-                <button id="update-info-btn" class="btn btn-green" data-loading-text="Processing..">OK</button>
+                <button id="update-info-btn" class="btn btn-green" data-loading-text="Processing.."><g:message code="app.ok.label"/> </button>
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/></button>
             </div>
         </div>
     </div>
 </div>
+<!-- Validate Choice Question Items modal -->
+<div id="validate-redeem-list-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="validateRedeemListLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="validateChoiceQuestionItemsLabel" class="modal-title">
+                    <g:message code="redeemtion.validate.title"/>
+                </span>
+            </div>
+            <div class="modal-body">
+                <g:form name="validateQuestionItemsForm" role="form">
+                    <div class="well">
+                        <p><b><g:message code="redeemtion.validate.header"/> </b></p>
+                        <g:message code="redeemtion.validate.content"/>
+                    </div>
 
+                </g:form>
+            </div>
+            <div class="modal-footer">
+                <button id="validateRedeemListBtn" class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><g:message code="app.ok.label"/></button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     $(document).ready(function() {
 
@@ -305,15 +338,17 @@
             form.submit();
         });
 
-        $('#approveRedempItem').click(function() {
+        $('#approveRedempItemAction').click(function() {
             $(this).button('loading');
             var selected = [];
             var form = $('#approveRedempsItemForm');
             $('input[name=redemptionItemIds]:checked').each(function(id, elmt) {
                 selected.push(elmt.value);
             });
+
             $('#approveRedempItemIds', form).val(selected);
             form.submit();
+
         });
 
         $('#rejectRedemp').click(function() {
@@ -327,7 +362,7 @@
             form.submit();
         });
 
-        $('#rejectRedempItem').click(function() {
+        $('#rejectRedempItemAction').click(function() {
             $(this).button('loading');
             var selected = [];
             var form = $('#rejectRedempsItemForm');
@@ -338,42 +373,78 @@
             form.submit();
         });
 
-        $('.redemption-info a').click(function() {
-            var dataRow = $(this).parents('tr');
-            var id = $(':checkbox', dataRow).val();
-            var type = $(this).data('type');
-            var content = $('a', dataRow).html().trim();
-            var cls = $('.redemption-info a', dataRow).attr('class');
-            if (cls == 'fade-text') {
-              content = '';
-            }
+//        $('.redemption-info a').click(function() {
+//
+//            $('#edit-info-modal input[name=redemptionId]').val(id);
+//            $('#edit-info-modal input[name=redemptionType]').val(type);
+//            $('#edit-info-modal textarea').val(content);
+//            $('#edit-info-modal').modal('show');
+//            $('#edit-info-modal textarea').focus();
+//        });
 
-            $('#edit-info-modal input[name=redemptionId]').val(id);
-            $('#edit-info-modal input[name=redemptionType]').val(type);
-            $('#edit-info-modal textarea').val(content);
+        $('#approveItemRedemps').click(function() {
+            var selected = [];
+            $('input[name=redemptionItemIds]:checked').each(function(id, elmt) {
+                selected.push(elmt.value);
+            });
+
+            if(selected.length==0) {
+                $('#validate-redeem-list-modal').modal('show');
+            } else {
+                $('#approve-submitted-redemp-item-modal').modal('show');
+            }
+        })
+
+        $('#rejectItemRedemps').click(function () {
+            var selected = [];
+            $('input[name=redemptionItemIds]:checked').each(function(id, elmt) {
+                selected.push(elmt.value);
+            });
+            if(selected.length==0) {
+                $('#validate-redeem-list-modal').modal('show');
+            } else {
+                $('#reject-submitted-redemp-item-modal').modal('show');
+            }
+        })
+
+        //kucing
+        $(document).on('click',".setInfoLink",function() {
+            var that = jQuery(this);
+            var redeemtionitemid = that.attr('redeemtionitemid');
+            var redemptionType = 'item';
+            var infoText = that.attr('redeemtioniteminfo');
+
+            $('#redemptionId').val(redeemtionitemid);
+            $('#redemptionType').val(redemptionType);
+            $('#infoText').val(infoText);
             $('#edit-info-modal').modal('show');
-            $('#edit-info-modal textarea').focus();
+
+
         });
 
+//        kucing edit
         $('#update-info-btn').click(function() {
             $(this).button('loading');
-            var redemptionId = $('#edit-info-modal form input[name=redemptionId]').val();
-            var redemptionType = $('#edit-info-modal form input[name=redemptionType]').val();
-            var infoText = $('#edit-info-modal form textarea[name=infoText]').val();
+//            var redemptionId = $('#edit-info-modal form input[name=redemptionId]').val();
+//            var redemptionType = $('#edit-info-modal form input[name=redemptionType]').val();
+//            var infoText = $('#edit-info-modal form textarea[name=infoText]').val();
 
-            $.post('/ticbox/admin/updateRedemptionInfo', {rid: redemptionId, type: redemptionType, info: infoText}, function(data) {
-                if (data.success) {
-                  var checkbox = $(':checkbox[value=' + redemptionId + ']');
-                  $('.redemption-info a', checkbox.parents('tr')).html(infoText);
-                  enableCheckbox(checkbox);
-                } else {
-                  alert('Failed: ' + data.message);
-                }
-            }).fail(function() {
-                alert('Failed: Server not responding');
-            }).always(function() {
-                $('#edit-info-modal').modal('toggle');
-            });
+            var form= $('#editInfoForm');
+            form.submit();
+
+//            $.post('/ticbox/admin/updateRedemptionInfo', {rid: redemptionId, type: redemptionType, info: infoText}, function(data) {
+//                if (data.success) {
+//                  var checkbox = $(':checkbox[value=' + redemptionId + ']');
+//                  $('.redemption-info a', checkbox.parents('tr')).html(infoText);
+//                  enableCheckbox(checkbox);
+//                } else {
+//                  alert('Failed: ' + data.message);
+//                }
+//            }).fail(function() {
+//                alert('Failed: Server not responding');
+//            }).always(function() {
+//                $('#edit-info-modal').modal('toggle');
+//            });
         });
 
         $('tbody tr').each(function(index, dataRow){

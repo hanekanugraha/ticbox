@@ -134,21 +134,27 @@ class AdminController {
         return [redemptionRequestList:redemptionRequestList, redemptionStatuses: RedemptionRequest.STATUS,redemptionItemRequestList:redemptionItemRequestList]
     }
 
+    // kucing
     def updateRedemptionInfo() {
-        if (params.type == 'money') {
+        System.out.println("Masuk updateRedemptionInfo()")
+
+        if (params.redemptionType == 'money') {
+            System.out.println("Param type money")
             def redemption = RedemptionRequest.findById(params.rid)
-            redemption.info = params.info
+            redemption.info = params.infoText
             redemption.save()
-        } else if (params.type == 'item') {
-            def redemption = RedemptionItemRequest.findById(params.rid)
-            redemption.info = params.info
+        } else if (params.redemptionType == 'item') {
+            System.out.println('Param type item')
+            def redemption = RedemptionItemRequest.findById(params.redemptionId)
+            redemption.info = params.infoText
             redemption.save()
         } else {
             String message = "Valid types for redemption: money, item"
             return render(text: [success:false, message: message] as JSON, contentType:'text/json')
         }
 
-        return render(text: [success:true] as JSON, contentType:'text/json')
+//        return render(text: [success:true] as JSON, contentType:'text/json')
+        redirect(controller: "admin", action: "redemptions")
     }
 
     def changeRedemptionStatus = {
@@ -352,13 +358,17 @@ class AdminController {
         redirect(controller: "admin", action: "listItems")
     }
 
+    // kucing
     def approveRedempsItem(){
+        System.out.println("Masuk approveRedempsItem()")
         try {
+            System.println("masuk try!")
             if (params.approveRedempItemIds) {
+                System.out.println("If redeem items not empty")
                 def approveRedempItemIds = ((String) params.approveRedempItemIds).split(",")
 
                 itemService.approveRedemptionsItem(approveRedempItemIds)
-                flash.message = message(code: "general.delete.success.message")
+                flash.message = message(code: "redeemtion.approve.success")
             } else {
                 throw Exception("No Redemption was found")
             }
@@ -375,7 +385,7 @@ class AdminController {
                 def rejectRedempItemIds = ((String) params.rejectRedempItemIds).split(",")
 
                 itemService.rejectRedemptionsItem(rejectRedempItemIds)
-                flash.message = message(code: "general.delete.success.message")
+                flash.message = message(code: "redeemtion.reject.Success")
             } else {
                 throw Exception("No Redemption was found")
             }
