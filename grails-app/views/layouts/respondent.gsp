@@ -113,13 +113,40 @@
                             </ul>
                         </li>
                         %{--NOTIFICATION--}%
+                        <script>
+                        function updateNotificationPeek() {
+                            var currentValue = parseInt(jQuery('span.badge').html());
+                            console.log("Number of current relevant notifications: " + currentValue);
+
+                            if (currentValue != 0) {
+                                jQuery.post('${request.contextPath}/userNotification/updatePeekTime', {}, function (data) {
+
+                                    if ('SUCCESS' == data) {
+                                        // Hide red asterix
+                                        jQuery('span.badge').css('background-color', 'grey');
+                                        jQuery('span.badge').html('0');
+                                    } else {
+                                        console.log("Failed to update peek time");
+                                    }
+
+                                });
+                            }
+                        }
+                        </script>
                         <li class="dropdown">
-                            <g:link class="dropdown-toggle" data-toggle="dropdown">
+                            <g:link class="dropdown-toggle" data-toggle="dropdown" onclick="updateNotificationPeek()">
                                 <span id="notif" class="glyphicon glyphicon-bullhorn" data-toggle="tooltip" title=<g:message code="default.notifications.label"/>></span>
                                 <g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
-                                    <span class="badge">
-                                        ${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()}
-                                    </span>
+                                    <g:if test="${ticbox.UserNotification.countRelevantNotificationSinceLastPeek(SecurityUtils.getSubject().getPrincipals().oneByType(String.class)) > 0}">
+                                        <span class="badge">
+                                            ${ticbox.UserNotification.countRelevantNotificationSinceLastPeek(SecurityUtils.getSubject().getPrincipals().oneByType(String.class))}
+                                        </span>
+                                    </g:if>
+                                    <g:else>
+                                        <span class="badge" style="background-color: grey">
+                                            ${ticbox.UserNotification.countRelevantNotificationSinceLastPeek(SecurityUtils.getSubject().getPrincipals().oneByType(String.class))}
+                                        </span>
+                                    </g:else>
                                 </g:if>
                             </g:link>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -127,10 +154,10 @@
                                     <b style="padding: 0 20px"><g:message code="default.notifications.label"/></b>
                                 </li>
                                 <li role="presentation" class="divider" style="margin: 3px 0 5px"></li>
-                                <g:if test="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
-                                    <g:each in="${ticbox.UserNotification.findAllByUsernameAndIsNoticed(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false)}" var="notification">
+                                <g:if test="${ticbox.UserNotification.findAllRelevantByUsername(SecurityUtils.getSubject().getPrincipals().oneByType(String.class)).size() > 0}">
+                                    <g:each in="${ticbox.UserNotification.findAllRelevantByUsername(SecurityUtils.getSubject().getPrincipals().oneByType(String.class))}" var="notification">
                                         <li role="presentation">
-                                            <g:link controller="userNotification" title="${notification.title}" params="[code: notification.code, notif_id: notification.id]">${notification.title}</g:link>
+                                            <g:link controller="userNotification" title="${notification.title}" params="[code: notification.code]">${notification.title}</g:link>
                                         </li>
                                     </g:each>
                                 </g:if>

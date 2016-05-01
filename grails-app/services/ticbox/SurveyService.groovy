@@ -1,6 +1,7 @@
 package ticbox
 
 import java.text.SimpleDateFormat
+import java.util.Date
 import com.mongodb.DBCollection
 import com.mongodb.DBObject
 import org.bson.types.ObjectId
@@ -147,13 +148,17 @@ class SurveyService {
 
                     String notifCode = "ps_${survey.id}"
 
+                    SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
                     //TODO find a way for bulky insert
                     for (RespondentDetail profile : filteredRespondents){
                         UserNotification userNotification = new UserNotification(
                             title: "New survey : ${survey.name}",
                             code: notifCode,
                             username: profile['username'],
-                            actionLink: "/respondent/takeSurvey?surveyId=${survey.surveyId}"
+                            actionLink: "/respondent/takeSurvey?surveyId=${survey.surveyId}",
+                            // isNoticed -> isHidden
+                            createdDate: dateTimeFormat.format(new Date())
                         )
 
                         userNotification['SERVICE_ID'] = survey.id
@@ -684,6 +689,7 @@ class SurveyService {
                 if (filteredRespondents) {
 
                     String notifCode = "ps_${survey.id}"
+                    SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
                     //TODO find a way for bulky insert
                     for (RespondentDetail profile : filteredRespondents) {
@@ -691,11 +697,12 @@ class SurveyService {
                                 title: "New survey : ${survey.name}",
                                 code: notifCode,
                                 username: profile['username'],
-                                actionLink: "/respondent/takeSurvey?surveyId=${survey.surveyId}"
+                                actionLink: "/respondent/takeSurvey?surveyId=${survey.surveyId}",
+                                // isNoticed -> isHidden
+                                createdDate: dateTimeFormat.format(new Date())
                         )
 
                         userNotification['SERVICE_ID'] = survey.id
-
                         userNotification.save()
 
                         def isNotSubscriber = profile.noSubscribe ? (profile.noSubscribe == 'true' ? true : false) : false

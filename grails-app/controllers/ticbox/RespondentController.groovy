@@ -148,6 +148,13 @@ class RespondentController {
             surveyService.saveResponse(surveyResponse, params.surveyId, params.respondentId)
             respondentService.saveSurveyReward(params.respondentId, params.surveyId)
 
+            def principal = SecurityUtils.subject.principal
+//            System.out.println("principal, survey.id = " + principal + " - " + survey.id)
+            // UserNotification notification = UserNotification.findByUsernameAndSERVICE_ID(principal, survey.id)
+            UserNotification notification = UserNotification.findByUsernameAndActionLink(principal, "/respondent/takeSurvey?surveyId=" + params.surveyId)
+            notification.markAsIrrelevant()
+            notification.save()
+
             render 'SUCCESS'
         } catch (Exception e) {
             log.error(e.message, e)

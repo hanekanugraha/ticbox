@@ -1,5 +1,7 @@
 package ticbox
 
+import org.apache.shiro.SecurityUtils
+
 class UserNotificationController {
 
     def ticboxUtilsService
@@ -25,5 +27,11 @@ class UserNotificationController {
             redirect uri: '/'
         }
 
+    }
+
+    def updatePeekTime() {
+        String username = SecurityUtils.subject.principal;
+        UserNotification.updatePeekTime(username)
+        render 'SUCCESS'
     }
 }
