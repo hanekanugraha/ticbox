@@ -90,7 +90,9 @@ class AdminController {
                 def params = [
                         'PI_DIVISION001' : params.profileItems_LM_DIVISION001,
                         'PI_ROLE001' : params.profileItems_LM_ROLE001,
-                        'PI_GRADE001' : params.profileItems_LM_GRADE001
+                        'PI_GRADE001' : params.profileItems_LM_GRADE001,
+                        'PI_DIRECTORATE' : params.profileItems_LM_DIRECTORATE,
+                        'PI_BU' : params.profileItems_LM_BU
                 ]
 
                 respondentService.updateRespondentDetail(user, params)

@@ -198,6 +198,7 @@ class RespondentService {
         respondentDetail['username'] = respondent.username
         respondentDetail['email'] = respondent.email
         respondentDetail.noSubscribe = params.noSubscribe ? 'true' : 'false'
+        respondentDetail.notificationPeekTime = new Date()
 
         respondentDetail.save()
 
