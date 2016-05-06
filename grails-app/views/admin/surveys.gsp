@@ -67,7 +67,7 @@
                     <th><g:message code="app.point.label"/></th>
                     <th><g:message code="app.createddate.label"/></th>
                     <th><g:message code="app.enddate.label"/></th>
-                    <th><g:message code="app.price.label"/></th>
+                    %{--<th><g:message code="app.price.label"/></th>--}%
                     <th><g:message code="app.status.label"/></th>
                     <th><g:message code="app.action.label"/></th>
                 </tr>
@@ -87,7 +87,7 @@
                         <td>${survey.point}</td>
                         <td>${survey.createdDate}</td>
                         <td>${survey.completionDateTo}</td>
-                        <td>Rp. ${survey.surveyPrice}</td>
+                        %{--<td>Rp. ${survey.surveyPrice}</td>--}%
                         <td>
                             <g:if test="${survey.enableStatus=='DISABLED'}">
                                 <span style="color:red">${survey.enableStatus}</span>
@@ -118,7 +118,7 @@
                     <th><g:message code="app.createddate.label"/></th>
                     <th><g:message code="app.runningtime.label"/></th>
                     <th><g:message code="app.respondents.label"/></th>
-                    <th><g:message code="app.price.label"/></th>
+                    %{--<th><g:message code="app.price.label"/></th>--}%
                     <th><g:message code="app.action.label"/></th>
                 </tr>
                 </thead>
@@ -138,7 +138,7 @@
                         <td>${survey.createdDate}</td>
                         <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                         <td>${survey.ttlRespondent}</td>
-                        <td>Rp. ${survey.surveyPrice}</td>
+                        %{--<td>Rp. ${survey.surveyPrice}</td>--}%
                         <td class="content-width">
                             <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display</a>
 	                        <a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download</a>
@@ -549,14 +549,20 @@
             //that.text('Loading Data..');
 
             jQuery.getJSON('${request.contextPath}/survey/getSurveyResult', {surveyId: surveyId}, function(result){
+                if(!result.error){
+                    jQuery('#displaySurveyResultModal').modal('show').find('.questionItemsContainer').empty();
 
-                jQuery('#displaySurveyResultModal').modal('show').find('.questionItemsContainer').empty();
+                    setTimeout(function() {
+                        loadResultGraph(result);
 
-                setTimeout(function() {
-                    loadResultGraph(result);
-
+                        that.text(txt);
+                    }, 500);
+                    jQuery('.displayResultLink').text('Display Result');
+                } else {
+                    alert(result.error);
                     that.text(txt);
-                }, 500);
+                }
+
             });
         });
         
@@ -737,6 +743,7 @@
     function loadResultGraph(result){
 
         var questionItemsContainer = jQuery('#displaySurveyResultModal').find('.questionItemsContainer');
+        var renderer = new SurveyChartRenderer();
 
         if (result) {
 
@@ -755,81 +762,154 @@
                 switch(answerDetails.type){
 
                     case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
-                    case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
+                        var labels = [];
+                        var counts = [];
 
-                        var data = [];
-
-                        if(summary){
-                            jQuery.each(summary, function (label, count) {
-                                data.push([label, count]);
+                        if (summary){
+                            jQuery.each(answerDetails.choiceItems, function (i, choiceItem) {
+                                var label = choiceItem.label;
+                                labels.push(label);
+                                //labels.push(label.substring(0, 40));
+                                counts.push(label in summary ? summary[label] : 0);
                             });
 
-                            constructPieChart(target, data, 'Answer Type - Choice');
+                            renderer.forChoice(labels, counts, target, 'Answer Type - Single Choice');
                         }
                         break;
+                    case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
 
+//                        var data = [];
+//
+//                        if(summary){
+//                            jQuery.each(summary, function (label, count) {
+//                                data.push([label, count]);
+//                            });
+//
+//                            constructPieChart(target, data, 'Answer Type - Choice');
+//                        }
+//                        break;
+                        var labels = [];
+                        var counts = [];
+
+                        if (summary){
+                            jQuery.each(answerDetails.choiceItems, function (i, choiceItem) {
+                                var label = choiceItem.label;
+                                if (('' + label) === 'undefined') { // back compat
+                                    label = choiceItem;
+                                }
+                                labels.push(label);
+                                counts.push(label in summary ? summary[label] : 0);
+                            });
+
+                            renderer.forChoice(labels, counts, target, 'Answer Type - Multiple Choice');
+                        }
+                        break;
 
                     case '${Survey.QUESTION_TYPE.FREE_TEXT}' :
 
-                        var line1= [['23-May-08', 578.55], ['20-Jun-08', 566.5], ['25-Jul-08', 480.88], ['22-Aug-08', 509.84],
-                            ['26-Sep-08', 454.13], ['24-Oct-08', 379.75], ['21-Nov-08', 303], ['26-Dec-08', 308.56],
-                            ['23-Jan-09', 299.14], ['20-Feb-09', 346.51], ['20-Mar-09', 325.99], ['24-Apr-09', 386.15]];
-                        var tab = jQuery("<table></table>");
-                        jQuery.each(summary, function (index, val) {
-                            var row = jQuery('<tr><td>' + (index+1)+". " +  val + '</td></tr>');
-                            tab.append(row);
-                        });
-                        target.append(tab);
-//                        constructLineChart(target, line1, 'Answer Type - Free Text');
+//                        var line1= [['23-May-08', 578.55], ['20-Jun-08', 566.5], ['25-Jul-08', 480.88], ['22-Aug-08', 509.84],
+//                            ['26-Sep-08', 454.13], ['24-Oct-08', 379.75], ['21-Nov-08', 303], ['26-Dec-08', 308.56],
+//                            ['23-Jan-09', 299.14], ['20-Feb-09', 346.51], ['20-Mar-09', 325.99], ['24-Apr-09', 386.15]];
+//                        var tab = jQuery("<table></table>");
+//                        jQuery.each(summary, function (index, val) {
+//                            var row = jQuery('<tr><td>' + (index+1)+". " +  val + '</td></tr>');
+//                            tab.append(row);
+//                        });
+//                        target.append(tab);
+////                        constructLineChart(target, line1, 'Answer Type - Free Text');
+//
+//                        break;
+                        if (summary) {
+                            var MAX_NUM_OF_ANSWERS = 10;
+                            // var answers = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ultricies commodo enim, eu euismod tortor porta ac. Sed in leo vulputate, aliquam eros tincidunt, condimentum ante. Nullam sed justo sit amet dolor feugiat commodo sed sed orci. Nullam tincidunt quis nunc eu lobortis. Pellentesque dolor diam, hendrerit quis imperdiet vel, aliquam in nibh. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nec suscipit massa. Phasellus lorem eros, tincidunt ac interdum et, efficitur sed neque. Aenean bibendum mi libero, vitae porta nunc placerat pretium. Integer fermentum, purus quis molestie elementum, orci est dictum diam, nec tristique odio tellus a turpis. Sed non nibh vestibulum, varius sem sed, tristique nisi. Aenean velit ligula, eleifend eget tincidunt ac, sagittis et tellus. Integer ac purus in diam cursus placerat ac a tellus. Sed rutrum est et aliquet tincidunt. In id sapien condimentum, euismod elit vel, congue lectus. Nullam lacus augue, viverra quis ex in, finibus malesuada dolor'.split(".");
+                            var answers = summary;
 
-                        break;
-
-                    case '${Survey.QUESTION_TYPE.SCALE_RATING}' :
-
-                        if(summary) {
-                            var ticks =[];
-                            var series =[];
-                            var dataAll=[];
-                            var len= summary.length;
-                            var last;
-
-                            jQuery.each(summary, function (rowLabel, rowSummary) {
-
-                                var data = [];
-                                last=rowSummary;
-                                ticks.push(rowLabel);
-                                jQuery.first
-                                jQuery.each(rowSummary, function (colLabel, count) {
-                                    data.push(count);
-                                });
-                                dataAll.push(data);
-
+                            var tab = jQuery('<table class="table table-bordered table-striped"></table>');
+                            var tbody = jQuery('<tbody sytle="height: 100px; overflow-y: auto; overflow-x: hidden;"></tbody>');
+                            jQuery.each(answers, function (index, val) {
+                                var row = jQuery('<tr><td>' + (index+1)+". " +  val + '</td></tr>');
+                                tbody.append(row);
                             });
-                            jQuery.each(last, function (colLabel, count) {
-                                series.push({label:colLabel});
-                            });
+                            tab.append(tbody);
+                            target.append(tab);
 
-                            var targetCopy = target.clone();
-
-                            jQuery('.chart-container .col', container).append(targetCopy);
-
-
-                            constructMultipleChart(targetCopy, dataAll, 'Scale Rating',ticks,series);
-
-                            target.remove();
+                            tab.paging({limit: MAX_NUM_OF_ANSWERS});
                         }
                         break;
+                    case '${Survey.QUESTION_TYPE.SCALE_RATING}' :
 
+//                        if(summary) {
+//                            var ticks =[];
+//                            var series =[];
+//                            var dataAll=[];
+//                            var len= summary.length;
+//                            var last;
+//
+//                            jQuery.each(summary, function (rowLabel, rowSummary) {
+//
+//                                var data = [];
+//                                last=rowSummary;
+//                                ticks.push(rowLabel);
+//                                jQuery.first
+//                                jQuery.each(rowSummary, function (colLabel, count) {
+//                                    data.push(count);
+//                                });
+//                                dataAll.push(data);
+//
+//                            });
+//                            jQuery.each(last, function (colLabel, count) {
+//                                series.push({label:colLabel});
+//                            });
+//
+//                            var targetCopy = target.clone();
+//
+//                            jQuery('.chart-container .col', container).append(targetCopy);
+//
+//
+//                            constructMultipleChart(targetCopy, dataAll, 'Scale Rating',ticks,series);
+//
+//                            target.remove();
+//                        }
+//                        break;
+                        if (summary) {
+                            var itemValuesRows = [];
+
+                            jQuery.each(answerDetails.rowLabels, function (i, rowLabel) {
+                                var values = [];
+                                jQuery.each(answerDetails.ratingLabels, function (j, colLabel) {
+                                    values[j] = summary[rowLabel][colLabel] ? summary[rowLabel][colLabel] : 0;
+                                });
+                                itemValuesRows.push({'label': rowLabel, 'values': values});
+                            });
+
+                            renderer.forScale(answerDetails.ratingLabels, itemValuesRows, target, 'Answer Type - Scale');
+
+                        }
+                        break;
                     case '${Survey.QUESTION_TYPE.STAR_RATING}' :
 
-                        var data = [];
+//                        var data = [];
+//
+//                        jQuery.each(summary, function(label, count){
+//                            data.push([label, count]);
+//                        });
+//
+//                        constructPieChart(target, data, 'Answer Type - Star Rating');
+//
+//                        break;
+                        var amounts = [];
+                        if (summary) {
+                            var i = 0;
+                            for (i = 0; i < answerDetails.nofStars; i++) {
+                                amounts[i] = 0;
+                            }
 
-                        jQuery.each(summary, function(label, count){
-                            data.push([label, count]);
-                        });
+                            jQuery.each(summary, function (star, count) {
+                                amounts[star - 1] = count;
+                            });
 
-                        constructPieChart(target, data, 'Answer Type - Star Rating');
-
+                            renderer.forStar(amounts, target, 'Answer Type - Star Rating');
+                        }
                         break;
 
                 }
