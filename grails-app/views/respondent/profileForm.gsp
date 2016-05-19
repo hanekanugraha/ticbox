@@ -120,12 +120,12 @@
                     <g:textField class="form-control" name="username" value="${respondent.username}" disabled="disabled"/>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="email"><g:message code="app.email.label"/> </label>
-                <div class="col-sm-8">
-                    <g:textField class="form-control" name="email" value="${respondent.email}"/>
-                </div>
-            </div>
+            %{--<div class="form-group">--}%
+                %{--<label class="col-sm-3 control-label" for="email"><g:message code="app.email.label"/> </label>--}%
+                %{--<div class="col-sm-8">--}%
+                    %{--<g:textField class="form-control" name="email" value="${respondent.email}"/>--}%
+                %{--</div>--}%
+            %{--</div>--}%
             <div class="form-group">
                 <label class="col-sm-3 control-label"><g:message code="app.password.label"/> </label>
                 <div class="col-sm-8">
@@ -161,6 +161,9 @@
                         <g:elseif test="${profileItem.code == 'PI_PARENTAL_STATUS001'}"><g:message code="app.children.label"/> </g:elseif>
                         <g:elseif test="${profileItem.code == 'PI_PROVINCE001'}"><g:message code="app.region.label"/> </g:elseif>
                         <g:elseif test="${profileItem.code == 'PI_CITY001'}"><g:message code="app.city.label"/> </g:elseif>
+
+                        <g:elseif test="${profileItem.code == 'PI_TEAM001'}">Team </g:elseif>
+                        <g:elseif test="${profileItem.code == 'PI_POSITION001'}">Position </g:elseif>
                         <g:elseif test="${profileItem.unit}">
                             (${profileItem.unit})
                         </g:elseif>

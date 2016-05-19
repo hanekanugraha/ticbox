@@ -92,7 +92,10 @@ class AdminController {
                         'PI_ROLE001' : params.profileItems_LM_ROLE001,
                         'PI_GRADE001' : params.profileItems_LM_GRADE001,
                         'PI_DIRECTORATE' : params.profileItems_LM_DIRECTORATE,
-                        'PI_BU' : params.profileItems_LM_BU
+                        'PI_BU' : params.profileItems_LM_BU,
+
+                        'PI_TEAM001' : params.profileItems_LM_TEAM001,
+                        'PI_POSITION001' : params.profileItems_LM_POSITION001
                 ]
 
                 respondentService.updateRespondentDetail(user, params)

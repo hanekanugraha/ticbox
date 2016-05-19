@@ -37,13 +37,13 @@
                 <g:message code="ticbox.howItWorks.ticboxsurveyor.result.label"/>
             </div>
         </div>
-        <div style="font-size: 14px; text-align: center;">
-            <div class="col-sm-12" style="padding-left: 0">
-                <a style="margin:0 0 5px 0" class="btn btn-green btn-lg" href="${g.createLink(controller: 'auth', action: 'registerSurveyor')}">
-                    <span class="glyphicon glyphicon-user"></span> <g:message code="app.register.surveyor.label"/>
-                </a>
-            </div>
-        </div>
+        %{--<div style="font-size: 14px; text-align: center;">--}%
+            %{--<div class="col-sm-12" style="padding-left: 0">--}%
+                %{--<a style="margin:0 0 5px 0" class="btn btn-green btn-lg" href="${g.createLink(controller: 'auth', action: 'registerSurveyor')}">--}%
+                    %{--<span class="glyphicon glyphicon-user"></span> <g:message code="app.register.surveyor.label"/>--}%
+                %{--</a>--}%
+            %{--</div>--}%
+        %{--</div>--}%
     </div>
 </div>
 
@@ -82,13 +82,13 @@
             </div>
         </div>
     </div>
-    <div style="font-size: 14px; text-align: center;">
-        <div class="col-sm-12" style="padding-left: 0">
-        <a style="margin:0 0 5px 0" class="btn btn-lg btn-blue-trust" href="${g.createLink(controller: 'auth', action: 'registerRespondent')}">
-            <span class="glyphicon glyphicon-user"></span> <g:message code="app.register.surveyor.label"/>
-        </a>
-        </div>
-    </div>
+    %{--<div style="font-size: 14px; text-align: center;">--}%
+        %{--<div class="col-sm-12" style="padding-left: 0">--}%
+        %{--<a style="margin:0 0 5px 0" class="btn btn-lg btn-blue-trust" href="${g.createLink(controller: 'auth', action: 'registerRespondent')}">--}%
+            %{--<span class="glyphicon glyphicon-user"></span> <g:message code="app.register.surveyor.label"/>--}%
+        %{--</a>--}%
+        %{--</div>--}%
+    %{--</div>--}%
 </div>
 
 </body>
