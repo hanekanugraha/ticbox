@@ -18,7 +18,8 @@ class Survey {
         SUMMARY_DETAIL : 'SUMMARY_DETAIL',
         RESPONDENT_FILTER : 'RESPONDENT_FILTER',
         QUESTION_ITEMS : 'QUESTION_ITEMS',
-        LOGO : 'LOGO'
+        LOGO : 'LOGO',
+        IMAGE : 'IMAGE'
     ]
 
     String id

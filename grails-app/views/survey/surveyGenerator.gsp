@@ -39,7 +39,7 @@
             jQuery('#surveyInfoContainer').addClass('out');
 
             jQuery('#uploadLogoBtn').click(function(){
-                jQuery('.qq-upload-button > input')
+                jQuery('#au-imageUploader .qq-upload-button > input')
                         .attr('accept', 'image/*')
                         .trigger('click');
             });
@@ -160,18 +160,31 @@
                 jQuery('#singleQuestionNextModal').modal('hide');
             });
 
-
         });
 
         var logoId = null;
 
         function populateLogoImageResources(id){
-            var logoWrapper = jQuery('.templates .logoWrapper').clone().appendTo(jQuery('#chooseLogoModal .modal-body'));
+            var modal = jQuery('#chooseLogoModal');
+            var logoWrapper = jQuery('.templates .logoWrapper').clone().appendTo(jQuery('.modal-body', modal));
+
+            jQuery('input.logoResourceId', logoWrapper).val(id).prettyCheckable();
+
             jQuery('.logoImg', logoWrapper).attr('src', "${request.contextPath}/survey/viewLogo?resourceId="+id).click(function(){
                 //jQuery('input[name="logoResourceId"]', logoWrapper).prop('checked', true);
-                jQuery('input.logoResourceId', logoWrapper).next('a').trigger('click'); //TODO to accommodate prettyCheckable
+                jQuery('a', logoWrapper).trigger('click'); //TODO to accommodate prettyCheckable
             });
+        }
+
+        function populateImageResources(id){
+            var modal = jQuery('#chooseImageModal');
+            var logoWrapper = jQuery('.templates .logoWrapper').clone().appendTo(jQuery('.modal-body', modal));
+
             jQuery('input.logoResourceId', logoWrapper).val(id).prettyCheckable();
+
+            jQuery('.logoImg', logoWrapper).attr('src', "${request.contextPath}/survey/viewLogo?resourceId="+id).click(function(){
+                jQuery('a', logoWrapper).trigger('click'); //TODO to accommodate prettyCheckable
+            });
         }
 
         function activateAnswerUploadButton(scope) {
@@ -274,17 +287,25 @@
 
                     changeTypeIconClass = 'multiple-choice-icon';
 
-                    activateAnswerUploadButton(jQuery('.choice-item', answerComp));
+                    //activateAnswerUploadButton(jQuery('.choice-item', answerComp));
+
+                    jQuery('.question-action-btn.upload-pic-icon', answerComp).click(function(){
+                        openImageUploader(jQuery(this));
+                    });
 
                     jQuery('.add-item', answerComp).click(function(){
                         var newItem = jQuery('.choice-item:first', '#answerTemplate-choice-multiple').clone().removeAttr('id');
                         jQuery('.item-label', newItem).val('');
 
-                        activateAnswerUploadButton(newItem);
+                        //activateAnswerUploadButton(newItem);
                         newItem.appendTo(jQuery('.choice-items', answerComp));
 
                         jQuery('input.item-check', newItem).click(function(){
                             newItem.remove();
+                        });
+
+                        jQuery('.question-action-btn.upload-pic-icon', newItem).click(function(){
+                            openImageUploader(jQuery(this));
                         });
                     });
 
@@ -370,9 +391,13 @@
             }
             var questionComp = pureQuestionTemplate.clone().removeAttr('id').append(answerComp).appendTo('.surveyItemsContainer');
 
+            jQuery('.question-action-btn.upload-pic-icon', questionComp).click(function(){
+                openImageUploader(jQuery(this));
+            });
+
             // Sanchez
             // An uploader for this button
-            new qq.FileUploader({
+            /*new qq.FileUploader({
                 element: jQuery('.question-level-upload .image-uploader', questionComp)[0],
                 action: '/ticbox/survey/uploadImageToString',
                 onComplete: function(id, fileName, responseJSON) {
@@ -383,7 +408,7 @@
                     var curWidth = parseInt(jQuery('.questionTextContainer', questionComp).css('width'));
                     jQuery('.questionTextContainer').css('width', (curWidth - 150) + 'px');
                 }
-            });
+            });*/
 
             jQuery('.change-question-type-btn', questionComp).addClass(changeTypeIconClass);
 
@@ -758,6 +783,10 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                                 jQuery('input.item-check', choiceItemCont).click(function(){
                                     choiceItemCont.remove();
                                 });
+
+                                jQuery('.question-action-btn.upload-pic-icon', choiceItemCont).click(function(){
+                                    openImageUploader(jQuery(this));
+                                });
                             });
                             jQuery('.choice-items > .choice-item:first', container).remove();
 
@@ -973,6 +1002,51 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
             });
         }
 
+        function openImageUploader(item) {
+
+            var modal = jQuery('#chooseImageModal');
+            var img = jQuery('img.upload-pic', item);
+            var imageId = jQuery('.image-id', item);
+
+            jQuery('#uploadImageBtn', modal).unbind('click').click(function(){
+                jQuery('#au-surveyItemImageUploader .qq-upload-button > input').trigger('click');
+            });
+
+            jQuery('#pickImageBtn', modal).unbind('click').click(function(){
+                logoId = jQuery('input.logoResourceId:checked', modal).val();
+
+                if (logoId) {
+                    img.attr('src', '${request.contextPath}/survey/viewLogo?resourceId=' + logoId);
+                    imageId.val(logoId);
+                    modal.modal('hide');
+                }
+
+            });
+
+            if(jQuery('.modal-body', modal).html().trim() == ''){
+                jQuery.getJSON('${request.contextPath}/survey/getLogoIds', {}, function(data){
+
+                    jQuery('.modal-body', modal).empty();
+                    jQuery.each(data, function(idx, id){
+                        populateImageResources(id);
+                    });
+
+                    if(imageId.val()){
+                        jQuery("input.logoResourceId[value='"+ imageId.val() +"']", modal).next('a').trigger('click');
+                    }
+
+                    modal.modal('show');
+
+                });
+            } else {
+                if(imageId.val()){
+                    jQuery("input.logoResourceId[value='"+ imageId.val() +"']", modal).next('a').trigger('click');
+                }
+
+                modal.modal('show');
+            }
+        }
+
     </script>
 
     <r:require module="fileuploader" />
@@ -1024,40 +1098,6 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
             </div>
             <div class="surveyItemsContainer enableTooltip panel-body" style="padding: 20px 15px 20px 10px">
             </div>
-
-        %{--<div class="line rowLine10">--}%
-            %{--<div class="col col10">--}%
-                %{--<div id="surveyLogo" class="clickable" data-toggle="modal" href="#chooseLogoModal" style="width: 250px; height: 150px; background: #f5f5f5 url('../images/ticbox/Logo_Placeholder.png') no-repeat center">--}%
-                    %{--<img src="${request.contextPath}/survey/viewLogo?resourceId=${survey[Survey.COMPONENTS.LOGO]}" style="width: 250px; height: 150px">--}%
-                %{--</div>--}%
-            %{--</div>--}%
-            %{--<div class="col" style="width: 400px; height: auto; vertical-align: bottom; display: inline-block; color: #97b11a; padding-top: 20px;">--}%
-                %{--<div class="line">--}%
-                    %{--<span style="font-size: 18px; line-height: 40px">--}%
-                        %{--<g:message code="label.survey.survey-generator.survey-title" default="Your survey title here"/>--}%
-                    %{--</span>--}%
-                    %{--<textarea id="surveyTitle" style="width: 350px; display: inline-block; resize: none;"></textarea>--}%
-                %{--</div>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-
-        <div style="display: none">
-            <uploader:uploader id="imageUploader" url="${[controller:'survey', action:'uploadLogo']}" params="${[:]}" sizeLimit="512000"> %{--allowedExtensions="['jpeg', 'png', 'gif']"--}%
-                <uploader:onComplete>
-                    if(responseJSON.resourceId){
-                        populateLogoImageResources(responseJSON.resourceId);
-                    }else{
-                        alert(responseJSON.message);
-                    }
-                </uploader:onComplete>
-            </uploader:uploader>
-        </div>
-
-        %{--<div class="surveyItemsContainer enableTooltip line10">--}%
-
-        %{--</div>--}%
-
-        %{--<div class="line line-centered">--}%
 
     </div>
         <div id="menuQuestionType">
@@ -1128,7 +1168,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                     %{--<div>--}%
                     %{--<button class="btn picture" data-toggle="tooltip" data-placement="top" title="Upload picture"><i class="icon-camera"></i></button>--}%
                     <!-- Sanchez: Real upload button -->
-                    <div class="question-action-btn upload-pic-icon question-level-upload" style="margin: 0 0 0 0">
+                    %{--<div class="question-action-btn upload-pic-icon question-level-upload" style="margin: 0 0 0 0">
                         <span class="media-thumbnail">
                             <img class="pic upload-pic" src="" />
                         </span>
@@ -1138,15 +1178,20 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                                 <p>Please enable JavaScript to use file uploader.</p>
                             </noscript>
                         </div>
-                    </div>
+                    </div>--}%
                     <!-- // end of: Sanchez: Real upload button -->
 
                     %{--<button class="btn remove" data-toggle="tooltip" data-placement="top" title="Remove"><i class="icon-remove"></i></button>--}%
                     %{--</div>--}%
+                    <div class="question-action-btn upload-pic-icon clickable" style="margin: 0 0 0 0">
+                        <span class="media-thumbnail"></span>
+                        <img class="pic upload-pic" src="" style="width: auto; height: 30px; margin-left: 30px;"/>
+                        <input type="hidden" class="image-id" val=""/>
+                    </div>
                 </div>
             </div>
             <div class="surveyItemActions" style="position: absolute; right: 10px;top: 0;">
-                <div class="remove question-action-btn delete-question-icon clickable"><a href="#delete-question-confirmation-modal"/></div>
+                <div class="remove question-action-btn delete-question-icon clickable"></div>
                 <div class="up question-action-btn up-question-icon clickable" style="margin-right: 0px"></div>
                 <div class="down question-action-btn down-question-icon clickable" style="margin-right: 0px"></div>
             </div>
@@ -1210,7 +1255,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                     %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
                     %{--<div style="width: 20px; height: 100%; cursor: pointer; background: transparent url('../images/ticbox/06_Question_UploadIcon_Picture.png') no-repeat center"></div>--}%
                     <!-- Sanchez: Real upload button -->
-                    <div class="question-action-btn upload-pic-icon answer-level-upload" style="margin: 0 0 0 0">
+                    %{--<div class="question-action-btn upload-pic-icon answer-level-upload" style="margin: 0 0 0 0">
                         <span class="media-thumbnail">
                             <img class="pic upload-pic" src="" />
                         </span>
@@ -1220,8 +1265,13 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                                 <p>Please enable JavaScript to use file uploader.</p>
                             </noscript>
                         </div>
-                    </div>
+                    </div>--}%
                     <!-- // end of: Sanchez: Real upload button -->
+                    <div class="question-action-btn upload-pic-icon clickable" style="margin: 0 0 0 0">
+                        <span class="media-thumbnail"></span>
+                        <img class="pic upload-pic" src="" style="width: auto; height: 30px; margin-left: 30px;"/>
+                        <input type="hidden" class="image-id" val=""/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1407,7 +1457,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
     </div>
 
     <div class="logoWrapper col">
-        <div class="col clickable" style="border: 1px solid #cccccc; border-radius: 10px; width: 263px">
+        <div class="col clickable" style="border: 1px solid #cccccc; border-radius: 10px; width: 100px">
             <img class="logoImg" src="" style="width: 100%; border-radius:10px">
         </div>
         <div class="line line-centered" style="margin: 10px auto;">
@@ -1458,6 +1508,27 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
             <div class="modal-footer">
                 <button id="pickLogoBtn" class="btn btn-light-oak"><g:message code="app.pick.label"/></button>
                 <button id="uploadLogoBtn" class="btn btn-green"><g:message code="app.upload.label"/></button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close" default="Close"/></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+%{--Upload image resource modal--}%
+<div id="chooseImageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="chooseImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="chooseImageModalLabel" class="modal-title">
+                    User Image Resources
+                </span>
+            </div>
+            <div class="modal-body" style="overflow: auto">
+            </div>
+            <div class="modal-footer">
+                <button id="pickImageBtn" class="btn btn-light-oak"><g:message code="app.pick.label"/></button>
+                <button id="uploadImageBtn" class="btn btn-green"><g:message code="app.upload.label"/></button>
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close" default="Close"/></button>
             </div>
         </div>
@@ -1586,6 +1657,30 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
             </div>
         </div>
     </div>
+</div>
+
+<div style="display: none">
+    <uploader:uploader id="imageUploader" url="${[controller:'survey', action:'uploadLogo']}" params="${[:]}" sizeLimit="512000"> %{--allowedExtensions="['jpeg', 'png', 'gif']"--}%
+        <uploader:onComplete>
+            if(responseJSON.resourceId){
+                populateLogoImageResources(responseJSON.resourceId);
+            }else{
+                alert(responseJSON.message);
+            }
+        </uploader:onComplete>
+    </uploader:uploader>
+</div>
+
+<div style="display: none">
+    <uploader:uploader id="surveyItemImageUploader" url="${[controller:'survey', action:'uploadLogo']}" params="${[:]}" sizeLimit="512000"> %{--allowedExtensions="['jpeg', 'png', 'gif']"--}%
+        <uploader:onComplete>
+            if(responseJSON.resourceId){
+                populateImageResources(responseJSON.resourceId);
+            }else{
+                alert(responseJSON.message);
+            }
+        </uploader:onComplete>
+    </uploader:uploader>
 </div>
 
 </body>
