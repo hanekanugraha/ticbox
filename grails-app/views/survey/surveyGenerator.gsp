@@ -63,7 +63,7 @@
                 logoId = jQuery('input.logoResourceId:checked').val();
 
                 if (logoId) {
-                    jQuery('#surveyLogo > img').attr('src', '${request.contextPath}/survey/viewLogo?resourceId='+logoId);
+                    jQuery('#surveyLogo > img').attr('src', '${request.contextPath}/survey/viewResources?resType=LOGO&resourceId='+logoId).attr('data-image-id', logoId);
                     jQuery('#chooseLogoModal').modal('hide');
                 }
             });
@@ -101,8 +101,6 @@
 
             });
 
-
-
             jQuery('#surveyTitle').val('${survey.title}');
 
             jQuery.getJSON('${request.contextPath}/survey/getQuestionItems', {}, function(questionItems){
@@ -114,7 +112,7 @@
 //            jQuery('#surveyPreviewModal').on('shown', function(){
             jQuery('#surveyPreviewModal').on('shown.bs.modal', function(){
                 console.log('~ BEGIN #surveyPreviewModal.onShown');
-                var questionItems = buildQuestionItemsMap(true);
+                var questionItems = buildQuestionItemsMap();
                 constructPreview(questionItems);
 
 //            }).on('hidden', function(){
@@ -170,7 +168,7 @@
 
             jQuery('input.logoResourceId', logoWrapper).val(id).prettyCheckable();
 
-            jQuery('.logoImg', logoWrapper).attr('src', "${request.contextPath}/survey/viewLogo?resourceId="+id).click(function(){
+            jQuery('.logoImg', logoWrapper).attr('src', "${request.contextPath}/survey/viewResources?resType=LOGO&resourceId="+id).click(function(){
                 //jQuery('input[name="logoResourceId"]', logoWrapper).prop('checked', true);
                 jQuery('a', logoWrapper).trigger('click'); //TODO to accommodate prettyCheckable
             });
@@ -182,7 +180,7 @@
 
             jQuery('input.logoResourceId', logoWrapper).val(id).prettyCheckable();
 
-            jQuery('.logoImg', logoWrapper).attr('src', "${request.contextPath}/survey/viewLogo?resourceId="+id).click(function(){
+            jQuery('.logoImg', logoWrapper).attr('src', "${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId="+id).click(function(){
                 jQuery('a', logoWrapper).trigger('click'); //TODO to accommodate prettyCheckable
             });
         }
@@ -217,6 +215,10 @@
 
                     changeTypeIconClass = 'single-choice-icon';
 
+                    jQuery('.question-action-btn.upload-pic-icon', answerComp).click(function(){
+                        openImageUploader(jQuery(this));
+                    });
+
                     jQuery('.question-next',answerComp).attr('answerid',answerId);
                     jQuery('.item-seq',answerComp).attr('answerid',answerId);
                     answerId++;
@@ -237,8 +239,6 @@
 
                     });
 
-                    activateAnswerUploadButton(jQuery('.choice-item', answerComp));
-
                     jQuery('.add-item', answerComp).click(function(){
                         var newItem = jQuery('.choice-item:first', '#answerTemplate-choice-single').clone().removeAttr('id');
                         activateAnswerUploadButton(newItem);
@@ -254,7 +254,6 @@
                         jQuery('.question-next',newItem).attr('answerid',answerId);
                         jQuery('.item-seq',newItem).attr('answerid',answerId);
                         answerId++;
-//                        jQuery('.item-seq',newItem).val(answerId++);
 
                         jQuery('.question-next',newItem).click(function(){
                             jQuery('#singleQuestionNextModal .modal-body').empty();
@@ -270,8 +269,10 @@
 
                             jQuery('#singleQuestionNextModal').modal('show');
 
+                        });
 
-
+                        jQuery('.question-action-btn.upload-pic-icon', newItem).click(function(){
+                            openImageUploader(jQuery(this));
                         });
 
                     });
@@ -287,8 +288,6 @@
 
                     changeTypeIconClass = 'multiple-choice-icon';
 
-                    //activateAnswerUploadButton(jQuery('.choice-item', answerComp));
-
                     jQuery('.question-action-btn.upload-pic-icon', answerComp).click(function(){
                         openImageUploader(jQuery(this));
                     });
@@ -297,7 +296,6 @@
                         var newItem = jQuery('.choice-item:first', '#answerTemplate-choice-multiple').clone().removeAttr('id');
                         jQuery('.item-label', newItem).val('');
 
-                        //activateAnswerUploadButton(newItem);
                         newItem.appendTo(jQuery('.choice-items', answerComp));
 
                         jQuery('input.item-check', newItem).click(function(){
@@ -447,14 +445,10 @@
             return questionComp;
         }
 
-        function buildQuestionItemsMap(withImageData){
+        function buildQuestionItemsMap(){
             console.log('~ BEGIN buildQuestionItemsMap');
             var questionItems = [];
             var seq = 0;
-
-            if (typeof withImageData === "undefined") {
-              withImageData = false;
-            }
 
             jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(){
                 console.log('~ BEGIN .surveyItemsContainer > .surveyItemContainer each');
@@ -463,17 +457,30 @@
                 var type = jQuery('.answerTemplate', container).attr('type');
 
                 var questionStr = jQuery('.questionTextContainer > textarea', container).val();
-                // sanchez
-                var questionImgFid = jQuery('input[name="question-image-fid"]', container).val();
-                var questionImg = null;
-                if (withImageData) {
-                  questionImg = jQuery('img', container).attr('src');
-                }
+                var questionImg = jQuery('.question-row input.image-id', container).val();
 
                 var answerDetails = {};
                 answerDetails['type'] = type;
 
                 switch(type){
+                    case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
+                        console.log('~ type is multi choice');
+
+                        answerDetails['choiceItems'] = [];
+                        jQuery('.choice-items > .choice-item', container).each(function(){
+
+                            var item = jQuery(this);
+                            var choiceItem = {};
+                            choiceItem['label'] = jQuery('input.item-label', item).val();
+                            choiceItem['image'] = jQuery('input.image-id', item).val();
+                            answerDetails['choiceItems'].push(choiceItem);
+                        });
+
+                        answerDetails['choiceType'] = jQuery('select.choice-type', container).val();
+
+                        console.log('@buildQuestionItemsMap: CHOICE_MULTIPLE = ' + JSON.stringify(answerDetails, null, "    "));
+
+                        break;
 
                     case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
                         console.log('~ type is single choice');
@@ -486,32 +493,9 @@
                             choiceItem['label'] = jQuery('input.item-label', item).val();
                             choiceItem['rule'] = 'selected';
                             choiceItem['nextQuestion'] = jQuery('input.item-seq', item).val();
-                            // sanchez
-                            choiceItem['imgFid'] = jQuery('input[name="answer-image-fid"]', item).val();
-                            if (withImageData) {
-                              choiceItem['img'] = jQuery('img', item).attr('src');
-                            }
-                            answerDetails['choiceItems'].push(choiceItem);
-                        });
-
-                        answerDetails['choiceType'] = jQuery('select.choice-type', container).val();
-
-                        break;
-
-                    case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
-                        console.log('~ type is multi choice');
-
-                        answerDetails['choiceItems'] = [];
-                        jQuery('.choice-items > .choice-item', container).each(function(){
-
-                            var item = jQuery(this);
-                            var choiceItem = {};
                             choiceItem['label'] = jQuery('input.item-label', item).val();
-                            // sanchez
-                            choiceItem['imgFid'] = jQuery('input[name="answer-image-fid"]', item).val();
-                            if (withImageData) {
-                              choiceItem['img'] = jQuery('img', item).attr('src');
-                            }
+                            choiceItem['image'] = jQuery('input.image-id', item).val();
+
                             answerDetails['choiceItems'].push(choiceItem);
                         });
 
@@ -550,19 +534,15 @@
 
                 }
 
-console.log('@buildQuestionItemsMap: questionImgFid = ' + questionImgFid);
-
                 var questionItem = {
-                                   seq : ++seq,
-                                   questionStr : questionStr,
-                                   answerDetails : answerDetails,
-                                   imgFid: questionImgFid
-                               };
-                if (questionImgFid != null) {
-                  questionItem['img'] = questionImg;
-                }
+                   seq : ++seq,
+                   questionStr : questionStr,
+                   image : questionImg,
+                   answerDetails : answerDetails
+                };
 
 console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionItem, null, "    "));
+
                 questionItems.push(questionItem);
 
             });
@@ -581,7 +561,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
         function submitSurvey(questionItems){
             show_loader();
 
-            jQuery.post('${request.contextPath}/survey/submitSurvey', {questionItems: JSON.stringify(questionItems), surveyTitle: jQuery('#surveyTitle').val(), logoResourceId:logoId}, function(data){
+            jQuery.post('${request.contextPath}/survey/submitSurvey', {questionItems: JSON.stringify(questionItems), surveyTitle: jQuery('#surveyTitle').val(), logoResourceId:jQuery('#surveyLogo > img').attr('data-image-id')}, function(data){
 
                 if('SUCCESS' == data){
                     flashMessage('<g:message code="message.survey.survey-generator.saved"/>', true);
@@ -691,7 +671,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
 
             var questionItems = buildQuestionItemsMap();
 
-                jQuery.post('${request.contextPath}/survey/submitAndFinalizeSurvey', {questionItems: JSON.stringify(questionItems), surveyTitle: jQuery('#surveyTitle').val(), logoResourceId:logoId}, function(data){
+                jQuery.post('${request.contextPath}/survey/submitAndFinalizeSurvey', {questionItems: JSON.stringify(questionItems), surveyTitle: jQuery('#surveyTitle').val(), logoResourceId:jQuery('#surveyLogo > img').attr('data-image-id')}, function(data){
 
 
                     if('SUCCESS' == data){
@@ -712,6 +692,8 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
 
         function loadSurvey(questionItems){
 
+            console.log('@buildQuestionItemsMap: questionItems = ' + JSON.stringify(questionItems, null, "    "));
+
             if (questionItems) {
 
                 jQuery.each(questionItems, function(idx, item){
@@ -719,7 +701,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                     var answerDetails = item.answerDetails;
                     var container = null;
 
-                    switch(answerDetails.type){
+                    switch(answerDetails.type) {
 
                         case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
 
@@ -731,8 +713,12 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                             jQuery.each(choiceItems, function(idx, choiceItem){
                                 var choiceItemCont = jQuery('.choice-items > .choice-item:first', container).clone();
                                 jQuery('.choice-items', container).append(choiceItemCont);
+
                                 jQuery('.item-label', choiceItemCont).val(choiceItem.label);
                                 jQuery('.item-seq', choiceItemCont).val(choiceItem.nextQuestion);
+
+                                jQuery('input.image-id', choiceItemCont).val(choiceItem.image);
+                                jQuery('img.upload-pic', choiceItemCont).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + choiceItem.image);
 
                                 jQuery('.question-next',choiceItemCont).attr('answerid',answerId);
                                 jQuery('.item-seq',choiceItemCont).attr('answerid',answerId);
@@ -741,6 +727,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                                 jQuery('input.item-check', choiceItemCont).click(function(){
                                     choiceItemCont.remove();
                                 });
+
                                 jQuery('.question-next',choiceItemCont).click(function(){
 
                                     jQuery('#singleQuestionNextModal .modal-body').empty();
@@ -753,12 +740,13 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                                         jQuery('#singleQuestionNextModal .modal-body').attr('answerid',jQuery('.item-seq',choiceItemCont).attr('answerid'));
 
                                     });
-//                                    jQuery('input.nextQuestionId', nextQuestionWrapper).val(id).prettyCheckable();
-
-
 
 
                                     jQuery('#singleQuestionNextModal').modal('show');
+                                });
+
+                                jQuery('.question-action-btn.upload-pic-icon', choiceItemCont).click(function(){
+                                    openImageUploader(jQuery(this));
                                 });
 
                             });
@@ -778,7 +766,10 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                             jQuery.each(choiceItems, function(idx, choiceItem){
                                 var choiceItemCont = jQuery('.choice-items > .choice-item:first', container).clone();
                                 jQuery('.choice-items', container).append(choiceItemCont);
-                                jQuery('.item-label', choiceItemCont).val(choiceItem);
+
+                                jQuery('.item-label', choiceItemCont).val(choiceItem.label);
+                                jQuery('input.image-id', choiceItemCont).val(choiceItem.image);
+                                jQuery('img.upload-pic', choiceItemCont).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + choiceItem.image);
 
                                 jQuery('input.item-check', choiceItemCont).click(function(){
                                     choiceItemCont.remove();
@@ -844,6 +835,8 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                     }
 
                     jQuery('.questionTextContainer textarea', container).val(item.questionStr);
+                    jQuery('.question-row input.image-id', container).val(item.image);
+                    jQuery('.question-row img.upload-pic', container).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + item.image);
 
                 });
 
@@ -1004,6 +997,32 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
 
         function openImageUploader(item) {
 
+            galleryImageUploader(item);
+            //or
+            //tempContImageUploader(item);
+        }
+
+        function tempContImageUploader(item) {
+            jQuery('#au-surveyItemImageUploader .qq-upload-button > input').trigger('click').change(function(){show_loader();});
+
+            jQuery('#confirmImageBtn').unbind('click').click(function(){
+                var modal = jQuery('#previewImageModal');
+                var img = jQuery('img.upload-pic', item);
+                var imageId = jQuery('.image-id', item);
+
+                logoId = jQuery('#uploadedImageResId').val();
+
+                if (logoId) {
+                    img.attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + logoId);
+                    imageId.val(logoId);
+                    modal.modal('hide');
+                }
+
+            });
+        }
+
+        function galleryImageUploader(item) {
+
             var modal = jQuery('#chooseImageModal');
             var img = jQuery('img.upload-pic', item);
             var imageId = jQuery('.image-id', item);
@@ -1016,7 +1035,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                 logoId = jQuery('input.logoResourceId:checked', modal).val();
 
                 if (logoId) {
-                    img.attr('src', '${request.contextPath}/survey/viewLogo?resourceId=' + logoId);
+                    img.attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + logoId);
                     imageId.val(logoId);
                     modal.modal('hide');
                 }
@@ -1024,7 +1043,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
             });
 
             if(jQuery('.modal-body', modal).html().trim() == ''){
-                jQuery.getJSON('${request.contextPath}/survey/getLogoIds', {}, function(data){
+                jQuery.getJSON('${request.contextPath}/survey/getResourceIds?resType=IMAGE', {}, function(data){
 
                     jQuery('.modal-body', modal).empty();
                     jQuery.each(data, function(idx, id){
@@ -1084,7 +1103,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                     <div id="surveyLogo" class="pull-left clickable survey-logo" data-toggle="modal" href="#chooseLogoModal">
                         <img class="media-object img-responsive"
                              style="background: #f5f5f5 url('../images/ticbox/Logo_Placeholder.png') no-repeat center center; min-height: 148px; min-width: 148px;"
-                             src="${request.contextPath}/survey/viewLogo?resourceId=${survey[Survey.COMPONENTS.LOGO]}" >
+                             src="${request.contextPath}/survey/viewLogo?resourceId=${survey[Survey.COMPONENTS.LOGO]}" data-image-id="${survey[Survey.COMPONENTS.LOGO]}">
                     </div>
                     <div class="media-body">
                         <span style="font-size: 18px;">
@@ -1150,8 +1169,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
 <div class="templates" style="display: none;">
 
     <div id="questionTemplate" class="surveyItemContainer">
-    <!-- sanchez -->
-        <div class="row" style="position: relative">
+        <div class="row question-row" style="position: relative">
             <div class="seqNumberContainer questionNumber col-xs-1"></div>
             <div class="col-xs-11">
                 <div class="questionTextContainer">
@@ -1167,19 +1185,6 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                     %{--</div>--}%
                     %{--<div>--}%
                     %{--<button class="btn picture" data-toggle="tooltip" data-placement="top" title="Upload picture"><i class="icon-camera"></i></button>--}%
-                    <!-- Sanchez: Real upload button -->
-                    %{--<div class="question-action-btn upload-pic-icon question-level-upload" style="margin: 0 0 0 0">
-                        <span class="media-thumbnail">
-                            <img class="pic upload-pic" src="" />
-                        </span>
-                        <input type="hidden" name="question-image-fid" class="img-fid" value="" />
-                        <div class="image-uploader">
-                            <noscript>
-                                <p>Please enable JavaScript to use file uploader.</p>
-                            </noscript>
-                        </div>
-                    </div>--}%
-                    <!-- // end of: Sanchez: Real upload button -->
 
                     %{--<button class="btn remove" data-toggle="tooltip" data-placement="top" title="Remove"><i class="icon-remove"></i></button>--}%
                     %{--</div>--}%
@@ -1214,21 +1219,11 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                     <div class="col" style="float: left; padding: 1px 0 0 5px">
                         %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
                         %{--<div style="width: 20px; height: 100%; cursor: pointer; background: transparent url('../images/ticbox/06_Question_UploadIcon_Picture.png') no-repeat center"></div>--}%
-                        <!-- Sanchez: Real upload button -->
-                        <div class="question-action-btn upload-pic-icon answer-level-upload" style="margin: 0 0 0 0">
-                            <span class="media-thumbnail">
-                                <img class="pic upload-pic" src="" />
-                            </span>
-                            <input type="hidden" name="answer-image-fid" class="img-fid" value="" />
-                            <div class="image-uploader">
-                                <noscript>
-                                    <p>Please enable JavaScript to use file uploader.</p>
-                                </noscript>
-                            </div>
+                        <div class="question-action-btn upload-pic-icon clickable" style="margin: 0 0 0 0">
+                            <span class="media-thumbnail"></span>
+                            <img class="pic upload-pic" src="" style="width: auto; height: 30px; margin-left: 30px;"/>
+                            <input type="hidden" class="image-id" val=""/>
                         </div>
-                        <!-- // end of: Sanchez: Real upload button -->
-
-
                     </div>
             </div>
         </div>
@@ -1254,19 +1249,6 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                 <div class="col" style="float: left; padding: 1px 0 0 5px">
                     %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
                     %{--<div style="width: 20px; height: 100%; cursor: pointer; background: transparent url('../images/ticbox/06_Question_UploadIcon_Picture.png') no-repeat center"></div>--}%
-                    <!-- Sanchez: Real upload button -->
-                    %{--<div class="question-action-btn upload-pic-icon answer-level-upload" style="margin: 0 0 0 0">
-                        <span class="media-thumbnail">
-                            <img class="pic upload-pic" src="" />
-                        </span>
-                        <input type="hidden" name="answer-image-fid" class="img-fid" value="" />
-                        <div class="image-uploader">
-                            <noscript>
-                                <p>Please enable JavaScript to use file uploader.</p>
-                            </noscript>
-                        </div>
-                    </div>--}%
-                    <!-- // end of: Sanchez: Real upload button -->
                     <div class="question-action-btn upload-pic-icon clickable" style="margin: 0 0 0 0">
                         <span class="media-thumbnail"></span>
                         <img class="pic upload-pic" src="" style="width: auto; height: 30px; margin-left: 30px;"/>
@@ -1535,6 +1517,30 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
     </div>
 </div>
 
+<div id="previewImageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="previewImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="previewImageModalLabel" class="modal-title">
+                    Image Uploaded
+                </span>
+            </div>
+            <div class="modal-body" style="overflow: auto">
+                <div class="logoWrapper col">
+                    <div class="col clickable" style="border: 1px solid #cccccc; border-radius: 10px; width: 100%">
+                        <img class="logoImg" src="" style="width: 100%; border-radius:10px">
+                        <input type="hidden" id="uploadedImageResId"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="confirmImageBtn" class="btn btn-light-oak">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Single Question Next Modal -->
 <div id="singleQuestionNextModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby=singleQuestionNextModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -1660,7 +1666,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
 </div>
 
 <div style="display: none">
-    <uploader:uploader id="imageUploader" url="${[controller:'survey', action:'uploadLogo']}" params="${[:]}" sizeLimit="512000"> %{--allowedExtensions="['jpeg', 'png', 'gif']"--}%
+    <uploader:uploader id="imageUploader" url="${[controller:'survey', action:'uploadLogo']}" params="${[resType:'LOGO']}" sizeLimit="512000"> %{--allowedExtensions="['jpeg', 'png', 'gif']"--}%
         <uploader:onComplete>
             if(responseJSON.resourceId){
                 populateLogoImageResources(responseJSON.resourceId);
@@ -1672,13 +1678,24 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
 </div>
 
 <div style="display: none">
-    <uploader:uploader id="surveyItemImageUploader" url="${[controller:'survey', action:'uploadLogo']}" params="${[:]}" sizeLimit="512000"> %{--allowedExtensions="['jpeg', 'png', 'gif']"--}%
+    <uploader:uploader id="surveyItemImageUploader" url="${[controller:'survey', action:'uploadLogo']}" params="${[resType:'IMAGE']}" sizeLimit="512000"> %{--allowedExtensions="['jpeg', 'png', 'gif']"--}%
         <uploader:onComplete>
             if(responseJSON.resourceId){
+                //For gallery
                 populateImageResources(responseJSON.resourceId);
+
+                //For temp container
+                //var modal = jQuery('#previewImageModal');
+                //jQuery('#uploadedImageResId').val(responseJSON.resourceId);
+                //jQuery('img.logoImg', modal).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId='+responseJSON.resourceId)
+                //modal.modal('show');
+
+                jQuery('#au-surveyItemImageUploader .qq-upload-button > input').val('');
             }else{
                 alert(responseJSON.message);
             }
+
+            hide_loader();
         </uploader:onComplete>
     </uploader:uploader>
 </div>

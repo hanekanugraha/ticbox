@@ -149,9 +149,9 @@ class SurveyController {
     }
 
     def surveyGenerator(){
-        System.out.println("surveyGenerator");
-        System.out.println();
-        Survey survey = surveyService.getCurrentEditedSurvey()
+
+        def surveyId = surveyService.getCurrentEditedSurvey().surveyId
+        Survey survey = surveyService.getSurvey(surveyId)
 
         if(!survey){
             redirect action: 'index'
@@ -178,7 +178,6 @@ class SurveyController {
 
 
     def submitAndFinalizeSurvey(){
-        System.out.println("submitAndFinalizeSurvey");
 
         try {
 //            params.surveyTitle = params.surveyTitle?.encodeAsHTML().replace('\n', '<br/>')
@@ -261,7 +260,6 @@ class SurveyController {
     }
 
     def submitSurvey(){
-        System.out.println("submitSurvey");
 
         try {
             def count=surveyService.getCountFreeSurvey()
@@ -327,6 +325,14 @@ class SurveyController {
         render ids as JSON
     }
 
+    def getResourceIds(){
+        def ids = UserResource.findAllByUserAndKind(surveyorService.getCurrentSurveyor()?.userAccount, params.resType)?.collect {
+            it.id.toStringMongod()
+        }
+
+        render ids as JSON
+    }
+
     def uploadLogo(){
 
         def rend = [:]
@@ -339,8 +345,10 @@ class SurveyController {
                 inputStream = request.inputStream
             }
 
-            def userResource = new UserResource(user: surveyorService.getCurrentSurveyor()?.userAccount, kind: Survey.COMPONENTS.LOGO).save()
-            userResource[Survey.COMPONENTS.LOGO] = Base64.encode(inputStream.bytes)
+            def resType = params.resType
+
+            def userResource = new UserResource(user: surveyorService.getCurrentSurveyor()?.userAccount, kind: resType).save()
+            userResource[resType] = Base64.encode(inputStream.bytes)
             userResource.save()
 
             if (userResource.hasErrors()) {
@@ -376,6 +384,19 @@ class SurveyController {
 
         if (userResource) {
             def imageByte = Base64.decode(userResource[Survey.COMPONENTS.LOGO])
+            response.outputStream << imageByte
+        }
+    }
+
+    def viewResources() {
+        def userResource
+
+        if (params.resourceId) {
+            userResource = UserResource.findById(new ObjectId(params.resourceId))
+        }
+
+        if (userResource) {
+            def imageByte = Base64.decode(userResource[params.resType])
             response.outputStream << imageByte
         }
     }

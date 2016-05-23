@@ -117,6 +117,7 @@ class SurveyService {
 
             survey[Survey.COMPONENTS.QUESTION_ITEMS] = dbObject
             survey.title = params.surveyTitle?.encodeAsHTML().replace('\n', '<br/>')
+            survey[Survey.COMPONENTS.LOGO] = params.logoResourceId
 			def date = new Date()
 			def sdf = new SimpleDateFormat("MM/dd/yyyy")
 			if(!survey.createdDate) {
