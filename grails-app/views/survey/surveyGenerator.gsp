@@ -1667,7 +1667,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
         <uploader:onComplete>
             if(responseJSON.resourceId){
                 //For gallery
-                populateImageResources(responseJSON.resourceId);
+                //populateImageResources(responseJSON.resourceId);
 
                 //For temp container
                 var modal = jQuery('#previewImageModal');
