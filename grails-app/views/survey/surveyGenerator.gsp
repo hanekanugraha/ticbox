@@ -185,20 +185,6 @@
             });
         }
 
-        function activateAnswerUploadButton(scope) {
-            // Sanchez
-            // An uploader for this button
-            new qq.FileUploader({
-                element: jQuery('.answer-level-upload .image-uploader', scope)[0],
-                action: '/ticbox/survey/uploadImageToString',
-                onComplete: function(id, fileName, responseJSON) {
-                    jQuery('.answer-level-upload img.pic', scope).attr('src', 'data:image;base64,' + responseJSON.img);
-                    jQuery('.answer-level-upload input[type="hidden"]', scope).val(responseJSON.fid);
-                    jQuery('.qq-upload-list', scope).empty()
-                }
-            });
-        }
-
         var pureQuestionTemplate = null;
         function constructQuestionItem(type, subtype){
             var answerComp = null;
@@ -241,7 +227,6 @@
 
                     jQuery('.add-item', answerComp).click(function(){
                         var newItem = jQuery('.choice-item:first', '#answerTemplate-choice-single').clone().removeAttr('id');
-                        activateAnswerUploadButton(newItem);
 
                         jQuery('.item-label', newItem).val('');
 
@@ -997,9 +982,9 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
 
         function openImageUploader(item) {
 
-            galleryImageUploader(item);
+            //galleryImageUploader(item);
             //or
-            //tempContImageUploader(item);
+            tempContImageUploader(item);
         }
 
         function tempContImageUploader(item) {
@@ -1685,10 +1670,10 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                 populateImageResources(responseJSON.resourceId);
 
                 //For temp container
-                //var modal = jQuery('#previewImageModal');
-                //jQuery('#uploadedImageResId').val(responseJSON.resourceId);
-                //jQuery('img.logoImg', modal).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId='+responseJSON.resourceId)
-                //modal.modal('show');
+                var modal = jQuery('#previewImageModal');
+                jQuery('#uploadedImageResId').val(responseJSON.resourceId);
+                jQuery('img.logoImg', modal).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId='+responseJSON.resourceId)
+                modal.modal('show');
 
                 jQuery('#au-surveyItemImageUploader .qq-upload-button > input').val('');
             }else{
