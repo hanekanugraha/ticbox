@@ -23,17 +23,17 @@ environments {
                 databaseName = "ticboxdb-wl"
                 */
 
-//                host = "ds045464.mongolab.com"
-//                port = 45464
-//                username = "firman"
-//                password = "redchair45"
-//                databaseName = "ticboxdb-demo"
-
-                host = "ds025742.mlab.com"
-                port = 25742
+                host = "ds045464.mongolab.com"
+                port = 45464
                 username = "firman"
                 password = "redchair45"
-                databaseName = "ticbox-tbl"
+                databaseName = "ticboxdb-demo"
+
+//                host = "ds025742.mlab.com"
+//                port = 25742
+//                username = "firman"
+//                password = "redchair45"
+//                databaseName = "ticbox-tbl"
             }
         }
     }
@@ -41,21 +41,21 @@ environments {
     }
     production {
         grails {
-//            mongo {
-//                host = "ds045464.mongolab.com"
-//                port = 45464
-//                username = "firman"
-//                password = "redchair45"
-//                databaseName = "ticboxdb-demo"
-//            }
-
             mongo {
-                host = "ds025742.mlab.com"
-                port = 25742
+                host = "ds045464.mongolab.com"
+                port = 45464
                 username = "firman"
                 password = "redchair45"
-                databaseName = "ticbox-tbl"
+                databaseName = "ticboxdb-demo"
             }
+
+//            mongo {
+//                host = "ds025742.mlab.com"
+//                port = 25742
+//                username = "firman"
+//                password = "redchair45"
+//                databaseName = "ticbox-tbl"
+//            }
         }
     }
 }
