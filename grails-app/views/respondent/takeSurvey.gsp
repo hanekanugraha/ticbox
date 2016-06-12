@@ -369,8 +369,14 @@
                                 // Back compat
                                 choiceItemCont.find('.item-check').val(choiceItem);
                             }
-                            if (choiceItem.img != 'undefined') {
-                              choiceItemCont.find('img').attr('src', 'data:image;base64,' + choiceItem.img);
+
+//                            if (choiceItem.image != null && choiceItem.image != '') {
+                            if (typeof choiceItem.image != 'undefined' && choiceItem.image != '') {
+                                //choiceItemCont.find('img').attr('src', 'data:image;base64,' + choiceItem.image);
+                                jQuery('img.upload-pic', choiceItemCont).attr('src', '${request.contextPath}/respondent/viewResources?resType=IMAGE&resourceId=' + choiceItem.image);
+                            }
+                            else {
+                                choiceItemCont.find('.choice-item-pic').css({ display: "none"});
                             }
 
                             choiceItemCont.find('.item-check').attr('nextQuestion',choiceItem.nextQuestion);
@@ -487,11 +493,33 @@
         <div class="panel panel-default">
             <div class="panel-heading" style="padding: 15px">
                 <div class="media">
-                    <div id="surveyLogo" class="pull-left survey-logo" style="background: #4f4f4f url('../images/skin/survey-default-icon.png') no-repeat center center; background-size: 70% 70%;">
-                        %{--<img class="img-circle img-responsive" src="${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}" style="width: 175px; height: 175px; background: url('../images/ticbox/Logo_Placeholder.png') no-repeat scroll center center #F5F5F5">--}%
-                        %{--<img class="media-object img-responsive" src="${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}" alt="" style="width: 100px; height: 100px; background: #4f4f4f url('../images/skin/survey-default-icon.png') no-repeat center; background-size: 70% 70%;">--}%
-                        <img class="media-object img-responsive" src="${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}" alt="">
-                    </div>
+                        %{--<div id="surveyLogo" class="pull-left survey-logo" style="background: #4f4f4f url('../images/skin/survey-default-icon.png') no-repeat center center; background-size: 70% 70%;">--}%
+                            %{--<img class="img-circle img-responsive" src="${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}" style="width: 175px; height: 175px; background: url('../images/ticbox/Logo_Placeholder.png') no-repeat scroll center center #F5F5F5">--}%
+                            %{--<img class="media-object img-responsive" src="${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}" alt="" style="width: 100px; height: 100px; background: #4f4f4f url('../images/skin/survey-default-icon.png') no-repeat center; background-size: 70% 70%;">--}%
+                            %{--<img class="media-object img-responsive" src="${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}" alt="">--}%
+                        %{--</div>--}%
+
+                    <g:if test="${survey[Survey.COMPONENTS.LOGO]}">
+                        %{--<img class="media-object img-responsive"--}%
+                             %{--style="background: #f5f5f5; min-height: 148px; min-width: 148px;"--}%
+                             %{--src="${request.contextPath}/survey/viewLogo?resourceId=${survey[Survey.COMPONENTS.LOGO]}" data-image-id="${survey[Survey.COMPONENTS.LOGO]}">--}%
+                        <div id="surveyLogo" class="pull-left survey-logo" style="">
+                            %{--<img class="img-circle img-responsive" src="${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}" style="width: 175px; height: 175px; background: url('../images/ticbox/Logo_Placeholder.png') no-repeat scroll center center #F5F5F5">--}%
+                            %{--<img class="media-object img-responsive" src="${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}" alt="" style="width: 100px; height: 100px; background: #4f4f4f url('../images/skin/survey-default-icon.png') no-repeat center; background-size: 70% 70%;">--}%
+                            <img class="media-object img-responsive" src="${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}" alt="" style="border: 1px solid rgba(0, 0, 0, 0.1)">
+                        </div>
+                    </g:if>
+                    <g:else>
+                        %{--<img class="media-object img-responsive"--}%
+                             %{--style="background: #f5f5f5 url('../images/ticbox/Logo_Placeholder.png') no-repeat center center; min-height: 148px; min-width: 148px;"--}%
+                             %{--src="${request.contextPath}/survey/viewLogo?resourceId=${survey[Survey.COMPONENTS.LOGO]}" data-image-id="${survey[Survey.COMPONENTS.LOGO]}">--}%
+                        <div id="surveyLogo" class="pull-left survey-logo" style="background: #4f4f4f url('../images/skin/survey-default-icon.png') no-repeat center center; background-size: 70% 70%;">
+                            %{--<img class="img-circle img-responsive" src="${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}" style="width: 175px; height: 175px; background: url('../images/ticbox/Logo_Placeholder.png') no-repeat scroll center center #F5F5F5">--}%
+                            %{--<img class="media-object img-responsive" src="${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}" alt="" style="width: 100px; height: 100px; background: #4f4f4f url('../images/skin/survey-default-icon.png') no-repeat center; background-size: 70% 70%;">--}%
+                            %{--<img class="media-object img-responsive" src="${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}" alt="">--}%
+                        </div>
+                    </g:else>
+
                     <div class="media-body">
                         <h4 class="media-heading">
                             ${survey.name}
@@ -545,16 +573,23 @@
             <div id="answerTemplate-choice-single" class="row answerTemplate" type="${Survey.QUESTION_TYPE.CHOICE_SINGLE}">
                 <div class="choice-items col-xs-11 col-xs-offset-1">
                     <div class="choice-item row">
-                        %{--<div class="col col-xs-1" style="text-align: right">--}%
-                        <div class="col col-xs-12">
+                        <div class="col col-xs-1" style="width: 3.2%">
+                        %{--<div class="col col-xs-12">--}%
                             <input class="item-check">
-                        %{--</div>--}%
-                        %{--<div class="col col-xs-11" style="padding-left: 0">--}%
-                            <label class="item-label" style="font-weight: normal; margin-bottom: 0">
-                            </label>
-                            %{--<span class="media-thumbnail">--}%
-                                %{--<img class="pic upload-pic" src="" />--}%
-                            %{--</span>--}%
+                        </div>
+                        <div class="col col-xs-11" style="">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <label class="item-label" style="font-weight: normal; margin-bottom: 0; margin-left: 0; width: 100%"></label>
+                                </div>
+                            </div>
+                            <div class="row choice-item-pic">
+                                <div class="col-xs-12">
+                                    <span class="media-thumbnail">
+                                        <img class="pic upload-pic" src="" style="width: auto; height: 90px; margin-left: 0;"/>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -562,16 +597,23 @@
             <div id="answerTemplate-choice-multiple" class="row answerTemplate" type="${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}">
                 <div class="choice-items col-xs-11 col-xs-offset-1">
                     <div class="choice-item row">
-                        %{--<div class="col col-xs-1" style="text-align: right">--}%
-                        <div class="col col-xs-12">
+                        <div class="col col-xs-1" style="width: 3.2%">
+                        %{--<div class="col col-xs-12">--}%
                             <input class="item-check">
-                            %{--</div>--}%
-                            %{--<div class="col col-xs-11" style="padding-left: 0">--}%
-                            <label class="item-label" style="font-weight: normal; margin-bottom: 0">
-                            </label>
-                            %{--<span class="media-thumbnail">--}%
-                                %{--<img class="pic upload-pic" src="" />--}%
-                            %{--</span>--}%
+                        </div>
+                        <div class="col col-xs-11" style="">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <label class="item-label" style="font-weight: normal; margin-bottom: 0; margin-left: 0; width: 100%"></label>
+                                </div>
+                            </div>
+                            <div class="row choice-item-pic">
+                                <div class="col-xs-12">
+                                    <span class="media-thumbnail">
+                                        <img class="pic upload-pic" src="" style="width: auto; height: 90px; margin-left: 0;"/>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
