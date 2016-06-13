@@ -311,5 +311,17 @@ class RespondentController {
 
     }
 
+    def viewResources() {
+        def userResource
+
+        if (params.resourceId) {
+            userResource = UserResource.findById(new ObjectId(params.resourceId))
+        }
+
+        if (userResource) {
+            def imageByte = Base64.decode(userResource[params.resType])
+            response.outputStream << imageByte
+        }
+    }
 
 }
