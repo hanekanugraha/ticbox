@@ -152,8 +152,12 @@ class RespondentController {
 //            System.out.println("principal, survey.id = " + principal + " - " + survey.id)
             // UserNotification notification = UserNotification.findByUsernameAndSERVICE_ID(principal, survey.id)
             UserNotification notification = UserNotification.findByUsernameAndActionLink(principal, "/respondent/takeSurvey?surveyId=" + params.surveyId)
-            notification.markAsIrrelevant()
-            notification.save()
+
+            // add validation if notification does not exist
+            if(notification!=null) {
+                notification.markAsIrrelevant()
+                notification.save()
+            }
 
             render 'SUCCESS'
         } catch (Exception e) {
