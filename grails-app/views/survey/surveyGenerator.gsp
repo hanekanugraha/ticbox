@@ -1001,6 +1001,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                     img.attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + logoId);
                     imageId.val(logoId);
                     modal.modal('hide');
+                    hide_loader();
                 }
 
             });
