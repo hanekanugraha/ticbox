@@ -136,7 +136,9 @@ class RespondentService {
 
         def respondentDetail = RespondentDetail.findByRespondentId(respondent.id) ?: new RespondentDetail(respondentId: respondent.id)
 
-        def profileItems = [:]
+        // Load from the existing one
+        def profileItems = respondentDetail.profileItems
+
         def items = ProfileItem.all
         for (Map.Entry<String, String> entry : params.entrySet()) {
             for (ProfileItem item : items) {
