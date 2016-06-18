@@ -1001,8 +1001,8 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                     img.attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + logoId);
                     imageId.val(logoId);
                     modal.modal('hide');
+                    hide_loader();
                 }
-
             });
         }
 
@@ -1086,9 +1086,16 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
             <div class="panel-heading" style="padding: 20px 15px">
                 <div class="media">
                     <div id="surveyLogo" class="pull-left clickable survey-logo" data-toggle="modal" href="#chooseLogoModal">
-                        <img class="media-object img-responsive"
-                             style="background: #f5f5f5 url('../images/ticbox/Logo_Placeholder.png') no-repeat center center; min-height: 148px; min-width: 148px;"
+                        <g:if test="${survey[Survey.COMPONENTS.LOGO]}">
+                            <img class="media-object img-responsive"
+                             style="background: #f5f5f5; min-height: 148px; min-width: 148px;"
                              src="${request.contextPath}/survey/viewLogo?resourceId=${survey[Survey.COMPONENTS.LOGO]}" data-image-id="${survey[Survey.COMPONENTS.LOGO]}">
+                        </g:if>
+                        <g:else>
+                            <img class="media-object img-responsive"
+                                 style="background: #f5f5f5 url('../images/ticbox/Logo_Placeholder.png') no-repeat center center; min-height: 148px; min-width: 148px;"
+                                 src="${request.contextPath}/survey/viewLogo?resourceId=${survey[Survey.COMPONENTS.LOGO]}" data-image-id="${survey[Survey.COMPONENTS.LOGO]}">
+                        </g:else>
                     </div>
                     <div class="media-body">
                         <span style="font-size: 18px;">
