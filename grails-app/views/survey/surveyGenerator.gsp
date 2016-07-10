@@ -21,18 +21,19 @@
         }
 
         img.upload-pic {
-            width: auto;
-            max-height: 150px;
+            /*width: auto;*/
+            /*max-width: 70px;*/
         }
     </style>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
         var ttlQuestions = 0;
         var answerId=0;
 
         jQuery(function() {
             console.log('~ BEGIN jQuery function');
+
             jQuery('#surveyorProfileContent').addClass('out');
             <!-- jQuery('#surveyInfoAccordion').show(); -->
             jQuery('#surveyInfoAccordion').hide();
@@ -526,7 +527,7 @@
                    answerDetails : answerDetails
                 };
 
-console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionItem, null, "    "));
+                console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionItem, null, "    "));
 
                 questionItems.push(questionItem);
 
@@ -689,21 +690,25 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                     switch(answerDetails.type) {
 
                         case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
+                        case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
 
                             var choiceItems = answerDetails.choiceItems;
                             var choiceType = answerDetails.choiceType;
 
                             container = constructQuestionItem(answerDetails.type, choiceType);
 
-                            jQuery.each(choiceItems, function(idx, choiceItem){
+                            jQuery.each(choiceItems, function(idx, choiceItem) {
                                 var choiceItemCont = jQuery('.choice-items > .choice-item:first', container).clone();
                                 jQuery('.choice-items', container).append(choiceItemCont);
 
                                 jQuery('.item-label', choiceItemCont).val(choiceItem.label);
                                 jQuery('.item-seq', choiceItemCont).val(choiceItem.nextQuestion);
 
-                                jQuery('input.image-id', choiceItemCont).val(choiceItem.image);
-                                jQuery('img.upload-pic', choiceItemCont).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + choiceItem.image);
+                                if (choiceItem.image) {
+                                    jQuery('input.image-id', choiceItemCont).val(choiceItem.image);
+                                    jQuery('img.upload-pic', choiceItemCont).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + choiceItem.image);
+                                    jQuery('img.upload-pic', choiceItemCont).css("display:inline");
+                                }
 
                                 jQuery('.question-next',choiceItemCont).attr('answerid',answerId);
                                 jQuery('.item-seq',choiceItemCont).attr('answerid',answerId);
@@ -741,34 +746,35 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
 
                             break;
 
-                        case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
+                        %{--case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :--}%
 
-                            var choiceItems = answerDetails.choiceItems;
-                            var choiceType = answerDetails.choiceType;
+                            %{--var choiceItems = answerDetails.choiceItems;--}%
+                            %{--var choiceType = answerDetails.choiceType;--}%
 
-                            container = constructQuestionItem(answerDetails.type, choiceType);
+                            %{--container = constructQuestionItem(answerDetails.type, choiceType);--}%
 
-                            jQuery.each(choiceItems, function(idx, choiceItem){
-                                var choiceItemCont = jQuery('.choice-items > .choice-item:first', container).clone();
-                                jQuery('.choice-items', container).append(choiceItemCont);
+                            %{--jQuery.each(choiceItems, function(idx, choiceItem){--}%
+                                %{--var choiceItemCont = jQuery('.choice-items > .choice-item:first', container).clone();--}%
+                                %{--jQuery('.choice-items', container).append(choiceItemCont);--}%
 
-                                jQuery('.item-label', choiceItemCont).val(choiceItem.label);
-                                jQuery('input.image-id', choiceItemCont).val(choiceItem.image);
-                                jQuery('img.upload-pic', choiceItemCont).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + choiceItem.image);
+                                %{--jQuery('.item-label', choiceItemCont).val(choiceItem.label);--}%
+                                %{--jQuery('input.image-id', choiceItemCont).val(choiceItem.image);--}%
+                                %{--jQuery('img.upload-pic', choiceItemCont).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + choiceItem.image);--}%
+                                %{--jQuery('img.upload-pic', choiceItemCont).css("display:inline");--}%
 
-                                jQuery('input.item-check', choiceItemCont).click(function(){
-                                    choiceItemCont.remove();
-                                });
+                                %{--jQuery('input.item-check', choiceItemCont).click(function(){--}%
+                                    %{--choiceItemCont.remove();--}%
+                                %{--});--}%
 
-                                jQuery('.question-action-btn.upload-pic-icon', choiceItemCont).click(function(){
-                                    openImageUploader(jQuery(this));
-                                });
-                            });
-                            jQuery('.choice-items > .choice-item:first', container).remove();
+                                %{--jQuery('.question-action-btn.upload-pic-icon', choiceItemCont).click(function(){--}%
+                                    %{--openImageUploader(jQuery(this));--}%
+                                %{--});--}%
+                            %{--});--}%
+                            %{--jQuery('.choice-items > .choice-item:first', container).remove();--}%
 
-                            jQuery('select.choice-type', container).val(choiceType);
+                            %{--jQuery('select.choice-type', container).val(choiceType);--}%
 
-                            break;
+                            %{--break;--}%
 
                         case '${Survey.QUESTION_TYPE.FREE_TEXT}' :
 
@@ -820,9 +826,11 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                     }
 
                     jQuery('.questionTextContainer textarea', container).val(item.questionStr);
-                    jQuery('.question-row input.image-id', container).val(item.image);
-                    jQuery('.question-row img.upload-pic', container).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + item.image);
-
+                    if(item.image) {
+                        jQuery('.question-row input.image-id', container).val(item.image);
+                        jQuery('.question-row img.upload-pic', container).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + item.image);
+                        jQuery('.question-row img.upload-pic', container).css("display:inline");
+                    }
                 });
 
             }
@@ -841,11 +849,20 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                 jQuery('.seqNumberContainer', questionTemplate).html(idx+1+'.');
                 // Sanchez
                 console.log("class of img = " + jQuery('img', questionTemplate).attr('class'));
-                if (item.img != null) {
-                  jQuery('img', questionTemplate).attr('src', item.img);
-                  jQuery('img', questionTemplate).show(0);
-                } else {
-                  jQuery('img', questionTemplate).hide(0);
+//                console.log("item.image = " + item.image);
+//                if (item.image != null) {
+//                  jQuery('img', questionTemplate).attr('src', item.image);
+//                  jQuery('img', questionTemplate).show(0);
+//                } else {
+//                  jQuery('img', questionTemplate).hide(0);
+//                }
+
+                if (typeof item.image != 'undefined' && item.image != '') {
+                    jQuery('img.upload-pic', questionTemplate).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + item.image);
+                }
+                else {
+                    jQuery('img.upload-pic', questionTemplate).css({ display: "none"});
+                    jQuery('span.question-text', questionTemplate).css("padding-left","0");
                 }
 
                 jQuery('.question-text', questionTemplate).html("<span style='font-size:24px;color:grey;'>"+questionStr.charAt(0)+"</span>" + questionStr.substring(1));
@@ -855,62 +872,65 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                 switch(answerDetails.type){
 
                     case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
-
-                        var choiceItems = answerDetails.choiceItems;
-                        var choiceType = answerDetails.choiceType;
-
-
-                        answerTemplate = jQuery('#answerPreviewTemplate-singleChoice').clone().removeAttr('id');
-
-//                                jQuery.each(choiceItems, function(idx, choiceItem){
-                        jQuery.each(choiceItems, function(j, choiceItem){
-//                                    jQuery('.item-select', answerTemplate).append(jQuery('<option></option>').append(choiceItem).val(choiceItem));
-                            var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
-                            jQuery('input.item-check', choiceItemContainer).attr('name', idx);
-                            jQuery('input.item-check', choiceItemContainer).val(choiceItem);
-
-                            jQuery('.item-label', choiceItemContainer).html(choiceItem.label);
-//                                    answerTemplate.append(choiceItemContainer);
-                            // Sanchez
-                            if (choiceItem.img != null) {
-                              jQuery('img', choiceItemContainer).attr('src', choiceItem.img);
-                              jQuery('img', choiceItemContainer).show(0);
-                            } else {
-                              jQuery('img', choiceItemContainer).hide(0);
-                            }
-
-                            jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
-                        });
-                        jQuery('.choice-item:first', answerTemplate).remove();
-
-
-                        break;
-
                     case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :
 
                         var choiceItems = answerDetails.choiceItems;
                         var choiceType = answerDetails.choiceType;
 
-                        answerTemplate = jQuery('#answerPreviewTemplate-multipleChoice').clone().removeAttr('id');
+                        answerTemplate = jQuery('#answerPreviewTemplate-singleChoice').clone().removeAttr('id');
 
-//                                jQuery.each(choiceItems, function(idx, choiceItem){
                         jQuery.each(choiceItems, function(j, choiceItem){
                             var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
-                            jQuery('input.item-check', choiceItemContainer).val(choiceItem.label);
+                            jQuery('input.item-check', choiceItemContainer).attr('name', idx);
+                            jQuery('input.item-check', choiceItemContainer).val(choiceItem);
+
                             jQuery('.item-label', choiceItemContainer).html(choiceItem.label);
-//                                    answerTemplate.append(choiceItemContainer);
-                            // Sanchez
-                            if (item.img != null) {
-                              jQuery('img', choiceItemContainer).attr('src', choiceItem.img);
-                              jQuery('img', choiceItemContainer).show(0);
-                            } else {
-                              jQuery('img', choiceItemContainer).hide(0);
+
+//                            if (choiceItem.img != null) {
+//                              jQuery('img', choiceItemContainer).attr('src', choiceItem.img);
+//                              jQuery('img', choiceItemContainer).show(0);
+//                            } else {
+//                              jQuery('img', choiceItemContainer).hide(0);
+//                            }
+
+                            if (typeof choiceItem.image != 'undefined' && choiceItem.image != '') {
+                                jQuery('img.upload-pic', choiceItemContainer).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + choiceItem.image);
                             }
+                            else {
+                                choiceItemContainer.find('.choice-item-pic').css({ display: "none"});
+                            }
+
                             jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
                         });
                         jQuery('.choice-item:first', answerTemplate).remove();
 
                         break;
+
+                    %{--case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :--}%
+
+                        %{--var choiceItems = answerDetails.choiceItems;--}%
+                        %{--var choiceType = answerDetails.choiceType;--}%
+
+                        %{--answerTemplate = jQuery('#answerPreviewTemplate-multipleChoice').clone().removeAttr('id');--}%
+
+%{--//                                jQuery.each(choiceItems, function(idx, choiceItem){--}%
+                        %{--jQuery.each(choiceItems, function(j, choiceItem){--}%
+                            %{--var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();--}%
+                            %{--jQuery('input.item-check', choiceItemContainer).val(choiceItem.label);--}%
+                            %{--jQuery('.item-label', choiceItemContainer).html(choiceItem.label);--}%
+%{--//                                    answerTemplate.append(choiceItemContainer);--}%
+                            %{--// Sanchez--}%
+                            %{--if (item.img != null) {--}%
+                              %{--jQuery('img', choiceItemContainer).attr('src', choiceItem.img);--}%
+                              %{--jQuery('img', choiceItemContainer).show(0);--}%
+                            %{--} else {--}%
+                              %{--jQuery('img', choiceItemContainer).hide(0);--}%
+                            %{--}--}%
+                            %{--jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit--}%
+                        %{--});--}%
+                        %{--jQuery('.choice-item:first', answerTemplate).remove();--}%
+
+                        %{--break;--}%
 
                     case '${Survey.QUESTION_TYPE.FREE_TEXT}' :
 
@@ -988,7 +1008,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
         }
 
         function tempContImageUploader(item) {
-            jQuery('#au-surveyItemImageUploader .qq-upload-button > input').trigger('click').change(function(){show_loader();});
+            var result = jQuery('#au-surveyItemImageUploader .qq-upload-button > input').attr('accept', 'image/*').trigger('click').change(function(){show_loader();});
 
             jQuery('#confirmImageBtn').unbind('click').click(function(){
                 var modal = jQuery('#previewImageModal');
@@ -999,12 +1019,19 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
 
                 if (logoId) {
                     img.attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + logoId);
+                    img.css("display","inline");
                     imageId.val(logoId);
                     modal.modal('hide');
-                    hide_loader();
                 }
+                hide_loader();
+            });
+
+            jQuery('#confirmImageCloseBtn').unbind('click').click(function() {
+                hide_loader();
             });
         }
+
+
 
         function galleryImageUploader(item) {
 
@@ -1021,6 +1048,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
 
                 if (logoId) {
                     img.attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + logoId);
+                    img.css("display:inline");
                     imageId.val(logoId);
                     modal.modal('hide');
                 }
@@ -1088,13 +1116,13 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                     <div id="surveyLogo" class="pull-left clickable survey-logo" data-toggle="modal" href="#chooseLogoModal">
                         <g:if test="${survey[Survey.COMPONENTS.LOGO]}">
                             <img class="media-object img-responsive"
-                             style="background: #f5f5f5; min-height: 148px; min-width: 148px;"
+                             style="background: #f5f5f5;"
                              src="${request.contextPath}/survey/viewLogo?resourceId=${survey[Survey.COMPONENTS.LOGO]}" data-image-id="${survey[Survey.COMPONENTS.LOGO]}">
                         </g:if>
                         <g:else>
                             <img class="media-object img-responsive"
-                                 style="background: #f5f5f5 url('../images/ticbox/Logo_Placeholder.png') no-repeat center center; min-height: 148px; min-width: 148px;"
-                                 src="${request.contextPath}/survey/viewLogo?resourceId=${survey[Survey.COMPONENTS.LOGO]}" data-image-id="${survey[Survey.COMPONENTS.LOGO]}">
+                                 style="background: #f5f5f5;"
+                                 src="../images/ticbox/Logo_Placeholder.png" data-image-id="">
                         </g:else>
                     </div>
                     <div class="media-body">
@@ -1102,7 +1130,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                             <g:message code="label.survey.survey-generator.survey-title" default="Describe Your Survey"/>
                         </span>
                         <div>
-                            <textarea id="surveyTitle" rows="4" class="form-control" style="resize: none; margin: 14px 10px 0 0"></textarea>
+                            <textarea id="surveyTitle" rows="4" class="form-control" style="resize: both; margin: 14px 10px 0 0"></textarea>
                         </div>
                     </div>
                 </div>
@@ -1163,34 +1191,34 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
     <div id="questionTemplate" class="surveyItemContainer">
         <div class="row question-row" style="position: relative">
             <div class="seqNumberContainer questionNumber col-xs-1"></div>
-            <div class="col-xs-11">
-                <div class="questionTextContainer">
-                    <textarea class="form-control" style="padding: 6px 12px; word-wrap: break-word" rows="3" placeholder="${message([code: 'message.type-to-set-question', default: 'Type your question here..'])}" maxlength="1500"></textarea>
-                    <div class="question-action-btn change-question-type-btn" style="position: absolute;right: 10px;top: 8px;"></div>
-                </div>
-                <div class="surveyItemActions" style="float: left; padding: 1px 0 0 5px">
-                    %{--<div>--}%
-                    %{--<button class="btn video" data-toggle="tooltip" data-placement="top" title="Upload video"><i class="icon-play"></i></button>--}%
-                    %{--<div class="question-action-btn change-question-type-btn" style="display: inline-block"></div>--}%
-                    %{--<button class="btn remove" data-toggle="tooltip" data-placement="top" title="Remove"><i class="icon-remove"></i></button>--}%
-                    %{--<div class="remove question-action-btn delete-question-icon clickable" style="display: inline-block"></div>--}%
-                    %{--</div>--}%
-                    %{--<div>--}%
-                    %{--<button class="btn picture" data-toggle="tooltip" data-placement="top" title="Upload picture"><i class="icon-camera"></i></button>--}%
-
-                    %{--<button class="btn remove" data-toggle="tooltip" data-placement="top" title="Remove"><i class="icon-remove"></i></button>--}%
-                    %{--</div>--}%
-                    <div class="question-action-btn upload-pic-icon clickable" style="margin: 0 0 0 0">
-                        <span class="media-thumbnail"></span>
-                        <img class="pic upload-pic" src="" style="width: auto; height: 30px; margin-left: 30px;"/>
-                        <input type="hidden" class="image-id" val=""/>
-                    </div>
+            <div class="col-xs-2" style="">
+                <div class="question-action-btn upload-pic-icon clickable" style="margin:0;" data-toggle="tooltip" title="${message([code: 'app.image.add'])}">
+                    %{--<span class="media-thumbnail"></span>--}%
+                    <img class="media-object img-responsive pic upload-pic" src="../images/ticbox/06e_Question_UploadIcon_Picture.png" style="width: auto;"/>
+                    <input type="hidden" class="image-id" val=""/>
                 </div>
             </div>
-            <div class="surveyItemActions" style="position: absolute; right: 10px;top: 0;">
-                <div class="remove question-action-btn delete-question-icon clickable"></div>
-                <div class="up question-action-btn up-question-icon clickable" style="margin-right: 0px"></div>
-                <div class="down question-action-btn down-question-icon clickable" style="margin-right: 0px"></div>
+            <div class="col-xs-8" style="padding: 0;">
+                <div class="questionTextContainer" style="width: 100%;">
+                    <textarea class="form-control" style="padding: 6px 12px; word-wrap: break-word" rows="4" placeholder="${message([code: 'message.type-to-set-question', default: 'Type your question here..'])}" maxlength="1500"></textarea>
+                    <div class="question-action-btn change-question-type-btn" style="position: absolute;right: 10px;top: 8px;"></div>
+                </div>
+            </div>
+            <div class="col-xs-1" style="height: 100%">
+                <div class="surveyItemActions" style="position: relative;top: 0;">
+                    <button type="button" class="btn btn-default btn-xs remove" aria-label="Remove" data-toggle="tooltip" data-placement="top" title="${message([code: 'default.button.delete.label', default: 'Delete'])}">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-default btn-xs up" aria-label="Move Up" style="color: #97b11a;" data-toggle="tooltip" data-placement="top" title="${message([code: 'default.button.delete.label', default: 'Move Up'])}">
+                        <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-default btn-xs down" aria-label="Move Down" style="color: #97b11a;" data-toggle="tooltip" data-placement="top" title="${message([code: 'default.button.delete.label', default: 'Move Down'])}">
+                        <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+                    </button>
+                    %{--<div class="remove question-action-btn delete-question-icon clickable"></div>--}%
+                    %{--<div class="up question-action-btn up-question-icon clickable" style="margin-right: 0px"></div>--}%
+                    %{--<div class="down question-action-btn down-question-icon clickable" style="margin-right: 0px"></div>--}%
+                </div>
             </div>
         </div>
 
@@ -1211,9 +1239,9 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                     <div class="col" style="float: left; padding: 1px 0 0 5px">
                         %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
                         %{--<div style="width: 20px; height: 100%; cursor: pointer; background: transparent url('../images/ticbox/06_Question_UploadIcon_Picture.png') no-repeat center"></div>--}%
-                        <div class="question-action-btn upload-pic-icon clickable" style="margin: 0 0 0 0">
-                            <span class="media-thumbnail"></span>
-                            <img class="pic upload-pic" src="" style="width: auto; height: 30px; margin-left: 30px;"/>
+                        <div class="question-action-btn upload-pic-icon clickable" style="margin: 0;" data-toggle="tooltip" title="${message([code: 'app.image.add'])}">
+                            %{--<span class="media-thumbnail"></span>--}%
+                            <img class="media-object img-responsive pic upload-pic" src="../images/ticbox/06e_Question_UploadIcon_Picture.png" style="width: auto; height: 30px;"/>
                             <input type="hidden" class="image-id" val=""/>
                         </div>
                     </div>
@@ -1241,9 +1269,9 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                 <div class="col" style="float: left; padding: 1px 0 0 5px">
                     %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
                     %{--<div style="width: 20px; height: 100%; cursor: pointer; background: transparent url('../images/ticbox/06_Question_UploadIcon_Picture.png') no-repeat center"></div>--}%
-                    <div class="question-action-btn upload-pic-icon clickable" style="margin: 0 0 0 0">
-                        <span class="media-thumbnail"></span>
-                        <img class="pic upload-pic" src="" style="width: auto; height: 30px; margin-left: 30px;"/>
+                    <div class="question-action-btn upload-pic-icon clickable" style="margin: 0;" data-toggle="tooltip" title="${message([code: 'app.image.add'])}">
+                        %{--<span class="media-thumbnail"></span>--}%
+                        <img class="media-object img-responsive pic upload-pic" src="../images/ticbox/06e_Question_UploadIcon_Picture.png" style="width: auto; height: 30px;"/>
                         <input type="hidden" class="image-id" val=""/>
                     </div>
                 </div>
@@ -1341,13 +1369,12 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
     <div id="questionPreviewTemplate" class="surveyItemContainer">
         <div class="row">
             <div class="seqNumberContainer questionNumber col-xs-1"> </div>
-            <div class="questionTextContainer col-xs-11">
-                <span class="question-text"></span>
+            <div class="col-xs-11" style="height: 100%; display: table; text-align: left;">
+                %{--<span class="media-thumbnail">--}%
+                    <img class="pic upload-pic" src="" style="width: auto; height: 120px; margin-left: 0;border-radius: 5px"/>
+                %{--</span>--}%
+                <span class="question-text" style="display: table-cell; vertical-align: top; width: 100%; padding-left: 15px;"></span>
             </div>
-            <!-- sanchez -->
-            <span class="media-thumbnail">
-                <img class="pic upload-pic" src="" />
-            </span>
         </div>
     </div>
 
@@ -1360,44 +1387,46 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
     <div id="answerPreviewTemplate-multipleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}">
         <div class="choice-items col-xs-11 col-xs-offset-1">
             <div class="choice-item row">
-                %{--<label class="checkbox">--}%
-                %{--<div class="col col-xs-1" style="text-align: right">--}%
-                <div class="col col-xs-12">
+                <div class="col col-xs-1" style="width: 3.2%">
                     <input class="item-check" type="checkbox">
-                %{--</div>--}%
-                %{--<div class="col col-xs-11" style="padding-left: 0">--}%
-                    <span class="item-label" style="font-weight: normal; margin-bottom: 0"></span>
-                    <!-- sanchez -->
-                    <span class="media-thumbnail">
-                        <img class="pic upload-pic" src="" />
-                    </span>
                 </div>
-                %{--</label>--}%
+                <div class="col col-xs-11" style="">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label class="item-label" style="font-weight: normal; margin-bottom: 0; margin-left: 0; width: 100%"></label>
+                        </div>
+                    </div>
+                    <div class="row choice-item-pic">
+                        <div class="col-xs-12">
+                            <span class="media-thumbnail">
+                                <img class="pic upload-pic" src="" style="width: auto; height: 90px; margin-left: 0;border-radius: 5px"/>
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    %{--<div id="answerPreviewTemplate-singleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">--}%
-        %{--<div class="col col-xs-11 col-xs-offset-1">--}%
-            %{--<select class="item-select" style="min-width: 200px">--}%
-                %{--<option></option>--}%
-            %{--</select>--}%
-        %{--</div>--}%
-    %{--</div>--}%
-
     <div id="answerPreviewTemplate-singleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE_SINGLE}">
         <div class="choice-items col-xs-11 col-xs-offset-1">
             <div class="choice-item row">
-                %{--<div class="col col-xs-1" style="text-align: right">--}%
-                <div class="col col-xs-12">
+                <div class="col col-xs-1" style="width: 3.2%">
                     <input class="item-check" type="radio">
-                %{--</div>--}%
-                %{--<div class="col col-xs-11" style="padding-left: 0">--}%
-                    <span class="item-label" style="font-weight: normal; margin-bottom: 0"></span>
-                    <!-- sanchez -->
-                    <span class="media-thumbnail">
-                        <img class="pic upload-pic" src="" />
-                    </span>
+                </div>
+                <div class="col col-xs-11" style="">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label class="item-label" style="font-weight: normal; margin-bottom: 0; margin-left: 0; width: 100%"></label>
+                        </div>
+                    </div>
+                    <div class="row choice-item-pic">
+                        <div class="col-xs-12">
+                            <span class="media-thumbnail">
+                                <img class="pic upload-pic" src="" style="width: auto; height: 90px; margin-left: 0; border-radius:5px"/>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1513,7 +1542,7 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <button id="confirmImageCloseBtn" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <span id="previewImageModalLabel" class="modal-title">
                     Image Uploaded
                 </span>
@@ -1670,7 +1699,12 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
 </div>
 
 <div style="display: none">
-    <uploader:uploader id="surveyItemImageUploader" url="${[controller:'survey', action:'uploadLogo']}" params="${[resType:'IMAGE']}" sizeLimit="512000"> %{--allowedExtensions="['jpeg', 'png', 'gif']"--}%
+    <uploader:uploader id="surveyItemImageUploader" url="${[controller:'survey', action:'uploadLogo']}" params="${[resType:'IMAGE']}" sizeLimit="512000">
+        <uploader:noScript>
+            alert('Please turn on Javascript');
+        </uploader:noScript>
+        <uploader:onProgress>
+        </uploader:onProgress>
         <uploader:onComplete>
             if(responseJSON.resourceId){
                 //For gallery
@@ -1682,13 +1716,15 @@ console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionI
                 jQuery('img.logoImg', modal).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId='+responseJSON.resourceId)
                 modal.modal('show');
 
-                jQuery('#au-surveyItemImageUploader .qq-upload-button > input').val('');
+                //jQuery('#au-surveyItemImageUploader .qq-upload-button > input').val('');
             }else{
                 alert(responseJSON.message);
             }
-
-            hide_loader();
+            //hide_loader();
         </uploader:onComplete>
+        <uploader:onCancel>
+            hide_loader();
+        </uploader:onCancel>
     </uploader:uploader>
 </div>
 

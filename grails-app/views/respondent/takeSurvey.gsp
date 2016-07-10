@@ -586,7 +586,7 @@
                             <div class="row choice-item-pic">
                                 <div class="col-xs-12">
                                     <span class="media-thumbnail">
-                                        <img class="pic upload-pic" src="" style="width: auto; height: 90px; margin-left: 0;"/>
+                                        <img class="pic upload-pic" src="" style="width: auto; height: 90px; margin-left: 0; border-radius:5px"/>
                                     </span>
                                 </div>
                             </div>
@@ -610,7 +610,7 @@
                             <div class="row choice-item-pic">
                                 <div class="col-xs-12">
                                     <span class="media-thumbnail">
-                                        <img class="pic upload-pic" src="" style="width: auto; height: 90px; margin-left: 0;"/>
+                                        <img class="pic upload-pic" src="" style="width: auto; height: 90px; margin-left: 0;border-radius: 5px"/>
                                     </span>
                                 </div>
                             </div>

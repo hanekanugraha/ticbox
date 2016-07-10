@@ -66,6 +66,65 @@
     <script type="text/javascript" src="${resource(dir: 'frameworks/prettyCheckable', file: 'prettyCheckable.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js', file: 'loader.js')}"></script>
 
+    <script type="text/javascript">
+
+        var surveySummary;
+
+        jQuery(function(){
+            $('#log-out-btn').tooltip({'placement': 'bottom','content':'html'});
+            $('#notif').tooltip({'placement': 'bottom','content':'html'});
+            $('#inbox').tooltip({'placement': 'bottom','content':'html'});
+
+            jQuery('input.prettyChk').prettyCheckable();
+
+            jQuery(".nav > li.${controllerName}").addClass('active');
+
+            jQuery('button.link').click(function(){
+                var href = jQuery(this).attr('href');
+                if(href){
+                    window.location.href = href;
+                }
+            });
+
+            jQuery('button.submit-redirect').click(function(){
+
+                var form = jQuery('<form method="post"></form>').attr('action', jQuery(this).attr('href')).hide();
+
+                jQuery("[param-of='"+jQuery(this).attr('id')+"']").each(function(){
+                    form.append(jQuery('<input type="hidden">').attr('name', jQuery(this).attr('name')).val(jQuery(this).val()));
+                });
+
+                form.appendTo('body').submit();
+
+            });
+
+            //jQuery('#menuNavPanel .survey-summary').before(jQuery('#menuNavPanelContent'));
+            jQuery('#menuNavPanel').append(jQuery('#menuNavPanelContent').contents());
+
+            jQuery('.datePicker').datepicker({
+                showAnim : 'slideDown',
+                format : '<g:message code="app.date.format.js" default="dd/mm/yy"/>'
+            });
+
+            jQuery('.enableTooltip').tooltip({
+                selector: "button[data-toggle=tooltip]"
+            });
+
+        });
+
+        function flashMessage(message, success) {
+            $('#flashdiv').html('<div class="alert alert-' + (success ? 'success' : 'danger') + '" style="display: block">' + message + '</div>');
+            $('html, body').animate({
+                scrollTop: $("#flashdiv").offset().top
+            }, 250);
+            /*        setTimeout(
+             function() {
+             $('#flashdiv').html('');
+             }, 3000);*/
+        }
+
+    </script>
+
     <g:layoutHead/>
     <r:layoutResources />
 
@@ -123,7 +182,6 @@
                         <li class="dropdown">
                             <g:link class="dropdown-toggle" data-toggle="dropdown">
                                 <span id="inbox" class="glyphicon glyphicon-envelope" data-toggle="tooltip" title=<g:message code="default.inbox.label"/>
-                                </span>
                                 <g:if test="${ticbox.UserMessage.findAllByUsernameAndIsRead(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size() > 0}">
                                     <span class="badge">
                                         ${ticbox.UserMessage.findAllByUsernameAndIsRead(SecurityUtils.getSubject().getPrincipals().oneByType(String.class), false).size()}
@@ -225,8 +283,8 @@
                         <li>
                             <g:link controller="auth" action="signOut">
                                 <span id="log-out-btn" class="glyphicon glyphicon-log-out" data-toggle="tooltip"
-                                      title=<g:message code="app.signout.label"/>>
-                                </span>
+                                      title="${message(code:'app.signout.label')}"/>
+
                             </g:link>
                         </li>
                     </shiro:authenticated>
@@ -385,65 +443,6 @@
 %{--</div>--}%
 
 <r:layoutResources />
-
-<script type="text/javascript">
-
-    var surveySummary;
-
-    jQuery(function(){
-        $('#log-out-btn').tooltip({'placement': 'bottom','content':'html'});
-        $('#notif').tooltip({'placement': 'bottom','content':'html'});
-        $('#inbox').tooltip({'placement': 'bottom','content':'html'});
-
-        jQuery('input.prettyChk').prettyCheckable();
-
-        jQuery(".nav > li.${controllerName}").addClass('active');
-
-        jQuery('button.link').click(function(){
-            var href = jQuery(this).attr('href');
-            if(href){
-                window.location.href = href;
-            }
-        });
-
-        jQuery('button.submit-redirect').click(function(){
-
-            var form = jQuery('<form method="post"></form>').attr('action', jQuery(this).attr('href')).hide();
-
-            jQuery("[param-of='"+jQuery(this).attr('id')+"']").each(function(){
-                form.append(jQuery('<input type="hidden">').attr('name', jQuery(this).attr('name')).val(jQuery(this).val()));
-            });
-
-            form.appendTo('body').submit();
-
-        });
-
-        //jQuery('#menuNavPanel .survey-summary').before(jQuery('#menuNavPanelContent'));
-        jQuery('#menuNavPanel').append(jQuery('#menuNavPanelContent').contents());
-
-        jQuery('.datePicker').datepicker({
-            showAnim : 'slideDown',
-            format : '<g:message code="app.date.format.js" default="dd/mm/yy"/>'
-        });
-
-        jQuery('.enableTooltip').tooltip({
-            selector: "button[data-toggle=tooltip]"
-        });
-
-    });
-
-    function flashMessage(message, success) {
-        $('#flashdiv').html('<div class="alert alert-' + (success ? 'success' : 'danger') + '" style="display: block">' + message + '</div>');
-        $('html, body').animate({
-            scrollTop: $("#flashdiv").offset().top
-        }, 250);
-/*        setTimeout(
-			function() {
-					$('#flashdiv').html('');
-				}, 3000);*/
-    }
-
-</script>
 
 </body>
 </html>
