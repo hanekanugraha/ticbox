@@ -95,7 +95,9 @@ class AdminController {
                         'PI_BU' : params.profileItems_LM_BU,
 
                         'PI_TEAM001' : params.profileItems_LM_TEAM001,
-                        'PI_POSITION001' : params.profileItems_LM_POSITION001
+                        'PI_POSITION001' : params.profileItems_LM_POSITION001,
+
+                        'PI_BRANCH' : params.profileItems_LM_BRANCH,
                 ]
 
                 respondentService.updateRespondentDetail(user, params)
