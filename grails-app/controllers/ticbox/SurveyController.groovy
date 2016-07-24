@@ -136,10 +136,19 @@ class SurveyController {
             def filterItemsJSON = params.filterItemsJSON
             Survey survey = surveyService.getSurvey(surveyService.getCurrentEditedSurvey().surveyId)
 
-            if(survey)
-                surveyService.submitRespondentFilter(params.surveyType, params.compDateFrom, params.compDateTo, params.ttlRespondent, filterItemsJSON, survey)
-            else
-                surveyService.submitRespondentFilter(params.surveyType, params.compDateFrom, params.compDateTo, params.ttlRespondent, filterItemsJSON, surveyService.getCurrentEditedSurvey())
+            String password = params.password
+            if (password == 'trivialFakeValue') {
+                password = "__unchanged__"
+            } else if (password == '') {
+                password = null
+            }
+
+            if (!survey) {
+                survey = surveyService.getCurrentEditedSurvey();
+            }
+
+            surveyService.submitRespondentFilter(params.surveyType, params.compDateFrom, params.compDateTo,
+                        params.ttlRespondent, password, filterItemsJSON, survey)
 
             render filterItemsJSON
         } catch (Exception e) {

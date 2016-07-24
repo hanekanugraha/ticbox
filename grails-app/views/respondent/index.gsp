@@ -78,6 +78,12 @@
                             <div class="survey-tag survey-tag-trust">
                         </g:else>
                             ${survey.point} ${survey.pointType}
+
+                        <div style="position: absolute; margin-top: 10px; right:7px">
+                            <g:if test="${survey.passwordHash}">
+                                <img class="img-responsive" title="This is a protected survey that requires password to take it" src="${request.contextPath}/images/ticbox/lock-25x25.png" />
+                            </g:if>
+                        </div>
                     </div>
                         <div class="panel-heading">
                             <div class="media">
@@ -100,7 +106,16 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                            <g:link action="takeSurvey" params="[surveyId:survey.surveyId]" class="btn btn-blue-trust btn-xs" style="margin-right: 10px"><g:message code="surveylist.takesurvey.label"/> </g:link>
+                            <g:if test="${survey.passwordHash}">
+                                <a href="#take-protected-survey" data-toggle="modal" class="btn btn-blue-trust btn-xs" style="margin-right: 10px">
+                                    <g:message code="surveylist.takesurvey.label"/>
+                                </a>
+                            </g:if>
+                            <g:else>
+                                <g:link action="takeSurvey" params="[surveyId:survey.surveyId]" class="btn btn-blue-trust btn-xs" style="margin-right: 10px">
+                                    <g:message code="surveylist.takesurvey.label"/>
+                                </g:link>
+                            </g:else>
                             <g:message code="surveylist.respneeded.label"/>: ${survey.ttlRespondent} &nbsp; | &nbsp; <g:message code="app.completion.label"/> : 0%
                         </div>
                         </div>
@@ -110,5 +125,72 @@
                 <div class="module-message"><g:message code="surveylist.nosurvey.label"/> </div>
             </g:else>
         </div>
-</body>
+
+
+        <!-- Change password modal -->
+        <div id="take-protected-survey" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <span id="myModalLabel" class="modal-title" >Password required</span>
+                    </div>
+                    <g:form name="takeProtectedSurveyForm" class="form-horizontal" role="form">
+                        <div class="modal-body form-horizontal">
+                            <p>
+                            You are required to enter password to access this survey
+                            </p>
+                            <div class="form-group">
+                                <label for="oldPassword" class="col-xs-4 control-label">
+                                    <g:message code="app.password.label"/>
+                                </label>
+                                <div class="col-xs-7">
+                                    <g:hiddenField name="id" value="${respondent.id}" />
+                                    <g:passwordField id="oldPassword" class="form-control" name="oldPassword" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button id="take-protected-survey-button" class="btn btn-default btn-green">
+                                Unlock
+                            </button>
+                        </div>
+                    </g:form>
+                </div>
+                <!-- End of "class=modal-content" -->
+
+            </div>
+            <!-- End of "class=modal-dialog" -->
+
+        </div>
+
+    <g:javascript src="jquery.validate.min.js"/>
+    <g:javascript src="additional-methods.min.js"/>
+    <script type="text/javascript">
+
+    /* Change password modal trigger */
+    $("#take-protected-survey-button").click(function(e) {
+        var form = $('#takeProtectedSurveyForm');
+        if (form.valid()) {
+            var url = '${g.createLink(controller: "auth", action: "changePassword")}';
+            var data = $("#take-protected-survey-model").find("input").serialize();
+            $.post(url, data, function(response) {
+                var message = (response) ? response.message : "Application error";
+                $('#change-password-modal').modal('hide');
+                flashMessage(message, response.success);
+
+                if (message = "success") {
+                    window.location = "${request.contextPath}/survey/surveyGenerator";
+
+    }
+            });
+    } else {
+    $(this).button('reset');
+    }
+    e.preventDefault();
+    return false;
+    });
+    </script>
+    </body>
 </html>
