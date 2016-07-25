@@ -108,7 +108,25 @@
             </form>
         </div>
 
-        <div id="filterHeader" class="module-header">
+        <div class="module-header">
+            <div class="title">Protection</div>
+        </div>
+
+        <div class="module-content">
+            <p>When a survey is protected by password, respondents must enter this password before taking the survey</p>
+            <form id="protectionForm" class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Password</label>
+                    <div class="col-sm-9 control-label" style="font-weight: normal">
+                        <input  id="password" name="password" type="password"
+                                value="${survey.protected ? 'trivialFakeValue' : ''}"
+                                class="form-control" style="width: auto" />
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    <div id="filterHeader" class="module-header">
             <div class="title"><g:message code="survey.definerespondentfilter.label"/></div>
         </div>
 
@@ -527,8 +545,16 @@
 
                     var filterItemsJSON = JSON.stringify(filterItems);
 
-                    jQuery.getJSON('${request.contextPath}/survey/submitRespondentFilter', {filterItemsJSON: filterItemsJSON, compDateFrom: compDateFrom, compDateTo:compDateTo,
-                                                                                            ttlRespondent:ttlRespondent, surveyType: jQuery('input.surveyType').val()}, function (data) {
+                    var dataToSubmit = {
+                                        filterItemsJSON: filterItemsJSON, compDateFrom: compDateFrom, compDateTo:compDateTo,
+                                        ttlRespondent:ttlRespondent, surveyType: jQuery('input.surveyType').val()};
+
+                    var password = jQuery('#password').val();
+                    if (password != null) {
+                        dataToSubmit.password = password;
+                    }
+
+                    jQuery.getJSON('${request.contextPath}/survey/submitRespondentFilter', dataToSubmit, function (data) {
 
 //                        alert('Submitted');
                         loadRespondentFilter(data);

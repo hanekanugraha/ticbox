@@ -1,5 +1,7 @@
 package ticbox
 
+import org.apache.shiro.crypto.hash.Sha256Hash
+
 class Survey {
     static SURVEY_TYPE = [EASY:"EASY", FREE:"FREE"]
     static POINT_TYPE = [TRUST:"TRUST", GOLD:"GOLD"]
@@ -47,5 +49,23 @@ class Survey {
     long surveyPrice
     String createdDate
 	String modifiedDate
+    String passwordHash;
 
+    // TODO(someone): This cannot be called?????
+    public boolean isProtected() {
+        passwordHash != null
+    }
+
+    public void protect(String password) {
+        if (password != null) {
+            passwordHash = new Sha256Hash(password).toHex()
+        } else {
+            passwordHash = null // Unset
+        }
+    }
+
+    public boolean validateProtectionPassword(String password) {
+        print(passwordHash + "==" + "new Sha256Hash(" + password + ").toHex() which is " + new Sha256Hash(password).toHex())
+        passwordHash == new Sha256Hash(password).toHex()
+    }
 }

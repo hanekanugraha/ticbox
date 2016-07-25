@@ -82,7 +82,8 @@ class SurveyService {
         return ProfileItem.findAllByRole(ProfileItem.ROLES.RESPONDENT)?.sort{it.seq}
     }
 
-    def submitRespondentFilter(String surveyType, String compDateFrom, String compDateTo, String ttlRespondent, String filterItemsJSON, Survey survey){
+    def submitRespondentFilter(String surveyType, String compDateFrom, String compDateTo, String ttlRespondent,
+                               String password, String filterItemsJSON, Survey survey){
 
         def ttlLong = Long.parseLong(ttlRespondent)
         println survey
@@ -99,6 +100,10 @@ class SurveyService {
             survey.completionDateFrom = compDateFrom
             survey.completionDateTo = compDateTo
             survey.ttlRespondent = ttlLong
+            if (password != "__unchanged__") {
+                survey.protect(password);
+            }
+
 			def date = new Date()
 			def sdf = new SimpleDateFormat("MM/dd/yyyy")
 			if(!survey.createdDate) {
