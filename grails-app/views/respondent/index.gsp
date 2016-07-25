@@ -107,7 +107,7 @@
                         </div>
                         <div class="panel-body">
                             <g:if test="${survey.passwordHash}">
-                                <a href="#take-protected-survey" data-toggle="modal" class="btn btn-blue-trust btn-xs" style="margin-right: 10px">
+                                <a href="#" onclick="takeProtectedSurvey('${survey.surveyId}');return false;" class="btn btn-blue-trust btn-xs" style="margin-right: 10px">
                                     <g:message code="surveylist.takesurvey.label"/>
                                 </a>
                             </g:if>
@@ -127,28 +127,27 @@
         </div>
 
 
-        <!-- Change password modal -->
-        <div id="take-protected-survey" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div id="take-protected-survey-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         <span id="myModalLabel" class="modal-title" >Password required</span>
                     </div>
-                    <g:form name="takeProtectedSurveyForm" class="form-horizontal" role="form">
+                    <g:form name="take-protected-survey-form" id="take-protected-survey-form" class="form-horizontal" role="form">
                         <div class="modal-body form-horizontal">
                             <p>
                             You are required to enter password to access this survey
                             </p>
                             <div class="form-group">
-                                <label for="oldPassword" class="col-xs-4 control-label">
+                                <label for="password" class="col-xs-4 control-label">
                                     <g:message code="app.password.label"/>
                                 </label>
                                 <div class="col-xs-7">
-                                    <g:hiddenField name="id" value="${respondent.id}" />
-                                    <g:passwordField id="oldPassword" class="form-control" name="oldPassword" />
+                                    <g:passwordField id="password" class="form-control" name="password" />
                                 </div>
                             </div>
+                            <g:hiddenField name="surveyId" />
                         </div>
 
                         <div class="modal-footer">
@@ -169,28 +168,38 @@
     <g:javascript src="additional-methods.min.js"/>
     <script type="text/javascript">
 
-    /* Change password modal trigger */
-    $("#take-protected-survey-button").click(function(e) {
-        var form = $('#takeProtectedSurveyForm');
-        if (form.valid()) {
-            var url = '${g.createLink(controller: "auth", action: "changePassword")}';
-            var data = $("#take-protected-survey-model").find("input").serialize();
-            $.post(url, data, function(response) {
-                var message = (response) ? response.message : "Application error";
-                $('#change-password-modal').modal('hide');
-                flashMessage(message, response.success);
+        function takeProtectedSurvey(surveyId) {
+            $('#take-protected-survey-form')[0].reset();
+            $("#surveyId").val(surveyId);
+            $("#take-protected-survey-modal").modal('show');
+        }
 
-                if (message = "success") {
-                    window.location = "${request.contextPath}/survey/surveyGenerator";
+        /* Change password modal trigger */
+        $("#take-protected-survey-button").click(function(e) {
+            var form = $('#take-protected-survey-form');
+            if (form.valid()) {
+    // yesterday's worktime = 5 hours
+                var url = '${g.createLink(controller: "respondent", action: "unlockProtectedSurvey")}';
+                var data = $("#take-protected-survey-form").find("input").serialize();
+console.log(data);
+                $.post(url, data, function(response) {
+                    var message = (response) ? response.message : "Application error";
 
-    }
-            });
-    } else {
-    $(this).button('reset');
-    }
-    e.preventDefault();
-    return false;
-    });
+                    if (message == "success") {
+                        $('#change-password-modal').modal('hide');
+                        var surveyId = $("#surveyId").val();
+                        var url =  '${request.contextPath}/respondent/takeSurvey?surveyId=' + surveyId;
+                        window.location = url;
+                    } else {
+                        alert(message == "failed" ? "Wrong password" : message);
+                    }
+                });
+            } else {
+                $(this).button('reset');
+            }
+            e.preventDefault();
+            return false;
+        });
     </script>
     </body>
 </html>

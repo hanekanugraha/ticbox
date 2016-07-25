@@ -52,7 +52,7 @@ class Survey {
     String passwordHash;
 
     // TODO(someone): This cannot be called?????
-    public boolean getProtected() {
+    public boolean isProtected() {
         passwordHash != null
     }
 
@@ -62,5 +62,10 @@ class Survey {
         } else {
             passwordHash = null // Unset
         }
+    }
+
+    public boolean validateProtectionPassword(String password) {
+        print(passwordHash + "==" + "new Sha256Hash(" + password + ").toHex() which is " + new Sha256Hash(password).toHex())
+        passwordHash == new Sha256Hash(password).toHex()
     }
 }

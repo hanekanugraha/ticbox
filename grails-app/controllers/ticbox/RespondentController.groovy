@@ -105,10 +105,16 @@ class RespondentController {
     }
 
     def takeSurvey = {
-        def survey = surveyService.getSurveyForRespondent(params.surveyId)
-        def principal = SecurityUtils.subject.principal
-        def respondent = User.findByUsername(principal.toString())
-        [survey: survey, respondent: respondent,surveyJoined:SurveyResponse.countByRespondentId(respondent.id)]
+        Survey survey = surveyService.getSurveyForRespondent(params.surveyId)
+        boolean surveyUnlocked = session["unlocked-survey"] == params.surveyId;
+
+        if (!survey.isProtected() || surveyUnlocked) {
+            def principal = SecurityUtils.subject.principal
+            def respondent = User.findByUsername(principal.toString())
+            [survey: survey, respondent: respondent,surveyJoined:SurveyResponse.countByRespondentId(respondent.id)]
+        } else {
+            []
+        }
     }
 
     def getSurvey = {
@@ -328,4 +334,16 @@ class RespondentController {
         }
     }
 
+    def unlockProtectedSurvey() {
+        Survey survey = surveyService.getSurveyForRespondent(params.surveyId)
+        if (survey.validateProtectionPassword(params.password)) {
+            session.putAt("unlocked-survey", params.surveyId)
+            def result = [success: true, message: "success"]
+            render result as JSON
+        } else {
+            session.putAt("unlocked-survey", null)
+            def result = [success: false, message: "failed"]
+            render result as JSON
+        }
+    }
 }
