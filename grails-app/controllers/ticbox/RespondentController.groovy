@@ -176,7 +176,11 @@ class RespondentController {
         def principal = SecurityUtils.subject.principal
         def respondent = User.findByUsername(principal.toString())
         def goldHistory = RespondentGoldHistory.findAllByRespondentIdAndType(respondent.id, RespondentGoldHistory.TYPES.EXPENSE_REDEMPTION)
-        [goldHistory:goldHistory, respondent: respondent,surveyJoined:SurveyResponse.countByRespondentId(respondent.id)]
+
+//        List<RedemptionItemRequest> redemptionItemRequestList = RedemptionItemRequest.findAllByStatusOrStatus(RedemptionItemRequest.STATUS.Success, RedemptionItemRequest.STATUS.Failed)
+        List<RedemptionItemRequest> redemptionItemRequestList = RedemptionItemRequest.findAllByRespondentId(respondent.id)
+
+        [redemptionItemRequestList:redemptionItemRequestList, goldHistory:goldHistory, respondent: respondent,surveyJoined:SurveyResponse.countByRespondentId(respondent.id)]
     }
 
     def surveyHistory = {
