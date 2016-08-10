@@ -41,6 +41,7 @@ class Survey {
 		completionDateTo nullable: true
 		surveyor nullable: true
 		modifiedDate nullable: true
+        passwordHash nullable: true
     }
 
     String completionDateFrom
