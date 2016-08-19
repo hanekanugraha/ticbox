@@ -421,20 +421,29 @@
                         });
                         jQuery('table.scale-table > thead th.rating-label:first', container).remove();
 
+                        var masterRow = jQuery('table.scale-table > tbody > tr.scale-row:first', container);
                         jQuery.each(rowLabels, function (idx, rowLabel) {
-                            var rowLabelCont = jQuery('table.scale-table > tbody > tr.scale-row:first', container).clone();
-                            jQuery('table.scale-table > tbody > tr.scale-row:first', container).after(rowLabelCont);
+                            var rowLabelCont = masterRow.clone();
                             jQuery('div.row-label', rowLabelCont).text(rowLabel);
 
-                            var original = jQuery('td.rating-weight:first', rowLabelCont);
-                            original.find('input[type=radio]').attr('name', i+'_'+idx).val(ratingLabels[ratingLabels.length-1]);
-                            for (var k = 1; k < ratingLabels.length; k++) {
-                                var clone = original.clone();
-                                clone.find('input[type=radio]').attr('name', i+'_'+idx).val(ratingLabels[k-1]);
-                                original.after(clone);
-                            }
+                            var masterCol = jQuery('td.rating-weight:first', rowLabelCont);
+                            masterCol.find('input[type=radio]').attr('name', i+'_'+idx).val(ratingLabels[ratingLabels.length-1]);
+
+                            jQuery.each(ratingLabels, function (idx2, ratingLabel) {
+                                var clone = masterCol.clone();
+                                clone.find('input[type=radio]')
+                                     .attr('name', i+'_'+idx)
+                                     .val(ratingLabel);
+
+                                // Add to the last
+                                jQuery('td.rating-weight:last', rowLabelCont).after(clone);
+                            });
+                            masterCol.remove();
+
+                            // Add this to the last row
+                            jQuery('table.scale-table > tbody > tr.scale-row:last', container).after(rowLabelCont);
                         });
-                        jQuery('table.scale-table > tbody > tr.scale-row:first', container).remove();
+                        masterRow.remove();
 
                         break;
 
