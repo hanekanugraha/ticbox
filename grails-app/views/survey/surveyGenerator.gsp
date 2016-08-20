@@ -83,6 +83,13 @@
                 submitSurvey(questionItems);
             });
             jQuery('#surveyTitle').val('${survey.title}');
+            jQuery('#prevVideoBtn').click(function(e){
+                jQuery('#youtubePlayer').attr('src', 'http://www.youtube.com/embed/' + jQuery('#youtubeIDTxt').val() + '?enablejsapi=1&origin=http://ticbox.co.id');
+            });
+            jQuery('#setVideoModal').on('hidden.bs.modal', function(){
+                jQuery('#youtubePlayer').attr('src','');
+                jQuery('#youtubeIDTxt').val('');
+            });
             jQuery.getJSON('${request.contextPath}/survey/getQuestionItems', {}, function(questionItems){
                 loadSurvey(questionItems);
             });
@@ -291,6 +298,18 @@
                 jQuery('.questionNumber', jQuery(this)).html(idx + 1 + '.');
                 jQuery(this).attr('seq',idx+1);
             });
+            jQuery('.surveyItemActions .add-video', questionComp).click(function(){
+                var vidID = jQuery('.youtubeIDHid', questionComp).val();
+                jQuery('#youtubeIDTxt').val(vidID);
+                jQuery('#youtubePlayer').attr('src', 'http://www.youtube.com/embed/' + vidID + '?enablejsapi=1&origin=http://ticbox.co.id');
+                jQuery('#setVideoModal').modal('show');
+                jQuery('#setVideoBtn').unbind('click').click(function(e){
+                    jQuery('.youtubeIDHid', questionComp).val(jQuery('#youtubeIDTxt').val());
+                    jQuery('#youtubeIDTxt').val('');
+                    jQuery('#youtubePlayer').attr('src', '');
+                    jQuery('#setVideoModal').modal('hide');
+                });
+            });
             jQuery('.surveyItemActions .remove', questionComp).click(function(){
                 var ok = confirm ('<g:message code="survey.deletequestion.label"/>');
                 if (ok == true) {
@@ -382,6 +401,7 @@
                     seq : ++seq,
                     questionStr : questionStr,
                     image : questionImg,
+                    youtubeID : jQuery('.youtubeIDHid', container).val(),
                     answerDetails : answerDetails
                 };
                 console.log('@buildQuestionItemsMap: questionItem = ' + JSON.stringify(questionItem, null, "    "));
@@ -597,6 +617,9 @@
                             break;
                     }
                     jQuery('.questionTextContainer textarea', container).val(item.questionStr);
+                    if(item.youtubeID){
+                        jQuery('.youtubeIDHid', container).val(item.youtubeID);
+                    }
                     if(item.image) {
                         jQuery('.question-row input.image-id', container).val(item.image);
                         jQuery('.question-row img.upload-pic', container).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + item.image);
@@ -900,6 +923,9 @@
             </div>
             <div class="col-xs-1" style="height: 100%">
                 <div class="surveyItemActions" style="position: relative;top: 0;">
+                    <button type="button" class="btn btn-default btn-xs add-video" aria-label="Video" data-toggle="tooltip" data-placement="top" title="Add Video">
+                        <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                    </button>
                     <button type="button" class="btn btn-default btn-xs remove" aria-label="Remove" data-toggle="tooltip" data-placement="top" title="${message([code: 'default.button.delete.label', default: 'Delete'])}">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
@@ -915,6 +941,7 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" class="youtubeIDHid">
     </div>
     <div id="answerTemplate-singleText" class="answerTemplate row" type="${Survey.QUESTION_TYPE.FREE_TEXT}">
         <div class="col col-xs-11 col-xs-offset-1">
@@ -1224,6 +1251,34 @@
             </div>
             <div class="modal-footer">
                 <button id="confirmImageBtn" class="btn btn-light-oak">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="setVideoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="setVideoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span id="setVideoModalLabel" class="modal-title">
+                    Set youtube video
+                </span>
+            </div>
+            <div class="modal-body" style="overflow: auto">
+                <div>
+                    <div class="form-group">
+                        <label for="youtubeIDTxt">Youtube ID</label>
+                        <input type="url" class="form-control" id="youtubeIDTxt" placeholder="Youtube Video ID">
+                    </div>
+                    <div>
+                        <iframe id="youtubePlayer" type="text/html" width="100%" height="300" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="prevVideoBtn" class="btn btn-green">Preview</button>
+                <button id="setVideoBtn" class="btn btn-green">Set Video</button>
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close" default="Close"/></button>
             </div>
         </div>
     </div>
