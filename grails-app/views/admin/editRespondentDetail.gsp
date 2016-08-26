@@ -124,46 +124,46 @@
                     <a href="#change-password-modal" role="button" class="btn btn-sm btn-light-oak" data-toggle="modal"><g:message code="app.change.label"/></a>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Role</label>
-                <div class="col-sm-8">
-                    <g:select name="profileItems_LM_ROLE001"
-                              class="form-control" style="width: auto"
-                              from="${LookupMaster.findByCode('LM_ROLE001')?.values}" optionKey="key" optionValue="value"
-                              value="${respondentDetail?.profileItems['PI_ROLE001']}"
-                              noSelection="['':'-Choose One-']" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Grade</label>
-                <div class="col-sm-8">
-                    <g:select name="profileItems_LM_GRADE001"
-                              class="form-control" style="width: auto"
-                              from="${LookupMaster.findByCode('LM_GRADE001')?.values}" optionKey="key" optionValue="value"
-                              value="${respondentDetail?.profileItems['PI_GRADE001']}"
-                              noSelection="['':'-Choose One-']" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Division</label>
-                <div class="col-sm-8">
-                    <g:select name="profileItems_LM_DIVISION001"
-                      class="form-control" style="width: auto"
-                      from="${LookupMaster.findByCode('LM_DIVISION001')?.values}" optionKey="key" optionValue="value"
-                      value="${respondentDetail?.profileItems['PI_DIVISION001']}"
-                      noSelection="['':'-Choose One-']" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Branch</label>
-                <div class="col-sm-8">
-                    <g:select name="profileItems_LM_BRANCH"
-                              class="form-control" style="width: auto"
-                              from="${LookupMaster.findByCode('LM_BRANCH')?.values}" optionKey="key" optionValue="value"
-                              value="${respondentDetail?.profileItems['PI_BRANCH']}"
-                              noSelection="['':'-Choose One-']" />
-                </div>
-            </div>
+            %{--<div class="form-group">--}%
+                %{--<label class="col-sm-3 control-label">Role</label>--}%
+                %{--<div class="col-sm-8">--}%
+                    %{--<g:select name="profileItems_LM_ROLE001"--}%
+                              %{--class="form-control" style="width: auto"--}%
+                              %{--from="${LookupMaster.findByCode('LM_ROLE001')?.values}" optionKey="key" optionValue="value"--}%
+                              %{--value="${respondentDetail?.profileItems['PI_ROLE001']}"--}%
+                              %{--noSelection="['':'-Choose One-']" />--}%
+                %{--</div>--}%
+            %{--</div>--}%
+            %{--<div class="form-group">--}%
+                %{--<label class="col-sm-3 control-label">Grade</label>--}%
+                %{--<div class="col-sm-8">--}%
+                    %{--<g:select name="profileItems_LM_GRADE001"--}%
+                              %{--class="form-control" style="width: auto"--}%
+                              %{--from="${LookupMaster.findByCode('LM_GRADE001')?.values}" optionKey="key" optionValue="value"--}%
+                              %{--value="${respondentDetail?.profileItems['PI_GRADE001']}"--}%
+                              %{--noSelection="['':'-Choose One-']" />--}%
+                %{--</div>--}%
+            %{--</div>--}%
+            %{--<div class="form-group">--}%
+                %{--<label class="col-sm-3 control-label">Division</label>--}%
+                %{--<div class="col-sm-8">--}%
+                    %{--<g:select name="profileItems_LM_DIVISION001"--}%
+                      %{--class="form-control" style="width: auto"--}%
+                      %{--from="${LookupMaster.findByCode('LM_DIVISION001')?.values}" optionKey="key" optionValue="value"--}%
+                      %{--value="${respondentDetail?.profileItems['PI_DIVISION001']}"--}%
+                      %{--noSelection="['':'-Choose One-']" />--}%
+                %{--</div>--}%
+            %{--</div>--}%
+            %{--<div class="form-group">--}%
+                %{--<label class="col-sm-3 control-label">Branch</label>--}%
+                %{--<div class="col-sm-8">--}%
+                    %{--<g:select name="profileItems_LM_BRANCH"--}%
+                              %{--class="form-control" style="width: auto"--}%
+                              %{--from="${LookupMaster.findByCode('LM_BRANCH')?.values}" optionKey="key" optionValue="value"--}%
+                              %{--value="${respondentDetail?.profileItems['PI_BRANCH']}"--}%
+                              %{--noSelection="['':'-Choose One-']" />--}%
+                %{--</div>--}%
+            %{--</div>--}%
 
             %{--<div class="form-group">--}%
                 %{--<label class="col-sm-3 control-label">Directorate</label>--}%
@@ -207,6 +207,47 @@
                               %{--noSelection="['':'-Choose One-']" />--}%
                 %{--</div>--}%
             %{--</div>--}%
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Gender</label>
+                <div class="col-sm-8">
+                    <g:select name="profileItems_LM_GENDER001"
+                              class="form-control" style="width: auto"
+                              from="${LookupMaster.findByCode('LM_GENDER001')?.values}" optionKey="key" optionValue="value"
+                              value="${respondentDetail?.profileItems['PI_GENDER001']}"
+                              noSelection="['':'-Choose One-']" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Last Education</label>
+                <div class="col-sm-8">
+                    <g:select name="profileItems_LM_EDU001"
+                              class="form-control" style="width: auto"
+                              from="${LookupMaster.findByCode('LM_EDU001')?.values}" optionKey="key" optionValue="value"
+                              value="${respondentDetail?.profileItems['PI_EDU001']}"
+                              noSelection="['':'-Choose One-']" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">City</label>
+                <div class="col-sm-8">
+                    <g:select name="profileItems_LM_CITY001"
+                              class="form-control" style="width: auto"
+                              from="${LookupMaster.findByCode('LM_CITY001')?.values}" optionKey="key" optionValue="value"
+                              value="${respondentDetail?.profileItems['PI_CITY001']}"
+                              noSelection="['':'-Choose One-']" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Telco Provider</label>
+                <div class="col-sm-8">
+                    <g:select name="profileItems_LM_TELCOPROVIDER001"
+                              class="form-control" style="width: auto"
+                              from="${LookupMaster.findByCode('LM_TELCOPROVIDER001')?.values}" optionKey="key" optionValue="value"
+                              value="${respondentDetail?.profileItems['PI_TELCOPROVIDER001']}"
+                              noSelection="['':'-Choose One-']" />
+                </div>
+            </div>
 
         </div>
 

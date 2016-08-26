@@ -64,6 +64,7 @@ class AdminController {
                 } else if (params.type == "Respondent") {
                     def detail = RespondentDetail.findByRespondentId(params.uid)
                     def user = User.findById(params.uid)
+                    System.out.println("USER DETAIL = " + detail.profileItems)
                     def map = [respondentDetail: detail, user: user]
                     render(view: "editRespondentDetail", model: map)
 
@@ -98,6 +99,11 @@ class AdminController {
                         'PI_POSITION001' : params.profileItems_LM_POSITION001,
 
                         'PI_BRANCH' : params.profileItems_LM_BRANCH,
+
+                        'PI_GENDER001' : params.profileItems_LM_GENDER001,
+                        'PI_EDU001' : params.profileItems_LM_EDU001,
+                        'PI_CITY001' : params.profileItems_LM_CITY001,
+                        'PI_TELCOPROVIDER001' : params.profileItems_LM_TELCOPROVIDER001,
                 ]
 
                 respondentService.updateRespondentDetail(user, params)
