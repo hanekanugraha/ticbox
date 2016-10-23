@@ -79,6 +79,9 @@
     var ttlQuestions = 0;
     var questionSeq = 1;
 
+    var questionSeqAndSkipped = {};
+    questionSeqAndSkipped[questionSeq] = false;
+
     jQuery(function () {
 
         jQuery('.enableTooltip').tooltip({
@@ -95,6 +98,7 @@
 
         jQuery('#saveResponse').click(function () {
             var questionItems = buildSurveyResponseMap();
+            console.log(questionItems);
             saveResponse(questionItems, this);
         });
 
@@ -104,10 +108,22 @@
 
                 var lastQuestion= jQuery('#question'+questionSeq).attr('hidden',true);
                 var nextSeq = jQuery('input.item-check:checked',lastQuestion).attr('nextQuestion');
-                if(nextSeq!=null||nextSeq==undefined)
+                prevQuestionSeq = questionSeq;
+
+                if(nextSeq==null||nextSeq==undefined)
                     questionSeq++;
-                else
+                else {
+                    // TODO: clear answers in between jopozdoiza4
                     questionSeq=nextSeq;
+                }
+
+                // Skipped questions are marked as skipped
+                for (var seq = parseInt(prevQuestionSeq) + 1; seq < questionSeq; seq++) {
+                    questionSeqAndSkipped[seq] = true;
+                }
+                questionSeqAndSkipped[questionSeq] = false;
+
+                jQuery('#question'+questionSeq).attr('prevQuestion',prevQuestionSeq);
                 jQuery('#question'+questionSeq).attr('hidden',false);
                 jQuery('#lastQuestion').show();
                 if(questionSeq>=ttlQuestions) {
@@ -122,9 +138,11 @@
 
         jQuery('#lastQuestion').click(function() {
             var currQuestion = jQuery('#question' + questionSeq).attr('hidden', true);
-            var lastSeq = jQuery('input.item-check:checked', currQuestion).attr('lastQuestion');
-            if(lastSeq!=null||lastSeq==undefined)
+            var lastSeq = jQuery('#question' + questionSeq).attr('prevQuestion');
+            if(lastSeq==null||lastSeq==undefined)
                 questionSeq--;
+            else 
+                questionSeq = lastSeq;
 
             jQuery('#question' + questionSeq).attr('hidden', false);
             jQuery('#nextQuestion').show();
@@ -270,11 +288,16 @@
 
     function buildSurveyResponseMap() {
         var responseItem = [];
-        var seq = 0;
 
         jQuery('.surveyItemsContainer > .surveyItemContainer').each(function () {
 
             var container = jQuery(this);
+
+            var seq = parseInt(container.attr('seq'));
+            if (questionSeqAndSkipped[seq]) {
+                return;
+            }
+
             var type = jQuery('.answerTemplate', container).attr('type');
 
             var questionStr = jQuery('.questionTextContainer > div', container).text();
@@ -316,7 +339,7 @@
             }
 
             responseItem.push({
-                seq : ++seq,
+                seq : seq,
                 answerDetails: answerDetails
             });
 
@@ -379,7 +402,7 @@
                                 choiceItemCont.find('.choice-item-pic').css({ display: "none"});
                             }
 
-                            choiceItemCont.find('.item-check').attr('nextQuestion',choiceItem.nextQuestion);
+                            choiceItemCont.find('.item-check').attr('nextQuestion',choiceItem.nextQSeq);
                             jQuery('.choice-items', container).append(choiceItemCont);
                             if(choiceItem.label != 'undefined') {
                                 jQuery('.item-label', choiceItemCont).text(choiceItem.label);
@@ -387,7 +410,7 @@
                             else{
                                 jQuery('.item-label', choiceItemCont).text(choiceItem);
                             }
-                            choiceItemCont.attr('nextquestion',choiceItem.nextQuestion);
+                            choiceItemCont.attr('nextquestion',choiceItem.nextQSeq);
                         });
                         jQuery('.choice-items > .choice-item:first', container).remove();
 
