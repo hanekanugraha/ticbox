@@ -40,9 +40,9 @@
             /*margin-right: 25px;*/
         /*}*/
 
-        .prettycheckbox label {
-            font-weight: normal;
-        }
+        /*.prettycheckbox label {*/
+            /*font-weight: bold;*/
+        /*}*/
 
     </style>
 </head>
@@ -60,51 +60,56 @@
         <div class="module-content">
             <form id="filterCompletionByDate" class="form-horizontal">
             <!-- completion by time -->
-                <div class="row" style="margin-top: 10px; padding: 0 20%; text-align: justify">
-
+                %{--<div class="form-horizontal" style="margin-top: 10px; padding: 0 20%; text-align: justify">--}%
                         <!-- completion filter -->
-                        <div class="profile-item-container form-group" style="position: relative" label="<g:message code="survey.completionbytime.label"/>" type="DATE">
+                        <div class="profile-item-container form-group">
                             <!--i class="remove-filter glyphicon glyphicon-remove clickable" style="position: absolute; top: 5px; right: 7px;"></i-->
-                            <div class="coll-sm-1 form-inLine">
-                                <input id="completionByTimeChk" name="completionByTimeChk" class="check-item prettyChk form-control"
-                                       type="checkbox" style="width: auto">
+                            <div class="col-sm-3">
+                                <g:if test="${survey.completionDateFrom != "" && survey.completionDateTo != ""}">
+                                    <input type="checkbox" id="completionByTimeChk" name="completionByTimeChk" checked class="check-item prettyChk" style="width: auto"
+                                           data-label="${message(code:'app.date.label')}"/>
+                                </g:if>
+                                <g:else>
+                                    <input type="checkbox" id="completionByTimeChk" name="completionByTimeChk" class="check-item prettyChk" style="width: auto"
+                                           data-label="${message(code:'app.date.label')}"/>
+                                </g:else>
                             </div>
-                            <label class="col-sm-3 control-label"><g:message code="app.time.label"/></label>
-
-                            <div class="col-sm-9 form-inline" style="font-weight: normal">
+                            <div class="col-sm-9">
                                 <input id="completionDateFrom" name="completionDateFrom" class="filter-value-from datePicker form-control"
-                                       type="text" placeholder="Start Date" style="width: auto"
-                                       value="${survey.completionDateFrom}">
-                                -
+                                                   type="text" placeholder="Start Date" style="width: auto; display: inline; margin-bottom: 2px;"
+                                                   value="${survey.completionDateFrom}">
+                                <span style="font-weight: bold">&nbsp;<g:message code="app.to.label"/>&nbsp;</span>
                                 <input id="completionDateTo" name="completionDateTo" class="filter-value-to datePicker form-control"
-                                       type="text" placeholder="End Date" style="width: auto"
-                                       value="${survey.completionDateTo}">
-
+                                                   type="text" placeholder="End Date" style="width: auto; display: inline; margin-bottom: 2px;"
+                                                   value="${survey.completionDateTo}">
                             </div>
                         </div>
-                </div>
+                %{--</div>--}%
             <!--/form-->
             <!--/div-->
             <!-- Completion by respondent -->
-            <div class="row" style="margin-top: 10px; padding: 0 20%; text-align: justify">
+            %{--<div class="form-horizontal" style="margin-top: 10px; padding: 0 20%; text-align: justify">--}%
                 <!--form id="filterCompletionByTtlRespondent" class="form-horizontal"-->
-                    <div class="profile-item-container form-group" style="position: relative" label="<g:message code="survey.completionbytotalrespondent.label"/>" type="NUMBER">
-                        <div class="coll-sm-1 form-inLine">
-                            <input id="completionByTtlRespondentChk" name="completionByTtlRespondentChk" class="check prettyChk form-control"
-                                   type="checkbox">
+                    <div class="profile-item-container form-group">
+                        <div class="col-sm-3">
+                            <g:if test="${survey.ttlRespondent != ""}">
+                                <input type="checkbox" id="completionByTtlRespondentChk" name="completionByTtlRespondentChk" checked class="check prettyChk"
+                                       data-label="${message(code:'app.totalrespondent.label')}"/>
+                            </g:if>
+                            <g:else>
+                                <input type="checkbox" id="completionByTtlRespondentChk" name="completionByTtlRespondentChk" class="check prettyChk"
+                                       data-label="${message(code:'app.totalrespondent.label')}"/>
+                            </g:else>
                         </div>
-                        <label class="col-sm-3 control-label"><g:message code="app.totalrespondent.label"/></label>
-
-                        <div class="col-sm-9 form-inline" style="font-weight: normal">
+                        <div class="col-sm-9">
                             <input id="completionByTtlRespondent" name="completionByTtlRespondent" class="filter-value form-control"
-                                   type="number" placeholder="0" min="0" style="width: auto"
-
+                                   type="number" placeholder="0" min="0" style="width: auto; display: inline"
                                    value="${survey.ttlRespondent}">
                             <span id="errmsg" style="display: none;"><g:message code="app.digitonly.label"/></span>
                         </div>
                     </div>
                 <!--/form-->
-            </div>
+            %{--</div>--}%
             </form>
         </div>
 

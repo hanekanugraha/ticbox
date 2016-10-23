@@ -1,4 +1,6 @@
 function show_loader() {
+    //reset previous loaders
+    hide_loader();
     // add the overlay with loading image to the page
     var over = '<div id="loader-overlay">' +
         '<img id="loader" src="../images/gears.gif">' +

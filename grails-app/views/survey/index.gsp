@@ -352,26 +352,56 @@
                 </span>
             </div>
             <div class="modal-body" style="overflow: auto">
-                <g:form name="createSurveyForm" controller="survey" action="createSurvey" class="form-horizontal" role="form">
-                    <label for="surveyName"><g:message code="survey.uniquename.label"/></label>
-                    <!--input type="text" class="form-control" id="surveyName" name="surveyName" param-of="createSurveyBtn"-->
-                    <g:textField name="surveyName" class="form-control"/>
-	                 <table>    
-		                 <tr>                   
-		                   	<td><g:radio id="surveyCreationRadio1" name="surveyCreationRadio" value="1" checked="true"/></td>
-		                   	<td colspan="2"><label class="radio" style="font-weight: normal; margin: 10px 0 15px 0"><g:message code="admin.index.survey.createnew"/></label></td>                   	
-		                 </tr>
-		                 <tr>                       
-							<td><g:radio id="surveyCreationRadio2" name="surveyCreationRadio" value="2"/></td>
-							<td colspan="2"><label class="radio" style="font-weight: normal; margin: 10px 0 15px 0"><g:message code="admin.index.survey.editexisting"/></label></td>
-						</tr>
-						<tr id="allSurveysListTr">
-							<td></td>
-							<td><label class="radio" style="font-weight: normal; margin: 10px 0 15px 0"><g:message code="admin.index.survey.yoursurveylist"/>&nbsp;</label></td>
-							<td><g:select id="allSurveysListSelect" name="allSurveysListSelect" from="${allSurveys}" optionKey="surveyId" optionValue="name" noSelection="${["":"${message(code: 'app.selectone.label')}"]}" class="form-control" 
-									  style="min-width: 20%; width: auto;"/></td>
-					  	</tr>
-					</table>
+                <g:form name="createSurveyForm" controller="survey" action="createSurvey" class="form-horizontal" role="form" style="position: relative">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <label for="surveyName"><g:message code="survey.uniquename.label"/></label>
+                            <g:textField name="surveyName" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <label><g:message code="survey.creationmethod.label"/></label>
+                            <div class="radio">
+                                <label>
+                                    <g:radio id="surveyCreationRadio1" name="surveyCreationRadio" value="1" checked="true"/>
+                                    <g:message code="admin.index.survey.createnew"/>
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <g:radio id="surveyCreationRadio2" name="surveyCreationRadio" value="2"/>
+                                    <g:message code="admin.index.survey.editexisting"/>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="allSurveysListForm">
+                        <div class="col-sm-offset-1 col-sm-11">
+                            <div id="allSurveysListTr">
+                                <label for="allSurveysListSelect"><g:message code="admin.index.survey.yoursurveylist" class="control-label"/></label>
+                                <g:select id="allSurveysListSelect" name="allSurveysListSelect" from="${allSurveys}" optionKey="surveyId" optionValue="name" noSelection="${["":"${message(code: 'app.selectone.label')}"]}" class="form-control" style="min-width: 70%; width: auto;"/>
+                            </div>
+                        </div>
+                    </div>
+                         %{--
+                        <table>
+                             <tr>
+                                <td><g:radio id="surveyCreationRadio1" name="surveyCreationRadio" value="1" checked="true"/></td>
+                                <td colspan="2"><label class="radio" style="font-weight: normal; margin: 10px 0 15px 0"><g:message code="admin.index.survey.createnew"/></label></td>
+                             </tr>
+                             <tr>
+                                <td><g:radio id="surveyCreationRadio2" name="surveyCreationRadio" value="2"/></td>
+                                <td colspan="2"><label class="radio" style="font-weight: normal; margin: 10px 0 15px 0"><g:message code="admin.index.survey.editexisting"/></label></td>
+                            </tr>
+                            <tr id="allSurveysListTr">
+                                <td></td>
+                                <td><label class="radio" style="font-weight: normal; margin: 10px 0 15px 0"><g:message code="admin.index.survey.yoursurveylist"/>&nbsp;</label></td>
+                                <td><g:select id="allSurveysListSelect" name="allSurveysListSelect" from="${allSurveys}" optionKey="surveyId" optionValue="name" noSelection="${["":"${message(code: 'app.selectone.label')}"]}" class="form-control"
+                                          style="min-width: 20%; width: auto;"/></td>
+                            </tr>
+                        </table>
+                        --}%
                 </g:form>
             </div>
             <div class="modal-footer">
@@ -559,12 +589,12 @@
     	validator.resetForm();
         $('#surveyName').val('');
         $('#surveyCreationRadio1').prop("checked", true);
-		$('#allSurveysListTr').hide();        
+		$('#allSurveysListForm').hide();
     });
 
     $(document).ready(function() {
 
-    	jQuery('#allSurveysListTr').hide();
+    	jQuery('#allSurveysListForm').hide();
     	
         // Validations
         $('#createSurveyForm').validate({
@@ -587,11 +617,11 @@
 			}
         });
 
-        $(document).on( "change", "input[name=surveyCreationRadio]", function() { 
-				if(this.value == '1') {
-					jQuery('#allSurveysListTr').hide();
+        $(document).on( "change", "input[name=surveyCreationRadio]", function() {
+				if(this.value == '2') {
+					jQuery('#allSurveysListForm').show();
 				} else {
-					jQuery('#allSurveysListTr').show();
+					jQuery('#allSurveysListForm').hide();
 				}
 		
              } );

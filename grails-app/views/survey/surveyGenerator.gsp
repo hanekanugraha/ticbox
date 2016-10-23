@@ -160,6 +160,7 @@
                     jQuery('.choice-type', answerComp).val('single');
                     changeTypeIconClass = 'single-choice-icon';
                     jQuery('.question-action-btn.upload-pic-icon', answerComp).click(function(){
+                        //attached to the first answer row
                         openImageUploader(jQuery(this));
                     });
                     jQuery('.question-next',answerComp).attr('answerid',answerId);
@@ -198,6 +199,7 @@
                             jQuery('#singleQuestionNextModal').modal('show');
                         });
                         jQuery('.question-action-btn.upload-pic-icon', newItem).click(function(){
+                            //attached to the new answer row
                             openImageUploader(jQuery(this));
                         });
                     });
@@ -277,22 +279,11 @@
                 pureQuestionTemplate = jQuery('#questionTemplate').clone();
             }
             var questionComp = pureQuestionTemplate.clone().removeAttr('id').append(answerComp).appendTo('.surveyItemsContainer');
-            jQuery('.question-action-btn.upload-pic-icon', questionComp).click(function(){
+            jQuery('.question-action-btn.upload-pic-icon:first', questionComp).click(function(){
+                //attached to the question level
                 openImageUploader(jQuery(this));
             });
-            // Sanchez
-            // An uploader for this button
-            /*new qq.FileUploader({
-             element: jQuery('.question-level-upload .image-uploader', questionComp)[0],
-             action: '/ticbox/survey/uploadImageToString',
-             onComplete: function(id, fileName, responseJSON) {
-             jQuery('.question-level-upload img.pic', questionComp).attr('src', 'data:image;base64,' + responseJSON.img);
-             jQuery('.question-level-upload input[type="hidden"]', questionComp).val(responseJSON.fid);
-             jQuery('.qq-upload-list', questionComp).empty()
-             var curWidth = parseInt(jQuery('.questionTextContainer', questionComp).css('width'));
-             jQuery('.questionTextContainer').css('width', (curWidth - 150) + 'px');
-             }
-             });*/
+
             jQuery('.change-question-type-btn', questionComp).addClass(changeTypeIconClass);
             jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
                 jQuery('.questionNumber', jQuery(this)).html(idx + 1 + '.');
@@ -562,27 +553,6 @@
                             jQuery('.choice-items > .choice-item:first', container).remove();
                             jQuery('select.choice-type', container).val(choiceType);
                             break;
-                            %{--case '${Survey.QUESTION_TYPE.CHOICE_MULTIPLE}' :--}%
-                            %{--var choiceItems = answerDetails.choiceItems;--}%
-                            %{--var choiceType = answerDetails.choiceType;--}%
-                            %{--container = constructQuestionItem(answerDetails.type, choiceType);--}%
-                            %{--jQuery.each(choiceItems, function(idx, choiceItem){--}%
-                            %{--var choiceItemCont = jQuery('.choice-items > .choice-item:first', container).clone();--}%
-                            %{--jQuery('.choice-items', container).append(choiceItemCont);--}%
-                            %{--jQuery('.item-label', choiceItemCont).val(choiceItem.label);--}%
-                            %{--jQuery('input.image-id', choiceItemCont).val(choiceItem.image);--}%
-                            %{--jQuery('img.upload-pic', choiceItemCont).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + choiceItem.image);--}%
-                            %{--jQuery('img.upload-pic', choiceItemCont).css("display:inline");--}%
-                            %{--jQuery('input.item-check', choiceItemCont).click(function(){--}%
-                            %{--choiceItemCont.remove();--}%
-                            %{--});--}%
-                            %{--jQuery('.question-action-btn.upload-pic-icon', choiceItemCont).click(function(){--}%
-                            %{--openImageUploader(jQuery(this));--}%
-                            %{--});--}%
-                            %{--});--}%
-                            %{--jQuery('.choice-items > .choice-item:first', container).remove();--}%
-                            %{--jQuery('select.choice-type', container).val(choiceType);--}%
-                            %{--break;--}%
                         case '${Survey.QUESTION_TYPE.FREE_TEXT}' :
                             var questionPlaceHolder = answerDetails.questionPlaceholder;
                             container = constructQuestionItem(answerDetails.type);
@@ -750,30 +720,96 @@
                 jQuery('#surveyPreviewModal').find('.modal-body').append(questionTemplate);
             });
         }
+
+        function isAllowedExtension(fileName){
+            ext_options = {
+                allowedExtensions: []
+            }
+            var ext = (-1 !== fileName.indexOf('.')) ? fileName.replace(/.*[.]/, '').toLowerCase() : '';
+            var allowed = ext_options.allowedExtensions;
+
+            if (!allowed.length){return true;}
+
+            for (var i=0; i<allowed.length; i++){
+                if (allowed[i].toLowerCase() == ext){ return true; }
+            }
+            return false;
+        }
+
+        function validateFile(file){
+            valid_options = {
+                sizeLimit: 512000,
+                minSizeLimit: 0
+            }
+            var name, size;
+
+            if (file.value){
+                // it is a file input
+                // get input value and remove path to normalize
+                name = file.value.replace(/.*(\/|\\)/, "");
+                size = file.size;
+            } else {
+                // fix missing properties in Safari
+                name = file.fileName != null ? file.fileName : file.name;
+                size = file.fileSize != null ? file.fileSize : file.size;
+            }
+
+            if (!isAllowedExtension(name)){
+                return false;
+            } else if (size === 0) {
+                return false;
+            } else if (size && valid_options.sizeLimit && size > valid_options.sizeLimit){
+                return false;
+            } else if (size && size < valid_options.minSizeLimit){
+                return false;
+            }
+            return true;
+        }
+
         function openImageUploader(item) {
             //galleryImageUploader(item);
             //or
             tempContImageUploader(item);
         }
+
         function tempContImageUploader(item) {
             var result = jQuery('#au-surveyItemImageUploader .qq-upload-button > input').attr('accept', 'image/*').trigger('click').change(function(){show_loader();});
-            jQuery('#confirmImageBtn').unbind('click').click(function(){
-                var modal = jQuery('#previewImageModal');
-                var img = jQuery('img.upload-pic', item);
-                var imageId = jQuery('.image-id', item);
+
+            jQuery('#au-surveyItemImageUploader .qq-upload-button > input').change(function(){
+                for (var i=0; i<this.files.length; i++){
+                    var valid = validateFile(this.files[i]);
+                    if (!valid){
+                        hide_loader();
+                    }
+                }
+            });
+
+            jQuery('#confirmImageBtn').unbind('click').click(function () {
                 logoId = jQuery('#uploadedImageResId').val();
                 if (logoId) {
+                    var img = jQuery('img.upload-pic', item);
+                    var imageId = jQuery('.image-id', item);
+                    var modal = jQuery('#previewImageModal');
+
                     img.attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + logoId);
-                    img.css("display","inline");
+                    img.css("display", "inline");
                     imageId.val(logoId);
                     modal.modal('hide');
                 }
+                //reset
+                jQuery('#uploadedImageResId').val('');
+                jQuery('img.logoImg', modal).attr('src', '');
                 hide_loader();
             });
-            jQuery('#confirmImageCloseBtn').unbind('click').click(function() {
+            jQuery('#confirmImageCloseBtn').unbind('click').click(function () {
+                //reset
+                var modal = jQuery('#previewImageModal');
+                jQuery('#uploadedImageResId').val('');
+                jQuery('img.logoImg', modal).attr('src', '');
                 hide_loader();
             });
         }
+
         function galleryImageUploader(item) {
             var modal = jQuery('#chooseImageModal');
             var img = jQuery('img.upload-pic', item);
@@ -954,10 +990,7 @@
                 <input class="item-check" type="checkbox" checked style="height: 34px">
                 <input class="item-label form-control" type="text" placeholder="${message([code: 'message.type-to-set-label', default: 'Type here to set label..'])}" maxlength="100">
                 <div class="col" style="float: left; padding: 1px 0 0 5px">
-                    %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
-                    %{--<div style="width: 20px; height: 100%; cursor: pointer; background: transparent url('../images/ticbox/06_Question_UploadIcon_Picture.png') no-repeat center"></div>--}%
                     <div class="question-action-btn upload-pic-icon clickable" style="margin: 0;" data-toggle="tooltip" title="${message([code: 'app.image.add'])}">
-                        %{--<span class="media-thumbnail"></span>--}%
                         <img class="media-object img-responsive pic upload-pic" src="../images/ticbox/06e_Question_UploadIcon_Picture.png" style="width: auto; height: 30px;"/>
                         <input type="hidden" class="image-id" val=""/>
                     </div>
@@ -981,10 +1014,7 @@
                 <input class="item-check" type="checkbox" checked style="height: 34px">
                 <input class="item-label form-control" type="text" placeholder="${message([code: 'message.type-to-set-label', default: 'Type here to set label..'])}" maxlength="100">
                 <div class="col" style="float: left; padding: 1px 0 0 5px">
-                    %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
-                    %{--<div style="width: 20px; height: 100%; cursor: pointer; background: transparent url('../images/ticbox/06_Question_UploadIcon_Picture.png') no-repeat center"></div>--}%
                     <div class="question-action-btn upload-pic-icon clickable" style="margin: 0;" data-toggle="tooltip" title="${message([code: 'app.image.add'])}">
-                        %{--<span class="media-thumbnail"></span>--}%
                         <img class="media-object img-responsive pic upload-pic" src="../images/ticbox/06e_Question_UploadIcon_Picture.png" style="width: auto; height: 30px;"/>
                         <input type="hidden" class="image-id" val=""/>
                     </div>
@@ -1243,7 +1273,7 @@
             </div>
             <div class="modal-body" style="overflow: auto">
                 <div class="logoWrapper col">
-                    <div class="col clickable" style="border: 1px solid #cccccc; border-radius: 10px; width: 100%">
+                    <div class="col" style="border: 1px solid #cccccc; border-radius: 10px; width: 100%">
                         <img class="logoImg" src="" style="width: 100%; border-radius:10px">
                         <input type="hidden" id="uploadedImageResId"/>
                     </div>
