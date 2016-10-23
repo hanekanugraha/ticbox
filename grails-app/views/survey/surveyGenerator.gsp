@@ -23,7 +23,7 @@
         /*max-width: 70px;*/
     }
     </style>
-
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'skiplogic.js')}"></script>
     <script type="text/javascript">
         var ttlQuestions = 0;
         var answerId=0;
@@ -297,6 +297,10 @@
             jQuery('.surveyItemsContainer > .surveyItemContainer').each(function(idx){
                 jQuery('.questionNumber', jQuery(this)).html(idx + 1 + '.');
                 jQuery(this).attr('seq',idx+1);
+
+                var now = new Date();
+                var questionTempId = 'q' + now.getHours() + now.getMinutes() + now.getSeconds() + now.getMilliseconds() + Math.floor(Math.random() * 1000);
+                jQuery(this).attr('id', questionTempId);
             });
             jQuery('.surveyItemActions .add-video', questionComp).click(function(){
                 var vidID = jQuery('.youtubeIDHid', questionComp).val();
@@ -310,6 +314,27 @@
                     jQuery('#setVideoModal').modal('hide');
                 });
             });
+
+
+            if (typeof String.prototype.endsWith !== 'function') {
+                String.prototype.endsWith = function(suffix) {
+                    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+                };
+            }
+
+            $('.surveyItemActions .question-settings', questionComp).click(function() {
+                var skipLogicSettings = new SkipLogicSettings($(this).parents('.surveyItemContainer').attr('id'));
+                skipLogicSettings.render();
+
+                $('#questionSettingsModal').modal('show');
+
+                $('#saveSettingsBtn').unbind('click');
+                $('#saveSettingsBtn').click(function() {
+                    skipLogicSettings.onSave();
+                    $('#questionSettingsModal').modal('hide');
+                });
+            });
+
             jQuery('.surveyItemActions .remove', questionComp).click(function(){
                 var ok = confirm ('<g:message code="survey.deletequestion.label"/>');
                 if (ok == true) {
@@ -356,11 +381,12 @@
                             var item = jQuery(this);
                             var choiceItem = {};
                             choiceItem['label'] = jQuery('input.item-label', item).val();
+                            choiceItem['nextQSeq'] = questionJsIdToSeq(jQuery('input.item-label', item).attr('data-nextQuestionJsId'));
                             choiceItem['image'] = jQuery('input.image-id', item).val();
                             answerDetails['choiceItems'].push(choiceItem);
                         });
                         answerDetails['choiceType'] = jQuery('select.choice-type', container).val();
-                        console.log('@buildQuestionItemsMap: CHOICE_MULTIPLE = ' + JSON.stringify(answerDetails, null, "    "));
+                        // console.log('@buildQuestionItemsMap: CHOICE_MULTIPLE = ' + JSON.stringify(answerDetails, null, "    "));
                         break;
                     case '${Survey.QUESTION_TYPE.CHOICE_SINGLE}' :
                         console.log('~ type is single choice');
@@ -369,8 +395,8 @@
                             var item = jQuery(this);
                             var choiceItem = {};
                             choiceItem['label'] = jQuery('input.item-label', item).val();
+                            choiceItem['nextQSeq'] = questionJsIdToSeq(jQuery('input.item-label', item).attr('data-nextQuestionJsId'));
                             choiceItem['rule'] = 'selected';
-                            choiceItem['nextQuestion'] = jQuery('input.item-seq', item).val();
                             choiceItem['label'] = jQuery('input.item-label', item).val();
                             choiceItem['image'] = jQuery('input.image-id', item).val();
                             answerDetails['choiceItems'].push(choiceItem);
@@ -532,6 +558,9 @@
                                 var choiceItemCont = jQuery('.choice-items > .choice-item:first', container).clone();
                                 jQuery('.choice-items', container).append(choiceItemCont);
                                 jQuery('.item-label', choiceItemCont).val(choiceItem.label);
+                                if (choiceItem.nextQSeq) {
+                                    jQuery('.item-label', choiceItemCont).attr('data-nextQuestionSeq', choiceItem.nextQSeq);
+                                }
                                 jQuery('.item-seq', choiceItemCont).val(choiceItem.nextQuestion);
                                 if (choiceItem.image) {
                                     jQuery('input.image-id', choiceItemCont).val(choiceItem.image);
@@ -625,6 +654,13 @@
                         jQuery('.question-row img.upload-pic', container).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + item.image);
                         jQuery('.question-row img.upload-pic', container).css("display:inline");
                     }
+                });
+
+                // Replace seq with JS id
+                $('input[data-nextQuestionSeq]').each(function(index, item) {
+                    var nextSeq = $(item).attr('data-nextQuestionSeq');
+                    $(item).removeAttr('data-nextQuestionSeq');
+                    $(item).attr('data-nextQuestionJsId', seqToQuestionJsId(nextSeq));
                 });
             }
         }
@@ -929,12 +965,16 @@
                     <button type="button" class="btn btn-default btn-xs remove" aria-label="Remove" data-toggle="tooltip" data-placement="top" title="${message([code: 'default.button.delete.label', default: 'Delete'])}">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs up" aria-label="Move Up" style="color: #97b11a;" data-toggle="tooltip" data-placement="top" title="${message([code: 'default.button.delete.label', default: 'Move Up'])}">
+                    <button type="button" class="btn btn-default btn-xs up" aria-label="Move Up" style="color: #97b11a;" data-toggle="tooltip" data-placement="top" title="${message([code: 'default.button.move_up.label', default: 'Move Up'])}">
                         <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs down" aria-label="Move Down" style="color: #97b11a;" data-toggle="tooltip" data-placement="top" title="${message([code: 'default.button.delete.label', default: 'Move Down'])}">
+                    <button type="button" class="btn btn-default btn-xs down" aria-label="Move Down" style="color: #97b11a;" data-toggle="tooltip" data-placement="top" title="${message([code: 'default.button.move_down.label', default: 'Move Down'])}">
                         <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
                     </button>
+                    <button type="button" class="btn btn-default btn-xs question-settings" aria-label="Settings" data-toggle="tooltip" data-placement="top" title="Settings">
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                    </button>
+
                     %{--<div class="remove question-action-btn delete-question-icon clickable"></div>--}%
                     %{--<div class="up question-action-btn up-question-icon clickable" style="margin-right: 0px"></div>--}%
                     %{--<div class="down question-action-btn down-question-icon clickable" style="margin-right: 0px"></div>--}%
@@ -980,6 +1020,7 @@
             <div class="choice-item row" style="margin-bottom: 3px">
                 <input class="item-check" type="checkbox" checked style="height: 34px">
                 <input class="item-label form-control" type="text" placeholder="${message([code: 'message.type-to-set-label', default: 'Type here to set label..'])}" maxlength="100">
+                <input type="hidden" name="nextQuestionJsId" />
                 <div class="col" style="float: left; padding: 1px 0 0 5px">
                     %{--<button class="btn" data-toggle="tooltip" data-placement="right" title="Upload picture"><i class="icon-camera"></i></button>--}%
                     %{--<div style="width: 20px; height: 100%; cursor: pointer; background: transparent url('../images/ticbox/06_Question_UploadIcon_Picture.png') no-repeat center"></div>--}%
@@ -1279,6 +1320,64 @@
                 <button id="prevVideoBtn" class="btn btn-green">Preview</button>
                 <button id="setVideoBtn" class="btn btn-green">Set Video</button>
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.close" default="Close"/></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Question settings -->
+<div id="questionSettingsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="questionSettingsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&#10006;</button>
+                <span id="questionSettingsLabel" class="modal-title">
+                    Question settings
+                </span>
+            </div>
+            <div class="modal-body" style="overflow: auto">
+
+            <!-- Start of skip logic -->
+            <div>
+                <h2>Skip Logic</h2>
+                <p>This is to skip irrelevant questions ahead when a certain answer is choosen.</p>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Answer</th><th></th><th>Target Question</th><th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="skipLogic-existingRuleDisplay">
+                        <tr>
+                            <td class="skipLogic-answerDisplay">Punya</td><td><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td><td data-toggle="tooltip" title="Berapa banyak yang Anda punya?" class="skipLogic-questionDisplay">Question #12</td><td><button type="submit" class="btn btn-danger skipLogic-removeBtn">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="border-style: solid; border-color: #ddd; border-width: 1px; border-radius: 4px 4px 0 0; margin-right: 0; margin-left: 0; padding: 15px 15px 15px;">
+                    <form action="http://google.com">
+                    <div>
+                        <p id="skipLogic-questionText">"Apakah Anda memiliki hewan piaraan di rumah?"</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">On answering</label>
+                        <select class="form-control" id="skipLogic-answerSelect"><option value="Punya">Punya</option></select>
+                        <span id="helpBlock2" class="help-block">When this answer is chosen, then jump to the question below</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Jump to question</label>
+                        <select class="form-control" id="skipLogic-nextQuestionSelect"><option value="11">11. Berapa banyak yang Anda punya?</option></select>
+                    </div>
+                    </form>
+                    <button class="btn btn-default" id="skipLogic-addBtn">Add</button>
+                </div>
+            </div>
+            <!-- End of skip logic -->
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel" default="Cancel"/></button>
+                <button id="saveSettingsBtn" class="btn btn-green">Save</button>
             </div>
         </div>
     </div>
