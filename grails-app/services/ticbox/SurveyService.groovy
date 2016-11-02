@@ -583,7 +583,7 @@ class SurveyService {
         SurveyResponse surveyResponse = SurveyResponse.findBySurveyIdAndRespondentId(surveyId, respondentId) ?: new SurveyResponse(surveyId: surveyId, respondentId: respondentId).save()
         DBObject dbObject = (DBObject) com.mongodb.util.JSON.parse(responseJSON)
         surveyResponse["response"] = dbObject
-        println(saveResponse);
+//        println(saveResponse);
         surveyResponse.save()
     }
     def saveResponseFreeSurvey(String responseJSON, String surveyId){
