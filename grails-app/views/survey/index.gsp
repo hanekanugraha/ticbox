@@ -5,7 +5,7 @@
   Time: 10:45 PM
 --%>
 
-<%@ page import="ticbox.Survey" contentType="text/html;charset=UTF-8" %>
+<%@ page import="ticbox.Survey; ticbox.ProfileItem; ticbox.LookupMaster" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="surveyor"/>
@@ -157,6 +157,276 @@
     <div id="surveyHeader" class="module-header">
         <div class="title"><g:message code="ticbox.admin.survey.header"/></div>
     </div>
+
+    <a href="#" id="showFilterBtn" onclick="showFilter()">Show filter</a>
+    <script>
+    function showFilter() {
+        $('#filter').toggle('slow');
+        $('#showFilterBtn').hide();
+    }
+
+    $(document).ready(function() {
+        var filterFound = false;
+
+        var nameFilter = '${nameFilter}';
+        if (nameFilter != '') {
+            $("#keywords").val(nameFilter);
+            filterFound = true;
+        }
+
+        var respondentFilter = ${respondentFilter};
+        if (respondentFilter) {
+            for (var code in respondentFilter) {
+                populateFilterComponent(code, respondentFilter[code]);
+            };
+            filterFound = true;
+        }
+
+        if (filterFound) {
+            showFilter();
+        }
+    });
+    </script>
+
+    <div id="filter" style="display: none; width: 500px;">
+        <h2>Filter</h2>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Name</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="keywords" name="name" placeholder="Keywords">
+                </div>
+            </div>
+
+<!--
+            <div class="form-group" class="hidden">
+                <label class="col-sm-3 control-label">Division</label>
+                <div class="col-sm-9">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="inlineCheckbox1" value="option1"> IT
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="inlineCheckbox2" value="option2"> Manager
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="inlineCheckbox3" value="option3"> HR
+                    </label>
+                </div>
+            </div>
+-->
+            <div id="filterForm">
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Respondent filter</label>
+                <div class="col-sm-7">
+                    <select id="respondentFilterComponents" class="form-control">
+                        <g:each in="${profileItems}" var="profileItem">
+                            <option value="${profileItem.code}">${profileItem.label}</option>
+                        </g:each>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <button id="addFilterBtn" class="btn btn-default">
+                        <i class="glyphicon glyphicon-plus"></i>
+                    </button>
+                </div>
+            </div>
+        
+            <script>
+            // Copied from respondentFilter.gsp
+            $('#addFilterBtn').click(function () {
+                var filterComponentCode = jQuery('#respondentFilterComponents').val();
+                populateFilterComponent(filterComponentCode);
+                return false;
+            });
+
+            // Copied from respondentFilter.gsp
+            function populateFilterComponent(filterComponentCode, filter) {
+                var template = jQuery('#filterTemplates').find('.form-group[code="' + filterComponentCode + '"]');
+
+                if (template.length > 0) {
+                    jQuery('#filterForm').append(template);
+
+                    jQuery('.remove-filter', template).click(function () {
+                        jQuery(this).parent().appendTo(jQuery('#filterTemplates'));
+                    });
+
+                    if (filter) {
+                        switch (filter.type) {
+
+                            case '${ProfileItem.TYPES.STRING}' :
+
+                                jQuery('.filter-value', template).val(filter.val);
+
+                                break;
+
+                            case '${ProfileItem.TYPES.NUMBER}' :
+
+                                jQuery('.filter-value-from', template).val(filter.valFrom);
+                                jQuery('.filter-value-to', template).val(filter.valTo);
+
+                                break;
+
+                            case '${ProfileItem.TYPES.CHOICE}' :
+                                var filter_ = filter;
+                                jQuery('input.check-item', template).each(function () {
+                                    var chkBox = this;
+                                    jQuery.each(filter_.checkItems, function (idx, item) {
+                                        if (item instanceof Object) {
+                                            if (jQuery(chkBox).val() == item.key) {
+                                                //jQuery(chkBox).prop('checked', true);
+                                                jQuery(chkBox).parent().find('a').trigger('click');
+                                            }
+                                        } else {
+                                            if (jQuery(chkBox).val() == item) {
+                                                //jQuery(chkBox).prop('checked',true);
+                                                jQuery(chkBox).parent().find('a').trigger('click');
+                                            }
+                                        }
+                                    });
+                                })/*.prettyCheckable()*/;
+
+                                break;
+
+                            case '${ProfileItem.TYPES.LOOKUP}' :
+                                var filter_ = filter;
+                                jQuery('input.check-item', template).each(function () {
+                                    var chkBox = this;
+                                    jQuery.each(filter_.checkItems, function (idx, item) {
+                                        if (item instanceof Object) {
+                                            if (jQuery(chkBox).val() == item.key) {
+                                                //jQuery(chkBox).prop('checked', true);
+                                                jQuery(chkBox).parent().find('a').trigger('click');
+                                            }
+                                        } else {
+                                            if (jQuery(chkBox).val() == item) {
+                                                //jQuery(chkBox).prop('checked', true);
+                                                jQuery(chkBox).parent().find('a').trigger('click');
+                                            }
+                                        }
+                                    });
+                                })/*.prettyCheckable()*/;
+
+                                break;
+
+                            case '${ProfileItem.TYPES.DATE}' :
+
+                                jQuery('.filter-value-from', template).val(filter.valFrom);
+                                jQuery('.filter-value-to', template).val(filter.valTo);
+
+                                break;
+
+                            default :
+                                // Ultra simple
+                                var filter_ = filter;
+                                jQuery('input.check-item', template).each(function () {
+                                    var chkBox = this;
+                                    jQuery.each(filter_, function(idx, item) {
+                                        if (jQuery(chkBox).val() == item) {
+                                            jQuery(chkBox).parent().find('a').trigger('click');
+                                        }
+                                    });
+                                })/*.prettyCheckable()*/;
+                                break;
+
+                        }
+                    }
+                }
+            }
+            
+            </script>
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <input type="submit" class="btn btn-default" value="Search" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+<!-- Copied from respondentFilter -->
+    <form id="filterTemplates" class="form-horizontal" style="display: none">
+        <g:each in="${profileItems}" var="profileItem">
+            <div class="profile-item-container form-group" code="${profileItem.code}" type="${profileItem.type}" label="${profileItem.label}" style="position: relative">
+                <i class="remove-filter glyphicon glyphicon-remove clickable" style="position: absolute; top: 5px; right: 7px;"></i>
+                <label class="col-sm-3 control-label" for="${profileItem.code}">${profileItem.label}</label>
+
+                <div class="col-sm-9 form-inline" style="font-weight: normal">
+                    <g:if test="${profileItem.type == ticbox.ProfileItem.TYPES.STRING}">
+                        <g:if test="${profileItem.row > 1}">
+                            <textArea class="filter-value form-control" id="${profileItem.code}" name="${profileItem.code}"
+                                      rows="${profileItem.row}" cols="30" maxlength="${profileItem.max}"
+                                      placeholder="${profileItem.placeHolder}"
+                                      style="width: 85%; resize: none"></textArea>
+                        </g:if>
+                        <g:else>
+                            <input class="filter-value form-control" id="${profileItem.code}" name="${profileItem.code}" type="text"
+                                   class="" max="${profileItem.max}" placeholder="${profileItem.placeHolder}"/>
+                        </g:else>
+                    </g:if>
+                    <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.DATE}">
+                        <input id="${profileItem.code}" name="${profileItem.code}" type="text" style="width: auto"
+                               class="filter-value-from datePicker form-control" placeholder="from"> - <input type="text" style="width: auto"
+                                                                                                 class="filter-value-to datePicker form-control"
+                                                                                                 placeholder="to">
+                    </g:elseif>
+                    <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.NUMBER}">
+                        <input class="filter-value-from form-control" id="${profileItem.code}" name="${profileItem.code}" type="text" style="width: auto"
+                               placeholder="from"> - <input class="filter-value-to form-control" type="text" style="width: auto" id="${profileItem.code}_1"
+                                                            placeholder="to"> ${profileItem.unit}
+                    </g:elseif>
+                    <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.LOOKUP}">
+                        <g:each in="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" var="item">
+                        %{--<label class="checkbox">
+                                    <input id="${profileItem.code}_${item.key}" class="check-item" type="checkbox" name="${profileItem.code}" value="${item.key}" label="${item.value}"> ${item.value}
+                                </label>--}%
+                            <input id="${profileItem.code}_${item.key}" class="check-item prettyChk form-control" type="checkbox"
+                                   data-label="${item.value}" name="${profileItem.code}" value="${item.key}"
+                                   label="${item.value}">
+                        </g:each>
+                    </g:elseif>
+
+                    <g:elseif test="${profileItem.type == ticbox.ProfileItem.TYPES.CHOICE}">
+                        <g:if test="${profileItem.items}">
+                            <g:each in="${profileItem.items}" var="item">
+                            %{--<label class="checkbox">
+                                        <input id="${profileItem.code}_${item}" class="check-item" type="checkbox" name="${profileItem.code}" value="${item}"> ${item}
+                                    </label>--}%
+
+                                    <input id="${profileItem.code}_${item}" class="check-item prettyChk form-control" type="checkbox"
+                                       data-label="${item}" name="${profileItem.code}" value="${item}">
+
+                            </g:each>
+                        </g:if>
+                        <g:elseif test="${profileItem.lookupFrom}">
+                            <%--g:if test="${profileItem.code=="PI_PROVINCE001"}" --%>
+                                <g:each in="${LookupMaster.findByCode(profileItem.lookupFrom)?.values}" var="item">
+                                %{--<label class="checkbox">
+                                            <input id="${profileItem.code}_${item.key}" class="check-item" type="checkbox" name="${profileItem.code}" value="${item.key}" label="${item.value}"> ${item.value}
+                                        </label>--}%
+
+                                    <input id="${profileItem.code}_${item.key}" class="check-item prettyChk form-control" type="checkbox"
+                                           data-label="${item.value}" name="${profileItem.code}" value="${item.key}"
+                                          <%-- label="${item.value}" onchange="loadCity()"--%>
+                                           label="${item.value}">
+                                    <!--br/-->
+
+                                </g:each>
+                        </g:elseif>
+
+                    </g:elseif>
+                </div>
+            </div>
+        </g:each>
+    </form>
+
+
+
+
     <div id="surveyList" class="module-content">
         <div style="width: 100%">
             <g:if test="${!submitted.isEmpty()}">
@@ -197,7 +467,7 @@
                 </tr>
                 <tr class="sub-header">
                     <th><g:message code="app.user.name.label"/></th>
-                    <th><g:message code="app.type.label"/></th>
+                    <th>Filter</th>
                     <th><g:message code="app.runningtime.label"/></th>
                     <th><g:message code="app.totalrespondent.label"/></th>
                     <th><g:message code="app.createdon.label"/></th>
@@ -207,13 +477,13 @@
                 <tbody>
                 <g:if test="${drafts.isEmpty()}">
                     <tr>
-                        <td colspan="4" style="font-style: italic; font-size: 12px; color: #9f7032;"><g:message code="survey.nosurvey.label"/></td>
+                        <td colspan="7" style="font-style: italic; font-size: 12px; color: #9f7032;"><g:message code="survey.nosurvey.label"/></td>
                     </tr>
                 </g:if>
                 <g:each in="${drafts}" var="survey">
                     <tr>
                         <td><a href="${request.contextPath}/survey/editSurvey?surveyId=${survey.surveyId}">${survey.name}</a></td>
-                        <td>${survey.type}</td>
+                        <td>${ticbox.Survey.getFilterLabels(survey).join(", ")}</td>
                         <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                         <td>${survey.ttlRespondent}</td>
                         <td>${survey.createdDate}</td>
@@ -269,30 +539,34 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                     <tr class="top-header">
-                        <th colspan="6"><g:message code="app.inprogress.status"/></th>
+                        <th colspan="8"><g:message code="app.inprogress.status"/></th>
                     </tr>
                     <tr class="sub-header">
                         <th><g:message code="app.user.name.label"/></th>
-                        <th><g:message code="app.type.label"/></th>
+                        <th>Filter</th>
                         <th><g:message code="app.runningtime.label"/></th>
                         <th><g:message code="app.totalrespondent.label"/></th>
+                        <th>Survey terisi</th>
                         <th><g:message code="app.createdon.label"/></th>
+                        <th>Published date</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <g:if test="${inProgress.isEmpty()}">
                         <tr>
-                            <td colspan="4" style="font-style: italic; font-size: 12px; color: #9f7032;"><g:message code="survey.nosurvey.label"/></td>
+                            <td colspan="8" style="font-style: italic; font-size: 12px; color: #9f7032;"><g:message code="survey.nosurvey.label"/></td>
                         </tr>
                     </g:if>
                     <g:each in="${inProgress}" var="survey">
                         <tr>
                             <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
-                            <td>${survey.type}</td>
+                            <td>${ticbox.Survey.getFilterLabels(survey).join(", ")}</td>
                             <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                             <td>${survey.ttlRespondent}</td>
+                            <td>${survey.ttlRespondentSoFar}</td>
                             <td>${survey.createdDate}</td>
+                            <td>${survey.publishedDate}</td>
                             <td class="content-width">
                                 <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>
 								<a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.downloadresult"/></a>
@@ -305,30 +579,36 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr class="top-header">
-                    <th colspan="6"><g:message code="app.completed.status"/></th>
+                    <th colspan="9"><g:message code="app.completed.status"/></th>
                 </tr>
                 <tr class="sub-header">
                     <th><g:message code="app.user.name.label"/></th>
+                    <th>Filter</th>
                     <th><g:message code="app.type.label"/></th>
                     <th><g:message code="app.runningtime.label"/></th>
                     <th><g:message code="app.totalrespondent.label"/></th>
+                    <th>Survey terisi</th>
                     <th><g:message code="app.createdon.label"/></th>
+                    <th>Published date</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                     <g:if test="${completes.isEmpty()}">
                         <tr>
-                            <td colspan="4" style="font-style: italic; font-size: 12px; color: #9f7032;"><g:message code="survey.nosurvey.label"/></td>
+                            <td colspan="9" style="font-style: italic; font-size: 12px; color: #9f7032;"><g:message code="survey.nosurvey.label"/></td>
                         </tr>
                     </g:if>
                     <g:each in="${completes}" var="survey">
                         <tr>
                             <td><a class="displayQuestionLink" href="javascript:void(0)" surveyid="${survey.surveyId}">${survey.name}</a></td>
+                            <td>${ticbox.Survey.getFilterLabels(survey).join(", ")}</td>
                             <td>${survey.type}</td>
                             <td>${survey.completionDateFrom} - ${survey.completionDateTo}</td>
                             <td>${survey.ttlRespondent}</td>
+                            <td>${survey.ttlRespondentSoFar}</td>
                             <td>${survey.createdDate}</td>
+                            <td>${survey.publishedDate}</td>
                             <td class="content-width">
                                 <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.displayresult"/></a>
                             	<a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)"><g:message code="label.button.downloadresult"/></a>

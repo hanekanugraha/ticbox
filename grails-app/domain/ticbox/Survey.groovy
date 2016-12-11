@@ -69,4 +69,10 @@ class Survey {
         print(passwordHash + "==" + "new Sha256Hash(" + password + ").toHex() which is " + new Sha256Hash(password).toHex())
         passwordHash == new Sha256Hash(password).toHex()
     }
+
+    static getFilterLabels(surveyAndRelatedObjects) {
+        def labels = []
+        (surveyAndRelatedObjects[Survey.COMPONENTS.RESPONDENT_FILTER] ?: []).each { labels << it.label }
+        return labels
+    }
 }

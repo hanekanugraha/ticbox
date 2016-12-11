@@ -28,11 +28,17 @@ class SurveyController {
         def principal = SecurityUtils.subject.principal
         def surveyor = User.findByUsername(principal.toString())
 		def allSurveys = Survey.findAllBySurveyor(surveyorService.currentSurveyor)
-		def draftSurveys = allSurveys.findAll{ it.status == Survey.STATUS.DRAFT }
-		def inProgressSurveys = allSurveys.findAll{ it.status == Survey.STATUS.IN_PROGRESS }
-		def completedSurveys = allSurveys.findAll{ it.status == Survey.STATUS.COMPLETED }
-		def submittedSurveys = allSurveys.findAll{ it.status == Survey.STATUS.SUBMITTED }
-		
+        def profileItems = surveyService.profileItemsForRespondentFilter
+
+        def filteredSurveys = allSurveys.findAll{ filteredIn(it, params, profileItems) }
+        def draftSurveys = filteredSurveys.findAll{ it.status == Survey.STATUS.DRAFT }
+		def inProgressSurveys = filteredSurveys.findAll{ it.status == Survey.STATUS.IN_PROGRESS }
+		def completedSurveys = filteredSurveys.findAll{ it.status == Survey.STATUS.COMPLETED }
+		def submittedSurveys = filteredSurveys.findAll{ it.status == Survey.STATUS.SUBMITTED }
+
+        surveyService.enrichWithCurrentTotalRespondent(inProgressSurveys)
+        surveyService.enrichWithCurrentTotalRespondent(completedSurveys)
+
         Survey survey = surveyService.getCurrentEditedSurvey()
 
         [
@@ -47,9 +53,77 @@ class SurveyController {
             countDraft: draftSurveys.size(),
             countInProgress : inProgressSurveys.size(),
             countCompleted : completedSurveys.size(),
-            countSubmitted : submittedSurveys.size()
+            countSubmitted : submittedSurveys.size(),
+            profileItems : profileItems,
+
+            nameFilter: params.name,
+            respondentFilter: com.mongodb.util.JSON.serialize(extractDynamicFilter(profileItems))
         ]
 
+    }
+
+    def extractDynamicFilter(profileItems) {
+        def dynamicFilter = [:]
+        profileItems.each { p ->
+            if (params[p.code]) { // If filtering by this code is specified by user
+                dynamicFilter[p.code] =  params.list(p.code)
+            }
+        }
+        return dynamicFilter
+    }
+
+    def filteredIn(Survey survey, params, profileItems) {
+        if (params.name && !survey.name.toLowerCase().contains(params.name.toLowerCase())) {
+            return false;
+        }
+
+        boolean filterDefined = false
+        for (def i = 0; i < profileItems.size && !filterDefined; i++) {
+            def it = profileItems[i]
+            if (params[it.code]) {
+                filterDefined = true
+            }
+        }
+        if (!filterDefined) {
+            return true
+        }
+
+        String reason = null
+        boolean accepted = true
+        profileItems.each { p ->
+            if (params[p.code]) { // If filtering by this code is specified by user
+                def surveyFilter = survey[Survey.COMPONENTS.RESPONDENT_FILTER].findAll{ it.code == p.code }
+
+                // Reject if the survey doesn't have the code
+                if (!surveyFilter) {
+                    reason = "it doesn't have code = " + p.code
+                    accepted = false
+                } else {
+                    String[] userKeys = params.list(p.code)
+                    String[] surveyKeys = extractKeys(surveyFilter[0].checkItems)
+                    println survey.name + "." + p.code + ": s=" + surveyKeys + " VS u=" + userKeys
+
+                    // Reject if one of the code values specified by the user is not owned by the survey
+                    userKeys.each { v ->
+                        if (!surveyKeys.contains(v)) {
+                            reason = "missing required key: " + v
+                            accepted = false
+                        }
+                    }
+                }
+            }
+        }
+
+        println survey.name + ": accepted? = " + accepted + ", reason = " + reason
+        return accepted;
+    }
+
+    def extractKeys(checkItems) {
+        def items = []
+        checkItems.each {
+            items << it.key
+        }
+        return items
     }
 
     def createSurvey(){

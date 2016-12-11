@@ -651,6 +651,7 @@ class SurveyService {
         if (surveys) {
             for(i in surveys){
                 i.enableStatus=Survey.ENABLE_STATUS.ENABLE;
+                i.publishedDate = new SimpleDateFormat("MM/dd/yyyy").format(new Date())
 
                 def message = 'Your Ticbox Survey with subject ' + i.name + ' is now Active.'
                 def reason  = ' - '
@@ -751,5 +752,11 @@ class SurveyService {
 
     def savePointSurvey(Survey  survey) {
         survey.save();
+    }
+
+    public void enrichWithCurrentTotalRespondent(surveyList) {
+        surveyList.each { survey ->
+            survey['ttlRespondentSoFar'] = SurveyResponse.findAllBySurveyId(survey.surveyId).size()
+        }
     }
 }
