@@ -352,7 +352,6 @@
     <form id="filterTemplates" class="form-horizontal" style="display: none">
         <g:each in="${profileItems}" var="profileItem">
             <div class="profile-item-container form-group" code="${profileItem.code}" type="${profileItem.type}" label="${profileItem.label}" style="position: relative">
-                <i class="remove-filter glyphicon glyphicon-remove clickable" style="position: absolute; top: 5px; right: 7px;"></i>
                 <label class="col-sm-3 control-label" for="${profileItem.code}">${profileItem.label}</label>
 
                 <div class="col-sm-9 form-inline" style="font-weight: normal">
@@ -420,6 +419,7 @@
 
                     </g:elseif>
                 </div>
+                <i class="remove-filter glyphicon glyphicon-remove clickable" style="position: absolute; top: 5px; right: 7px;"></i>
             </div>
         </g:each>
     </form>
