@@ -518,6 +518,18 @@
 </head>
 
 <body>
+
+// kucingkurus
+
+    <g:if test="${survey[Survey.COMPONENTS.LOGO]}">
+        ada
+        <div style="background: url(${request.contextPath}/respondent/viewSurveyLogo?surveyId=${survey.surveyId}) center center; background-size: 50% 50%;">
+    </g:if>
+    <g:else>
+        ga ada
+        <div>
+    </g:else>
+
     <div class="module-header">
         <div class="title"><g:message code="takesurvey.title"/> </div>
     </div>
@@ -742,5 +754,6 @@
     </div>
 </div>
 
+</div>
 </body>
 </html>
