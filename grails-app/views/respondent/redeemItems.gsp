@@ -34,9 +34,9 @@
                         <tr>
                             <td><input type="checkbox" name="itemIds"  value="${item.id}" gold="${item.gold}" /></td>
                             <td>
-                              <img class="pic upload-pic" id="item-pic${item.id}"
+                              <img style="max-width:100px;height:auto" class="pic upload-pic" id="item-pic${item.id}"
                                  <g:if test="${item.pic != null}">src="data:image;base64,${item.pic}"</g:if>
-                                 <g:else>src="/ticbox/images/ticbox/no-image.png"</g:else>
+                                 <g:else>src="/ticbox/images/ticbox/no-image.png" title="No image available"</g:else>
                               /></td>
                             <td>${item.itemName}</td>
                             <td>${item.gold}</td>
@@ -77,9 +77,9 @@
     <g:each in="${items}" var="item" >
         <tr class="simpleCart_shelfItem">
             %{--<td><input type="checkbox" name="itemIds"  value="${item.id}" gold="${item.gold}" /></td>--}%
-            <td><img class="pic upload-pic" id="item-pic${item.id}"
+            <td><img style="max-width:100px;height:auto" class="pic upload-pic" id="item-pic${item.id}"
                  <g:if test="${item.pic != null}">src="data:image;base64,${item.pic}"</g:if>
-                 <g:else>src="/ticbox/images/ticbox/no-image.png"</g:else>
+                 <g:else>src="/ticbox/images/ticbox/no-image.png" title="No image available"</g:else>
               /></td>
             <td class="item_name">${item.itemName}</td>
             <td><input type="text" value="1" class="item_quantity"></td>
