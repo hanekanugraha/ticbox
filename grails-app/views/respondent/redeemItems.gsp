@@ -24,10 +24,55 @@
       $('.zoomable').hover(function() {
         $(this).addClass('zoomable-transition');
 
-      }, function() {
-        $(this).removeClass('zoomable-transition');
+        }, function() {
+          $(this).removeClass('zoomable-transition');
+        });
+
+      $('input[name=quantity]').bind('keyup mouseup', function() {
+        onQuantityUpdated(this);
       });
+
+      updateTotalInfo();
     });
+
+    function onQuantityUpdated(input) {
+        var quantity = parseInt($(input).val());
+        if (quantity > 0) {
+            setHighlight($(input).parents('tr'), true);
+        } else {
+            setHighlight($(input).parents('tr'), false);
+        }
+
+        updateTotalInfo();
+    }
+
+    function updateTotalInfo() {
+        var totalPointRequired = 0;
+
+        $('#itemTable tbody tr').each(function(index){
+            var input = $(this).find('input[name=quantity]');
+            var quantity = parseInt($(input).val());
+
+            var pointPerItem = parseInt($(input).parents('tr').find(':hidden[data-gold]').attr('data-gold'));
+            var pointRequired = quantity * pointPerItem;
+
+            // Update point required for this item
+            $(this).find('.pointRequired').text(pointRequired);    
+
+            totalPointRequired += pointRequired;
+        });
+
+        $('#totalPointRequired').text(totalPointRequired);
+        return totalPointRequired;
+    }
+
+    function setHighlight(tr, active) {
+        if (active) {
+            $(tr).addClass('active');
+        } else {
+            $(tr).removeClass('active');
+        }
+    }
 </script>
     <g:javascript src="simpleCart.js"/>
 
@@ -56,7 +101,7 @@
                     <g:each in="${items}" var="item" >
                         <tr>
                             <td>
-                              <input type="hidden" name="itemIds"  value="${item.id}" gold="${item.gold}" />
+                              <input type="hidden" name="itemIds" value="${item.id}" data-gold="${item.gold}" />
                               <img id="item-pic${item.id}"
                                  <g:if test="${item.pic != null}"> class="thumbnail2 zoomable" src="data:image;base64,${item.pic}"</g:if>
                                  <g:else> class="thumbnail2" src="/ticbox/images/ticbox/no-image.png" title="No image available"</g:else>
@@ -64,18 +109,25 @@
                               <strong>${item.itemName}</strong>
                             </td>
                             <td>${item.gold}</td>
-                            <td><input type="number" name="quantity" min="1" max="9" /></td>
-                            <td>0</td>
+                            <td><input type="number" name="quantity" min="0" max="9" value="0"/></td>
+                            <td class="pointRequired">0</td>
                         </tr>
                     </g:each>
                     </tbody>
+                    <tfoot>
+                        <tr class="borderless">
+                            <th>Point you have</th>
+                            <th>300</th>
+                            <th>Total point required</th>
+                            <th id="totalPointRequired">0</th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
 
     </div>
 
-    <div id="buttonBarHeader" class="module-header"></div>
     <a id="redeem" href="#redeem-item-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> <g:message code="app.redeem.label"/> </a>
 </div>
 
