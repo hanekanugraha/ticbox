@@ -3,9 +3,104 @@
     <meta name="layout" content="respondent"/>
     <title><g:message code="redeemitems.title"/> </title>
     <style type="text/css">
+    .thumbnail2 {
+      width: 25px;
+    }
+    .zoomable {
+      -webkit-transition: all .2s ease-in-out;
+      -moz-transition: all .2s ease-in-out;
+      -o-transition: all .2s ease-in-out;
+      -ms-transition: all .2s ease-in-out;
+    }
+    .zoomable-transition {
+      -webkit-transform: scale(5);
+      -moz-transform: scale(5);
+      -o-transform: scale(5);
+      transform: scale(5);
+    }
     </style>
+    <script>
+    $(document).ready(function(){
+      $('.zoomable').hover(function() {
+        $(this).addClass('zoomable-transition');
 
-    <g:javascript src="simpleCart.js"/>
+        }, function() {
+          $(this).removeClass('zoomable-transition');
+        });
+
+      $('input[name=quantity]').bind('keyup mouseup', function() {
+        onQuantityUpdated(this);
+      });
+
+      updateTotalInfo();
+    });
+
+
+    function onQuantityUpdated(input) {
+        var quantity = parseInt($(input).val());
+        if (quantity > 0) {
+            setHighlight($(input).parents('tr'), true);
+        } else {
+            setHighlight($(input).parents('tr'), false);
+        }
+
+        updateTotalInfo();
+    }
+
+    function updateTotalInfo() {
+        var totalPointRequired = 0;
+
+        $('#itemTable tbody tr').each(function(index){
+            var input = $(this).find('input[name=quantity]');
+            var quantity = parseInt($(input).val());
+
+            var pointPerItem = parseInt($(input).parents('tr').find(':hidden[data-gold]').attr('data-gold'));
+            var pointRequired = quantity * pointPerItem;
+
+            // Update point required for this item
+            $(this).find('.pointRequired').text(pointRequired);
+
+            totalPointRequired += pointRequired;
+        });
+
+        $('#totalPointRequired').text(totalPointRequired);
+        updateButton(totalPointRequired);
+    }
+
+    function updateButton(totalPointRequired) {
+        var availablePoint = ${respondent.respondentProfile?.gold};
+        var $btn = $('#redeemBtn');
+
+        if (totalPointRequired == 0) {
+            $btn.text('Redeem');
+            setEnabled($btn, false);
+        } else if (availablePoint >= totalPointRequired) {
+            $btn.text('Redeem');
+            setEnabled($btn, true);
+        } else {
+            $btn.text('Not enough point to redeem');
+            setEnabled($btn, false);
+        }
+    }
+
+    function setEnabled($btn, enabled) {
+        if (enabled) {
+            $btn.removeClass('disabled');
+            $btn.attr("data-toggle", "modal");
+        } else {
+            $btn.addClass('disabled');
+            $btn.removeAttr('data-toggle');
+        }
+    }
+
+    function setHighlight(tr, active) {
+        if (active) {
+            $(tr).addClass('active');
+        } else {
+            $(tr).removeClass('active');
+        }
+    }
+</script>
 
 </head>
 
@@ -19,87 +114,49 @@
 
         <div class="row">
             <div class="col-sm-12">
+                <g:form id="redeemItemsForm" name="redeemItemsForm" controller="respondent" action="requestItemsRedemption" role="form">
                 <table id="itemTable" class="table table-bordered table-striped table-hover">
                     <thead>
-                    <tr>
-                        <th></th>
-                        <th><g:message code="app.picture.label"/> </th>
-                        <th><g:message code="app.itemname.label"/> </th>
-                        <th><g:message code="point.gold.label"/> </th>
-
-                    </tr>
+                        <tr>
+                            <th>Item</th>
+                            <th>Point Per Item</th>
+                            <th>Quantity Desired</th>
+                            <th>Point Required</th>
+                        </tr>
                     </thead>
                     <tbody>
                     <g:each in="${items}" var="item" >
                         <tr>
-                            <td><input type="checkbox" name="itemIds"  value="${item.id}" gold="${item.gold}" /></td>
                             <td>
-                              <img class="pic upload-pic" id="item-pic${item.id}"
-                                 <g:if test="${item.pic != null}">src="data:image;base64,${item.pic}"</g:if>
-                                 <g:else>src="/ticbox/images/ticbox/no-image.png"</g:else>
-                              /></td>
-                            <td>${item.itemName}</td>
+                              <input type="hidden" name="itemIds" value="${item.id}" data-gold="${item.gold}" />
+                              <img id="item-pic${item.id}"
+                                 <g:if test="${item.pic != null}"> class="thumbnail2 zoomable" src="data:image;base64,${item.pic}"</g:if>
+                                 <g:else> class="thumbnail2" src="/ticbox/images/ticbox/no-image.png" title="No image available"</g:else>
+                              />
+                              <strong>${item.itemName}</strong>
+                            </td>
                             <td>${item.gold}</td>
-
+                            <td><input type="number" name="quantity" min="0" max="9" value="0"/></td>
+                            <td class="pointRequired">0</td>
                         </tr>
                     </g:each>
                     </tbody>
+                    <tfoot>
+                        <tr class="borderless">
+                            <th>Point you have</th>
+                            <th>${respondent.respondentProfile?.gold}</th>
+                            <th>Total point required</th>
+                            <th id="totalPointRequired">0</th>
+                        </tr>
+                    </tfoot>
                 </table>
+                </g:form>
             </div>
         </div>
 
     </div>
 
-    <div id="buttonBarHeader" class="module-header"></div>
-    <a id="redeem" href="#redeem-item-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> <g:message code="app.redeem.label"/> </a>
-
-
-
-<p>
-    <g:message code="app.cart.label"/> : <span class="simpleCart_total"></span> (<span id="simpleCart_quantity" class="simpleCart_quantity"></span> <g:message code="admin.items.label"/> )
-    <br />
-    <a href="javascript:;" class="simpleCart_empty"><g:message code="redeemitems.empty-cart.label"/> </a>
-    <br />
-</p>
-<table id="itemTable2" class="table table-bordered table-striped table-hover">
-    <thead>
-    <tr>
-        %{--<th></th>--}%
-        <th><g:message code="app.picture.label"/> </th>
-        <th><g:message code="app.itemname.label"/> </th>
-        <th><g:message code="app.quantity.label"/> </th>
-        <th><g:message code="point.gold.label"/> </th>
-        <th><g:message code="app.action.label"/> </th>
-
-    </tr>
-    </thead>
-    <tbody>
-    <g:each in="${items}" var="item" >
-        <tr class="simpleCart_shelfItem">
-            %{--<td><input type="checkbox" name="itemIds"  value="${item.id}" gold="${item.gold}" /></td>--}%
-            <td><img class="pic upload-pic" id="item-pic${item.id}"
-                 <g:if test="${item.pic != null}">src="data:image;base64,${item.pic}"</g:if>
-                 <g:else>src="/ticbox/images/ticbox/no-image.png"</g:else>
-              /></td>
-            <td class="item_name">${item.itemName}</td>
-            <td><input type="text" value="1" class="item_quantity"></td>
-            <td class="item_price">${item.gold}</td>
-            <td><a class="item_add" href="javascript:;"> <g:message code="redeemitems.add-to-cart.label"/> </a></td>
-            <td hidden="true" class="item_code">${item.id}</td>
-        </tr>
-    </g:each>
-    </tbody>
-</table>
-
-    <div class="simpleCart_items" >
-    </div>
-
-    <g:message code="app.finaltotal.label"/> : <span id="simpleCart_grandTotal" class="simpleCart_grandTotal"></span> <br />
-
-    <a href="javascript:;simpleCart.empty();" class="simpleCart_checkout"><g:message code="app.checkout.label"/> </a>
-
-
-
+    <a id="redeemBtn" href="#redeem-item-modal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> <g:message code="app.redeem.label"/> </a>
 </div>
 
 <div id="redeem-item-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="redeemItemsLabel" aria-hidden="true">
@@ -112,17 +169,13 @@
                 </span>
             </div>
             <div class="modal-body">
-                <g:form name="redeemItemsForm" controller="respondent" action="requestItemsRedemption" role="form">
-                    <input type="hidden" id="redeemItemIds" name="redeemItemIds" value=""/>
-                    <div class="well">
-                        <p><b><g:message code="redeemitems.validation.label"/> </b></p>
-                        <g:message code="redeemitems.validation.content"/>
-                    </div>
-
-                </g:form>
+                <div class="well">
+                    <p><b><g:message code="redeemitems.validation.label"/> </b></p>
+                    <g:message code="redeemitems.validation.content"/>
+                </div>
             </div>
             <div class="modal-footer">
-                <button id="redeemItems" class="btn btn-danger" data-loading-text="Processing.."><g:message code="app.redeem.label"/> </button>
+                <button onclick="document.getElementById('redeemItemsForm').submit();" id="redeemItems" class="btn btn-danger" data-loading-text="Processing.."><g:message code="app.redeem.label"/> </button>
                 <button class="btn btn-light-oak" data-dismiss="modal" aria-hidden="true"><g:message code="label.button.cancel"/> </button>
             </div>
         </div>
@@ -132,35 +185,5 @@
 <g:javascript src="jquery.validate.min.js"/>
 <g:javascript src="additional-methods.min.js"/>
 
-
-
-<script type="text/javascript">
-
-    simpleCart({
-        checkout: {
-            type: "SendForm",
-            url: "/ticbox/respondent/requestItemsRedemptionCart"
-        }
-    });
-
-    $(document).ready(function () {
-
-        $('#redeemItems').click(function() {
-            $(this).button('loading');
-            var selected = [];
-            var form = $('#redeemItemsForm');
-            $('input[name=itemIds]:checked').each(function(id, elmt) {
-                selected.push(elmt.value);
-
-            });
-            $('#redeemItemIds', form).val(selected);
-            form.submit();
-
-        });
-
-
-    });
-
-</script>
 </body>
 </html>
