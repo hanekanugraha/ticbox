@@ -33,27 +33,28 @@ class ItemService {
             inList("_id", itemIds)
         }
 
-        def goldUser=user.respondentProfile.gold
-        double goldRedeem=0
-        for(item in items){
-            goldRedeem+=item.gold
+        def userGold = user.respondentProfile.gold
+        double goldToRedeem=0
+        for (item in items) {
+            goldToRedeem += item.gold
         }
 
 
-        if (goldRedeem<=goldUser) {
-            def history = deductGold(user.id,goldRedeem,itemIds)
-            RedemptionItemRequest request= new RedemptionItemRequest(
+        if (goldToRedeem <= userGold) {
+            def history = deductGold(user.id, goldToRedeem, itemIds)
+            RedemptionItemRequest request = new RedemptionItemRequest(
                     respondentId:user.id,
                     respondentUsername:user.username,
                     respondentGoldHistoryId:history.id,
                     status:RedemptionRequest.STATUS.New,
-                    goldAmount: goldRedeem
+                    goldAmount: goldToRedeem
             )
-            request[RedemptionItemRequest.COMPONENTS.ITEMS]=ids
+            request[RedemptionItemRequest.COMPONENTS.ITEMS] = ids
             request.save()
 
         } else {
             throw new Exception("Gold Not Enough")
+
         }
     }
     def requestItemsRedemption(List itemIds,User user) throws Exception {

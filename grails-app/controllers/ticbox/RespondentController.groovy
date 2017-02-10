@@ -281,48 +281,34 @@ class RespondentController {
         [items:items,respondent: respondent,surveyJoined:SurveyResponse.countByRespondentId(respondent.id)]
     }
 
-    def requestItemsRedemption={
-        try {
-            if (params.redeemItemIds) {
-                def redeemItemIds = ((String) params.redeemItemIds).split(",")
-                def principal = SecurityUtils.subject.principal
-                def respondent = User.findByUsername(principal.toString())
-                itemService.requestItemsRedemption(redeemItemIds,respondent)
-                flash.message = message(code: "general.delete.success.message")
-            } else {
-                throw Exception("No Item was found")
-            }
-        } catch (Exception e) {
-            flash.error = message(code: "general.delete.failed.message") + " : " + e.message
-            log.error(e.message, e)
-        }
-        redirect(controller: "respondent", action: "redeemItems")
-    }
+    def requestItemsRedemption = {
+        def requestedItemIds = []
 
-
-
-    def requestItemsRedemptionCart={
-        def listItem=[];
         try{
-            int count=Integer.parseInt(params.itemCount)
             def principal = SecurityUtils.subject.principal
             def respondent = User.findByUsername(principal.toString())
 
-            for(int i=1;i<=count;i++){
-                int quantity=Integer.parseInt(params.get("item_quantity_"+i));
-                for(int j =1;j<=quantity;j++) {
-                    listItem << params.get("item_code_" + i)
+            String[] itemIdArr = params.list('itemIds')
+            String[] quantityStrArr = params.list('quantity')
+
+            for (int i = 0; i < itemIdArr.length; i++) {
+                String itemId = itemIdArr[i]
+                int quantity = Integer.parseInt(quantityStrArr[i])
+
+                while (quantity-- > 0) {
+                    requestedItemIds << itemId
                 }
             }
-            itemService.requestItemsRedemption(listItem,respondent)
-            flash.message = message(code: "general.delete.success.message")
+
+            itemService.requestItemsRedemption(requestedItemIds, respondent)
+            flash.message = "Redeem request successfully submitted"
 
         } catch (Exception e) {
-            flash.error = message(code: "general.delete.failed.message") + " : " + e.message
+            flash.error = "Redeem request failed" + ": " + e.message
             log.error(e.message, e)
         }
-        redirect(controller: "respondent", action: "redeemItems")
 
+        redirect(controller: "respondent", action: "redeemItems")
     }
 
     def viewResources() {
