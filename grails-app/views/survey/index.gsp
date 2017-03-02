@@ -718,6 +718,10 @@
         <div class="row">
             <div class="seqNumberContainer questionNumber col-xs-1"> </div>
             <div class="questionTextContainer col-xs-11" style="max-width: 90%">
+                <!-- kucingkurus -->
+                <span class="media-thumbnail">
+                    <img class="pic question-pic" src="" style="width: auto; height: 120px; margin-left: 0;border-radius: 5px"/>
+                </span>
                 <span class="question-text"></span>
             </div>
         </div>
@@ -754,6 +758,10 @@
         <div class="row">
             <div class="seqNumberContainer questionNumber col-xs-1"> </div>
             <div class="questionTextContainer col-xs-11">
+                <!-- kucingkurus -->
+                <span class="media-thumbnail">
+                    <img class="pic question-pic" src="" style="width: auto; height: 120px; margin-left: 0;border-radius: 5px"/>
+                </span>
                 <span class="question-text"></span>
             </div>
         </div>
@@ -937,7 +945,7 @@
 
                         that.text(txt);
                     }, 500);
-					jQuery('.displayResultLink').text('Display Result');
+					jQuery('.displayResultLink').text('Display');
                 }else {
                     alert(result.error);
                     that.text(txt);
@@ -993,6 +1001,13 @@
             jQuery('.seqNumberContainer', questionTemplate).html(idx+1+'.');
 
             jQuery('.question-text', questionTemplate).html("<span style='font-size:24px;color:grey;'>"+questionStr.charAt(0)+"</span>" + questionStr.substring(1));
+
+            //        kucingkurus
+            if(typeof item.image != 'undefined' && item.image != '') {
+                jQuery('img.question-pic', questionTemplate).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + item.image);
+            } else {
+                questionTemplate.find('.question-pic').css({ display: "none"});
+            }
 
             var answerTemplate = null;
 
@@ -1112,7 +1127,7 @@
 
     }
 
-    function constructQuestionItemCont(questionStr, seq){
+    function constructQuestionItemCont(questionStr, image, seq){
 
         var cont = jQuery('#questionItemTemplate').clone().attr('id', 'qi_'+seq);
 
@@ -1121,6 +1136,13 @@
         jQuery('.questionTextContainer > span.question-text', cont).html("<span style='font-size:24px;color:grey;'>"+questionStr.charAt(0)+"</span>" + questionStr.substring(1));
 
         jQuery('.chart-container .col .chart', cont).attr('id', 'chart_'+seq);
+
+        //        kucingkurus
+        if(typeof image != 'undefined' && image != '') {
+            jQuery('img.question-pic', cont).attr('src', '${request.contextPath}/survey/viewResources?resType=IMAGE&resourceId=' + image);
+        } else {
+        cont.find('.question-pic').css({ display: "none"});
+        }
 
         return cont;
     }
@@ -1138,7 +1160,7 @@
                 var summary = item.summary;
 
                 var answerDetails = questionItem.answerDetails;
-                var container = constructQuestionItemCont(questionItem.questionStr, key);
+                var container = constructQuestionItemCont(questionItem.questionStr, questionItem.image, key);
 
                 questionItemsContainer.append(container);
 

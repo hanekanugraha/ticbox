@@ -97,9 +97,11 @@
                             </g:else>
                         </td>
                         <td class="content-width">
-                            <a class="btn btn-xs btn-primary setPointLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Set Point</a>
                             <a class="btn btn-xs btn-primary displayResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Display</a>
 	                        <a class="btn btn-xs btn-primary downloadResultLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Download</a>
+                            <g:if test="${survey.enableStatus=='DISABLED'}">
+                                <a class="btn btn-xs btn-primary setPointLink" surveyid="${survey.surveyId}" href="javascript:void(0)">Set Point</a>
+                            </g:if>
                         </td>
                     </tr>
                 </g:each>
@@ -336,6 +338,7 @@
                         <label class="" ><g:message code="survey.addgoldpoint.label"/></label> 
                         <select id="surveyPoint" name="surveyPoint" class="form-control"> 
                             <option value="0">0</option> 
+                            <option value="1">1</option>
                             <option value="5">5</option> 
                             <option value="10">10</option> 
                             <option value="15">15</option> 
@@ -358,6 +361,10 @@
     <div class="row">
         <div class="seqNumberContainer questionNumber col-xs-1"> </div>
         <div class="questionTextContainer col-xs-11">
+            <!-- kucingkurus -->
+            <span class="media-thumbnail">
+                <img class="pic question-pic" src="" style="width: auto; height: 120px; margin-left: 0;border-radius: 5px"/>
+            </span>
             <span class="question-text"></span>
         </div>
     </div>
@@ -431,6 +438,10 @@
         <div class="row">
             <div class="seqNumberContainer questionNumber col-xs-1"> </div>
             <div class="questionTextContainer col-xs-11" style="max-width: 90%">
+                <!-- kucingkurus -->
+                <span class="media-thumbnail">
+                    <img class="pic question-pic" src="" style="width: auto; height: 120px; margin-left: 0;border-radius: 5px"/>
+                </span>
                 <span class="question-text"></span>
             </div>
         </div>
@@ -557,7 +568,7 @@
 
                         that.text(txt);
                     }, 500);
-                    jQuery('.displayResultLink').text('Display Result');
+                    jQuery('.displayResultLink').text('Display');
                 } else {
                     alert(result.error);
                     that.text(txt);
@@ -600,12 +611,19 @@
 
 
 
-    function constructQuestionItemCont(questionStr, seq){
+    function constructQuestionItemCont(questionStr, image, seq){
+//        alert(seq + '. image = ' + image.substring(0));
 
         var cont = jQuery('#questionItemTemplate').clone().attr('id', 'qi_'+seq);
-
+        <!-- kucingkurus -->
         jQuery('.questionNumber', cont).html(seq + '.');
 //        jQuery('.questionTextContainer > span.question-text', cont).html(questionStr);
+        if(typeof image != 'undefined' && image != '') {
+            jQuery('img.question-pic', cont).attr('src', '${request.contextPath}/respondent/viewResources?resType=IMAGE&resourceId=' + image);
+        } else {
+            cont.find('.question-pic').css({ display: "none"});
+        }
+
         jQuery('.questionTextContainer > span.question-text', cont).html("<span style='font-size:24px;color:grey;'>"+questionStr.charAt(0)+"</span>" + questionStr.substring(1));
 
         jQuery('.chart-container .col .chart', cont).attr('id', 'chart_'+seq);
@@ -626,6 +644,13 @@
             jQuery('.seqNumberContainer', questionTemplate).html(idx+1+'.');
 
             jQuery('.question-text', questionTemplate).html("<span style='font-size:24px;color:grey;'>"+questionStr.charAt(0)+"</span>" + questionStr.substring(1));
+
+            // kucingkurus
+            if(typeof item.image != 'undefined' && item.image != '') {
+                jQuery('img.question-pic', questionTemplate).attr('src', '${request.contextPath}/respondent/viewResources?resType=IMAGE&resourceId=' + item.image);
+            } else {
+                questionTemplate.find('.question-pic').css({ display: "none"});
+            }
 
             var answerTemplate = null;
 
@@ -663,7 +688,7 @@
                     jQuery.each(choiceItems, function(j, choiceItem){
                         var choiceItemContainer = jQuery('.choice-item:first', answerTemplate).clone();
                         jQuery('input.item-check', choiceItemContainer).val(choiceItem);
-                        jQuery('.item-label', choiceItemContainer).html(choiceItem);
+                        jQuery('.item-label', choiceItemContainer).html(choiceItem.label);
 //                                    answerTemplate.append(choiceItemContainer);
                         jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
                     });
@@ -753,7 +778,7 @@
                 var summary = item.summary;
 
                 var answerDetails = questionItem.answerDetails;
-                var container = constructQuestionItemCont(questionItem.questionStr, key);
+                var container = constructQuestionItemCont(questionItem.questionStr, questionItem.image, key);
 
                 questionItemsContainer.append(container);
 
