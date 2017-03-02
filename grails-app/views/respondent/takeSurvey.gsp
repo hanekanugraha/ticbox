@@ -72,6 +72,11 @@
             max-height: 150px;
         }
 
+        img.question-pic {
+            width: auto;
+            max-height: 150px;
+        }
+
 </style>
 
 <script type="text/javascript">
@@ -498,8 +503,9 @@
                 container.attr('id',"question"+item.seq);
                 container.attr('seq',item.seq);
                 jQuery('.question-text', container).html("<span style='font-size:24px;color:grey;'>"+item.questionStr.charAt(0)+"</span>" + item.questionStr.substring(1));
-                if (('' + item.img) != 'undefined') {
-                  jQuery('img.question-pic', container).attr('src', 'data:image;base64,' + item.img);
+
+                if(typeof item.image != 'undefined' && item.image != '') {
+                    jQuery('img.question-pic', container).attr('src', '${request.contextPath}/respondent/viewResources?resType=IMAGE&resourceId=' + item.image);
                 }
                 if(i==0){
                     container.attr('hidden',false)
@@ -589,16 +595,15 @@
         </div>
 
         <div class="templates" style="display: none;">
-
             <div id="questionTemplate" class="surveyItemContainer" hidden="true">
                 <div class="row">
                     <div class="seqNumberContainer questionNumber col-xs-1"></div>
                     <div class="questionTextContainer col-xs-11">
+                        <span class="media-thumbnail">
+                            <img class="pic question-pic" src="" />
+                        </span>
+                        <div rows="3"></div>
                         <span class="question-text"></span>
-                        %{--<div rows="3"></div>--}%
-                        %{--<span class="media-thumbnail">--}%
-                            %{--<img class="pic upload-pic question-pic" src="" />--}%
-                        %{--</span>--}%
                     </div>
                 </div>
             </div>
