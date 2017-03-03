@@ -198,26 +198,26 @@
             </div>
 
             %{--TBL Enhancement--}%
-            %{--<div class="form-group">--}%
-                %{--<label class="col-sm-3 control-label">Team</label>--}%
-                %{--<div class="col-sm-8">--}%
-                    %{--<g:select name="profileItems_LM_TEAM001"--}%
-                              %{--class="form-control" style="width: auto"--}%
-                              %{--from="${LookupMaster.findByCode('LM_TEAM001')?.values}" optionKey="key" optionValue="value"--}%
-                              %{--value="${respondentDetail?.profileItems['PI_TEAM001']}"--}%
-                              %{--noSelection="['':'-Choose One-']" />--}%
-                %{--</div>--}%
-            %{--</div>--}%
-            %{--<div class="form-group">--}%
-                %{--<label class="col-sm-3 control-label">Team</label>--}%
-                %{--<div class="col-sm-8">--}%
-                    %{--<g:select name="profileItems_LM_POSITION001"--}%
-                              %{--class="form-control" style="width: auto"--}%
-                              %{--from="${LookupMaster.findByCode('LM_POSITION001')?.values}" optionKey="key" optionValue="value"--}%
-                              %{--value="${respondentDetail?.profileItems['PI_POSITION001']}"--}%
-                              %{--noSelection="['':'-Choose One-']" />--}%
-                %{--</div>--}%
-            %{--</div>--}%
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Team</label>
+                <div class="col-sm-8">
+                    <g:select name="profileItems_LM_TEAM001"
+                              class="form-control" style="width: auto"
+                              from="${LookupMaster.findByCode('LM_TEAM001')?.values}" optionKey="key" optionValue="value"
+                              value="${respondentDetail?.profileItems['PI_TEAM001']}"
+                              noSelection="['':'-Choose One-']" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Team</label>
+                <div class="col-sm-8">
+                    <g:select name="profileItems_LM_POSITION001"
+                              class="form-control" style="width: auto"
+                              from="${LookupMaster.findByCode('LM_POSITION001')?.values}" optionKey="key" optionValue="value"
+                              value="${respondentDetail?.profileItems['PI_POSITION001']}"
+                              noSelection="['':'-Choose One-']" />
+                </div>
+            </div>
 
 
             <div class="form-group">
