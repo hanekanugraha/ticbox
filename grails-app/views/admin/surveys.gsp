@@ -379,11 +379,24 @@
 <div id="answerPreviewTemplate-multipleChoice" class="answerTemplate row" type="${Survey.QUESTION_TYPE.CHOICE}">
     <div class="choice-items col-xs-11 col-xs-offset-1">
         <div class="choice-item row">
-            <div class="col col-xs-12">
+            <div class="col col-xs-1" style="width: 3.2%">
                 <input class="item-check" type="checkbox">
                 %{--</div>--}%
                 %{--<div class="col col-xs-11" style="padding-left: 0">--}%
-                <span class="item-label" style="font-weight: normal; margin-bottom: 0"></span>
+            </div>
+            <div class="col col-xs-11" style="">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <label class="item-label" style="font-weight: normal; margin-bottom: 0; margin-left: 0; width: 100%"></label>
+                    </div>
+                </div>
+                <div class="row choice-item-pic">
+                    <div class="col-xs-12">
+                        <span class="media-thumbnail">
+                            <img class="pic upload-pic" src="" style="width: auto; height: 90px; margin-left: 0; border-radius:5px"/>
+                        </span>
+                    </div>
+                </div>
             </div>
             %{--</label>--}%
         </div>
@@ -394,11 +407,24 @@
     <div class="choice-items col-xs-11 col-xs-offset-1">
         <div class="choice-item row">
             %{--<div class="col col-xs-1" style="text-align: right">--}%
-            <div class="col col-xs-12">
+            <div class="col col-xs-1" style="width: 3.2%">
                 <input class="item-check" type="radio">
                 %{--</div>--}%
                 %{--<div class="col col-xs-11" style="padding-left: 0">--}%
-                <span class="item-label" style="font-weight: normal; margin-bottom: 0"></span>
+            </div>
+            <div class="col col-xs-11" style="">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <label class="item-label" style="font-weight: normal; margin-bottom: 0; margin-left: 0; width: 100%"></label>
+                    </div>
+                </div>
+                <div class="row choice-item-pic">
+                    <div class="col-xs-12">
+                        <span class="media-thumbnail">
+                            <img class="pic upload-pic" src="" style="width: auto; height: 90px; margin-left: 0; border-radius:5px"/>
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -671,6 +697,13 @@
                         jQuery('input.item-check', choiceItemContainer).val(choiceItem);
                         jQuery('.item-label', choiceItemContainer).html(choiceItem.label);
 //                                    answerTemplate.append(choiceItemContainer);
+                        if (typeof choiceItem.image != 'undefined' && choiceItem.image != '') {
+                            //choiceItemCont.find('img').attr('src', 'data:image;base64,' + choiceItem.image);
+                            jQuery('img.upload-pic', choiceItemContainer).attr('src', '${request.contextPath}/respondent/viewResources?resType=IMAGE&resourceId=' + choiceItem.image);
+                        }
+                        else {
+                            choiceItemContainer.find('.choice-item-pic').css({ display: "none"});
+                        }
                         jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
                     });
                     jQuery('.choice-item:first', answerTemplate).remove();
@@ -690,6 +723,13 @@
                         jQuery('input.item-check', choiceItemContainer).val(choiceItem);
                         jQuery('.item-label', choiceItemContainer).html(choiceItem.label);
 //                                    answerTemplate.append(choiceItemContainer);
+                        if (typeof choiceItem.image != 'undefined' && choiceItem.image != '') {
+                            //choiceItemCont.find('img').attr('src', 'data:image;base64,' + choiceItem.image);
+                            jQuery('img.upload-pic', choiceItemContainer).attr('src', '${request.contextPath}/respondent/viewResources?resType=IMAGE&resourceId=' + choiceItem.image);
+                        }
+                        else {
+                            choiceItemContainer.find('.choice-item-pic').css({ display: "none"});
+                        }
                         jQuery('.choice-items', answerTemplate).append(choiceItemContainer);  //<-- geuis edit
                     });
                     jQuery('.choice-item:first', answerTemplate).remove();
