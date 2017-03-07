@@ -65,6 +65,9 @@ grails.plugins.remotepagination.max=10
 //EnableBootstrap here when using twitter bootstrap, default is set to false.
 grails.plugins.remotepagination.enableBootstrap=true
 
+//offline mode true or false - downloading dependencies from local or external
+grails.offline.mode=true
+
 environments {
     development {
         grails.logging.jul.usebridge = true

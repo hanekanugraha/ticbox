@@ -133,6 +133,7 @@
             });
         });
         var logoId = null;
+
         function populateLogoImageResources(id){
             var modal = jQuery('#chooseLogoModal');
             var logoWrapper = jQuery('.templates .logoWrapper').clone().appendTo(jQuery('.modal-body', modal));
@@ -142,6 +143,7 @@
                 jQuery('a', logoWrapper).trigger('click'); //TODO to accommodate prettyCheckable
             });
         }
+
         function populateImageResources(id){
             var modal = jQuery('#chooseImageModal');
             var logoWrapper = jQuery('.templates .logoWrapper').clone().appendTo(jQuery('.modal-body', modal));
@@ -150,6 +152,7 @@
                 jQuery('a', logoWrapper).trigger('click'); //TODO to accommodate prettyCheckable
             });
         }
+
         var pureQuestionTemplate = null;
         function constructQuestionItem(type, subtype){
             var answerComp = null;
@@ -634,6 +637,7 @@
                 });
             }
         }
+
         function constructPreview(questionItems){
             console.log('~ BEGIN constructPreview');
             jQuery.each(questionItems, function(idx, item){
@@ -750,9 +754,28 @@
                         }
                         break;
                 }
+
+                %{-- added youtube preview --}%
+                debugger;
+                var previewYoutubePlayerTemplate = null;
+                if(typeof item.youtubeID != 'undefined' && item.youtubeID != '' ){
+                    previewYoutubePlayerTemplate = jQuery('#previewYoutubePlayerTemplate').clone().removeAttr('id');
+                    previewYoutubePlayerTemplate.find('iframe').removeAttr('id')
+                        .attr('src', 'http://www.youtube.com/embed/' + item.youtubeID + '?enablejsapi=1&origin=http://ticbox.co.id').css({display:"block"});
+                    var seqNumberSwitchPlace = questionTemplate.find('.seqNumberContainer').html();
+                    previewYoutubePlayerTemplate.find('.seqNumberContainer').html(seqNumberSwitchPlace);
+                    questionTemplate.find('.seqNumberContainer').html('&nbsp;');
+                    questionTemplate.prepend(previewYoutubePlayerTemplate);
+                }else{
+                    //need additional testing to put some code here
+                    //jQuery('#previewYoutubePlayer').attr('src', '').css({display: "none"});
+                }
+
+
                 if (answerTemplate) {
                     questionTemplate.append(answerTemplate);
                 }
+
                 jQuery('#surveyPreviewModal').find('.modal-body').append(questionTemplate);
             });
         }
@@ -1154,6 +1177,12 @@
                 %{--</span>--}%
                 <span class="question-text" style="display: table-cell; vertical-align: top; width: 100%; padding-left: 15px;"></span>
             </div>
+        </div>
+    </div>
+    <div id="previewYoutubePlayerTemplate" class="row">
+        <div class="seqNumberContainer questionNumber col-xs-1"> </div>
+        <div class="col-xs-11" style="height: 100%; display: table; text-align: left;">
+            <iframe type="text/html" width="320" height="240" frameborder="0" style="display:none;"></iframe>
         </div>
     </div>
     <div id="answerPreviewTemplate-singleText" class="answerTemplate row" type="${Survey.QUESTION_TYPE.FREE_TEXT}">
