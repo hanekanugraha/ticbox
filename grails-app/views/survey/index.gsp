@@ -546,7 +546,7 @@
                         <th>Filter</th>
                         <th><g:message code="app.runningtime.label"/></th>
                         <th><g:message code="app.totalrespondent.label"/></th>
-                        <th>Survey terisi</th>
+                        <th><g:message code="app.filledsurvey.label"/></th>
                         <th><g:message code="app.createdon.label"/></th>
                         <th>Published date</th>
                         <th></th>

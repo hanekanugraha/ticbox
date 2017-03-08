@@ -209,7 +209,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Team</label>
+                <label class="col-sm-3 control-label">Position</label>
                 <div class="col-sm-8">
                     <g:select name="profileItems_LM_POSITION001"
                               class="form-control" style="width: auto"
