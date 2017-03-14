@@ -806,19 +806,7 @@
             }
 
             %{-- added youtube preview --}%
-            var previewYoutubePlayerTemplate = null;
-            if(typeof item.youtubeID != 'undefined' && item.youtubeID != '' ){
-                previewYoutubePlayerTemplate = jQuery('#previewYoutubePlayerTemplate').clone().removeAttr('id');
-                previewYoutubePlayerTemplate.find('iframe').removeAttr('id')
-                    .attr('src', 'http://www.youtube.com/embed/' + item.youtubeID + '?enablejsapi=1&origin=http://ticbox.co.id').css({display:"block"});
-                var seqNumberSwitchPlace = questionTemplate.find('.seqNumberContainer').html();
-                previewYoutubePlayerTemplate.find('.seqNumberContainer').html(seqNumberSwitchPlace);
-                questionTemplate.find('.seqNumberContainer').html('&nbsp;');
-                questionTemplate.prepend(previewYoutubePlayerTemplate);
-            }else{
-                //need additional testing to put some code here
-                //jQuery('#previewYoutubePlayer').attr('src', '').css({display: "none"});
-            }
+            constructYoutubePlayer(item, questionTemplate);
 
             if (answerTemplate) {
                 questionTemplate.append(answerTemplate);
@@ -828,6 +816,25 @@
 
         });
 
+    }
+
+    /*
+     * this function is use to construct youtube player review and put in the question template
+     * */
+    function constructYoutubePlayer(item, questionTemplate){
+        var previewYoutubePlayerTemplate = null;
+        if(typeof item.youtubeID != 'undefined' && item.youtubeID != '' ){
+            previewYoutubePlayerTemplate = jQuery('#previewYoutubePlayerTemplate').clone().removeAttr('id');
+            previewYoutubePlayerTemplate.find('iframe').removeAttr('id')
+                .attr('src', 'http://www.youtube.com/embed/' + item.youtubeID + '?enablejsapi=1&origin=http://ticbox.co.id').css({display:"block"});
+            var seqNumberSwitchPlace = questionTemplate.find('.seqNumberContainer').html();
+            previewYoutubePlayerTemplate.find('.seqNumberContainer').html(seqNumberSwitchPlace);
+            questionTemplate.find('.seqNumberContainer').html('&nbsp;');
+            questionTemplate.prepend(previewYoutubePlayerTemplate);
+        }else{
+            //need additional testing to put some code here
+            //jQuery('#previewYoutubePlayer').attr('src', '').css({display: "none"});
+        }
     }
 
     function loadResultGraph(result){
@@ -844,6 +851,8 @@
 
                 var answerDetails = questionItem.answerDetails;
                 var container = constructQuestionItemCont(questionItem.questionStr, questionItem.image, key);
+
+                constructYoutubePlayer(questionItem, container);
 
                 questionItemsContainer.append(container);
 
