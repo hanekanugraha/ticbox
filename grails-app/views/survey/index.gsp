@@ -543,7 +543,7 @@
                     </tr>
                     <tr class="sub-header">
                         <th><g:message code="app.user.name.label"/></th>
-                        <th>Filter</th>
+                        <th><g:message code="app.filter.label"/></th>
                         <th><g:message code="app.runningtime.label"/></th>
                         <th><g:message code="app.totalrespondent.label"/></th>
                         <th><g:message code="app.filledsurvey.label"/></th>
