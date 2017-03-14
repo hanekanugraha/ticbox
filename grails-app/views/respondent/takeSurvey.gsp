@@ -110,7 +110,6 @@
         jQuery('#nextQuestion').click(function () {
 
             if(validateCurrentQuestion()) {
-
                 var lastQuestion= jQuery('#question'+questionSeq).attr('hidden',true);
                 var nextSeq = jQuery('input.item-check:checked',lastQuestion).attr('nextQuestion');
                 prevQuestionSeq = questionSeq;
@@ -127,6 +126,9 @@
                     questionSeqAndSkipped[seq] = true;
                 }
                 questionSeqAndSkipped[questionSeq] = false;
+
+                //if youtube iframe exists
+                disableYoutubePlayer(lastQuestion);
 
                 jQuery('#question'+questionSeq).attr('prevQuestion',prevQuestionSeq);
                 jQuery('#question'+questionSeq).attr('hidden',false);
@@ -174,6 +176,15 @@
         });
 
     });
+
+    function disableYoutubePlayer(questionDiv){
+        //pause youtube player if state is played
+        if(questionDiv.find("iframe").length > 0){
+            var src = questionDiv.find("iframe").attr("src");
+            questionDiv.find("iframe").attr("src", "");
+            questionDiv.find("iframe").attr("src", src);
+        }
+    }
 
     function validateCurrentQuestion() {
         var currQuestion = jQuery('#question'+questionSeq);
@@ -514,13 +525,15 @@
                 //added youtube preview
                 var previewYoutubePlayerTemplate = null;
                 if(typeof item.youtubeID != 'undefined' && item.youtubeID != '' ){
+                    var src = 'http://www.youtube.com/embed/' + item.youtubeID + '?enablejsapi=1&origin=http://ticbox.co.id';
                     previewYoutubePlayerTemplate = jQuery('#previewYoutubePlayerTemplate').clone().removeAttr('id');
-                    previewYoutubePlayerTemplate.find('iframe').removeAttr('id')
-                        .attr('src', 'http://www.youtube.com/embed/' + item.youtubeID + '?enablejsapi=1&origin=http://ticbox.co.id').css({display:"block"});
+                    previewYoutubePlayerTemplate.find('iframe').attr('id', item.youtubeID).attr('src', src).css({display:"block"});
+
                     var seqNumberSwitchPlace = container.find('.seqNumberContainer').html();
                     previewYoutubePlayerTemplate.find('.seqNumberContainer').html(seqNumberSwitchPlace);
                     container.find('.seqNumberContainer').html('&nbsp;').removeClass('seqNumberContainer').removeClass('questionNumber');
                     container.prepend(previewYoutubePlayerTemplate);
+
                 }else{
                     //need additional testing to put some code here
                     //jQuery('#previewYoutubePlayer').attr('src', '').css({display: "none"});
@@ -535,7 +548,6 @@
         }
 
     }
-
 </script>
 
 </head>
@@ -628,7 +640,7 @@
             <div id="previewYoutubePlayerTemplate" class="row">
                 <div class="seqNumberContainer questionNumber col-xs-1"> </div>
                 <div class="col-xs-11" style="height: 100%; display: table; text-align: left;">
-                    <iframe type="text/html" width="320" height="240" frameborder="0" style="display:none;"></iframe>
+                    <iframe type="text/html" style="width: 320px; height: 240px; max-width: 80%; max-height:100%;" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
 
