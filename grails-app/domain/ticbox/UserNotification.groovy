@@ -37,9 +37,9 @@ class UserNotification {
 
         int total = UserNotification.countByUsernameAndIsNoticedAndCreatedDateBetween(username, false, startDate, endDate)
 
-        //System.out.println("+++++++++++++ startDate = " + startDate);
-        //System.out.println("+++++++++++++ endDate = " + endDate);
-        //System.out.println("+++++++++++++ total = " + total);
+//        System.out.println("+++++++++++++ startDate = " + startDate);
+//        System.out.println("+++++++++++++ endDate = " + endDate);
+//        System.out.println("+++++++++++++ total = " + total);
 
         return total;
     }

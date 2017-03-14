@@ -706,12 +706,12 @@ class SurveyService {
                                 code: notifCode,
                                 username: profile['username'],
                                 actionLink: "/respondent/takeSurvey?surveyId=${survey.surveyId}",
-                                // isNoticed -> isHidden
-                                createdDate: dateTimeFormat.format(new Date())
+//                                 isNoticed -> isHidden
+                                createdDate: new Date()
                         )
 
                         userNotification['SERVICE_ID'] = survey.id
-                        userNotification.save()
+                        UserNotification.saveAll(userNotification)
 
                         def isNotSubscriber = profile.noSubscribe ? (profile.noSubscribe == 'true' ? true : false) : false
 
