@@ -174,6 +174,8 @@ class HomeController {
             redirect(uri: "/howItsWork/")
         } else if(params.pageID == 'pricing') {
             redirect(uri: "/pricing/")
+        } else if(params.pageID == 'investor') {
+            redirect(uri: "/investor/")
         } else {
             redirect(uri: "/")
         }

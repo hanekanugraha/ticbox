@@ -58,6 +58,9 @@
                             %{--<a href="${request.contextPath}/howItsWork/">How It Works</a>--}%
                             <g:link controller="home" action="redirectWithParam" params="['pageID': 'howItsWork']"><g:message code="default.howitworks.label"/></g:link>
                         </li>
+                        <li>
+                            <g:link controller="home" action="redirectWithParam" params="['pageID': 'investor']"><g:message code="homepage.investor.title"/></g:link>
+                        </li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">

@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta name="layout" content="ticbox"/>
-    <title><g:message code="ticbox.howItWorks.title"/></title>
+    <title><g:message code="default.howitworks.label"/></title>
 </head>
 <body>
 

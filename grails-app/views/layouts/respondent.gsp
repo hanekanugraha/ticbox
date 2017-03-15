@@ -53,6 +53,7 @@
                     <li>
                         <a href="${request.contextPath}/howItsWork/"><g:message code="default.howitworks.label"/></a>
                     </li>
+                    <li><a href="${request.contextPath}/investor/"><g:message code="homepage.investor.title"/></a>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
