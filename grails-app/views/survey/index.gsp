@@ -972,7 +972,21 @@
 
             jQuery.getJSON('${request.contextPath}/survey/getSurveyResult', {surveyId: surveyId}, function(result){
                 if(!result.error){
-                    jQuery('#displaySurveyResultModal').modal('show').find('.questionItemsContainer').empty();
+                    var _displaySurveyResultModal = jQuery('#displaySurveyResultModal');
+                    _displaySurveyResultModal.modal('show').find('.questionItemsContainer').empty();
+
+                    //added event when modal on close - remove youtube players
+                    _displaySurveyResultModal.find('button.close').click(function(){
+                        var _questionItems = _displaySurveyResultModal.find('.questionItemsContainer').find('.surveyItemContainer');
+                        eventDisableYoutubePlayers(_questionItems);
+                        _displaySurveyResultModal.find('button.close').unbind('click');
+                    });
+
+                    _displaySurveyResultModal.find("div.modal-footer").find("button").click(function(){
+                        var _questionItems = _displaySurveyResultModal.find('.questionItemsContainer').find('.surveyItemContainer');
+                        eventDisableYoutubePlayers(_displaySurveyResultModal);
+                        _displaySurveyResultModal.find("div.modal-footer").find("button").unbind('click');
+                    });
 
                     setTimeout(function() {
                         loadResultGraph(result);
@@ -1009,7 +1023,22 @@
             jQuery('#surveyPreviewModal .modal-body').empty();
             jQuery.getJSON('${request.contextPath}/survey/getQuestionItems', {surveyId: surveyId}, function(result){
                 if(!result.error){
-                    jQuery('#surveyPreviewModal').modal('show').find('.questionItemsContainer').empty();
+                    var _surveyPreviewModal = jQuery('#surveyPreviewModal');
+                    _surveyPreviewModal.modal('show').find('.questionItemsContainer').empty();
+
+                    //added event when modal on close - remove youtube players
+                    _surveyPreviewModal.find('button.close').click(function(){
+                        var _questionItems = _surveyPreviewModal.find('.surveyItemContainer');
+                        eventDisableYoutubePlayers(_questionItems);
+                        _surveyPreviewModal.find('button.close').unbind('click');
+                    });
+
+                    _surveyPreviewModal.find("div.modal-footer").find("button").click(function(){
+                        var _questionItems = _surveyPreviewModal.find('.surveyItemContainer');
+                        eventDisableYoutubePlayers(_questionItems);
+                        _surveyPreviewModal.find("div.modal-footer").find("button").unbind('click');
+                    });
+
 
                     setTimeout(function() {
                         loadQuestionGraph(result);
@@ -1021,6 +1050,20 @@
         });
 
     });
+
+    function eventDisableYoutubePlayers(_questionItems) {
+        if (typeof _questionItems != 'undefined' && _questionItems != null && _questionItems.length > 0) {
+            for (i = 0; i < _questionItems.length; i++) {
+                var _questionItem = jQuery(_questionItems[i]);
+                if (_questionItem.find("iframe").length > 0) {
+                    var src = _questionItem.find("iframe").attr("src");
+                    _questionItem.find("iframe").attr("src", "");
+                    _questionItem.find("iframe").attr("src", src);
+                }
+            }
+        }
+
+    }
 
     function loadQuestionGraph(questionItems){
 
